@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>El Esqueleto Vivo - Fisiología en la Danza (Parte 1)</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, sans-serif; }
+  body {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    padding: 20px;
+  }
+  .container {
+    max-width: 1100px;
+    margin: 0 auto;
+    background: #fff;
+    border-radius: 20px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    overflow: hidden;
+  }
+  header {
+    background: linear-gradient(90deg, #1e3c72, #2a5298);
+    color: white;
+    padding: 30px;
+    text-align: center;
+  }
+  header h1 { font-size: 2em; margin-bottom: 10px; }
+  header p { opacity: 0.9; font-size: 1.1em; }
+  header .subtitle { font-size: 0.9em; opacity: 0.85; margin-top: 8px; font-style: italic; }
+  
+  .nav-tabs {
+    display: flex;
+    background: #f8f9fa;
+    flex-wrap: wrap;
+    border-bottom: 3px solid #dee2e6;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .nav-tabs button {
+    flex: 1;
+    min-width: 140px;
+    padding: 14px 8px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 0.9em;
+    font-weight: 600;
+    color: #666;
+    transition: all 0.3s;
+    border-bottom: 4px solid transparent;
+  }
+  .nav-tabs button:hover { background: #e9ecef; color: #2a5298; }
+  .nav-tabs button.active {
+    color: #2a5298;
+    border-bottom-color: #2a5298;
+    background: white;
+  }
+  
+  .slide { display: none; padding: 30px; min-height: 600px; }
+  .slide.active { display: block; animation: fadeIn 0.5s; }
+  @keyframes fadeIn { from {opacity:0; transform:translateY(20px);} to {opacity:1; transform:translateY(0);} }
+  
+  .slide h2 {
+    color: #1e3c72;
+    margin-bottom: 20px;
+    font-size: 1.7em;
+    border-bottom: 3px solid #2a5298;
+    padding-bottom: 10px;
+  }
+  
+  .intro-box {
+    background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+    border-left: 5px solid #1976d2;
+    padding: 22px;
+    margin: 20px 0;
+    border-radius: 10px;
+    line-height: 1.7;
+  }
+  
+  .intro-box h3 {
+    color: #1565c0;
+    margin-bottom: 12px;
+    font-size: 1.25em;
+  }
+  
+  .concept-card {
+    background: white;
+    border: 3px solid #2a5298;
+    border-radius: 15px;
+    padding: 25px;
+    margin: 20px 0;
+    box-shadow: 0 5px 20px rgba(42,82,152,0.15);
+  }
+  
+  .concept-card h3 {
+    color: #2a5298;
+    font-size: 1.35em;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .how-it-works {
+    background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
+    padding: 20px;
+    border-radius: 10px;
+    margin: 15px 0;
+    border-left: 5px solid #f57c00;
+  }
+  
+  .how-it-works h4 {
+    color: #e65100;
+    margin-bottom: 12px;
+    font-size: 1.15em;
+  }
+  
+  .how-it-works ul {
+    margin-left: 25px;
+    line-height: 1.8;
+  }
+  
+  .reminder-box {
+    background: linear-gradient(135deg, #fff9c4 0%, #fff59d 100%);
+    padding: 18px;
+    border-radius: 10px;
+    margin: 20px 0;
+    border-left: 5px solid #fbc02d;
+    border: 2px dashed #fbc02d;
+  }
+  
+  .reminder-box h4 {
+    color: #f57f17;
+    margin-bottom: 10px;
+    font-size: 1.1em;
+  }
+  
+  .dance-activity {
+    background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+    padding: 22px;
+    border-radius: 15px;
+    margin: 20px 0;
+    border: 2px solid #388e3c;
+  }
+  
+  .dance-activity h4 {
+    color: #2e7d32;
+    font-size: 1.2em;
+    margin-bottom: 12px;
+  }
+  
+  .activity-steps {
+    margin-left: 25px;
+    line-height: 1.9;
+  }
+  
+  .activity-steps li {
+    margin-bottom: 8px;
+  }
+  
+  .tip-box {
+    background: linear-gradient(135deg, #f3e5f5 0%, #e1bee7 100%);
+    padding: 16px;
+    border-radius: 10px;
+    margin: 15px 0;
+    border-left: 5px solid #9b59b6;
+  }
+  
+  .tip-box h4 {
+    color: #8e44ad;
+    margin-bottom: 8px;
+    font-size: 1.05em;
+  }
+  
+  .diagram-container {
+    background: white;
+    border: 2px solid #dee2e6;
+    border-radius: 10px;
+    padding: 20px;
+    margin: 20px 0;
+    text-align: center;
+  }
+  
+  .diagram-container svg {
+    max-width: 100%;
+    height: auto;
+  }
+  
+  .emoji { font-size: 1.2em; margin-right: 6px; }
+  
+  .nav-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 2px solid #dee2e6;
+  }
+  
+  .nav-btn {
+    background: linear-gradient(90deg, #2a5298, #1e3c72);
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 25px;
+    font-size: 1em;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+  
+  .nav-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(42,82,152,0.3);
+  }
+  
+  .nav-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  
+  @media (max-width: 768px) {
+    header h1 { font-size: 1.6em; }
+    .slide { padding: 20px; }
+    .concept-card { padding: 18px; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <h1> El Esqueleto Vivo</h1>
+    <p>Cómo funciona tu esqueleto cuando bailas</p>
+    <div class="subtitle">Parte 1 de 3 - El hueso como órgano dinámico</div>
+  </header>
+
+  <div class="nav-tabs">
+    <button class="active" onclick="showSlide(0, this)">📚 Introducción</button>
+    <button onclick="showSlide(1, this)">🔄 Hueso vivo</button>
+    <button onclick="showSlide(2, this)">️ Palancas</button>
+    <button onclick="showSlide(3, this)"> Resumen</button>
+  </div>
+
+  <!-- SLIDE 1: INTRODUCCIÓN -->
+  <div class="slide active">
+    <h2>🎭 Tu esqueleto no es un andamio</h2>
+    
+    <div class="intro-box">
+      <h3>💡 Idea clave</h3>
+      <p>Mucha gente piensa que el esqueleto es como una estructura de metal: rígida, fija e inerte. <strong>¡Nada más lejos de la realidad!</strong> Tu esqueleto es un <strong>órgano vivo</strong> que crece, se adapta, se repara y cambia constantemente.</p>
+    </div>
+    
+    <div class="concept-card">
+      <h3><span class="emoji">🤔</span> ¿Por qué es importante para un bailarín?</h3>
+      <div class="how-it-works">
+        <h4>🔍 Lo que necesitas saber</h4>
+        <ul>
+          <li>Tus huesos <strong>se fortalecen</strong> cuando saltas y haces relevés</li>
+          <li>Tus huesos <strong>se debilitan</strong> si no reciben carga (descanso prolongado, lesiones)</li>
+          <li>El esqueleto <strong>almacena calcio</strong> que tus músculos necesitan para contraerse</li>
+          <li>Dentro de los huesos se <strong>fabrican células sanguíneas</strong> que llevan oxígeno a tus músculos</li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="reminder-box">
+      <h4>⚠️ Recuerda</h4>
+      <p><strong>El hueso es tejido vivo.</strong> No es como una piedra o un palo. Está lleno de células que trabajan constantemente para mantenerlo fuerte y saludable. Por eso, lo que haces en clase de danza afecta directamente a tus huesos.</p>
+    </div>
+    
+    <div class="dance-activity">
+      <h4><span class="emoji"></span> Actividad: "Siente tus huesos"</h4>
+      <ol class="activity-steps">
+        <li><strong>Toca tu espinilla</strong> (la parte frontal de la pierna, justo debajo de la rodilla). Es un hueso (la tibia).</li>
+        <li><strong>Toca tu muñeca</strong> por el lado del pulgar. Siente los huesos del carpo.</li>
+        <li><strong>Haz un relevé</strong> y siente cómo el peso de tu cuerpo pasa por los huesos de tus pies, tobillos, piernas.</li>
+        <li><strong>Reflexiona:</strong> Esos huesos están soportando tu peso, pero también están vivos, creciendo y adaptándose.</li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- SLIDE 2: HUESO VIVO -->
+  <div class="slide">
+    <h2>🔄 Tu hueso se renueva constantemente</h2>
+    
+    <div class="concept-card">
+      <h3><span class="emoji"></span> ¿Qué ocurre dentro del hueso?</h3>
+      <div class="how-it-works">
+        <h4> El ciclo de renovación</h4>
+        <p>Imagina que tu hueso es como una casa que se está reformando constantemente:</p>
+        <ul>
+          <li><strong>Unas células</strong> (llamadas osteoclastos) <strong>destruyen</strong> el hueso viejo o dañado</li>
+          <li><strong>Otras células</strong> (llamadas osteoblastos) <strong>construyen</strong> hueso nuevo y más fuerte</li>
+          <li>Este proceso ocurre <strong>las 24 horas del día</strong>, todos los días de tu vida</li>
+          <li>En un bailarín joven, se construye <strong>más hueso del que se destruye</strong> → los huesos se fortalecen</li>
+        </ul>
+      </div>
+      
+      <div class="diagram-container">
+        <h4> El ciclo de renovación ósea</h4>
+        <svg viewBox="0 0 600 300">
+          <!-- Osteoclasto (destruye) -->
+          <circle cx="150" cy="100" r="40" fill="#e74c3c" opacity="0.8"/>
+          <text x="150" y="105" text-anchor="middle" font-size="11" fill="white" font-weight="bold">DESTRUYE</text>
+          <text x="150" y="160" text-anchor="middle" font-size="10" fill="#e74c3c">Hueso viejo</text>
+          
+          <!-- Flecha -->
+          <line x1="200" y1="100" x2="280" y2="100" stroke="#7f8c8d" stroke-width="3" marker-end="url(#arrow)"/>
+          <text x="240" y="90" text-anchor="middle" font-size="9" fill="#7f8c8d">Eliminan</text>
+          
+          <!-- Osteoblasto (construye) -->
+          <circle cx="350" cy="100" r="40" fill="#27ae60" opacity="0.8"/>
+          <text x="350" y="105" text-anchor="middle" font-size="11" fill="white" font-weight="bold">CONSTRUYE</text>
+          <text x="350" y="160" text-anchor="middle" font-size="10" fill="#27ae60">Hueso nuevo</text>
+          
+          <!-- Flecha circular -->
+          <path d="M 390 100 Q 450 100 450 150 Q 450 200 390 200 L 200 200 Q 150 200 150 150 Q 150 100 110 100" stroke="#9b59b6" stroke-width="3" fill="none" marker-end="url(#arrowPurple)"/>
+          <text x="300" y="230" text-anchor="middle" font-size="11" fill="#9b59b6" font-weight="bold">Ciclo continuo</text>
+          
+          <defs>
+            <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+              <polygon points="0 0, 10 3, 0 6" fill="#7f8c8d"/>
+            </marker>
+            <marker id="arrowPurple" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+              <polygon points="0 0, 10 3, 0 6" fill="#9b59b6"/>
+            </marker>
+          </defs>
+        </svg>
+      </div>
+    </div>
+    
+    <div class="concept-card">
+      <h3><span class="emoji">⚡</span> La Ley de Wolff: el hueso se adapta</h3>
+      <div class="how-it-works">
+        <h4>🔍 ¿Qué dice esta ley?</h4>
+        <p><strong>El hueso se fortalece donde recibe carga y se debilita donde no la recibe.</strong></p>
+        <ul>
+          <li>Si saltas mucho → los huesos de tus piernas se vuelven más densos y fuertes</li>
+          <li>Si estás en reposo mucho tiempo (lesión) → los huesos pierden densidad</li>
+          <li>Por eso los bailarines tienen huesos más fuertes que las personas sedentarias</li>
+          <li>Por eso los nadadores (sin impacto) tienen menos densidad ósea que los bailarines</li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="reminder-box">
+      <h4>️ Recuerda</h4>
+      <p><strong>La adaptación ósea es lenta.</strong> Los músculos se fortalecen en semanas, pero los huesos necesitan <strong>meses</strong> de carga constante. Por eso es importante ser constante en el entrenamiento y no esperar resultados inmediatos.</p>
+    </div>
+    
+    <div class="dance-activity">
+      <h4><span class="emoji">🎭</span> Actividad: "Salto vs. Reposo"</h4>
+      <ol class="activity-steps">
+        <li><strong>Grupo A:</strong> Haz 20 pequeños saltos (relevés con impulso) seguidos.</li>
+        <li><strong>Grupo B:</strong> Quédate de pie sin moverte durante el mismo tiempo.</li>
+        <li><strong>Reflexión:</strong> ¿Qué grupo está estimulando más sus huesos? El Grupo A, porque el impacto de los saltos "avisa" a los osteoblastos de que construyan más hueso.</li>
+        <li><strong>Aplicación:</strong> Por eso en clase de danza hacemos relevés y saltos: no solo para la técnica, sino para fortalecer los huesos.</li>
+      </ol>
+    </div>
+    
+    <div class="tip-box">
+      <h4>💡 Dato curioso</h4>
+      <p>Un hueso se renueva completamente cada <strong>7-10 años</strong>. ¡Los huesos que tienes ahora no son los mismos que tenías hace 10 años! Se han ido reconstruyendo poco a poco.</p>
+    </div>
+  </div>
+
+  <!-- SLIDE 3: PALANCAS -->
+  <div class="slide">
+    <h2>⚖️ Tu esqueleto: un sistema de palancas</h2>
+    
+    <div class="concept-card">
+      <h3><span class="emoji"></span> ¿Qué es una palanca?</h3>
+      <div class="how-it-works">
+        <h4>🔍 El concepto básico</h4>
+        <p>Una palanca es una barra rígida (tu hueso) que gira alrededor de un punto fijo (tu articulación). Los músculos tiran de la palanca para moverla.</p>
+        <ul>
+          <li><strong>Ejemplo cotidiano:</strong> Cuando abres una puerta, el pomo está lejos de las bisagras para que sea fácil abrirla. Eso es una palanca.</li>
+          <li><strong>En tu cuerpo:</strong> Cuando flexionas el codo, el bíceps tira del antebrazo (palanca) que gira alrededor del codo (articulación).</li>
+        </ul>
+      </div>
+      
+      <div class="diagram-container">
+        <h4>📐 Los 3 tipos de palancas en el cuerpo</h4>
+        <svg viewBox="0 0 700 400">
+          <!-- Palanca 1er género -->
+          <g transform="translate(50, 50)">
+            <rect x="0" y="0" width="180" height="100" fill="#e3f2fd" stroke="#2a5298" stroke-width="2" rx="5"/>
+            <text x="90" y="25" text-anchor="middle" font-size="12" font-weight="bold" fill="#2a5298">1er GÉNERO</text>
+            <text x="90" y="45" text-anchor="middle" font-size="10" fill="#7f8c8d">Equilibrio</text>
+            
+            <!-- Balancín -->
+            <line x1="20" y1="70" x2="160" y2="70" stroke="#2a5298" stroke-width="4"/>
+            <polygon points="85,70 95,70 90,90" fill="#e74c3c"/>
+            <text x="90" y="105" text-anchor="middle" font-size="9" fill="#e74c3c">Apoyo</text>
+            
+            <circle cx="40" cy="60" r="8" fill="#27ae60"/>
+            <text x="40" y="50" text-anchor="middle" font-size="8" fill="#27ae60">Fuerza</text>
+            
+            <circle cx="140" cy="60" r="8" fill="#f39c12"/>
+            <text x="140" y="50" text-anchor="middle" font-size="8" fill="#f39c12">Resistencia</text>
+            
+            <text x="90" y="130" text-anchor="middle" font-size="9" fill="#7f8c8d">Ejemplo: Cabeza</text>
+          </g>
+          
+          <!-- Palanca 2do género -->
+          <g transform="translate(260, 50)">
+            <rect x="0" y="0" width="180" height="100" fill="#e8f5e9" stroke="#388e3c" stroke-width="2" rx="5"/>
+            <text x="90" y="25" text-anchor="middle" font-size="12" font-weight="bold" fill="#388e3c">2º GÉNERO</text>
+            <text x="90" y="45" text-anchor="middle" font-size="10" fill="#7f8c8d">Fuerza</text>
+            
+            <!-- Palanca -->
+            <line x1="20" y1="70" x2="160" y2="70" stroke="#388e3c" stroke-width="4"/>
+            <polygon points="20,70 30,70 25,90" fill="#e74c3c"/>
+            <text x="25" y="105" text-anchor="middle" font-size="9" fill="#e74c3c">Apoyo</text>
+            
+            <circle cx="90" cy="60" r="8" fill="#f39c12"/>
+            <text x="90" y="50" text-anchor="middle" font-size="8" fill="#f39c12">Resistencia</text>
+            
+            <circle cx="140" cy="60" r="8" fill="#27ae60"/>
+            <text x="140" y="50" text-anchor="middle" font-size="8" fill="#27ae60">Fuerza</text>
+            
+            <text x="90" y="130" text-anchor="middle" font-size="9" fill="#7f8c8d">Ejemplo: Relevé</text>
+          </g>
+          
+          <!-- Palanca 3er género -->
+          <g transform="translate(470, 50)">
+            <rect x="0" y="0" width="180" height="100" fill="#fff3e0" stroke="#f57c00" stroke-width="2" rx="5"/>
+            <text x="90" y="25" text-anchor="middle" font-size="12" font-weight="bold" fill="#f57c00">3er GÉNERO</text>
+            <text x="90" y="45" text-anchor="middle" font-size="10" fill="#7f8c8d">Velocidad</text>
+            
+            <!-- Palanca -->
+            <line x1="20" y1="70" x2="160" y2="70" stroke="#f57c00" stroke-width="4"/>
+            <polygon points="20,70 30,70 25,90" fill="#e74c3c"/>
+            <text x="25" y="105" text-anchor="middle" font-size="9" fill="#e74c3c">Apoyo</text>
+            
+            <circle cx="60" cy="60" r="8" fill="#27ae60"/>
+            <text x="60" y="50" text-anchor="middle" font-size="8" fill="#27ae60">Fuerza</text>
+            
+            <circle cx="140" cy="60" r="8" fill="#f39c12"/>
+            <text x="140" y="50" text-anchor="middle" font-size="8" fill="#f39c12">Resistencia</text>
+            
+            <text x="90" y="130" text-anchor="middle" font-size="9" fill="#7f8c8d">Ejemplo: Brazo</text>
+          </g>
+          
+          <text x="350" y="250" text-anchor="middle" font-size="11" fill="#2a5298" font-weight="bold">La mayoría de palancas del cuerpo son del 3er género</text>
+          <text x="350" y="270" text-anchor="middle" font-size="10" fill="#7f8c8d">Priorizan velocidad y rango de movimiento sobre la fuerza</text>
+        </svg>
+      </div>
+    </div>
+    
+    <div class="concept-card">
+      <h3><span class="emoji">💃</span> Palancas en la danza</h3>
+      <div class="how-it-works">
+        <h4>🔍 Ejemplos concretos</h4>
+        <ul>
+          <li><strong>Relevé (2º género):</strong> El apoyo está en la punta del pie, la resistencia es tu peso corporal, y la fuerza la hacen los gemelos. Es una palanca de fuerza: puedes elevarte aunque peses mucho.</li>
+          <li><strong>Flexión de codo (3er género):</strong> El apoyo está en el codo, la fuerza la hace el bíceps (cerca del codo), y la resistencia está en la mano. Es una palanca de velocidad: mueves la mano rápido pero con menos fuerza.</li>
+          <li><strong>Asentimiento de cabeza (1er género):</strong> El apoyo está en el cuello, la fuerza la hacen los músculos de la nuca, y la resistencia es el peso de la cabeza. Es una palanca de equilibrio.</li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="reminder-box">
+      <h4>⚠️ Recuerda</h4>
+      <p><strong>La longitud de tus huesos afecta a cómo bailas.</strong> Si tienes piernas largas, necesitas más fuerza para moverlas (palanca más larga). Si tienes piernas cortas, puedes moverlas más rápido. No hay mejor ni peor, solo diferente. Cada cuerpo tiene sus ventajas.</p>
+    </div>
+    
+    <div class="dance-activity">
+      <h4><span class="emoji">🎭</span> Actividad: "Siente las palancas"</h4>
+      <ol class="activity-steps">
+        <li><strong>Palanca de fuerza:</strong> Haz un relevé lento. Siente cómo los gemelos hacen fuerza para elevarte. Es fácil porque es una palanca de fuerza.</li>
+        <li><strong>Palanca de velocidad:</strong> Mueve el brazo rápido de arriba a abajo. Siente cómo el bíceps trabaja cerca del codo para mover la mano rápido. Es una palanca de velocidad.</li>
+        <li><strong>Comparación:</strong> ¿Qué requiere más esfuerzo? ¿Elevarte en relevé o mover el brazo rápido? El relevé requiere más fuerza, pero el brazo rápido requiere más control.</li>
+        <li><strong>Reflexión:</strong> Tu cuerpo usa diferentes tipos de palancas según el movimiento. Por eso algunos movimientos son "más fáciles" que otros.</li>
+      </ol>
+    </div>
+    
+    <div class="tip-box">
+      <h4>💡 Dato interesante</h4>
+      <p>Los bailarines con piernas largas tienen más dificultad para los giros rápidos (más momento de inercia), pero más facilidad para los movimientos amplios y elegantes. Los bailarines con piernas cortas son más rápidos en giros pero tienen menos alcance. ¡Cada cuerpo tiene su estilo!</p>
+    </div>
+  </div>
+
+  <!-- SLIDE 4: RESUMEN -->
+  <div class="slide">
+    <h2>📊 Resumen: Lo más importante</h2>
+    
+    <div class="intro-box">
+      <h3>🎯 Conceptos clave de esta parte</h3>
+      <ul style="margin-left: 25px; line-height: 1.8;">
+        <li><strong>Tu esqueleto es un órgano vivo</strong> que se renueva constantemente</li>
+        <li><strong>El hueso se fortalece con la carga</strong> (Ley de Wolff): saltar y bailar hace tus huesos más fuertes</li>
+        <li><strong>La adaptación ósea es lenta</strong>: necesita meses de entrenamiento constante</li>
+        <li><strong>Tu esqueleto es un sistema de palancas</strong>: los huesos son barras, las articulaciones son puntos de apoyo, los músculos son la fuerza</li>
+        <li><strong>La longitud de tus huesos afecta a tu danza</strong>: no hay cuerpos mejores ni peores, solo diferentes</li>
+      </ul>
+    </div>
+    
+    <div class="reminder-box">
+      <h4>⚠️ Recuerda para tu entrenamiento</h4>
+      <ul style="margin-left: 25px; line-height: 1.8;">
+        <li>Haz saltos y relevés regularmente para fortalecer tus huesos</li>
+        <li>No esperes resultados inmediatos: los huesos tardan meses en adaptarse</li>
+        <li>Si estás lesionado/a y en reposo, tus huesos se debilitan: vuelve progresivamente</li>
+        <li>Acepta tu estructura ósea: trabaja con ella, no contra ella</li>
+      </ul>
+    </div>
+    
+    <div class="dance-activity">
+      <h4><span class="emoji">🎭</span> Actividad final: "Mi esqueleto bailarín"</h4>
+      <ol class="activity-steps">
+        <li><strong>Reflexiona:</strong> ¿Qué tipo de cuerpo tienes? ¿Piernas largas o cortas? ¿Huesos gruesos o finos?</li>
+        <li><strong>Identifica:</strong> ¿Qué movimientos te resultan más fáciles? ¿Cuáles más difíciles?</li>
+        <li><strong>Conecta:</strong> ¿Cómo se relaciona tu estructura ósea con tu facilidad o dificultad para ciertos movimientos?</li>
+        <li><strong>Planifica:</strong> ¿Qué puedes hacer para fortalecer tus puntos débiles? (más saltos, más trabajo de palancas, etc.)</li>
+        <li><strong>Comparte:</strong> Habla con tus compañeros/as sobre sus experiencias. Verás que cada cuerpo es diferente.</li>
+      </ol>
+    </div>
+    
+    <div class="tip-box">
+      <h4>🎯 Próxima parte</h4>
+      <p>En la <strong>Parte 2</strong> aprenderás cómo el esqueleto almacena calcio para tus músculos, fabrica sangre para tu resistencia, y por qué cada bailarín tiene un cuerpo diferente.</p>
+    </div>
+    
+    <div class="nav-buttons">
+      <button class="nav-btn" disabled>← Anterior</button>
+      <button class="nav-btn" onclick="alert('Abre el archivo: esqueleto-parte2.html')">Siguiente: El esqueleto que trabaja →</button>
+    </div>
+  </div>
+</div>
+
+<script>
+function showSlide(i, btn) {
+  document.querySelectorAll('.slide').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-tabs button').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.slide')[i].classList.add('active');
+  btn.classList.add('active');
+  window.scrollTo(0, 0);
+}
+</script>
+</body>
+</html>

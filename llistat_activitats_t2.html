@@ -1,0 +1,1161 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Índex Sessió 2 · Fisiologia de la Dansa · 2026-2027</title>
+<style>
+  :root{
+    --navy:#0b1f3a;
+    --navy-2:#132f55;
+    --gold:#c9a227;
+    --gold-2:#e6c65c;
+    --white:#ffffff;
+    --cream:#f7f4ee;
+    --gray:#e8e4dc;
+    --text:#1a1a1a;
+    --muted:#6b6b6b;
+    --shadow:0 10px 30px rgba(11,31,58,.12);
+    --radius:14px;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0;
+    font-family: Georgia, "Times New Roman", serif;
+    background:
+      radial-gradient(circle at top left, rgba(201,162,39,.10), transparent 28%),
+      radial-gradient(circle at top right, rgba(11,31,58,.08), transparent 30%),
+      linear-gradient(180deg, #fbfaf7 0%, #f3efe7 100%);
+    color:var(--text);
+    line-height:1.55;
+  }
+  header{
+    background: linear-gradient(135deg, var(--navy) 0%, var(--navy-2) 70%, #1b3b68 100%);
+    color:var(--white);
+    padding:2.2rem 1.2rem 1.6rem;
+    border-bottom:4px solid var(--gold);
+    box-shadow:var(--shadow);
+    position:relative;
+    overflow:hidden;
+  }
+  header::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:repeating-linear-gradient(45deg, transparent 0 18px, rgba(255,255,255,.02) 18px 20px);
+    pointer-events:none;
+  }
+  .header-inner{max-width:1100px;margin:0 auto;position:relative;z-index:1}
+  .eyebrow{
+    display:inline-block;font-size:.78rem;letter-spacing:.18em;text-transform:uppercase;
+    color:var(--gold-2);border:1px solid rgba(230,198,92,.45);padding:.25rem .65rem;
+    border-radius:999px;margin-bottom:.8rem;
+  }
+  h1{margin:0 0 .35rem;font-size:clamp(1.6rem, 3vw, 2.4rem);font-weight:600;letter-spacing:.02em}
+  .subtitle{margin:0;color:#dbe6f5;font-size:1rem}
+  .meta{display:flex;flex-wrap:wrap;gap:.6rem 1.2rem;margin-top:1rem;font-size:.92rem;color:#e9eef7}
+  .meta span{display:inline-flex;align-items:center;gap:.35rem}
+  .lang-switch{display:flex;gap:.4rem;margin-top:1.2rem;flex-wrap:wrap}
+  .lang-switch button{
+    background:rgba(255,255,255,.08);color:var(--white);
+    border:1px solid rgba(230,198,92,.5);padding:.45rem .9rem;border-radius:999px;
+    cursor:pointer;font-family:inherit;font-size:.85rem;letter-spacing:.06em;transition:all .2s ease;
+  }
+  .lang-switch button:hover{background:rgba(230,198,92,.18)}
+  .lang-switch button.active{background:var(--gold);color:var(--navy);border-color:var(--gold);font-weight:700}
+  main{max-width:1100px;margin:0 auto;padding:1.6rem 1.2rem 4rem}
+  .toolbar{display:flex;flex-wrap:wrap;gap:.8rem;align-items:center;justify-content:space-between;margin-bottom:1.4rem}
+  .search-box{flex:1 1 280px;position:relative}
+  .search-box input{
+    width:100%;padding:.85rem 1rem .85rem 2.6rem;border:1px solid var(--gray);
+    border-radius:999px;font-family:inherit;font-size:1rem;background:var(--white);
+    box-shadow:0 4px 14px rgba(11,31,58,.06);outline:none;transition:border-color .2s, box-shadow .2s;
+  }
+  .search-box input:focus{border-color:var(--gold);box-shadow:0 0 0 4px rgba(201,162,39,.15)}
+  .search-box::before{
+    content:"⌕";position:absolute;left:1rem;top:50%;transform:translateY(-50%);
+    color:var(--gold);font-size:1.2rem;
+  }
+  .stats{font-size:.88rem;color:var(--muted);white-space:nowrap}
+  .session-note{
+    background:var(--white);border-left:4px solid var(--gold);border-radius:var(--radius);
+    padding:1rem 1.2rem;box-shadow:var(--shadow);margin-bottom:1.6rem;font-size:.95rem;
+  }
+  .session-note strong{color:var(--navy)}
+  .slide-card{
+    background:var(--white);border-radius:var(--radius);box-shadow:var(--shadow);
+    padding:1.1rem 1.2rem 1.2rem;margin-bottom:1rem;border:1px solid rgba(11,31,58,.06);
+    transition:transform .18s ease, box-shadow .18s ease;position:relative;overflow:hidden;
+  }
+  .slide-card::before{
+    content:"";position:absolute;left:0;top:0;bottom:0;width:4px;
+    background:linear-gradient(180deg, var(--gold), var(--navy));opacity:.85;
+  }
+  .slide-card:hover{transform:translateY(-2px);box-shadow:0 16px 36px rgba(11,31,58,.16)}
+  .slide-head{display:flex;align-items:flex-start;gap:.9rem;margin-bottom:.55rem}
+  .slide-num{
+    flex:0 0 auto;background:var(--navy);color:var(--gold-2);font-weight:700;font-size:.82rem;
+    letter-spacing:.08em;padding:.35rem .6rem;border-radius:8px;border:1px solid rgba(230,198,92,.4);
+  }
+  .slide-title{margin:0;font-size:1.08rem;color:var(--navy);font-weight:700;line-height:1.35}
+  .slide-desc{margin:.35rem 0 .85rem;color:#333;font-size:.96rem}
+  .links{display:flex;flex-wrap:wrap;gap:.5rem}
+  .link-chip{
+    display:inline-flex;align-items:center;gap:.4rem;
+    background:linear-gradient(135deg, var(--navy), var(--navy-2));
+    color:var(--white);text-decoration:none;padding:.5rem .85rem;border-radius:999px;
+    font-size:.86rem;border:1px solid rgba(230,198,92,.35);transition:all .2s ease;
+    box-shadow:0 4px 12px rgba(11,31,58,.18);
+  }
+  .link-chip:hover{
+    background:linear-gradient(135deg, var(--gold), var(--gold-2));
+    color:var(--navy);transform:translateY(-1px);
+  }
+  .link-chip .icon{font-size:.95rem;opacity:.95}
+  .no-html{
+    display:inline-flex;align-items:center;gap:.4rem;background:#f3f0e9;color:var(--muted);
+    border:1px dashed #c9c2b4;padding:.5rem .85rem;border-radius:999px;font-size:.86rem;font-style:italic;
+  }
+  .no-results{
+    display:none;text-align:center;padding:2.5rem 1rem;color:var(--muted);
+    background:var(--white);border-radius:var(--radius);box-shadow:var(--shadow);
+  }
+  footer{text-align:center;padding:1.5rem 1rem 2.5rem;color:var(--muted);font-size:.85rem}
+  footer .gold{color:var(--gold);font-weight:700}
+  @media (max-width:640px){
+    header{padding:1.6rem 1rem 1.2rem}
+    .slide-head{flex-direction:column; gap:.45rem}
+    .slide-num{align-self:flex-start}
+    .toolbar{align-items:stretch}
+    .stats{text-align:right}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <span class="eyebrow">FISIOLOGIA DE LA DANSA · 2026-2027</span>
+    <h1 id="t-main-title">Índex de la Sessió 2</h1>
+    <p class="subtitle" id="t-subtitle">Sistema musculoesquelètic I</p>
+
+    <div class="meta">
+      <span>📅 <strong id="t-date">16-10-2026</strong></span>
+      <span>👩‍🏫 <strong>Dra. Cèlia Painous Martí</strong></span>
+      <span>📚 <strong id="t-block">BLOC 1</strong></span>
+      <span>🏛️ <strong>Institut del Teatre · Diputació de Barcelona</strong></span>
+    </div>
+
+    <div class="lang-switch" role="group" aria-label="Selector d'idioma">
+      <button data-lang="es" type="button">ES</button>
+      <button data-lang="ca" class="active" type="button">CA</button>
+      <button data-lang="en" type="button">EN</button>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="toolbar">
+    <div class="search-box">
+      <input type="search" id="searchInput" placeholder="Cercar diapositives, conceptes o arxius HTML…" aria-label="Cercar">
+    </div>
+    <div class="stats" id="stats">48 diapositives · 0 filtrades</div>
+  </div>
+
+  <div class="session-note" id="sessionNote">
+    <strong>Nota:</strong> Aquesta sessió desenvolupa el Sistema Musculoesquelètic I: nivells d'organització, medi intern i homeòstasi, mecanismes de retroalimentació, teixit muscular, sarcòmer, contracció muscular i tipus de contracció aplicats a la dansa.
+  </div>
+
+  <div id="slidesContainer"></div>
+
+  <div class="no-results" id="noResults">
+    No s'han trobat diapositives que coincideixin amb la cerca.
+  </div>
+</main>
+
+<footer>
+  <span class="gold">Fisiologia de la Dansa</span> · Curs 2026-2027 · Dra. Cèlia Painous · Índex generat per a la Sessió 2
+</footer>
+
+<script>
+/* ============================================================
+   BASE URL DELS ARXIUS HTML
+   ============================================================ */
+const BASE_URL = "https://jpainous.github.io/dansa_tema03/";
+
+/* ============================================================
+   DADES DE LA SESSIÓ
+   ============================================================ */
+const SESSION = {
+  num: 2,
+  title: {
+    ca: "Índex de la Sessió 2",
+    es: "Índice de la Sesión 2",
+    en: "Session 2 Index"
+  },
+  subtitle: {
+    ca: "Sistema musculoesquelètic I",
+    es: "Sistema musculoesquelético I",
+    en: "Musculoskeletal System I"
+  },
+  date: "16-10-2026",
+  block: {
+    ca: "BLOC 1",
+    es: "BLOQUE 1",
+    en: "BLOCK 1"
+  },
+  note: {
+    ca: "<strong>Nota:</strong> Aquesta sessió desenvolupa el Sistema Musculoesquelètic I: nivells d'organització, medi intern i homeòstasi, mecanismes de retroalimentació, teixit muscular, sarcòmer, contracció muscular i tipus de contracció aplicats a la dansa.",
+    es: "<strong>Nota:</strong> Esta sesión desarrolla el Sistema Musculoesquelético I: niveles de organización, medio interno y homeostasis, mecanismos de retroalimentación, tejido muscular, sarcómero, contracción muscular y tipos de contracción aplicados a la danza.",
+    en: "<strong>Note:</strong> This session develops Musculoskeletal System I: levels of organisation, internal environment and homeostasis, feedback mechanisms, muscle tissue, sarcomere, muscle contraction and types of contraction applied to dance."
+  }
+};
+
+/* ============================================================
+   DADES DE LES DIAPOSITIVES
+   ============================================================ */
+const SLIDES = [
+  {
+    num: 1,
+    title: {
+      ca: "Portada — Sistema musculoesquelètic I",
+      es: "Portada — Sistema musculoesquelético I",
+      en: "Cover — Musculoskeletal System I"
+    },
+    desc: {
+      ca: "Títol de la presentació, curs acadèmic (2026-2027), docent responsable (Dra. Cèlia Painous, MD, PhD) i assignatura (Fisiologia).",
+      es: "Título de la presentación, curso académico (2026-2027), docente responsable (Dra. Cèlia Painous, MD, PhD) y asignatura (Fisiología).",
+      en: "Presentation title, academic year (2026-2027), responsible lecturer (Dr. Cèlia Painous, MD, PhD) and subject (Physiology)."
+    },
+    links: [
+      { file: "guia_recursos_presentacion_T2.html", label: { ca: "Guia de recursos · Sistema musculoesquelètic I", es: "Guía de recursos · Sistema musculoesquelético I", en: "Resource guide · Musculoskeletal System I" } }
+    ]
+  },
+  {
+    num: 2,
+    title: {
+      ca: "Nivells d'organització biològica general",
+      es: "Niveles de organización biológica general",
+      en: "General biological organisation levels"
+    },
+    desc: {
+      ca: "Esquema general que il·lustra el pas progressiu de Cèl·lula → Teixit → Òrgan → Sistema o Aparell → Organisme.",
+      es: "Esquema general que ilustra el paso progresivo de Célula → Tejido → Órgano → Sistema o Aparato → Organismo.",
+      en: "General diagram illustrating the progressive passage from Cell → Tissue → Organ → System or Apparatus → Organism."
+    },
+    links: [
+      { file: "temes_fisiologia_ball15.html", label: { ca: "Fisiologia i ball: laboratori viu (15 diap.)", es: "Fisiología y baile: laboratorio vivo (15 diap.)", en: "Physiology and dance: living lab (15 slides)" } },
+      { file: "metaforas_17.html", label: { ca: "Anatomia vs Fisiologia: 10 parts del cos", es: "Anatomía vs Fisiología: 10 partes del cuerpo", en: "Anatomy vs Physiology: 10 body parts" } }
+    ]
+  },
+  {
+    num: 3,
+    title: {
+      ca: "Nivells d'organització en la fibra muscular",
+      es: "Niveles de organización en la fibra muscular",
+      en: "Organisation levels in the muscle fibre"
+    },
+    desc: {
+      ca: "Mostra l'exemple específic: Fibra muscular → Teixit muscular esquelètic → Múscul esquelètic → Sistema muscular → Cos humà.",
+      es: "Muestra el ejemplo específico: Fibra muscular → Tejido muscular esquelético → Músculo esquelético → Sistema muscular → Cuerpo humano.",
+      en: "Shows the specific example: Muscle fibre → Skeletal muscle tissue → Skeletal muscle → Muscular system → Human body."
+    },
+    links: [
+      { file: "trabajo_musculos.html", label: { ca: "Estructures del sistema musculoesquelètic", es: "Estructuras del sistema musculoesquelético", en: "Musculoskeletal system structures" } },
+      { file: "actividades_sarcomero.html", label: { ca: "El sarcòmer: teoria i activitats", es: "El sarcómero: teoría y actividades", en: "The sarcomere: theory and activities" } }
+    ]
+  },
+  {
+    num: 4,
+    title: {
+      ca: "Activitat interactiva — Sabries relacionar cada nivell amb la seva definició?",
+      es: "Actividad interactiva — ¿Sabrías relacionar cada nivel con su definición?",
+      en: "Interactive activity — Could you match each level with its definition?"
+    },
+    desc: {
+      ca: "Presenta una activitat per associar els 5 nivells d'organització amb les seves definicions conceptuals corresponents.",
+      es: "Presenta una actividad para asociar los 5 niveles de organización con sus definiciones conceptuales correspondientes.",
+      en: "Presents an activity to match the 5 levels of organisation with their corresponding conceptual definitions."
+    },
+    links: [
+      { file: "t3_actividad007.html", label: { ca: "Mapa conceptual del Tema 3", es: "Mapa conceptual del Tema 3", en: "Concept map of Topic 3" } },
+      { file: "trabajo_musculos.html", label: { ca: "Estructures del sistema musculoesquelètic", es: "Estructuras del sistema musculoesquelético", en: "Musculoskeletal system structures" } }
+    ]
+  },
+  {
+    num: 5,
+    title: {
+      ca: "Distribució de líquids corporals — Líquid intra i extracel·lular",
+      es: "Distribución de líquidos corporales — Líquido intra y extracelular",
+      en: "Body fluid distribution — Intracellular and extracellular fluid"
+    },
+    desc: {
+      ca: "Explica que el 60% del cos humà és líquid, dividit en Líquid Intracel·lular (LIC, 60-65%) i Líquid Extracel·lular (LEC, 35-40%).",
+      es: "Explica que el 60% del cuerpo humano es líquido, dividido en Líquido Intracelular (LIC, 60-65%) y Líquido Extracelular (LEC, 35-40%).",
+      en: "Explains that 60% of the human body is fluid, divided into Intracellular Fluid (ICF, 60-65%) and Extracellular Fluid (ECF, 35-40%)."
+    },
+    links: [
+      { file: "homeostasis_movimiento.html", label: { ca: "Homeòstasi i moviment: LIC/LEC", es: "Homeostasis y movimiento: LIC/LEC", en: "Homeostasis and movement: ICF/ECF" } }
+    ]
+  },
+  {
+    num: 6,
+    title: {
+      ca: "Il·lustració del medi intern",
+      es: "Ilustración del medio interno",
+      en: "Illustration of the internal environment"
+    },
+    desc: {
+      ca: "Imatge conceptual de peixos en un aquari per exemplificar visualment el concepte de medi intern cel·lular.",
+      es: "Imagen conceptual de peces en un acuario para ejemplificar visualmente el concepto de medio interno celular.",
+      en: "Conceptual image of fish in an aquarium to visually exemplify the concept of the cellular internal environment."
+    },
+    links: [
+      { file: "homeostasis_movimiento.html", label: { ca: "Homeòstasi i moviment", es: "Homeostasis y movimiento", en: "Homeostasis and movement" } }
+    ]
+  },
+  {
+    num: 7,
+    title: {
+      ca: "Variables del medi intern",
+      es: "Variables del medio interno",
+      en: "Variables of the internal environment"
+    },
+    desc: {
+      ca: "Detalla les variables clau que l'organisme ha de mantenir regulades en el LEC: oxigen, CO₂, glucosa, pH i temperatura.",
+      es: "Detalla las variables clave que el organismo debe mantener reguladas en el LEC: oxígeno, CO₂, glucosa, pH y temperatura.",
+      en: "Details the key variables that the organism must keep regulated in the ECF: oxygen, CO₂, glucose, pH and temperature."
+    },
+    links: [
+      { file: "homeostasis_movimiento.html", label: { ca: "Homeòstasi i moviment", es: "Homeostasis y movimiento", en: "Homeostasis and movement" } }
+    ]
+  },
+  {
+    num: 8,
+    title: {
+      ca: "Il·lustració d'equilibri/pertorbació",
+      es: "Ilustración de equilibrio/perturbación",
+      en: "Illustration of balance/perturbation"
+    },
+    desc: {
+      ca: "Imatge conceptual d'una gota caient en aigua formant onades per representar les pertorbacions del medi.",
+      es: "Imagen conceptual de una gota cayendo en agua formando ondas para representar las perturbaciones del medio.",
+      en: "Conceptual image of a drop falling into water forming waves to represent perturbations of the environment."
+    },
+    links: [
+      { file: "homeostasis_movimiento.html", label: { ca: "Homeòstasi i moviment", es: "Homeostasis y movimiento", en: "Homeostasis and movement" } }
+    ]
+  },
+  {
+    num: 9,
+    title: {
+      ca: "Homeòstasi i rangs fisiològics",
+      es: "Homeostasis y rangos fisiológicos",
+      en: "Homeostasis and physiological ranges"
+    },
+    desc: {
+      ca: "Defineix l'homeòstasi com el manteniment dinàmic constant del LEC i especifica els rangs de pH (7,35-7,45), glucosa (75-110 mg/dL), temperatura (36-37,5 °C) i pressió arterial (120/80 mmHg).",
+      es: "Define la homeostasis como el mantenimiento dinámico constante del LEC y especifica los rangos de pH (7,35-7,45), glucosa (75-110 mg/dL), temperatura (36-37,5 °C) y presión arterial (120/80 mmHg).",
+      en: "Defines homeostasis as the dynamic constant maintenance of the ECF and specifies pH (7.35-7.45), glucose (75-110 mg/dL), temperature (36-37.5 °C) and blood pressure (120/80 mmHg) ranges."
+    },
+    links: [
+      { file: "homeostasis_movimiento.html", label: { ca: "Homeòstasi i moviment", es: "Homeostasis y movimiento", en: "Homeostasis and movement" } }
+    ]
+  },
+  {
+    num: 10,
+    title: {
+      ca: "Il·lustració d'alerta",
+      es: "Ilustración de alerta",
+      en: "Alert illustration"
+    },
+    desc: {
+      ca: "Gràfic d'una sirena d'alarma per simbolitzar les senyals d'alteració homeostàtica.",
+      es: "Gráfico de una sirena de alarma para simbolizar las señales de alteración homeostática.",
+      en: "Graphic of an alarm siren to symbolise signals of homeostatic alteration."
+    },
+    links: [
+      { file: "homeostasis_movimiento.html", label: { ca: "Homeòstasi i moviment", es: "Homeostasis y movimiento", en: "Homeostasis and movement" } }
+    ]
+  },
+  {
+    num: 11,
+    title: {
+      ca: "Sistemes d'integració i control",
+      es: "Sistemas de integración y control",
+      en: "Integration and control systems"
+    },
+    desc: {
+      ca: "Presenta el Sistema Nerviós i el Sistema Endocrí com els dos principals sistemes reguladors de l'homeòstasi.",
+      es: "Presenta el Sistema Nervioso y el Sistema Endocrino como los dos principales sistemas reguladores de la homeostasis.",
+      en: "Presents the Nervous System and the Endocrine System as the two main regulatory systems of homeostasis."
+    },
+    links: [
+      { file: "homeostasis_movimiento.html", label: { ca: "Homeòstasi i moviment", es: "Homeostasis y movimiento", en: "Homeostasis and movement" } },
+      { file: "estabilidad_control.html", label: { ca: "Estabilitat i control", es: "Estabilidad y control", en: "Stability and control" } }
+    ]
+  },
+  {
+    num: 12,
+    title: {
+      ca: "Integració anatòmica",
+      es: "Integración anatómica",
+      en: "Anatomical integration"
+    },
+    desc: {
+      ca: "Esquema anatòmic del cos humà mostrant la disposició dels principals sistemes orgànics.",
+      es: "Esquema anatómico del cuerpo humano mostrando la disposición de los principales sistemas orgánicos.",
+      en: "Anatomical diagram of the human body showing the arrangement of the main organ systems."
+    },
+    links: [
+      { file: "trabajo_musculos.html", label: { ca: "Estructures del sistema musculoesquelètic", es: "Estructuras del sistema musculoesquelético", en: "Musculoskeletal system structures" } }
+    ]
+  },
+  {
+    num: 13,
+    title: {
+      ca: "Il·lustració d'equilibri",
+      es: "Ilustración de equilibrio",
+      en: "Balance illustration"
+    },
+    desc: {
+      ca: "Gràfic d'una balança equilibrada representant l'estat d'estabilitat biològica.",
+      es: "Gráfico de una balanza equilibrada representando el estado de estabilidad biológica.",
+      en: "Graphic of a balanced scale representing the state of biological stability."
+    },
+    links: [
+      { file: "homeostasis_movimiento.html", label: { ca: "Homeòstasi i moviment", es: "Homeostasis y movimiento", en: "Homeostasis and movement" } }
+    ]
+  },
+  {
+    num: 14,
+    title: {
+      ca: "Homeòstasi en el moviment",
+      es: "Homeostasis en el movimiento",
+      en: "Homeostasis in movement"
+    },
+    desc: {
+      ca: "Explica la ruptura de l'equilibri durant l'exercici sota la premissa «L'esforç el trenca; el repòs el restaura».",
+      es: "Explica la ruptura del equilibrio durante el ejercicio bajo la premisa «El esfuerzo lo rompe; el reposo lo restaura».",
+      en: "Explains the breaking of balance during exercise under the premise “Effort breaks it; rest restores it”."
+    },
+    links: [
+      { file: "homeostasis_movimiento.html", label: { ca: "Homeòstasi i moviment", es: "Homeostasis y movimiento", en: "Homeostasis and movement" } },
+      { file: "t3_actividad006.html", label: { ca: "Anàlisi biomecànica del relevé", es: "Análisis biomecánico del relevé", en: "Biomechanical analysis of relevé" } }
+    ]
+  },
+  {
+    num: 15,
+    title: {
+      ca: "Fotografia de ballarina en flexió",
+      es: "Fotografía de bailarina en flexión",
+      en: "Photograph of a dancer in flexion"
+    },
+    desc: {
+      ca: "Imatge artística de l'esquena d'una ballarina il·lustrant la postura corporal durant l'esforç.",
+      es: "Imagen artística de la espalda de una bailarina ilustrando la postura corporal durante el esfuerzo.",
+      en: "Artistic image of a dancer's back illustrating body posture during effort."
+    },
+    links: []
+  },
+  {
+    num: 16,
+    title: {
+      ca: "Fotografia de ballarí en salt",
+      es: "Fotografía de bailarín en salto",
+      en: "Photograph of a dancer jumping"
+    },
+    desc: {
+      ca: "Imatge artística d'un ballarí en moviment amb tela per exemplificar el dinamisme de l'esforç físic.",
+      es: "Imagen artística de un bailarín en movimiento con tela para ejemplificar el dinamismo del esfuerzo físico.",
+      en: "Artistic image of a dancer in movement with fabric to exemplify the dynamism of physical effort."
+    },
+    links: []
+  },
+  {
+    num: 17,
+    title: {
+      ca: "Il·lustració de desequilibri",
+      es: "Ilustración de desequilibrio",
+      en: "Imbalance illustration"
+    },
+    desc: {
+      ca: "Dibuix d'una balança inclinada que representa l'alteració de les variables durant l'exercici.",
+      es: "Dibujo de una balanza inclinada que representa la alteración de las variables durante el ejercicio.",
+      en: "Drawing of a tilted scale representing the alteration of variables during exercise."
+    },
+    links: [
+      { file: "homeostasis_movimiento.html", label: { ca: "Homeòstasi i moviment", es: "Homeostasis y movimiento", en: "Homeostasis and movement" } }
+    ]
+  },
+  {
+    num: 18,
+    title: {
+      ca: "Il·lustració de restauració",
+      es: "Ilustración de restauración",
+      en: "Restoration illustration"
+    },
+    desc: {
+      ca: "Dibuix d'una balança en equilibri que simbolitza la tornada a l'homeòstasi en repòs.",
+      es: "Dibujo de una balanza en equilibrio que simboliza la vuelta a la homeostasis en reposo.",
+      en: "Drawing of a balanced scale symbolising the return to homeostasis at rest."
+    },
+    links: [
+      { file: "homeostasis_movimiento.html", label: { ca: "Homeòstasi i moviment", es: "Homeostasis y movimiento", en: "Homeostasis and movement" } }
+    ]
+  },
+  {
+    num: 19,
+    title: {
+      ca: "Mecanismes d'homeòstasi",
+      es: "Mecanismos de homeostasis",
+      en: "Homeostasis mechanisms"
+    },
+    desc: {
+      ca: "Descriu la retroalimentació negativa com el mecanisme predominant (Variable → Sensor → Centre d'integració → Efector).",
+      es: "Describe la retroalimentación negativa como el mecanismo predominante (Variable → Sensor → Centro de integración → Efector).",
+      en: "Describes negative feedback as the predominant mechanism (Variable → Sensor → Integration centre → Effector)."
+    },
+    links: [
+      { file: "homeostasis_movimiento.html", label: { ca: "Homeòstasi i moviment", es: "Homeostasis y movimiento", en: "Homeostasis and movement" } },
+      { file: "estabilidad_control.html", label: { ca: "Estabilitat i control", es: "Estabilidad y control", en: "Stability and control" } }
+    ]
+  },
+  {
+    num: 20,
+    title: {
+      ca: "Il·lustració de coagulació sanguínia",
+      es: "Ilustración de coagulación sanguínea",
+      en: "Blood coagulation illustration"
+    },
+    desc: {
+      ca: "Imatge que mostra la formació d'un coàgul en un vas sanguini com a exemple de resposta fisiològica.",
+      es: "Imagen que muestra la formación de un coágulo en un vaso sanguíneo como ejemplo de respuesta fisiológica.",
+      en: "Image showing the formation of a clot in a blood vessel as an example of physiological response."
+    },
+    links: [
+      { file: "homeostasis_movimiento.html", label: { ca: "Homeòstasi i moviment", es: "Homeostasis y movimiento", en: "Homeostasis and movement" } }
+    ]
+  },
+  {
+    num: 21,
+    title: {
+      ca: "Esquema de retroalimentació positiva",
+      es: "Esquema de retroalimentación positiva",
+      en: "Positive feedback diagram"
+    },
+    desc: {
+      ca: "Gràfic explicatiu del part (pressió en el coll uterí, senyals nervioses, alliberament d'oxitocina i contraccions).",
+      es: "Gráfico explicativo del parto (presión en el cuello uterino, señales nerviosas, liberación de oxitocina y contracciones).",
+      en: "Explanatory diagram of childbirth (pressure on the cervix, nerve signals, oxytocin release and contractions)."
+    },
+    links: [
+      { file: "homeostasis_movimiento.html", label: { ca: "Homeòstasi i moviment", es: "Homeostasis y movimiento", en: "Homeostasis and movement" } }
+    ]
+  },
+  {
+    num: 22,
+    title: {
+      ca: "Concepte de retroalimentació positiva",
+      es: "Concepto de retroalimentación positiva",
+      en: "Concept of positive feedback"
+    },
+    desc: {
+      ca: "Defineix aquest tipus de bucle com un procés d'amplificació que allunya la variable del punt d'ajust per completar un procés.",
+      es: "Define este tipo de bucle como un proceso de amplificación que aleja la variable del punto de ajuste para completar un proceso.",
+      en: "Defines this type of loop as an amplification process that moves the variable away from the set point to complete a process."
+    },
+    links: [
+      { file: "homeostasis_movimiento.html", label: { ca: "Homeòstasi i moviment", es: "Homeostasis y movimiento", en: "Homeostasis and movement" } }
+    ]
+  },
+  {
+    num: 23,
+    title: {
+      ca: "Anatomia del sistema musculoesquelètic",
+      es: "Anatomía del sistema musculoesquelético",
+      en: "Anatomy of the musculoskeletal system"
+    },
+    desc: {
+      ca: "Diagrama sobre la cama d'una ballarina detallant les funcions d'ossos, articulacions, músculs, tendons i lligaments.",
+      es: "Diagrama sobre la pierna de una bailarina detallando las funciones de Huesos, Articulaciones, Músculos, Tendones y Ligamentos.",
+      en: "Diagram on a dancer's leg detailing the functions of Bones, Joints, Muscles, Tendons and Ligaments."
+    },
+    links: [
+      { file: "trabajo_musculos.html", label: { ca: "Estructures del sistema musculoesquelètic", es: "Estructuras del sistema musculoesquelético", en: "Musculoskeletal system structures" } },
+      { file: "esqueleto_04_tendones.html", label: { ca: "Fisiologia dels tendons", es: "Fisiología de los tendones", en: "Tendon physiology" } }
+    ]
+  },
+  {
+    num: 24,
+    title: {
+      ca: "Tipus de teixit muscular",
+      es: "Tipos de tejido muscular",
+      en: "Types of muscle tissue"
+    },
+    desc: {
+      ca: "Taula comparativa entre Múscul Esquelètic, Múscul Cardíac i Múscul Llis segons ubicació, control nerviós, característiques microscòpiques i funció.",
+      es: "Tabla comparativa entre Músculo Esquelético, Músculo Cardíaco y Músculo Liso según ubicación, control nervioso, características microscópicas y función.",
+      en: "Comparative table between Skeletal Muscle, Cardiac Muscle and Smooth Muscle according to location, nervous control, microscopic characteristics and function."
+    },
+    links: [
+      { file: "contraccion_muscular.html", label: { ca: "Fisiologia de la contracció muscular", es: "Fisiología de la contracción muscular", en: "Muscle contraction physiology" } },
+      { file: "t3_actividad003.html", label: { ca: "Classificador de fibres musculars", es: "Clasificador de fibras musculares", en: "Muscle fibre classifier" } }
+    ]
+  },
+  {
+    num: 25,
+    title: {
+      ca: "Treball muscular en equip",
+      es: "Trabajo muscular en equipo",
+      en: "Muscles working as a team"
+    },
+    desc: {
+      ca: "Explica la coordinació de parells musculars oposats (agonistes i antagonistes) amb l'exemple de la flexió del braç mitjançant bíceps i tríceps.",
+      es: "Explica la coordinación de pares musculares opuestos (agonistas y antagonistas) con el ejemplo de la flexión del brazo mediante bíceps y tríceps.",
+      en: "Explains the coordination of opposite muscle pairs (agonists and antagonists) with the example of arm flexion using biceps and triceps."
+    },
+    links: [
+      { file: "musculos_tr_equipo.html", label: { ca: "Els músculs treballen en equip", es: "Los músculos trabajan en equipo", en: "Muscles work as a team" } },
+      { file: "t3_actividad011.html", label: { ca: "Rols musculars en el moviment", es: "Roles musculares en el movimiento", en: "Muscle roles in movement" } }
+    ]
+  },
+  {
+    num: 26,
+    title: {
+      ca: "Estructura jeràrquica del múscul esquelètic",
+      es: "Estructura jerárquica del músculo esquelético",
+      en: "Hierarchical structure of skeletal muscle"
+    },
+    desc: {
+      ca: "Il·lustració del desglossament des de l'estructura macroscòpica a la microscòpica: Múscul → Fascicle → Fibra muscular → Miofibril·la → Sarcòmer.",
+      es: "Ilustración del desglose desde la estructura macroscópica a la microscópica: Músculo → Fascículo → Fibra muscular → Miofibrilla → Sarcómero.",
+      en: "Illustration of the breakdown from macroscopic to microscopic structure: Muscle → Fascicle → Muscle fibre → Myofibril → Sarcomere."
+    },
+    links: [
+      { file: "actividades_sarcomero.html", label: { ca: "El sarcòmer: teoria i activitats", es: "El sarcómero: teoría y actividades", en: "The sarcomere: theory and activities" } },
+      { file: "contraccion_muscular.html", label: { ca: "Fisiologia de la contracció muscular", es: "Fisiología de la contracción muscular", en: "Muscle contraction physiology" } }
+    ]
+  },
+  {
+    num: 27,
+    title: {
+      ca: "Unitats del teixit muscular",
+      es: "Unidades del tejido muscular",
+      en: "Muscle tissue units"
+    },
+    desc: {
+      ca: "Defineix en detall la Fibra muscular (cèl·lula multinucleada), la Miofibril·la (estructura contràctil) i el Sarcòmer (unitat funcional entre dues línies Z).",
+      es: "Define en detalle la Fibra muscular (célula multinucleada), la Miofibrilla (estructura contráctil) y el Sarcómero (unidad funcional entre dos líneas Z).",
+      en: "Defines in detail the Muscle fibre (multinucleated cell), the Myofibril (contractile structure) and the Sarcomere (functional unit between two Z lines)."
+    },
+    links: [
+      { file: "actividades_sarcomero.html", label: { ca: "El sarcòmer: teoria i activitats", es: "El sarcómero: teoría y actividades", en: "The sarcomere: theory and activities" } },
+      { file: "t3_actividad001.html", label: { ca: "Simulador del sarcòmer", es: "Simulador del sarcómero", en: "Sarcomere simulator" } }
+    ]
+  },
+  {
+    num: 28,
+    title: {
+      ca: "Miofilaments",
+      es: "Miofilamentos",
+      en: "Myofilaments"
+    },
+    desc: {
+      ca: "Descriu els filaments gruixuts de Miosina (proteïna motora) i els filaments prims d'Actina.",
+      es: "Describe los filamentos gruesos de Miosina (proteína motora) y los filamentos delgados de Actina.",
+      en: "Describes the thick Myosin filaments (motor protein) and the thin Actin filaments."
+    },
+    links: [
+      { file: "miosina_actina.html", label: { ca: "Miosina i actina: el duet dinàmic", es: "Miosina y actina: el dúo dinámico", en: "Myosin and actin: the dynamic duo" } },
+      { file: "actividades_sarcomero.html", label: { ca: "El sarcòmer: teoria i activitats", es: "El sarcómero: teoría y actividades", en: "The sarcomere: theory and activities" } }
+    ]
+  },
+  {
+    num: 29,
+    title: {
+      ca: "Organització molecular del sarcòmer",
+      es: "Organización molecular del sarcómero",
+      en: "Molecular organisation of the sarcomere"
+    },
+    desc: {
+      ca: "Il·lustració detallada de l'alineació de proteïnes i assenyala que un múscul com el bíceps braquial conté uns 100.000 sarcòmers.",
+      es: "Ilustración detallada de la alineación de proteínas y señala que un músculo como el bíceps braquial contiene unos 100.000 sarcómeros.",
+      en: "Detailed illustration of protein alignment and notes that a muscle such as the biceps brachii contains about 100,000 sarcomeres."
+    },
+    links: [
+      { file: "actividades_sarcomero.html", label: { ca: "El sarcòmer: teoria i activitats", es: "El sarcómero: teoría y actividades", en: "The sarcomere: theory and activities" } },
+      { file: "t3_actividad002.html", label: { ca: "Relació longitud-tensió del sarcòmer", es: "Relación longitud-tensión del sarcómero", en: "Sarcomere length-tension relationship" } }
+    ]
+  },
+  {
+    num: 30,
+    title: {
+      ca: "Estructura detallada del sarcòmer",
+      es: "Estructura detallada del sarcómero",
+      en: "Detailed structure of the sarcomere"
+    },
+    desc: {
+      ca: "Mostra les regions del sarcòmer: Banda A (miosina), Banda I (actina sola), Línia M i Discs Z.",
+      es: "Muestra las regiones del sarcómero: Banda A (miosina), Banda I (actina sola), Línea M y Discos Z.",
+      en: "Shows the sarcomere regions: A Band (myosin), I Band (actin only), M Line and Z Discs."
+    },
+    links: [
+      { file: "actividades_sarcomero.html", label: { ca: "El sarcòmer: teoria i activitats", es: "El sarcómero: teoría y actividades", en: "The sarcomere: theory and activities" } },
+      { file: "t3_actividad002.html", label: { ca: "Relació longitud-tensió del sarcòmer", es: "Relación longitud-tensión del sarcómero", en: "Sarcomere length-tension relationship" } }
+    ]
+  },
+  {
+    num: 31,
+    title: {
+      ca: "Mecanisme de contracció en el sarcòmer",
+      es: "Mecanismo de contracción en el sarcómero",
+      en: "Contraction mechanism in the sarcomere"
+    },
+    desc: {
+      ca: "Explica com les línies Z s'acosten i la Banda I s'estreny durant l'escurçament muscular.",
+      es: "Explica cómo las líneas Z se acercan y la Banda I se estrecha durante el acortamiento muscular.",
+      en: "Explains how Z lines come closer and the I Band narrows during muscle shortening."
+    },
+    links: [
+      { file: "actividades_sarcomero.html", label: { ca: "El sarcòmer: teoria i activitats", es: "El sarcómero: teoría y actividades", en: "The sarcomere: theory and activities" } },
+      { file: "t3_actividad001.html", label: { ca: "Simulador del sarcòmer", es: "Simulador del sarcómero", en: "Sarcomere simulator" } }
+    ]
+  },
+  {
+    num: 32,
+    title: {
+      ca: "Iniciació de la contracció muscular",
+      es: "Iniciación de la contracción muscular",
+      en: "Initiation of muscle contraction"
+    },
+    desc: {
+      ca: "Mostra l'origen de l'ordre nerviosa en les motoneurones de l'asta anterior de la medul·la espinal i el seu viatge per nervis perifèrics.",
+      es: "Muestra el origen de la orden nerviosa en las motoneuronas del asta anterior de la médula espinal y su viaje por nervios periféricos.",
+      en: "Shows the origin of the nerve command in the motor neurons of the anterior horn of the spinal cord and its journey through peripheral nerves."
+    },
+    links: [
+      { file: "unidad_motora.html", label: { ca: "La unitat motora", es: "La unidad motora", en: "The motor unit" } },
+      { file: "t3_actividad004.html", label: { ca: "Tauler de control de la unitat motora", es: "Tablero de control de la unidad motora", en: "Motor unit control panel" } }
+    ]
+  },
+  {
+    num: 33,
+    title: {
+      ca: "La unitat motora",
+      es: "La unidad motora",
+      en: "The motor unit"
+    },
+    desc: {
+      ca: "Defineix la unitat motora (una motoneurona i les fibres que innerva) diferenciant entre moviments precisos (poques fibres) i de força (moltes fibres).",
+      es: "Define la unidad motora (una motoneurona y las fibras que inerva) diferenciando entre movimientos precisos (pocas fibras) y de fuerza (muchas fibras).",
+      en: "Defines the motor unit (one motor neuron and the fibres it innervates) differentiating between precise movements (few fibres) and strength movements (many fibres)."
+    },
+    links: [
+      { file: "unidad_motora.html", label: { ca: "La unitat motora", es: "La unidad motora", en: "The motor unit" } },
+      { file: "t3_actividad004.html", label: { ca: "Tauler de control de la unitat motora", es: "Tablero de control de la unidad motora", en: "Motor unit control panel" } }
+    ]
+  },
+  {
+    num: 34,
+    title: {
+      ca: "Mecanisme de lliscament",
+      es: "Mecanismo de deslizamiento",
+      en: "Sliding mechanism"
+    },
+    desc: {
+      ca: "Esquema gràfic comparatiu entre l'estat de repòs i l'estat contret del sarcòmer sense alteració de la longitud dels filaments.",
+      es: "Esquema gráfico comparativo entre el estado de reposo y el estado contraído del sarcómero sin alteración de la longitud de los filamentos.",
+      en: "Comparative graphic scheme between the resting and contracted state of the sarcomere without alteration of filament length."
+    },
+    links: [
+      { file: "miosina_actina.html", label: { ca: "Miosina i actina: el duet dinàmic", es: "Miosina y actina: el dúo dinámico", en: "Myosin and actin: the dynamic duo" } },
+      { file: "actividades_sarcomero.html", label: { ca: "El sarcòmer: teoria i activitats", es: "El sarcómero: teoría y actividades", en: "The sarcomere: theory and activities" } }
+    ]
+  },
+  {
+    num: 35,
+    title: {
+      ca: "La unió neuromuscular",
+      es: "La unión neuromuscular",
+      en: "The neuromuscular junction"
+    },
+    desc: {
+      ca: "Descriu en 4 passos l'arribada de l'impuls elèctric, l'alliberament d'Acetilcolina (ACh), l'activació de la membrana muscular i la generació del potencial d'acció.",
+      es: "Describe en 4 pasos la llegada del impulso eléctrico, la liberación de Acetilcolina (ACh), la activación de la membrana muscular y la generación del potencial de acción.",
+      en: "Describes in 4 steps the arrival of the electrical impulse, the release of Acetylcholine (ACh), the activation of the muscle membrane and the generation of the action potential."
+    },
+    links: [
+      { file: "contraccion_muscular.html", label: { ca: "Fisiologia de la contracció muscular", es: "Fisiología de la contracción muscular", en: "Muscle contraction physiology" } },
+      { file: "calcio_atp.html", label: { ca: "El paper del calci i l'ATP", es: "El papel del calcio y el ATP", en: "The role of calcium and ATP" } }
+    ]
+  },
+  {
+    num: 36,
+    title: {
+      ca: "Acoblament excitació-contracció",
+      es: "Acoplamiento excitación-contracción",
+      en: "Excitation-contraction coupling"
+    },
+    desc: {
+      ca: "Explica la propagació del potencial pels túbuls T i l'alliberament massiu de calci (Ca²⁺) a l'interior de la fibra.",
+      es: "Explica la propagación del potencial por los túbulos T y la liberación masiva de calcio (Ca²⁺) al interior de la fibra.",
+      en: "Explains the propagation of the potential through T-tubules and the massive release of calcium (Ca²⁺) into the fibre."
+    },
+    links: [
+      { file: "calcio_atp.html", label: { ca: "El paper del calci i l'ATP", es: "El papel del calcio y el ATP", en: "The role of calcium and ATP" } },
+      { file: "calcio_atp1.html", label: { ca: "El paper del calci i l'ATP — versió B", es: "El papel del calcio y el ATP — versión B", en: "The role of calcium and ATP — version B" } }
+    ]
+  },
+  {
+    num: 37,
+    title: {
+      ca: "El paper del calci",
+      es: "El papel del calcio",
+      en: "The role of calcium"
+    },
+    desc: {
+      ca: "Detalla com el calci s'uneix a la troponina, desplaçant la tropomiosina per descobrir els llocs d'unió a l'actina.",
+      es: "Detalla cómo el calcio se une a la troponina, desplazando la tropomiosina para descubrir los sitios de unión en la actina.",
+      en: "Details how calcium binds to troponin, displacing tropomyosin to expose the binding sites on actin."
+    },
+    links: [
+      { file: "calcio_atp.html", label: { ca: "El paper del calci i l'ATP", es: "El papel del calcio y el ATP", en: "The role of calcium and ATP" } },
+      { file: "calcio_atp1.html", label: { ca: "El paper del calci i l'ATP — versió B", es: "El papel del calcio y el ATP — versión B", en: "The role of calcium and ATP — version B" } }
+    ]
+  },
+  {
+    num: 38,
+    title: {
+      ca: "Funció de l'ATP",
+      es: "Función del ATP",
+      en: "Function of ATP"
+    },
+    desc: {
+      ca: "Mostra com la molècula d'ATP manté inicialment bloquejada la miosina i com la seva hidròlisi en ADP + P permet l'activació.",
+      es: "Muestra cómo la molécula de ATP mantiene inicialmente bloqueada a la miosina y cómo su hidrólisis en ADP + P permite la activación.",
+      en: "Shows how the ATP molecule initially keeps myosin blocked and how its hydrolysis into ADP + P allows activation."
+    },
+    links: [
+      { file: "calcio_atp.html", label: { ca: "El paper del calci i l'ATP", es: "El papel del calcio y el ATP", en: "The role of calcium and ATP" } },
+      { file: "calcio_atp1.html", label: { ca: "El paper del calci i l'ATP — versió B", es: "El papel del calcio y el ATP — versión B", en: "The role of calcium and ATP — version B" } }
+    ]
+  },
+  {
+    num: 39,
+    title: {
+      ca: "El cicle de la miosina",
+      es: "El ciclo de la miosina",
+      en: "The myosin cycle"
+    },
+    desc: {
+      ca: "Explica les 4 fases del cicle: 1. Unió, 2. Arrossegament, 3. Escurçament del sarcòmer i 4. Despreniment mitjançant una nova molècula d'ATP.",
+      es: "Explica las 4 fases del ciclo: 1. Unión, 2. Arrastre, 3. Acortamiento del sarcómero y 4. Desprendimiento mediante nueva molécula de ATP.",
+      en: "Explains the 4 phases of the cycle: 1. Binding, 2. Power stroke, 3. Sarcomere shortening and 4. Detachment via a new ATP molecule."
+    },
+    links: [
+      { file: "miosina_actina.html", label: { ca: "Miosina i actina: el duet dinàmic", es: "Miosina y actina: el dúo dinámico", en: "Myosin and actin: the dynamic duo" } },
+      { file: "actividades_sarcomero.html", label: { ca: "El sarcòmer: teoria i activitats", es: "El sarcómero: teoría y actividades", en: "The sarcomere: theory and activities" } }
+    ]
+  },
+  {
+    num: 40,
+    title: {
+      ca: "Resum i avaluació de la contracció",
+      es: "Resumen y evaluación de la contracción",
+      en: "Summary and assessment of contraction"
+    },
+    desc: {
+      ca: "Presenta la seqüència de la contracció en 6 passos i preguntes tipus test sobre la falta de calci i el lliscament de filaments.",
+      es: "Presenta la secuencia de la contracción en 6 pasos y preguntas tipo test sobre la falta de calcio y el deslizamiento de filamentos.",
+      en: "Presents the contraction sequence in 6 steps and multiple-choice questions about calcium deficiency and filament sliding."
+    },
+    links: [
+      { file: "contraccion_muscular.html", label: { ca: "Fisiologia de la contracció muscular", es: "Fisiología de la contracción muscular", en: "Muscle contraction physiology" } },
+      { file: "esqueleto_test_final.html", label: { ca: "Test final de fisiologia aplicada", es: "Test final de fisiología aplicada", en: "Final applied physiology test" } }
+    ]
+  },
+  {
+    num: 41,
+    title: {
+      ca: "Fisiopatologia: Rigor Mortis",
+      es: "Fisiopatología: Rigor Mortis",
+      en: "Pathophysiology: Rigor Mortis"
+    },
+    desc: {
+      ca: "Il·lustració i explicació de l'enduriment químic cadavèric a causa de la falta d'ATP post-mortem.",
+      es: "Ilustración y explicación del endurecimiento químico cadavérico debido a la falta de ATP post-mórtem.",
+      en: "Illustration and explanation of cadaveric chemical stiffening due to lack of post-mortem ATP."
+    },
+    links: [
+      { file: "calcio_atp.html", label: { ca: "El paper del calci i l'ATP", es: "El papel del calcio y el ATP", en: "The role of calcium and ATP" } }
+    ]
+  },
+  {
+    num: 42,
+    title: {
+      ca: "Fisiopatologia: Rampa muscular",
+      es: "Fisiopatología: Rampa muscular",
+      en: "Pathophysiology: Muscle cramp"
+    },
+    desc: {
+      ca: "Infografia sobre els calambres/rampes musculars (hiperexcitabilitat de la motoneurona α) i factors desencadenants (deshidratació, fatiga, pèrdua d'electròlits).",
+      es: "Infografía sobre los calambres/rampas musculares (hiperexcitabilidad de la motoneurona α) y factores desencadenantes (deshidratación, fatiga, pérdida de electrolitos).",
+      en: "Infographic on muscle cramps (α motor neuron hyperexcitability) and triggering factors (dehydration, fatigue, electrolyte loss)."
+    },
+    links: [
+      { file: "t3_bloque02.html", label: { ca: "Nutrició, hidratació i prevenció", es: "Nutrición, hidratación y prevención", en: "Nutrition, hydration and prevention" } },
+      { file: "t3_detectiu.html", label: { ca: "Detectiu biomecànic", es: "Detective biomecánico", en: "Biomechanical detective" } }
+    ]
+  },
+  {
+    num: 43,
+    title: {
+      ca: "Tipus de contracció muscular",
+      es: "Tipos de contracción muscular",
+      en: "Types of muscle contraction"
+    },
+    desc: {
+      ca: "Presentació conceptual de la contracció Concèntrica (escurçament), Excèntrica (allargament) i Isomètrica (longitud constant).",
+      es: "Presentación conceptual de la contracción Concéntrica (acortamiento), Excéntrica (alargamiento) e Isométrica (longitud constante).",
+      en: "Conceptual presentation of Concentric (shortening), Eccentric (lengthening) and Isometric (constant length) contraction."
+    },
+    links: [
+      { file: "contraccion_muscular.html", label: { ca: "Fisiologia de la contracció muscular", es: "Fisiología de la contracción muscular", en: "Muscle contraction physiology" } },
+      { file: "estabilidad_control_1.html", label: { ca: "Coactivació muscular en dansa (A)", es: "Coactivación muscular en danza (A)", en: "Muscle coactivation in dance (A)" } }
+    ]
+  },
+  {
+    num: 44,
+    title: {
+      ca: "Contracció excèntrica en dansa",
+      es: "Contracción excéntrica en danza",
+      en: "Eccentric contraction in dance"
+    },
+    desc: {
+      ca: "Exemplifica la funció d'amortiment en moviments com el descens a demi-plié o la recepció profunda després d'un salt.",
+      es: "Ejemplifica la función de amortiguación en movimientos como el descenso a demi-plié o la recepción profunda tras un salto.",
+      en: "Exemplifies the cushioning function in movements such as descending into demi-plié or deep landing after a jump."
+    },
+    links: [
+      { file: "estabilidad_control_1.html", label: { ca: "Coactivació muscular en dansa (A)", es: "Coactivación muscular en danza (A)", en: "Muscle coactivation in dance (A)" } },
+      { file: "t3_actividad006.html", label: { ca: "Anàlisi biomecànica del relevé", es: "Análisis biomecánico del relevé", en: "Biomechanical analysis of relevé" } }
+    ]
+  },
+  {
+    num: 45,
+    title: {
+      ca: "Contracció isomètrica en dansa",
+      es: "Contracción isométrica en danza",
+      en: "Isometric contraction in dance"
+    },
+    desc: {
+      ca: "Il·lustra el manteniment de postures i suspensió sense moviment articular, com sostenir un arabesque prolongat o fixar el core en planxa.",
+      es: "Ilustra el mantenimiento de posturas y suspensión sin movimiento articular, como sostener un arabesque prolongado o fijar el core en plancha.",
+      en: "Illustrates the maintenance of postures and suspension without joint movement, such as holding a prolonged arabesque or fixing the core in plank."
+    },
+    links: [
+      { file: "estabilidad_control.html", label: { ca: "Estabilitat i control", es: "Estabilidad y control", en: "Stability and control" } },
+      { file: "estabilidad_control_2.html", label: { ca: "Fisiologia de la coactivació muscular", es: "Fisiología de la coactivación muscular", en: "Physiology of muscle coactivation" } }
+    ]
+  },
+  {
+    num: 46,
+    title: {
+      ca: "Anàlisi de moviment: Grand Jeté",
+      es: "Análisis de movimiento: Grand Jeté",
+      en: "Movement analysis: Grand Jeté"
+    },
+    desc: {
+      ca: "Descompon les tres fases d'un grand jeté: 1. Impuls concèntric, 2. Suspensió isomètrica en l'aire i 3. Recepció excèntrica.",
+      es: "Descompone las tres fases de un grand jeté: 1. Impulso concéntrico, 2. Suspensión isométrica en el aire y 3. Recepción excéntrica.",
+      en: "Breaks down the three phases of a grand jeté: 1. Concentric impulse, 2. Isometric suspension in the air and 3. Eccentric landing."
+    },
+    links: [
+      { file: "t3_actividad006.html", label: { ca: "Anàlisi biomecànica del relevé", es: "Análisis biomecánico del relevé", en: "Biomechanical analysis of relevé" } },
+      { file: "estabilidad_control_1.html", label: { ca: "Coactivació muscular en dansa (A)", es: "Coactivación muscular en danza (A)", en: "Muscle coactivation in dance (A)" } }
+    ]
+  },
+  {
+    num: 47,
+    title: {
+      ca: "Reflexió final — Darrere de cada gest",
+      es: "Reflexión final — Detrás de cada gesto",
+      en: "Final reflection — Behind every gesture"
+    },
+    desc: {
+      ca: "Missatge conceptual sobre la «coreografia invisible» i coordinada que executen els músculs en cada pas de dansa.",
+      es: "Mensaje conceptual sobre la «coreografía invisible» y coordinada que ejecutan los músculos en cada paso de danza.",
+      en: "Conceptual message about the “invisible choreography” coordinated by muscles in every dance step."
+    },
+    links: [
+      { file: "metaforas_8.html", label: { ca: "6 metàfores de dansa", es: "6 metáforas de danza", en: "6 dance metaphors" } }
+    ]
+  },
+  {
+    num: 48,
+    title: {
+      ca: "Taller pràctic — Fisiologia en moviment",
+      es: "Taller práctico — Fisiología en movimiento",
+      en: "Practical workshop — Physiology in movement"
+    },
+    desc: {
+      ca: "Proposta d'activitat grupal per analitzar una seqüència de dansa identificant els grups musculars i tipus de contraccions en 4 fases.",
+      es: "Propuesta de actividad grupal para analizar una secuencia de danza identificando los grupos musculares y tipos de contracciones en 4 fases.",
+      en: "Group activity proposal to analyse a dance sequence identifying muscle groups and contraction types in 4 phases."
+    },
+    links: [
+      { file: "t3_actividad011.html", label: { ca: "Rols musculars en el moviment", es: "Roles musculares en el movimiento", en: "Muscle roles in movement" } },
+      { file: "casos_practicos02_A.html", label: { ca: "Casos pràctics · Sistema musculoesquelètic (A)", es: "Casos prácticos · Sistema musculoesquelético (A)", en: "Practical cases · Musculoskeletal system (A)" } }
+    ]
+  }
+];
+
+/* ============================================================
+   TRADUCCIONS DE LA INTERFÍCIE
+   ============================================================ */
+const I18N = {
+  ca: {
+    searchPlaceholder: "Cercar diapositives, conceptes o arxius HTML…",
+    stats: (total, visible) => `${total} diapositives · ${visible} filtrades`,
+    noResults: "No s'han trobat diapositives que coincideixin amb la cerca.",
+    openLink: "Obrir en pestanya nova",
+    noHtml: "Sense HTML associat",
+    sessionNote: SESSION.note.ca,
+    mainTitle: SESSION.title.ca,
+    subtitle: SESSION.subtitle.ca,
+    block: SESSION.block.ca,
+    footer: "Índex generat per a la Sessió 2"
+  },
+  es: {
+    searchPlaceholder: "Buscar diapositivas, conceptos o archivos HTML…",
+    stats: (total, visible) => `${total} diapositivas · ${visible} filtradas`,
+    noResults: "No se han encontrado diapositivas que coincidan con la búsqueda.",
+    openLink: "Abrir en pestaña nueva",
+    noHtml: "Sin HTML asociado",
+    sessionNote: SESSION.note.es,
+    mainTitle: SESSION.title.es,
+    subtitle: SESSION.subtitle.es,
+    block: SESSION.block.es,
+    footer: "Índice generado para la Sesión 2"
+  },
+  en: {
+    searchPlaceholder: "Search slides, concepts or HTML files…",
+    stats: (total, visible) => `${total} slides · ${visible} filtered`,
+    noResults: "No slides matching your search were found.",
+    openLink: "Open in new tab",
+    noHtml: "No associated HTML",
+    sessionNote: SESSION.note.en,
+    mainTitle: SESSION.title.en,
+    subtitle: SESSION.subtitle.en,
+    block: SESSION.block.en,
+    footer: "Index generated for Session 2"
+  }
+};
+
+/* ============================================================
+   ESTAT
+   ============================================================ */
+let currentLang = "ca";
+let currentQuery = "";
+
+/* ============================================================
+   RENDER
+   ============================================================ */
+function renderSlides() {
+  const container = document.getElementById("slidesContainer");
+  const noResults = document.getElementById("noResults");
+  const stats = document.getElementById("stats");
+  const t = I18N[currentLang];
+
+  const query = currentQuery.trim().toLowerCase();
+  const filtered = SLIDES.filter(slide => {
+    if (!query) return true;
+    const haystack = [
+      slide.num,
+      slide.title.ca, slide.title.es, slide.title.en,
+      slide.desc.ca, slide.desc.es, slide.desc.en,
+      ...slide.links.map(l => l.file + " " + l.label.ca + " " + l.label.es + " " + l.label.en)
+    ].join(" ").toLowerCase();
+    return haystack.includes(query);
+  });
+
+  container.innerHTML = "";
+
+  if (filtered.length === 0) {
+    noResults.style.display = "block";
+    stats.textContent = t.stats(SLIDES.length, 0);
+    return;
+  }
+  noResults.style.display = "none";
+  stats.textContent = t.stats(SLIDES.length, filtered.length);
+
+  filtered.forEach(slide => {
+    const card = document.createElement("article");
+    card.className = "slide-card";
+
+    const linksHtml = slide.links.length > 0
+      ? slide.links.map(link => {
+          const url = BASE_URL + link.file;
+          return `
+            <a class="link-chip" href="${url}" target="_blank" rel="noopener noreferrer" title="${t.openLink}: ${url}">
+              <span class="icon">📄</span>
+              <span>${link.label[currentLang] || link.label.ca}</span>
+            </a>
+          `;
+        }).join("")
+      : `<span class="no-html">⊘ ${t.noHtml}</span>`;
+
+    card.innerHTML = `
+      <div class="slide-head">
+        <span class="slide-num">D${slide.num}</span>
+        <h2 class="slide-title">${slide.title[currentLang] || slide.title.ca}</h2>
+      </div>
+      <p class="slide-desc">${slide.desc[currentLang] || slide.desc.ca}</p>
+      <div class="links">${linksHtml}</div>
+    `;
+
+    container.appendChild(card);
+  });
+}
+
+/* ============================================================
+   CANVI D'IDIOMA
+   ============================================================ */
+function setLanguage(lang) {
+  currentLang = lang;
+  const t = I18N[lang];
+
+  document.documentElement.lang = lang;
+  document.getElementById("t-main-title").textContent = t.mainTitle;
+  document.getElementById("t-subtitle").textContent = t.subtitle;
+  document.getElementById("t-block").textContent = t.block;
+  document.getElementById("sessionNote").innerHTML = t.sessionNote;
+  document.getElementById("searchInput").placeholder = t.searchPlaceholder;
+  document.getElementById("noResults").textContent = t.noResults;
+
+  document.querySelectorAll(".lang-switch button").forEach(btn => {
+    btn.classList.toggle("active", btn.dataset.lang === lang);
+  });
+
+  renderSlides();
+}
+
+/* ============================================================
+   ESDEVENIMENTS
+   ============================================================ */
+document.querySelectorAll(".lang-switch button").forEach(btn => {
+  btn.addEventListener("click", () => setLanguage(btn.dataset.lang));
+});
+
+document.getElementById("searchInput").addEventListener("input", (e) => {
+  currentQuery = e.target.value;
+  renderSlides();
+});
+
+/* Inicial */
+setLanguage("ca");
+</script>
+
+</body>
+</html>

@@ -1,0 +1,1032 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Estructuras del Sistema Musculoesquelético en la Danza</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, sans-serif; }
+  body {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    padding: 20px;
+  }
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    background: #fff;
+    border-radius: 20px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    overflow: hidden;
+  }
+  header {
+    background: linear-gradient(90deg, #1e3c72, #2a5298);
+    color: white;
+    padding: 40px;
+    text-align: center;
+  }
+  header h1 { font-size: 2.3em; margin-bottom: 10px; }
+  header p { opacity: 0.9; font-size: 1.15em; }
+  
+  .nav-tabs {
+    display: flex;
+    background: #f8f9fa;
+    flex-wrap: wrap;
+    border-bottom: 3px solid #dee2e6;
+  }
+  .nav-tabs button {
+    flex: 1;
+    min-width: 140px;
+    padding: 15px 10px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 0.9em;
+    font-weight: 600;
+    color: #666;
+    transition: all 0.3s;
+    border-bottom: 4px solid transparent;
+  }
+  .nav-tabs button:hover { background: #e9ecef; color: #2a5298; }
+  .nav-tabs button.active {
+    color: #2a5298;
+    border-bottom-color: #2a5298;
+    background: white;
+  }
+  
+  .slide { display: none; padding: 30px; min-height: 600px; }
+  .slide.active { display: block; animation: fadeIn 0.5s; }
+  @keyframes fadeIn { from {opacity:0; transform:translateY(20px);} to {opacity:1; transform:translateY(0);} }
+  
+  .slide h2 {
+    color: #1e3c72;
+    margin-bottom: 20px;
+    font-size: 1.8em;
+    border-bottom: 3px solid #2a5298;
+    padding-bottom: 10px;
+  }
+  
+  .structure-card {
+    background: white;
+    border: 3px solid #2a5298;
+    border-radius: 15px;
+    padding: 30px;
+    margin: 25px 0;
+    box-shadow: 0 5px 20px rgba(42,82,152,0.15);
+  }
+  
+  .structure-card h3 {
+    color: #2a5298;
+    font-size: 1.6em;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  
+  .info-section {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 10px;
+    margin: 15px 0;
+    border-left: 5px solid #2a5298;
+  }
+  
+  .info-section h4 {
+    color: #1e3c72;
+    margin-bottom: 12px;
+    font-size: 1.15em;
+  }
+  
+  .info-section p, .info-section li {
+    line-height: 1.7;
+    color: #333;
+    margin-bottom: 8px;
+  }
+  
+  .info-section ul { margin-left: 25px; }
+  
+  .tissue-badge {
+    display: inline-block;
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-weight: 700;
+    font-size: 0.9em;
+    margin: 5px;
+  }
+  
+  .tissue-muscular { background: #ff6b6b; color: white; }
+  .tissue-connective { background: #4ecdc4; color: white; }
+  .tissue-osseous { background: #95a5a6; color: white; }
+  
+  .dance-box {
+    background: linear-gradient(135deg, #fff5e6 0%, #ffe8cc 100%);
+    padding: 20px;
+    border-radius: 10px;
+    margin: 15px 0;
+    border: 2px dashed #f39c12;
+  }
+  
+  .dance-box h4 {
+    color: #e67e22;
+    margin-bottom: 12px;
+    font-size: 1.2em;
+  }
+  
+  .gender-diff {
+    background: linear-gradient(135deg, #ffe6e6 0%, #ffcccc 100%);
+    padding: 18px;
+    border-radius: 10px;
+    margin: 15px 0;
+    border-left: 5px solid #e74c3c;
+  }
+  
+  .gender-diff h4 {
+    color: #c0392b;
+    margin-bottom: 10px;
+  }
+  
+  .practical-activity {
+    background: linear-gradient(135deg, #e8f8f5 0%, #d5f5e3 100%);
+    padding: 22px;
+    border-radius: 15px;
+    margin: 20px 0;
+    border: 2px solid #1abc9c;
+  }
+  
+  .practical-activity h4 {
+    color: #16a085;
+    font-size: 1.2em;
+    margin-bottom: 12px;
+  }
+  
+  .activity-steps { margin-left: 25px; line-height: 1.9; }
+  .activity-steps li { margin-bottom: 8px; }
+  
+  .anatomy-diagram {
+    background: white;
+    border: 2px solid #dee2e6;
+    border-radius: 10px;
+    padding: 20px;
+    margin: 15px 0;
+    text-align: center;
+  }
+  
+  .anatomy-diagram svg { max-width: 100%; height: auto; }
+  
+  .comparison-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    margin: 20px 0;
+  }
+  
+  .comparison-item {
+    background: white;
+    border: 2px solid #dee2e6;
+    border-radius: 10px;
+    padding: 20px;
+  }
+  
+  .comparison-item h5 {
+    color: #2a5298;
+    margin-bottom: 10px;
+    font-size: 1.1em;
+  }
+  
+  .btn {
+    background: linear-gradient(90deg, #2a5298, #1e3c72);
+    color: white;
+    border: none;
+    padding: 14px 35px;
+    border-radius: 30px;
+    font-size: 1.05em;
+    font-weight: 600;
+    cursor: pointer;
+    margin: 10px 5px;
+    transition: all 0.3s;
+    box-shadow: 0 4px 15px rgba(42,82,152,0.3);
+  }
+  
+  .btn:hover { transform: translateY(-3px); box-shadow: 0 6px 20px rgba(42,82,152,0.4); }
+  .btn-secondary { background: #6c757d; }
+  
+  .feedback {
+    margin-top: 20px;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    font-weight: 600;
+    display: none;
+  }
+  
+  .feedback.show { display: block; animation: fadeIn 0.3s; }
+  .feedback.success { background: #d4edda; color: #155724; border: 2px solid #28a745; }
+  .feedback.error { background: #f8d7da; color: #721c24; border: 2px solid #dc3545; }
+  
+  .highlight {
+    background: linear-gradient(120deg, #ffeaa7 0%, #ffeaa7 100%);
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-weight: 600;
+  }
+  
+  .emoji { font-size: 1.3em; margin-right: 8px; }
+  
+  @media (max-width: 768px) {
+    header h1 { font-size: 1.7em; }
+    .slide { padding: 20px; }
+    .structure-card { padding: 20px; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <h1>🦴 Estructuras del Sistema Musculoesquelético</h1>
+    <p>Fisiología y Aplicación en la Danza</p>
+  </header>
+
+  <div class="nav-tabs">
+    <button class="active" onclick="showSlide(0, this)">📚 Introducción</button>
+    <button onclick="showSlide(1, this)">💪 Músculo</button>
+    <button onclick="showSlide(2, this)">🔗 Tendón</button>
+    <button onclick="showSlide(3, this)">🦴 Huesos</button>
+    <button onclick="showSlide(4, this)">🔄 Articulación</button>
+    <button onclick="showSlide(5, this)">📎 Ligamento</button>
+    <button onclick="showSlide(6, this)">📊 Comparativa</button>
+    <button onclick="showSlide(7, this)">🎯 Quiz</button>
+  </div>
+
+  <!-- SLIDE 1: INTRODUCCIÓN -->
+  <div class="slide active">
+    <h2>🎭 Introducción: El Sistema de Movimiento</h2>
+    
+    <div class="info-section">
+      <h4>🎯 Objetivo de aprendizaje</h4>
+      <p>Comprender la estructura, función y fisiología de los componentes del sistema musculoesquelético, sus diferencias individuales y su aplicación específica en la práctica de la danza.</p>
+    </div>
+    
+    <div class="structure-card">
+      <h3><span class="emoji"></span> Las 5 Estructuras Clave</h3>
+      <div class="comparison-grid">
+        <div class="comparison-item">
+          <h5>💪 MÚSCULO</h5>
+          <p><strong>Función:</strong> Generar movimiento y fuerza</p>
+          <p><strong>Tejido:</strong> Muscular estriado</p>
+        </div>
+        <div class="comparison-item">
+          <h5>🔗 TENDÓN</h5>
+          <p><strong>Función:</strong> Transmitir fuerza al hueso</p>
+          <p><strong>Tejido:</strong> Conectivo denso</p>
+        </div>
+        <div class="comparison-item">
+          <h5>🦴 HUESOS</h5>
+          <p><strong>Función:</strong> Soporte y palanca</p>
+          <p><strong>Tejido:</strong> Óseo (conectivo mineralizado)</p>
+        </div>
+        <div class="comparison-item">
+          <h5>🔄 ARTICULACIÓN</h5>
+          <p><strong>Función:</strong> Permitir movimiento</p>
+          <p><strong>Tejido:</strong> Cartílago + conectivo</p>
+        </div>
+        <div class="comparison-item">
+          <h5>📎 LIGAMENTO</h5>
+          <p><strong>Función:</strong> Estabilizar articulación</p>
+          <p><strong>Tejido:</strong> Conectivo denso</p>
+        </div>
+      </div>
+    </div>
+    
+    <div class="info-section" style="background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%); border-left-color: #1976d2;">
+      <h4>🧩 Interconexión funcional</h4>
+      <p>Estas estructuras NO trabajan de forma aislada. Forman un <strong>sistema integrado</strong>:</p>
+      <ul>
+        <li>El <strong>músculo</strong> genera fuerza</li>
+        <li>El <strong>tendón</strong> transmite esa fuerza</li>
+        <li>El <strong>hueso</strong> actúa como palanca</li>
+        <li>La <strong>articulación</strong> permite el movimiento</li>
+        <li>El <strong>ligamento</strong> estabiliza y limita el rango</li>
+      </ul>
+    </div>
+    
+    <div class="practical-activity">
+      <h4><span class="emoji">🎭</span> Actividad de exploración: "Palpación consciente"</h4>
+      <ol class="activity-steps">
+        <li><strong>Músculo:</strong> Toca tu bíceps y contráelo. Siente cómo se endurece (tejido contráctil).</li>
+        <li><strong>Tendón:</strong> Toca el tendón de Aquiles (sobre el talón). Es duro pero flexible, NO se contrae.</li>
+        <li><strong>Hueso:</strong> Toca la tibia (espinilla). Es rígido, no cede.</li>
+        <li><strong>Ligamento:</strong> Mueve suavemente tu tobillo de lado a lado. Los ligamentos laterales limitan el movimiento.</li>
+        <li><strong>Reflexión:</strong> ¿Percibes la diferencia de textura y función entre cada estructura?</li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- SLIDE 2: MÚSCULO -->
+  <div class="slide">
+    <h2>💪 MÚSCULO ESQUELÉTICO</h2>
+    
+    <div class="structure-card">
+      <h3><span class="emoji">🔬</span> Definición y Tejido</h3>
+      <div class="info-section">
+        <h4>📋 Definición fisiológica</h4>
+        <p>Órgano contráctil formado por <span class="tissue-badge tissue-muscular">Tejido Muscular Estriado</span> que genera <strong>fuerza</strong> y <strong>movimiento</strong> mediante el acortamiento de sus fibras (sarcómeros).</p>
+      </div>
+      
+      <div class="info-section">
+        <h4>🧬 Composición tisular</h4>
+        <ul>
+          <li><strong>Fibras musculares:</strong> Células multinucleadas con miofibrillas (actina + miosina)</li>
+          <li><strong>Tejido conectivo:</strong> Epimisio (externo), perimisio (fascículos), endomisio (fibra individual)</li>
+          <li><strong>Vasos sanguíneos:</strong> Aporte de O₂ y nutrientes</li>
+          <li><strong>Nervios:</strong> Control neural (unión neuromuscular)</li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="anatomy-diagram">
+      <h4>📐 Estructura del músculo esquelético</h4>
+      <svg viewBox="0 0 600 300">
+        <!-- Músculo completo -->
+        <ellipse cx="300" cy="80" rx="150" ry="40" fill="#ff6b6b" opacity="0.8"/>
+        <text x="300" y="85" text-anchor="middle" font-size="14" fill="white" font-weight="bold">MÚSCULO (vientre)</text>
+        
+        <!-- Tendones -->
+        <rect x="250" y="20" width="100" height="30" fill="#95a5a6" opacity="0.7"/>
+        <rect x="250" y="120" width="100" height="30" fill="#95a5a6" opacity="0.7"/>
+        <text x="300" y="40" text-anchor="middle" font-size="10" fill="#2c3e50">Tendón proximal</text>
+        <text x="300" y="140" text-anchor="middle" font-size="10" fill="#2c3e50">Tendón distal</text>
+        
+        <!-- Fascículos -->
+        <rect x="200" y="180" width="200" height="80" fill="#ff6b6b" opacity="0.6" rx="5"/>
+        <text x="300" y="225" text-anchor="middle" font-size="12" fill="white" font-weight="bold">FASCÍCULOS</text>
+        
+        <!-- Fibra -->
+        <rect x="450" y="180" width="120" height="30" fill="#ff6b6b" opacity="0.9"/>
+        <text x="510" y="200" text-anchor="middle" font-size="10" fill="white">FIBRA</text>
+        
+        <!-- Flechas -->
+        <line x1="300" y1="120" x2="300" y2="170" stroke="#2a5298" stroke-width="2" marker-end="url(#arrow)"/>
+        
+        <defs>
+          <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+            <polygon points="0 0, 10 3, 0 6" fill="#2a5298"/>
+          </marker>
+        </defs>
+      </svg>
+    </div>
+    
+    <div class="info-section">
+      <h4>📍 Localización en el cuerpo</h4>
+      <p>Unido a los <strong>huesos</strong> mediante tendones. Distribuido por todo el cuerpo:</p>
+      <ul>
+        <li><strong>Músculos proximales:</strong> Cadera, hombro (grandes, potentes)</li>
+        <li><strong>Músculos distales:</strong> Manos, pies (precisión, control fino)</li>
+        <li><strong>Músculos posturales:</strong> Espalda, core (resistencia, tipo I)</li>
+        <li><strong>Músculos fásicos:</strong> Piernas, brazos (fuerza, tipo II)</li>
+      </ul>
+    </div>
+    
+    <div class="dance-box">
+      <h4><span class="emoji">💃</span> Importancia en la danza</h4>
+      <ul>
+        <li><strong>Generación de movimiento:</strong> Sin contracción muscular no hay danza</li>
+        <li><strong>Control de la técnica:</strong> Precisión en gestos, saltos, giros</li>
+        <li><strong>Expresividad:</strong> Calidad del movimiento (suave, explosivo, sostenido)</li>
+        <li><strong>Estabilidad postural:</strong> Core, espalda para equilibrios</li>
+        <li><strong>Prevención de lesiones:</strong> Músculos fuertes protegen articulaciones</li>
+      </ul>
+    </div>
+    
+    <div class="gender-diff">
+      <h4>⚧ Diferencias entre sexos e individuos</h4>
+      <ul>
+        <li><strong>Hombres:</strong> Mayor masa muscular absoluta (testosterona), más fibras tipo II (fuerza explosiva)</li>
+        <li><strong>Mujeres:</strong> Menor masa muscular pero mayor resistencia a la fatiga, mejor recuperación</li>
+        <li><strong>Individual:</strong> Genética (proporción fibras I/II), entrenamiento previo, edad, nutrición</li>
+        <li><strong>Implicación:</strong> En danza, las mujeres suelen tener mayor flexibilidad pero requieren más trabajo de fuerza</li>
+      </ul>
+    </div>
+    
+    <div class="practical-activity">
+      <h4><span class="emoji">🎭</span> Actividad: "Explorando tipos de fibras"</h4>
+      <ol class="activity-steps">
+        <li><strong>Ejercicio 1 (fibras lentas):</strong> Mantén un plié medio 60 segundos. Siente la resistencia (tipo I, oxidativas).</li>
+        <li><strong>Ejercicio 2 (fibras rápidas):</strong> Haz 10 saltos explosivos máximos. Siente la fatiga rápida (tipo II, glucolíticas).</li>
+        <li><strong>Reflexión:</strong> ¿Cuál te resultó más difícil? Depende de tu proporción genética de fibras.</li>
+        <li><strong>Aplicación:</strong> Un bailarín con más tipo II será mejor en saltos; con más tipo I, en resistencia.</li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- SLIDE 3: TENDÓN -->
+  <div class="slide">
+    <h2>🔗 TENDÓN</h2>
+    
+    <div class="structure-card">
+      <h3><span class="emoji"></span> Definición y Tejido</h3>
+      <div class="info-section">
+        <h4>📋 Definición fisiológica</h4>
+        <p>Estructura de <span class="tissue-badge tissue-connective">Tejido Conectivo Denso Regular</span> que <strong>transmite la fuerza</strong> generada por el músculo al hueso. NO es contráctil.</p>
+      </div>
+      
+      <div class="info-section">
+        <h4>🧬 Composición tisular</h4>
+        <ul>
+          <li><strong>Colágeno tipo I (95%):</strong> Fibras paralelas que resisten tracción</li>
+          <li><strong>Tenocitos:</strong> Células que mantienen la matriz</li>
+          <li><strong>Agua (5-10%):</strong> Permite deslizamiento entre fibras</li>
+          <li><strong>Proteoglicanos:</strong> Lubricación y resistencia a compresión</li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="anatomy-diagram">
+      <h4>📐 Estructura del tendón</h4>
+      <svg viewBox="0 0 600 250">
+        <!-- Tendón -->
+        <rect x="200" y="50" width="200" height="150" fill="#95a5a6" opacity="0.8"/>
+        <text x="300" y="130" text-anchor="middle" font-size="14" fill="white" font-weight="bold">TENDÓN</text>
+        
+        <!-- Fibras de colágeno -->
+        <line x1="220" y1="70" x2="220" y2="180" stroke="#7f8c8d" stroke-width="2"/>
+        <line x1="240" y1="70" x2="240" y2="180" stroke="#7f8c8d" stroke-width="2"/>
+        <line x1="260" y1="70" x2="260" y2="180" stroke="#7f8c8d" stroke-width="2"/>
+        <line x1="280" y1="70" x2="280" y2="180" stroke="#7f8c8d" stroke-width="2"/>
+        <line x1="300" y1="70" x2="300" y2="180" stroke="#7f8c8d" stroke-width="2"/>
+        <line x1="320" y1="70" x2="320" y2="180" stroke="#7f8c8d" stroke-width="2"/>
+        <line x1="340" y1="70" x2="340" y2="180" stroke="#7f8c8d" stroke-width="2"/>
+        <line x1="360" y1="70" x2="360" y2="180" stroke="#7f8c8d" stroke-width="2"/>
+        
+        <!-- Conexión -->
+        <rect x="200" y="20" width="200" height="30" fill="#ff6b6b" opacity="0.6"/>
+        <text x="300" y="40" text-anchor="middle" font-size="10" fill="white">Músculo</text>
+        
+        <rect x="200" y="200" width="200" height="30" fill="#34495e" opacity="0.6"/>
+        <text x="300" y="220" text-anchor="middle" font-size="10" fill="white">Hueso</text>
+        
+        <text x="450" y="100" font-size="11" fill="#2a5298" font-weight="bold">Fibras de</text>
+        <text x="450" y="115" font-size="11" fill="#2a5298" font-weight="bold">colágeno</text>
+        <text x="450" y="130" font-size="11" fill="#2a5298" font-weight="bold">paralelas</text>
+      </svg>
+    </div>
+    
+    <div class="info-section">
+      <h4>📍 Localización en el cuerpo</h4>
+      <p>Conecta <strong>músculo-hueso</strong>. Los más importantes en danza:</p>
+      <ul>
+        <li><strong>Tendón de Aquiles:</strong> Gemelo-sóleo → calcáneo (salto, relevé)</li>
+        <li><strong>Tendón rotuliano:</strong> Cuádriceps → tibia (extensión de rodilla)</li>
+        <li><strong>Tendones de la mano:</strong> Flexores/extensores (gesto fino)</li>
+        <li><strong>Tendón del bíceps:</strong> Hombro/codo (elevación de brazos)</li>
+      </ul>
+    </div>
+    
+    <div class="dance-box">
+      <h4><span class="emoji">💃</span> Importancia en la danza</h4>
+      <ul>
+        <li><strong>Transmisión de fuerza:</strong> Sin tendón, el músculo no mueve el hueso</li>
+        <li><strong>Almacenamiento de energía elástica:</strong> Ciclo estiramiento-acortamiento (saltos)</li>
+        <li><strong>Amortiguación:</strong> Absorbe impactos en aterrizajes</li>
+        <li><strong>Propiocepción:</strong> Contiene receptores que informan de la tensión</li>
+      </ul>
+    </div>
+    
+    <div class="gender-diff">
+      <h4>⚧ Diferencias entre sexos e individuos</h4>
+      <ul>
+        <li><strong>Mujeres:</strong> Tendones más delgados, menor rigidez (más elásticos) → mayor riesgo de lesión pero mejor absorción</li>
+        <li><strong>Hombres:</strong> Tendones más gruesos y rígidos → mejor transmisión de fuerza</li>
+        <li><strong>Individual:</strong> Entrenamiento aumenta rigidez tendinosa (adaptación), edad reduce elasticidad</li>
+        <li><strong>Genética:</strong> Variaciones en colágeno tipo V afectan la elasticidad</li>
+      </ul>
+    </div>
+    
+    <div class="practical-activity">
+      <h4><span class="emoji">🎭</span> Actividad: "El muelle del tendón"</h4>
+      <ol class="activity-steps">
+        <li><strong>Ejercicio:</strong> Salta verticalmente de dos formas:</li>
+        <li>a) Desde parado (sin contramovimiento)</li>
+        <li>b) Con plié rápido previo (contramovimiento)</li>
+        <li><strong>Observa:</strong> El segundo salto es más alto porque el tendón de Aquiles almacenó energía elástica en el pre-estiramiento.</li>
+        <li><strong>Reflexión:</strong> El tendón NO es una cuerda pasiva, es un <strong>muelle</strong> que mejora el rendimiento.</li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- SLIDE 4: HUESOS -->
+  <div class="slide">
+    <h2>🦴 HUESOS / ESQUELETO</h2>
+    
+    <div class="structure-card">
+      <h3><span class="emoji">🔬</span> Definición y Tejido</h3>
+      <div class="info-section">
+        <h4>📋 Definición fisiológica</h4>
+        <p>Órganos rígidos formados por <span class="tissue-badge tissue-osseous">Tejido Óseo</span> (conectivo mineralizado) que proporcionan <strong>soporte estructural</strong>, <strong>protección</strong> y actúan como <strong>palancas</strong> para el movimiento.</p>
+      </div>
+      
+      <div class="info-section">
+        <h4>🧬 Composición tisular</h4>
+        <ul>
+          <li><strong>Matriz orgánica (30%):</strong> Colágeno tipo I (flexibilidad)</li>
+          <li><strong>Matriz inorgánica (70%):</strong> Hidroxiapatita (Ca²⁺ + PO₄³⁻) → rigidez</li>
+          <li><strong>Células:</strong> Osteoblastos (forman), osteoclastos (degradan), osteocitos (mantienen)</li>
+          <li><strong>Médula ósea:</strong> Producción de células sanguíneas</li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="info-section">
+      <h4>📍 Localización en el cuerpo</h4>
+      <p>Forman el <strong>esqueleto</strong> (206 huesos en adulto):</p>
+      <ul>
+        <li><strong>Esqueleto axial:</strong> Cráneo, columna, costillas (protección)</li>
+        <li><strong>Esqueleto apendicular:</strong> Extremidades (movimiento)</li>
+        <li><strong>Huesos largos:</strong> Fémur, tibia, húmero (palancas)</li>
+        <li><strong>Huesos cortos:</strong> Carpianos, tarsianos (estabilidad)</li>
+      </ul>
+    </div>
+    
+    <div class="dance-box">
+      <h4><span class="emoji">💃</span> Importancia en la danza</h4>
+      <ul>
+        <li><strong>Palancas biomecánicas:</strong> Longitud ósea determina ventaja mecánica</li>
+        <li><strong>Soporte de peso:</strong> Tibia/fémur soportan 3-8x el peso en saltos</li>
+        <li><strong>Protección:</strong> Costillas protegen pulmones (respiración en esfuerzo)</li>
+        <li><strong>Producción de sangre:</strong> Médula roja genera eritrocitos (aporte de O₂)</li>
+        <li><strong>Reserva mineral:</strong> Calcio para contracción muscular</li>
+      </ul>
+    </div>
+    
+    <div class="gender-diff">
+      <h4>⚧ Diferencias entre sexos e individuos</h4>
+      <ul>
+        <li><strong>Hombres:</strong> Huesos más densos y gruesos (testosterona), mayor masa ósea</li>
+        <li><strong>Mujeres:</strong> Menor densidad ósea, pelvis más ancha (parto), mayor riesgo de osteoporosis post-menopausia</li>
+        <li><strong>Bailarinas:</strong> Riesgo de <strong>tríada de la mujer atleta</strong> (baja energía, amenorrea, osteoporosis)</li>
+        <li><strong>Individual:</strong> Genética (altura, proporciones), nutrición (Ca²⁺, Vit D), carga mecánica (remodelación ósea)</li>
+        <li><strong>Adaptación:</strong> El hueso se fortalece con el impacto (Ley de Wolff)</li>
+      </ul>
+    </div>
+    
+    <div class="practical-activity">
+      <h4><span class="emoji">🎭</span> Actividad: "Remodelación ósea por carga"</h4>
+      <ol class="activity-steps">
+        <li><strong>Explicación:</strong> El hueso se adapta a la carga mecánica (osteoblastos depositan más calcio donde hay tensión).</li>
+        <li><strong>Ejercicio:</strong> Compara dos grupos:</li>
+        <li>- Grupo A: Salta 20 veces (carga de impacto)</li>
+        <li>- Grupo B: Nada 10 min (sin impacto)</li>
+        <li><strong>Reflexión:</strong> La danza (con saltos) estimula la densidad ósea. La natación NO. Por eso los bailarines tienen huesos más fuertes.</li>
+        <li><strong>Importante:</strong> En adolescentes, la danza previene osteoporosis futura.</li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- SLIDE 5: ARTICULACIÓN -->
+  <div class="slide">
+    <h2>🔄 ARTICULACIÓN</h2>
+    
+    <div class="structure-card">
+      <h3><span class="emoji">🔬</span> Definición y Tejido</h3>
+      <div class="info-section">
+        <h4>📋 Definición fisiológica</h4>
+        <p>Zona de unión entre dos o más huesos que permite <strong>movimiento</strong> (diartrosis) o proporciona <strong>estabilidad</strong> (sinartrosis). Formada por múltiples tejidos.</p>
+      </div>
+      
+      <div class="info-section">
+        <h4>🧬 Composición tisular</h4>
+        <ul>
+          <li><strong>Cartílago articular:</strong> Tejido conectivo avascular (colágeno + proteoglicanos) que amortigua</li>
+          <li><strong>Cápsula articular:</strong> Tejido conectivo fibroso que envuelve</li>
+          <li><strong>Líquido sinovial:</strong> Lubricación (ácido hialurónico)</li>
+          <li><strong>Membrana sinovial:</strong> Produce el líquido</li>
+          <li><strong>Meniscos/discos:</strong> Cartílago fibroso (rodilla, mandíbula)</li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="anatomy-diagram">
+      <h4>📐 Estructura de articulación sinovial</h4>
+      <svg viewBox="0 0 600 300">
+        <!-- Hueso 1 -->
+        <rect x="200" y="30" width="200" height="80" fill="#34495e" opacity="0.8" rx="10"/>
+        <text x="300" y="75" text-anchor="middle" font-size="12" fill="white">Hueso 1</text>
+        
+        <!-- Cartílago -->
+        <rect x="200" y="110" width="200" height="15" fill="#e74c3c" opacity="0.7"/>
+        <text x="300" y="122" text-anchor="middle" font-size="9" fill="white">Cartílago</text>
+        
+        <!-- Espacio sinovial -->
+        <rect x="200" y="125" width="200" height="20" fill="#3498db" opacity="0.3"/>
+        <text x="300" y="140" text-anchor="middle" font-size="9" fill="#2a5298">Líquido sinovial</text>
+        
+        <!-- Cartílago -->
+        <rect x="200" y="145" width="200" height="15" fill="#e74c3c" opacity="0.7"/>
+        
+        <!-- Hueso 2 -->
+        <rect x="200" y="160" width="200" height="80" fill="#34495e" opacity="0.8" rx="10"/>
+        <text x="300" y="205" text-anchor="middle" font-size="12" fill="white">Hueso 2</text>
+        
+        <!-- Cápsula -->
+        <path d="M 180 110 Q 170 145 180 175 L 200 175 L 200 110 Z" fill="#95a5a6" opacity="0.5"/>
+        <path d="M 420 110 Q 430 145 420 175 L 400 175 L 400 110 Z" fill="#95a5a6" opacity="0.5"/>
+        
+        <text x="150" y="150" font-size="10" fill="#7f8c8d">Cápsula</text>
+      </svg>
+    </div>
+    
+    <div class="info-section">
+      <h4>📍 Tipos de articulaciones en danza</h4>
+      <ul>
+        <li><strong>Esfera (enartrosis):</strong> Cadera, hombro (3 ejes, máxima movilidad)</li>
+        <li><strong>Bisagra (ginglimo):</strong> Rodilla, codo (1 eje, flexión-extensión)</li>
+        <li><strong>Pivote:</strong> Atlas-axis (rotación de cabeza)</li>
+        <li><strong>Condílea:</strong> Muñeca (2 ejes)</li>
+      </ul>
+    </div>
+    
+    <div class="dance-box">
+      <h4><span class="emoji">💃</span> Importancia en la danza</h4>
+      <ul>
+        <li><strong>Rango de movimiento (ROM):</strong> Determina la amplitud del gesto (grand battement, arabesque)</li>
+        <li><strong>Estabilidad vs. movilidad:</strong> Cadera necesita movilidad; rodilla, estabilidad</li>
+        <li><strong>Propiocepción:</strong> Receptores articulares informan de posición</li>
+        <li><strong>Amortiguación:</strong> Cartílago absorbe impactos</li>
+      </ul>
+    </div>
+    
+    <div class="gender-diff">
+      <h4> Diferencias entre sexos e individuos</h4>
+      <ul>
+        <li><strong>Mujeres:</strong> Mayor laxitud ligamentosa (estrógenos) → mayor ROM pero más riesgo de luxación</li>
+        <li><strong>Hombres:</strong> Articulaciones más estables, menor ROM</li>
+        <li><strong>Individual:</strong> Genética (hipermovilidad vs. rigidez), edad (pérdida de ROM), entrenamiento</li>
+        <li><strong>Hiperlaxitud:</strong> 10-15% de la población (más común en mujeres) → ventaja en danza pero riesgo de inestabilidad</li>
+      </ul>
+    </div>
+    
+    <div class="practical-activity">
+      <h4><span class="emoji">🎭</span> Actividad: "Evaluación del ROM"</h4>
+      <ol class="activity-steps">
+        <li><strong>Prueba 1 (cadera):</strong> Grand battement hacia adelante. Mide el ángulo máximo.</li>
+        <li><strong>Prueba 2 (tobillo):</strong> Relevé máximo. ¿Puedes poner el talón en el suelo con la pierna estirada?</li>
+        <li><strong>Prueba 3 (hombro):</strong> Elevación de brazos. ¿Llegan a tocar detrás de la espalda?</li>
+        <li><strong>Comparación:</strong> Compara con compañeros. Las diferencias son normales (genética, sexo, entrenamiento).</li>
+        <li><strong>Reflexión:</strong> Más ROM NO siempre es mejor. Se necesita estabilidad para controlar el rango.</li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- SLIDE 6: LIGAMENTO -->
+  <div class="slide">
+    <h2>📎 LIGAMENTO</h2>
+    
+    <div class="structure-card">
+      <h3><span class="emoji">🔬</span> Definición y Tejido</h3>
+      <div class="info-section">
+        <h4>📋 Definición fisiológica</h4>
+        <p>Bandas de <span class="tissue-badge tissue-connective">Tejido Conectivo Denso Regular</span> que conectan <strong>hueso con hueso</strong> a través de la articulación, proporcionando <strong>estabilidad</strong> y <strong>limitando el movimiento</strong> excesivo.</p>
+      </div>
+      
+      <div class="info-section">
+        <h4>🧬 Composición tisular</h4>
+        <ul>
+          <li><strong>Colágeno tipo I (90%):</strong> Fibras paralelas a la dirección de tensión</li>
+          <li><strong>Colágeno tipo III:</strong> Fibras más finas (elasticidad)</li>
+          <li><strong>Fibroblastos:</strong> Células que sintetizan la matriz</li>
+          <li><strong>Receptores mecánicos:</strong> Informan de tensión y posición (propiocepción)</li>
+          <li><strong>Poca vascularización:</strong> Curación lenta</li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="anatomy-diagram">
+      <h4>📐 Ligamentos de la rodilla</h4>
+      <svg viewBox="0 0 600 350">
+        <!-- Fémur -->
+        <rect x="250" y="30" width="100" height="100" fill="#34495e" opacity="0.8" rx="10"/>
+        <text x="300" y="85" text-anchor="middle" font-size="12" fill="white">FÉMUR</text>
+        
+        <!-- Tibia -->
+        <rect x="250" y="220" width="100" height="100" fill="#34495e" opacity="0.8" rx="10"/>
+        <text x="300" y="275" text-anchor="middle" font-size="12" fill="white">TIBIA</text>
+        
+        <!-- LCA (Ligamento Cruzado Anterior) -->
+        <path d="M 300 130 Q 280 175 300 220" stroke="#e74c3c" stroke-width="6" fill="none"/>
+        <text x="260" y="180" font-size="9" fill="#e74c3c" font-weight="bold">LCA</text>
+        
+        <!-- LCP (Ligamento Cruzado Posterior) -->
+        <path d="M 300 130 Q 320 175 300 220" stroke="#c0392b" stroke-width="6" fill="none"/>
+        <text x="325" y="180" font-size="9" fill="#c0392b" font-weight="bold">LCP</text>
+        
+        <!-- LCL (Ligamento Colateral Lateral) -->
+        <line x1="350" y1="130" x2="350" y2="220" stroke="#e67e22" stroke-width="5"/>
+        <text x="360" y="180" font-size="9" fill="#e67e22" font-weight="bold">LCL</text>
+        
+        <!-- LCM (Ligamento Colateral Medial) -->
+        <line x1="250" y1="130" x2="250" y2="220" stroke="#d35400" stroke-width="5"/>
+        <text x="210" y="180" font-size="9" fill="#d35400" font-weight="bold">LCM</text>
+        
+        <text x="300" y="340" text-anchor="middle" font-size="11" fill="#2a5298" font-weight="bold">Vista anterior de la rodilla</text>
+      </svg>
+    </div>
+    
+    <div class="info-section">
+      <h4>📍 Ligamentos clave en danza</h4>
+      <ul>
+        <li><strong>Rodilla:</strong> LCA, LCP, LCM, LCL (estabilidad en saltos y giros)</li>
+        <li><strong>Tobillo:</strong> Ligamentos laterales (prevención de esguinces)</li>
+        <li><strong>Cadera:</strong> Iliofemoral, pubofemoral (limitan extensión)</li>
+        <li><strong>Columna:</strong> Ligamentos interespinosos (estabilidad postural)</li>
+      </ul>
+    </div>
+    
+    <div class="dance-box">
+      <h4><span class="emoji">💃</span> Importancia en la danza</h4>
+      <ul>
+        <li><strong>Estabilidad articular:</strong> Sin ligamentos, las articulaciones se luxarían</li>
+        <li><strong>Límite del ROM:</strong> Previenen movimientos lesivos (hiperextensión)</li>
+        <li><strong>Propiocepción:</strong> Receptores informan al SNC de la posición articular</li>
+        <li><strong>Protección:</strong> Absorben estrés mecánico antes de que llegue al cartílago</li>
+      </ul>
+    </div>
+    
+    <div class="gender-diff">
+      <h4>⚧ Diferencias entre sexos e individuos</h4>
+      <ul>
+        <li><strong>Mujeres:</strong> Ligamentos más laxos (estrógenos reducen síntesis de colágeno) → <strong>2-8x más riesgo de rotura de LCA</strong></li>
+        <li><strong>Hombres:</strong> Ligamentos más rígidos, menor riesgo de lesión pero menor ROM</li>
+        <li><strong>Ciclo menstrual:</strong> Fase ovulatoria (estrógenos altos) → mayor laxitud → mayor riesgo</li>
+        <li><strong>Individual:</strong> Genética (síndrome de Ehlers-Danlos = hiperlaxitud extrema), entrenamiento (los ligamentos se fortalecen con carga progresiva)</li>
+      </ul>
+    </div>
+    
+    <div class="practical-activity">
+      <h4><span class="emoji">🎭</span> Actividad: "Propiocepción ligamentaria"</h4>
+      <ol class="activity-steps">
+        <li><strong>Ejercicio 1:</strong> De pie sobre una pierna, cierra los ojos. Mantén 30 segundos.</li>
+        <li><strong>Ejercicio 2:</strong> Repite sobre superficie inestable (cojín, bosu).</li>
+        <li><strong>Reflexión:</strong> Al cerrar los ojos, eliminas el control visual. Solo queda la <strong>propiocepción</strong> (receptores en ligamentos, tendones, músculos).</li>
+        <li><strong>Aplicación:</strong> Los bailarines entrenan la propiocepción para prevenir lesiones. Los ligamentos NO solo son "cuerdas pasivas", son sensores.</li>
+        <li><strong>Importante:</strong> Tras un esguince, los receptores se dañan. Hay que reentrenar la propiocepción.</li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- SLIDE 7: COMPARATIVA -->
+  <div class="slide">
+    <h2> Tabla Comparativa Fisiológica</h2>
+    
+    <table class="comparison-table" style="width: 100%; border-collapse: collapse; margin: 20px 0; background: white; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+      <thead>
+        <tr style="background: linear-gradient(90deg, #2a5298, #1e3c72); color: white;">
+          <th style="padding: 14px; text-align: left;">Estructura</th>
+          <th style="padding: 14px; text-align: left;">Tejido</th>
+          <th style="padding: 14px; text-align: left;">Función Principal</th>
+          <th style="padding: 14px; text-align: left;">Vascularización</th>
+          <th style="padding: 14px; text-align: left;">Capacidad de Curación</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr style="border-bottom: 1px solid #dee2e6;">
+          <td style="padding: 12px;"><strong>💪 Músculo</strong></td>
+          <td style="padding: 12px;">Muscular estriado</td>
+          <td style="padding: 12px;">Generar fuerza y movimiento</td>
+          <td style="padding: 12px;">Alta</td>
+          <td style="padding: 12px;">Rápida (buena irrigación)</td>
+        </tr>
+        <tr style="background: #f8f9fa; border-bottom: 1px solid #dee2e6;">
+          <td style="padding: 12px;"><strong>🔗 Tendón</strong></td>
+          <td style="padding: 12px;">Conectivo denso regular</td>
+          <td style="padding: 12px;">Transmitir fuerza al hueso</td>
+          <td style="padding: 12px;">Baja</td>
+          <td style="padding: 12px;">Lenta (poca irrigación)</td>
+        </tr>
+        <tr style="border-bottom: 1px solid #dee2e6;">
+          <td style="padding: 12px;"><strong> Hueso</strong></td>
+          <td style="padding: 12px;">Óseo (conectivo mineralizado)</td>
+          <td style="padding: 12px;">Soporte, palanca, protección</td>
+          <td style="padding: 12px;">Media-alta</td>
+          <td style="padding: 12px;">Media (remodelación continua)</td>
+        </tr>
+        <tr style="background: #f8f9fa; border-bottom: 1px solid #dee2e6;">
+          <td style="padding: 12px;"><strong>🔄 Articulación</strong></td>
+          <td style="padding: 12px;">Cartílago + conectivo</td>
+          <td style="padding: 12px;">Permitir movimiento</td>
+          <td style="padding: 12px;">Variable (cartílago: nula)</td>
+          <td style="padding: 12px;">Lenta (cartílago no se regenera)</td>
+        </tr>
+        <tr style="border-bottom: 1px solid #dee2e6;">
+          <td style="padding: 12px;"><strong>📎 Ligamento</strong></td>
+          <td style="padding: 12px;">Conectivo denso regular</td>
+          <td style="padding: 12px;">Estabilizar articulación</td>
+          <td style="padding: 12px;">Muy baja</td>
+          <td style="padding: 12px;">Muy lenta (cicatriz fibrosa)</td>
+        </tr>
+      </tbody>
+    </table>
+    
+    <div class="info-section" style="background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%); border-left-color: #1976d2;">
+      <h4>🎯 Implicaciones para el bailarín</h4>
+      <ul>
+        <li><strong>Músculo:</strong> Se adapta rápido al entrenamiento (hipertrofia en semanas)</li>
+        <li><strong>Tendón/Ligamento:</strong> Se adaptan LENTO (meses). Por eso las lesiones por sobreuso son comunes: el músculo mejora antes que el tendón.</li>
+        <li><strong>Hueso:</strong> Necesita impacto para fortalecerse (Ley de Wolff)</li>
+        <li><strong>Cartílago:</strong> NO se regenera. Una vez dañado, es irreversible. ¡Prevenir es clave!</li>
+      </ul>
+    </div>
+    
+    <div class="practical-activity">
+      <h4><span class="emoji">🎭</span> Actividad integradora: "Análisis de un movimiento de danza"</h4>
+      <p><strong>Elige un movimiento</strong> (ej: grand jeté, pirueta, cambré) y analiza:</p>
+      <ol class="activity-steps">
+        <li><strong>Músculos:</strong> ¿Cuáles generan el movimiento? ¿Qué tipo de contracción?</li>
+        <li><strong>Tendones:</strong> ¿Cuáles transmiten la fuerza? ¿Hay almacenamiento de energía elástica?</li>
+        <li><strong>Huesos:</strong> ¿Qué palancas intervienen? ¿Dónde se aplica la carga?</li>
+        <li><strong>Articulaciones:</strong> ¿Qué ROM se requiere? ¿Qué tipo de articulación es?</li>
+        <li><strong>Ligamentos:</strong> ¿Cuáles estabilizan? ¿Cuáles están en riesgo?</li>
+        <li><strong>Presenta</strong> tu análisis al grupo con demostración práctica.</li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- SLIDE 8: QUIZ -->
+  <div class="slide">
+    <h2>🎯 Quiz: Evaluación de Conocimientos</h2>
+    
+    <div class="quiz-container" style="background: white; border: 2px solid #e4e8ec; border-radius: 15px; padding: 30px; margin: 20px 0;">
+      <h3 style="color: #2a5298; margin-bottom: 20px; font-size: 1.3em;">Preguntas de fisiología aplicada</h3>
+      <div id="quizContainer"></div>
+      <button class="btn" onclick="checkQuiz()">Comprobar respuestas</button>
+      <button class="btn btn-secondary" onclick="resetQuiz()">Reiniciar</button>
+      <div class="feedback" id="fbQuiz"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+function showSlide(i, btn) {
+  document.querySelectorAll('.slide').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-tabs button').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.slide')[i].classList.add('active');
+  btn.classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+const quizData = [
+  {
+    q: "¿Qué tejido forma el tendón y cuál es su función principal?",
+    opts: [
+      "Tejido muscular; generar movimiento",
+      "Tejido conectivo denso regular; transmitir fuerza del músculo al hueso",
+      "Tejido óseo; proporcionar soporte",
+      "Tejido cartilaginoso; amortiguar"
+    ],
+    correct: 1
+  },
+  {
+    q: "¿Por qué las mujeres tienen mayor riesgo de rotura del ligamento cruzado anterior (LCA)?",
+    opts: [
+      "Porque tienen huesos más débiles",
+      "Por los estrógenos que aumentan la laxitud ligamentosa",
+      "Porque tienen menos masa muscular",
+      "Porque entrenan menos"
+    ],
+    correct: 1
+  },
+  {
+    q: "¿Qué estructura tiene capacidad de contracción?",
+    opts: [
+      "Tendón",
+      "Ligamento",
+      "Músculo esquelético",
+      "Cartílago"
+    ],
+    correct: 2
+  },
+  {
+    q: "El cartílago articular tiene:",
+    opts: [
+      "Alta vascularización y rápida curación",
+      "Nula vascularización y lenta/ninguna regeneración",
+      "La misma capacidad de curación que el músculo",
+      "Capacidad de contracción"
+    ],
+    correct: 1
+  },
+  {
+    q: "¿Qué ley explica que el hueso se fortalezca con el impacto?",
+    opts: [
+      "Ley de Ohm",
+      "Ley de Wolff",
+      "Ley de Newton",
+      "Ley de Henneman"
+    ],
+    correct: 1
+  },
+  {
+    q: "La principal diferencia entre tendón y ligamento es:",
+    opts: [
+      "El tendón conecta hueso-hueso; el ligamento músculo-hueso",
+      "El tendón conecta músculo-hueso; el ligamento hueso-hueso",
+      "No hay diferencia, son lo mismo",
+      "El tendón es elástico; el ligamento es rígido"
+    ],
+    correct: 1
+  },
+  {
+    q: "¿Qué componente del hueso le proporciona rigidez?",
+    opts: [
+      "Colágeno tipo I",
+      "Hidroxiapatita (sales de calcio)",
+      "Agua",
+      "Médula ósea"
+    ],
+    correct: 1
+  },
+  {
+    q: "La tríada de la mujer atleta incluye:",
+    opts: [
+      "Baja energía disponible, amenorrea, osteoporosis",
+      "Fuerza, resistencia, flexibilidad",
+      "Músculo, tendón, hueso",
+      "Salto, giro, equilibrio"
+    ],
+    correct: 0
+  },
+  {
+    q: "¿Qué estructura almacena energía elástica en el ciclo estiramiento-acortamiento?",
+    opts: [
+      "Músculo",
+      "Tendón",
+      "Hueso",
+      "Ligamento"
+    ],
+    correct: 1
+  },
+  {
+    q: "La propiocepción en la articulación depende principalmente de:",
+    opts: [
+      "Los receptores en ligamentos y cápsula articular",
+      "El cartílago",
+      "El líquido sinovial",
+      "Los huesos"
+    ],
+    correct: 0
+  }
+];
+
+function renderQuiz() {
+  const cont = document.getElementById('quizContainer');
+  cont.innerHTML = '';
+  quizData.forEach((item, qi) => {
+    let html = `<div class="question-box" style="background: #f8f9fa; border-left: 5px solid #2a5298; padding: 18px; margin-bottom: 18px; border-radius: 8px;"><p style="font-weight: 600; margin-bottom: 12px; font-size: 1em; color: #2c3e50;">${qi+1}. ${item.q}</p><div class="options" style="display: flex; flex-direction: column; gap: 8px;">`;
+    item.opts.forEach((opt, oi) => {
+      html += `<label style="background: white; border: 2px solid #dee2e6; padding: 12px 16px; border-radius: 8px; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; font-size: 0.93em;"><input type="radio" name="q${qi}" value="${oi}" style="margin-right: 12px;"> ${opt}</label>`;
+    });
+    html += `</div></div>`;
+    cont.innerHTML += html;
+  });
+}
+renderQuiz();
+
+function checkQuiz() {
+  let score = 0;
+  quizData.forEach((item, qi) => {
+    const sel = document.querySelector(`input[name="q${qi}"]:checked`);
+    const labels = document.querySelectorAll(`input[name="q${qi}"]`);
+    labels.forEach(l => l.parentElement.classList.remove('correct','incorrect'));
+    if (sel) {
+      const val = parseInt(sel.value);
+      if (val === item.correct) {
+        sel.parentElement.classList.add('correct');
+        score++;
+      } else {
+        sel.parentElement.classList.add('incorrect');
+        labels[item.correct].parentElement.classList.add('correct');
+      }
+    } else {
+      labels[item.correct].parentElement.classList.add('correct');
+    }
+  });
+  const fb = document.getElementById('fbQuiz');
+  fb.classList.add('show');
+  if (score === quizData.length) {
+    fb.className = 'feedback show success';
+    fb.innerHTML = `🏆 ¡Excelente! ${score}/${quizData.length}. Dominas la fisiología del sistema musculoesquelético.`;
+  } else if (score >= 7) {
+    fb.className = 'feedback show info';
+    fb.innerHTML = ` Muy bien: ${score}/${quizData.length}. Repasa los conceptos fallados.`;
+  } else {
+    fb.className = 'feedback show error';
+    fb.innerHTML = `📚 ${score}/${quizData.length}. Revisa las diapositivas de teoría.`;
+  }
+}
+
+function resetQuiz() {
+  document.querySelectorAll('#quizContainer input').forEach(i => { i.checked = false; i.parentElement.classList.remove('correct','incorrect'); });
+  document.getElementById('fbQuiz').classList.remove('show');
+}
+</script>
+</body>
+</html>

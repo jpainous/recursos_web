@@ -1,0 +1,1018 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fisiología de la Contracción Muscular en la Danza</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, sans-serif; }
+  body {
+    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+    min-height: 100vh;
+    padding: 20px;
+  }
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    background: #fff;
+    border-radius: 20px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    overflow: hidden;
+  }
+  header {
+    background: linear-gradient(90deg, #0f2027, #203a43, #2c5364);
+    color: white;
+    padding: 40px;
+    text-align: center;
+  }
+  header h1 { font-size: 2.3em; margin-bottom: 10px; }
+  header p { opacity: 0.9; font-size: 1.15em; }
+  header .subtitle { font-size: 0.95em; opacity: 0.75; margin-top: 8px; font-style: italic; }
+  
+  .nav-tabs {
+    display: flex;
+    background: #f8f9fa;
+    flex-wrap: wrap;
+    border-bottom: 3px solid #dee2e6;
+  }
+  .nav-tabs button {
+    flex: 1;
+    min-width: 140px;
+    padding: 15px 10px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 0.9em;
+    font-weight: 600;
+    color: #666;
+    transition: all 0.3s;
+    border-bottom: 4px solid transparent;
+  }
+  .nav-tabs button:hover { background: #e9ecef; color: #2a5298; }
+  .nav-tabs button.active {
+    color: #2a5298;
+    border-bottom-color: #2a5298;
+    background: white;
+  }
+  
+  .slide { display: none; padding: 30px; min-height: 600px; }
+  .slide.active { display: block; animation: fadeIn 0.5s; }
+  @keyframes fadeIn { from {opacity:0; transform:translateY(20px);} to {opacity:1; transform:translateY(0);} }
+  
+  .slide h2 {
+    color: #0f2027;
+    margin-bottom: 20px;
+    font-size: 1.7em;
+    border-bottom: 3px solid #2a5298;
+    padding-bottom: 10px;
+  }
+  
+  .physio-box {
+    background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+    border-left: 5px solid #1976d2;
+    padding: 20px;
+    margin: 20px 0;
+    border-radius: 10px;
+  }
+  
+  .physio-box h3 {
+    color: #1565c0;
+    margin-bottom: 12px;
+    font-size: 1.2em;
+  }
+  
+  .physio-box p, .physio-box li {
+    line-height: 1.7;
+    color: #263238;
+    margin-bottom: 8px;
+  }
+  
+  .physio-box ul { margin-left: 25px; }
+  
+  .concept-card {
+    background: white;
+    border: 2px solid #2a5298;
+    border-radius: 15px;
+    padding: 25px;
+    margin: 20px 0;
+    box-shadow: 0 4px 15px rgba(42,82,152,0.1);
+  }
+  
+  .concept-card h3 {
+    color: #2a5298;
+    font-size: 1.4em;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .definition {
+    background: #f8f9fa;
+    padding: 18px;
+    border-radius: 10px;
+    margin: 15px 0;
+    border-left: 4px solid #2a5298;
+    line-height: 1.7;
+  }
+  
+  .definition strong { color: #2a5298; }
+  
+  .dance-examples {
+    background: linear-gradient(135deg, #fff5e6 0%, #ffe8cc 100%);
+    padding: 20px;
+    border-radius: 10px;
+    margin: 15px 0;
+    border: 2px dashed #f39c12;
+  }
+  
+  .dance-examples h4 {
+    color: #e67e22;
+    margin-bottom: 12px;
+    font-size: 1.15em;
+  }
+  
+  .dance-examples ul { margin-left: 25px; line-height: 1.8; }
+  .dance-examples li { margin-bottom: 8px; }
+  
+  .practical-activity {
+    background: linear-gradient(135deg, #e8f8f5 0%, #d5f5e3 100%);
+    padding: 22px;
+    border-radius: 15px;
+    margin: 20px 0;
+    border: 2px solid #1abc9c;
+  }
+  
+  .practical-activity h4 {
+    color: #16a085;
+    font-size: 1.2em;
+    margin-bottom: 12px;
+  }
+  
+  .activity-steps { margin-left: 25px; line-height: 1.9; }
+  .activity-steps li { margin-bottom: 8px; }
+  .activity-steps strong { color: #16a085; }
+  
+  .muscle-visualization {
+    background: white;
+    border: 2px solid #dee2e6;
+    border-radius: 10px;
+    padding: 20px;
+    margin: 15px 0;
+    text-align: center;
+  }
+  
+  .muscle-visualization svg { max-width: 100%; height: auto; }
+  
+  .comparison-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    font-size: 0.95em;
+  }
+  
+  .comparison-table th {
+    background: linear-gradient(90deg, #2a5298, #1e3c72);
+    color: white;
+    padding: 14px;
+    font-size: 1em;
+  }
+  
+  .comparison-table td {
+    padding: 12px;
+    border-bottom: 1px solid #dee2e6;
+    vertical-align: top;
+  }
+  
+  .comparison-table tr:nth-child(even) { background: #f8f9fa; }
+  .comparison-table tr:hover { background: #e3f2fd; }
+  .comparison-table td:first-child { font-weight: 600; color: #0f2027; }
+  
+  .highlight {
+    background: linear-gradient(120deg, #ffeaa7 0%, #ffeaa7 100%);
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-weight: 600;
+  }
+  
+  .fiber-tag {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 0.85em;
+    margin: 2px;
+  }
+  
+  .fiber-1 { background: #81c784; color: #1b5e20; }
+  .fiber-2a { background: #ffb74d; color: #e65100; }
+  .fiber-2x { background: #e57373; color: #b71c1c; }
+  
+  .warning-box {
+    background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
+    border-left: 5px solid #f57c00;
+    padding: 18px;
+    margin: 20px 0;
+    border-radius: 10px;
+  }
+  
+  .warning-box strong { color: #e65100; }
+  
+  .btn {
+    background: linear-gradient(90deg, #2a5298, #1e3c72);
+    color: white;
+    border: none;
+    padding: 14px 35px;
+    border-radius: 30px;
+    font-size: 1.05em;
+    font-weight: 600;
+    cursor: pointer;
+    margin: 10px 5px;
+    transition: all 0.3s;
+    box-shadow: 0 4px 15px rgba(42,82,152,0.3);
+  }
+  
+  .btn:hover { transform: translateY(-3px); box-shadow: 0 6px 20px rgba(42,82,152,0.4); }
+  .btn-secondary { background: #6c757d; box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
+  
+  .feedback {
+    margin-top: 20px;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    font-weight: 600;
+    display: none;
+    font-size: 1.05em;
+  }
+  
+  .feedback.show { display: block; animation: fadeIn 0.3s; }
+  .feedback.success { background: #d4edda; color: #155724; border: 2px solid #28a745; }
+  .feedback.error { background: #f8d7da; color: #721c24; border: 2px solid #dc3545; }
+  .feedback.info { background: #d1ecf1; color: #0c5460; border: 2px solid #17a2b8; }
+  
+  .quiz-container {
+    background: white;
+    border: 2px solid #e4e8ec;
+    border-radius: 15px;
+    padding: 30px;
+    margin: 20px 0;
+  }
+  
+  .quiz-container h3 {
+    color: #2a5298;
+    margin-bottom: 20px;
+    font-size: 1.3em;
+  }
+  
+  .question-box {
+    background: #f8f9fa;
+    border-left: 5px solid #2a5298;
+    padding: 18px;
+    margin-bottom: 18px;
+    border-radius: 8px;
+  }
+  
+  .question-box p {
+    font-weight: 600;
+    margin-bottom: 12px;
+    font-size: 1em;
+    color: #2c3e50;
+  }
+  
+  .options { display: flex; flex-direction: column; gap: 8px; }
+  
+  .options label {
+    background: white;
+    border: 2px solid #dee2e6;
+    padding: 12px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    font-size: 0.93em;
+  }
+  
+  .options label:hover { border-color: #2a5298; background: #e3f2fd; }
+  .options input { margin-right: 12px; }
+  .options label.correct { background: #d4edda; border-color: #28a745; color: #155724; }
+  .options label.incorrect { background: #f8d7da; border-color: #dc3545; color: #721c24; }
+  
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin: 15px 0;
+  }
+  
+  .curve-container {
+    background: white;
+    border: 2px solid #dee2e6;
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+  }
+  
+  @media (max-width: 768px) {
+    header h1 { font-size: 1.7em; }
+    .slide { padding: 20px; }
+    .two-col { grid-template-columns: 1fr; }
+    .comparison-table { font-size: 0.85em; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <h1>🧬 Fisiología de la Contracción Muscular</h1>
+    <p>Aplicada a la Danza</p>
+    <div class="subtitle">Mecanismos, control neural y metabolismo · Tema 3: Músculo esquelético</div>
+  </header>
+
+  <div class="nav-tabs">
+    <button class="active" onclick="showSlide(0, this)">📚 Introducción</button>
+    <button onclick="showSlide(1, this)">🏛️ Isométrica</button>
+    <button onclick="showSlide(2, this)">⬆️ Concéntrica</button>
+    <button onclick="showSlide(3, this)">⬇️ Excéntrica</button>
+    <button onclick="showSlide(4, this)">🔬 Fisiología comparada</button>
+    <button onclick="showSlide(5, this)">📊 Tabla resumen</button>
+    <button onclick="showSlide(6, this)">🎯 Quiz</button>
+  </div>
+
+  <!-- SLIDE 1: INTRODUCCIÓN -->
+  <div class="slide active">
+    <h2>🎭 Introducción: ¿Qué estudia la fisiología de la contracción?</h2>
+    
+    <div class="physio-box">
+      <h3>🎯 Enfoque fisiológico vs. anatómico</h3>
+      <p>Mientras la <strong>anatomía</strong> describe la estructura (qué músculos, qué huesos, qué articulaciones), la <strong>fisiología</strong> explica los <strong>procesos funcionales</strong>:</p>
+      <ul>
+        <li>¿Cómo se genera la tensión a nivel molecular?</li>
+        <li>¿Qué tipo de fibras musculares se reclutan?</li>
+        <li>¿Qué vías metabólicas proporcionan la energía?</li>
+        <li>¿Cómo controla el sistema nervioso cada tipo de contracción?</li>
+        <li>¿Qué adaptaciones produce cada tipo de trabajo?</li>
+      </ul>
+    </div>
+    
+    <div class="concept-card">
+      <h3>🔑 Concepto clave: La tensión muscular</h3>
+      <div class="definition">
+        <p>La <strong>tensión</strong> es la fuerza interna que genera el músculo como resultado del ciclo de los <strong>puentes cruzados</strong> (unión de cabezas de miosina a sitios activos de actina). Según la relación entre esta tensión y la resistencia externa, distinguimos tres tipos de contracción.</p>
+      </div>
+      <p>Lo que cambia entre los tipos NO es la estructura del sarcómero, sino:</p>
+      <ul style="margin-left: 25px; line-height: 1.8;">
+        <li>La <strong>relación tensión-resistencia</strong></li>
+        <li>La <strong>velocidad de acortamiento/alargamiento</strong></li>
+        <li>El <strong>tipo de fibras reclutadas</strong> (UM motoras)</li>
+        <li>El <strong>coste metabólico</strong> y la eficiencia energética</li>
+      </ul>
+    </div>
+    
+    <div class="two-col">
+      <div class="physio-box">
+        <h3>📐 Relación longitud-tensión</h3>
+        <p>La tensión máxima se genera cuando el sarcómero está en su <strong>longitud óptima</strong> (~2.0-2.2 μm). Si está demasiado estirado o demasiado acortado, la tensión disminuye.</p>
+        <p><strong>Aplicación en danza:</strong> Por eso un plié previo al salto mejora el rendimiento: coloca las fibras en longitud óptima.</p>
+      </div>
+      <div class="physio-box" style="background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%); border-left-color: #f57c00;">
+        <h3>⚡ Relación fuerza-velocidad (Curva de Hill)</h3>
+        <p>A mayor velocidad de acortamiento, <strong>menor fuerza</strong> puede generar el músculo. A mayor carga, <strong>menor velocidad</strong>.</p>
+        <p><strong>Aplicación:</strong> Un grand jeté rápido tiene menos fuerza que un relevé lento, aunque ambos sean concéntricos.</p>
+      </div>
+    </div>
+    
+    <div class="practical-activity">
+      <h4>🎭 Actividad de exploración fisiológica</h4>
+      <p><strong>Objetivo:</strong> Percibir las diferencias fisiológicas (no solo estructurales)</p>
+      <ol class="activity-steps">
+        <li><strong>Isométrica:</strong> Mantén un plié medio 15 segundos. Observa: ¿aumenta el temblor? (fatiga de UM motoras).</li>
+        <li><strong>Concéntrica:</strong> Sube a relevé rápido. Nota el consumo de O₂ (respiración acelerada).</li>
+        <li><strong>Excéntrica:</strong> Baja de relevé en 8 segundos. Nota: ¿genera más calor local? (mayor coste mecánico por fibra).</li>
+        <li><strong>Reflexión fisiológica:</strong> ¿Qué tipo te deja más "agujetas" al día siguiente? ¿Por qué?</li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- SLIDE 2: ISOMÉTRICA -->
+  <div class="slide">
+    <h2>🏛️ Contracción Isométrica: Fisiología de la estabilidad</h2>
+    
+    <div class="concept-card">
+      <h3>🧬 Definición fisiológica</h3>
+      <div class="definition">
+        <p>Contracción en la que el músculo genera <strong>tensión activa</strong> (puentes cruzados funcionando) <strong>sin cambio de longitud externa</strong> porque la fuerza interna iguala a la resistencia. No hay trabajo mecánico externo (W = F·d = 0), pero sí <strong>gasto metabólico interno</strong>.</p>
+      </div>
+    </div>
+    
+    <div class="physio-box">
+      <h3>⚙️ Mecanismos fisiológicos</h3>
+      <ul>
+        <li><strong>Ciclo de puentes cruzados:</strong> Las cabezas de miosina se unen, realizan el golpe de fuerza y se desunen, pero como los extremos están fijados, no hay desplazamiento neto.</li>
+        <li><strong>Reclutamiento de UM motoras:</strong> Se reclutan de forma <strong>asíncrona</strong> (rotación de unidades) para evitar fatiga rápida. Esto permite mantener la postura durante tiempo.</li>
+        <li><strong>Reflejo miotático (estiramiento):</strong> Los husos musculares detectan micro-oscilaciones y activan reflejamente las fibras para corregirlas (control automático).</li>
+        <li><strong>Compresión vascular:</strong> La tensión sostenida comprime los capilares → isquemia relativa → fatiga rápida si se mantiene mucho tiempo.</li>
+      </ul>
+    </div>
+    
+    <div class="two-col">
+      <div class="physio-box">
+        <h3>🔋 Metabolismo energético</h3>
+        <ul>
+          <li>Principalmente <strong>glucólisis anaerobia</strong></li>
+          <li>Acumulación de <strong>lactato</strong> (sensación de ardor)</li>
+          <li>Consumo de O₂ elevado por unidad de tiempo</li>
+          <li>Mayor fatiga local que en contracciones dinámicas</li>
+        </ul>
+      </div>
+      <div class="physio-box" style="background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%); border-left-color: #388e3c;">
+        <h3>🧠 Control neural</h3>
+        <ul>
+          <li>Alta activación de <strong>propioceptores</strong> (husos y OG de Golgi)</li>
+          <li>Co-contracción de <strong>agonistas y antagonistas</strong> para rigidizar la articulación</li>
+          <li>Predominio de <strong>fibras tipo I</strong> (lentas, oxidativas) en posturas</li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="dance-examples">
+      <h4>💃 Ejemplos aplicados a la danza</h4>
+      <ul>
+        <li><strong>Arabesque mantenido:</strong> Co-contracción isométrica de core + glúteos + isquiotibiales. El reflejo miotático ajusta constantemente la posición.</li>
+        <li><strong>Attitude sostenida:</strong> Isométrica de cuádriceps + psoas. La fatiga aparece por acumulación de metabolitos (H⁺, Pi).</li>
+        <li><strong>Equilibrio en media punta:</strong> Oscilaciones mínimas corregidas por reflejos espinales (no conscientes).</li>
+        <li><strong>Freezing en contemporánea:</strong> Tensión isométrica global con alto reclutamiento de UM rápidas si la pose es intensa.</li>
+      </ul>
+    </div>
+    
+    <div class="warning-box">
+      <p><strong>⚠️ Dato fisiológico clave:</strong> Aunque no haya movimiento, la isométrica consume mucha energía y genera fatiga rápida porque la compresión vascular limita el aporte de O₂. Por eso los bailarines entrenan la resistencia isométrica específicamente.</p>
+    </div>
+    
+    <div class="practical-activity">
+      <h4>🎭 Actividad: "Percepción de la fatiga isométrica"</h4>
+      <ol class="activity-steps">
+        <li>Mantén un <strong>plié medio</strong> el máximo tiempo posible.</li>
+        <li>Anota: ¿a los cuántos segundos aparece el <strong>temblor</strong>? (fatiga de UM, reclutamiento asíncrono fallando).</li>
+        <li>¿Sientes <strong>ardor muscular</strong>? (acumulación de H⁺ por glucólisis anaerobia).</li>
+        <li>Repite con los ojos cerrados: ¿aumenta el temblor? (se elimina el control visual, solo queda el sistema propioceptivo).</li>
+        <li><strong>Reflexión fisiológica:</strong> El temblor NO es debilidad, es el sistema nervioso reclutando y des reclutando UM motoras para mantener la fuerza media.</li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- SLIDE 3: CONCÉNTRICA -->
+  <div class="slide">
+    <h2>⬆️ Contracción Concéntrica: Fisiología del impulso</h2>
+    
+    <div class="concept-card">
+      <h3>🧬 Definición fisiológica</h3>
+      <div class="definition">
+        <p>Contracción en la que la <strong>tensión muscular supera la resistencia externa</strong>, produciendo <strong>acortamiento del músculo</strong> y <strong>trabajo mecánico positivo</strong> (W > 0). Es la fase de generación de energía cinética.</p>
+      </div>
+    </div>
+    
+    <div class="physio-box">
+      <h3>⚙️ Mecanismos fisiológicos</h3>
+      <ul>
+        <li><strong>Ciclo de puentes cruzados acelerado:</strong> Las cabezas de miosina realizan el golpe de fuerza DESPLAZANDO los filamentos finos. Cuanto más rápida la contracción, menos tiempo tienen los puentes de unirse → <strong>menor fuerza total</strong> (curva de Hill).</li>
+        <li><strong>Reclutamiento por tamaño (principio de Henneman):</strong> Primero UM lentas (tipo I), luego rápidas oxidativas (IIa), finalmente rápidas glucolíticas (IIx) según la intensidad necesaria.</li>
+        <li><strong>Ciclo de los 3 estados de la miosina:</strong> Estado de alta energía (recargada con ATP) → unión a actina → golpe de fuerza → liberación con nuevo ATP.</li>
+        <li><strong>Papel del componente elástico (CE):</strong> Si hay un pre-estiramiento previo (ej: contralmovimiento), los tendones almacenan energía elástica que se libera en la concéntrica → <strong>ciclo estiramiento-acortamiento (CEA)</strong>.</li>
+      </ul>
+    </div>
+    
+    <div class="two-col">
+      <div class="physio-box">
+        <h3>🔋 Metabolismo energético</h3>
+        <ul>
+          <li><strong>Baja intensidad:</strong> Vía aerobia (β-oxidación, ciclo de Krebs)</li>
+          <li><strong>Alta intensidad:</strong> Glucólisis anaerobia → lactato</li>
+          <li><strong>Máxima intensidad (saltos explosivos):</strong> Sistema de fosfágenos (ATP + fosfocreatina) → energía inmediata pero limitada (~10 s)</li>
+          <li>Mayor eficiencia mecánica que la excéntrica</li>
+        </ul>
+      </div>
+      <div class="physio-box" style="background: linear-gradient(135deg, #fce4ec 0%, #f8bbd0 100%); border-left-color: #c2185b;">
+        <h3>🧠 Control neural</h3>
+        <ul>
+          <li>Alta <strong>frecuencia de descarga</strong> de motoneuronas (suma de twitches → tetanización)</li>
+          <li><strong>Sincronización</strong> de UM motoras para máxima fuerza</li>
+          <li>Activación del <strong>ciclo estiramiento-acortamiento</strong> mediante reflejos miotáticos</li>
+          <li>Predominio de <strong>fibras tipo II</strong> en acciones explosivas</li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="dance-examples">
+      <h4>💃 Ejemplos aplicados a la danza</h4>
+      <ul>
+        <li><strong>Impulso del salto (grand jeté):</strong> Concéntrica explosiva tras pre-estiramiento (CEA). Reclutamiento de UM tipo IIx. Duración: <200 ms.</li>
+        <li><strong>Relevé rápido:</strong> Concéntrica de gemelos y sóleo. Sistema de fosfágenos como principal vía.</li>
+        <li><strong>Développé rápido:</strong> Concéntrica de psoas y recto anterior. Reclutamiento progresivo según velocidad.</li>
+        <li><strong>Levantamiento en pareja:</strong> Concéntrica sostenida → reclutamiento progresivo de UM por fatiga.</li>
+      </ul>
+    </div>
+    
+    <div class="warning-box">
+      <p><strong>⚡ La curva fuerza-velocidad (Hill):</strong> En concéntrica, si quieres más velocidad, generas MENOS fuerza. Por eso un fouetté rápido tiene menos "potencia" por repetición que un adagio lento, aunque parezca más difícil.</p>
+    </div>
+    
+    <div class="practical-activity">
+      <h4>🎭 Actividad: "Explorando el ciclo estiramiento-acortamiento"</h4>
+      <ol class="activity-steps">
+        <li><strong>Salto 1 (sin CEA):</strong> Quédate 3 segundos en plié estático y luego salta. Mide la altura.</li>
+        <li><strong>Salto 2 (con CEA):</strong> Haz un contramovimiento rápido (plié breve) y salta inmediatamente. Mide la altura.</li>
+        <li><strong>Comparación fisiológica:</strong> El segundo salto es más alto porque los tendones (Aquiles, rotuliano) han almacenado energía elástica en el pre-estiramiento.</li>
+        <li><strong>Reflexión:</strong> ¿Por qué en danza se usa siempre un "preparación" antes de los saltos? (aprovechamiento del CEA).</li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- SLIDE 4: EXCÉNTRICA -->
+  <div class="slide">
+    <h2>⬇️ Contracción Excéntrica: Fisiología del control</h2>
+    
+    <div class="concept-card">
+      <h3>🧬 Definición fisiológica</h3>
+      <div class="definition">
+        <p>Contracción en la que la <strong>resistencia externa supera la tensión muscular</strong>, produciendo <strong>alargamiento del músculo mientras genera fuerza</strong>. Es un <strong>trabajo mecánico negativo</strong> (el músculo absorbe energía). Es el tipo más eficiente energéticamente pero el que más daño muscular produce.</p>
+      </div>
+    </div>
+    
+    <div class="physio-box">
+      <h3>⚙️ Mecanismos fisiológicos (los más complejos)</h3>
+      <ul>
+        <li><strong>Puentes cruzados "frenando":</strong> Las cabezas de miosina se unen a la actina y RESISTEN el alargamiento. Se generan menos ciclos por segundo, pero cada puente soporta más carga → <strong>mayor fuerza por puente</strong>.</li>
+        <li><strong>Menor reclutamiento de UM:</strong> Para una misma fuerza, la excéntrica necesita <strong>menos fibras activas</strong> que la concéntrica (cada fibra trabaja más).</li>
+        <li><strong>Desacoplamiento de la titina:</strong> La titina (proteína elástica) se "despliega" y contribuye pasivamente a la fuerza. Esto explica por qué la excéntrica puede generar fuerzas superiores a la isométrica máxima.</li>
+        <li><strong>Daño muscular estructural:</strong> La tensión elevada sobre pocas fibras produce <strong>microroturas de sarcómeros</strong> (especialmente en la línea Z) → inflamación → agujetas (DOMS, 24-72 h).</li>
+      </ul>
+    </div>
+    
+    <div class="two-col">
+      <div class="physio-box">
+        <h3>🔋 Metabolismo energético</h3>
+        <ul>
+          <li><strong>Menor coste de ATP</strong> por unidad de fuerza</li>
+          <li>Menor consumo de O₂ para la misma fuerza</li>
+          <li>Mayor eficiencia mecánica (~4x más que concéntrica)</li>
+          <li>Pero: mayor daño estructural → mayor coste de reparación posterior</li>
+        </ul>
+      </div>
+      <div class="physio-box" style="background: linear-gradient(135deg, #ffebee 0%, #ffcdd2 100%); border-left-color: #c62828;">
+        <h3>🧠 Control neural (especial)</h3>
+        <ul>
+          <li><strong>Menor activación cortical</strong> (el cerebro "ahorra")</li>
+          <li>Activación preferente de <strong>UM rápidas (tipo II)</strong> aunque la carga sea baja</li>
+          <li><strong>Inhibición por OG de Golgi</strong>: limita la fuerza máxima excéntrica para proteger el músculo (mecanismo de seguridad)</li>
+          <li>Requiere <strong>aprendizaje motor</strong> específico</li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="dance-examples">
+      <h4>💃 Ejemplos aplicados a la danza</h4>
+      <ul>
+        <li><strong>Aterrizaje de salto:</strong> Excéntrica de cuádriceps + gemelos. Absorben hasta 8-10x el peso corporal. Las microroturas explican por qué duele al día siguiente.</li>
+        <li><strong>Plié lento de descenso:</strong> Excéntrica controlada. Menor reclutamiento pero mayor tensión por fibra.</li>
+        <li><strong>Caída al suelo (contemporánea):</strong> Excéntrica global. El core frena la gravedad. Requiere coordinación neural fina.</li>
+        <li><strong>Bajada de pierna en développé:</strong> Excéntrica de isquiotibiales. Control fino necesario para la estética.</li>
+      </ul>
+    </div>
+    
+    <div class="warning-box">
+      <p><strong>🔬 ¿Por qué la excéntrica produce más agujetas?</strong> Porque al haber menos fibras activas, cada una soporta más tensión. Esto produce microroturas en los sarcómeros (especialmente en la línea Z). La inflamación posterior (DOMS) es el proceso de reparación. Los bailarines desarrollan <strong>adaptación</strong> tras las primeras sesiones (efecto de la repetición de bouts).</p>
+    </div>
+    
+    <div class="practical-activity">
+      <h4>🎭 Actividad: "Percepción del daño muscular excéntrico"</h4>
+      <ol class="activity-steps">
+        <li><strong>Fase 1:</strong> Haz 15 sentadillas concéntricas (bajar y subir rápido).</li>
+        <li><strong>Fase 2:</strong> Haz 15 sentadillas SOLO excéntricas (baja en 5 segundos, sube rápido sin control).</li>
+        <li><strong>Comparación fisiológica:</strong> La fase 2 cansa MENOS durante el ejercicio (menor coste metabólico) pero producirá MÁS agujetas mañana.</li>
+        <li><strong>Reflexión:</strong> Esta es la base del entrenamiento excéntrico en rehabilitación de bailarines: estimula la adaptación con bajo coste energético.</li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- SLIDE 5: FISIOLOGÍA COMPARADA -->
+  <div class="slide">
+    <h2>🔬 Fisiología comparada de los tres tipos</h2>
+    
+    <div class="physio-box">
+      <h3>🧬 Los 4 ejes de comparación fisiológica</h3>
+      <p>Para entender las diferencias reales entre los tipos de contracción, debemos analizarlos desde 4 perspectivas fisiológicas:</p>
+    </div>
+    
+    <div class="concept-card">
+      <h3>1️⃣ Reclutamiento de fibras musculares</h3>
+      <div class="two-col">
+        <div>
+          <p><strong>Isométrica:</strong></p>
+          <p><span class="fiber-tag fiber-1">Tipo I</span> predominantes en posturas sostenidas. Reclutamiento asíncrono para retrasar fatiga.</p>
+        </div>
+        <div>
+          <p><strong>Concéntrica:</strong></p>
+          <p>Depende de la velocidad. Lenta: <span class="fiber-tag fiber-1">Tipo I</span>. Rápida: <span class="fiber-tag fiber-2a">Tipo IIa</span> <span class="fiber-tag fiber-2x">Tipo IIx</span>.</p>
+        </div>
+        <div>
+          <p><strong>Excéntrica:</strong></p>
+          <p>Preferencia por <span class="fiber-tag fiber-2x">Tipo IIx</span> incluso a bajas cargas. Menor número total de UM activas.</p>
+        </div>
+        <div>
+          <p><strong>Conclusión:</strong></p>
+          <p>La excéntrica es la que más recluta fibras rápidas (las más dañables) → explica las agujetas.</p>
+        </div>
+      </div>
+    </div>
+    
+    <div class="concept-card">
+      <h3>2️⃣ Coste metabólico y eficiencia</h3>
+      <table class="comparison-table">
+        <tr>
+          <th>Tipo</th>
+          <th>Coste ATP/fuerza</th>
+          <th>Vía principal</th>
+          <th>Efficiencia</th>
+        </tr>
+        <tr>
+          <td>Isométrica</td>
+          <td>Alto</td>
+          <td>Glucólisis anaerobia</td>
+          <td>Baja (W=0)</td>
+        </tr>
+        <tr>
+          <td>Concéntrica</td>
+          <td>Medio-alto</td>
+          <td>Depende de intensidad</td>
+          <td>20-25%</td>
+        </tr>
+        <tr>
+          <td>Excéntrica</td>
+          <td>Bajo</td>
+          <td>Aerobia (mayormente)</td>
+          <td>~120% (absorbe energía)</td>
+        </tr>
+      </table>
+    </div>
+    
+    <div class="concept-card">
+      <h3>3️⃣ Control neural</h3>
+      <div class="two-col">
+        <div>
+          <p><strong>Isométrica:</strong></p>
+          <ul style="margin-left: 20px; line-height: 1.7;">
+            <li>Alta actividad propioceptiva</li>
+            <li>Co-contracción agonista-antagonista</li>
+            <li>Reflejos espinales constantes</li>
+          </ul>
+        </div>
+        <div>
+          <p><strong>Concéntrica:</strong></p>
+          <ul style="margin-left: 20px; line-height: 1.7;">
+            <li>Alta frecuencia de descarga</li>
+            <li>Sincronización de UM</li>
+            <li>CEA con reflejos miotáticos</li>
+          </ul>
+        </div>
+        <div>
+          <p><strong>Excéntrica:</strong></p>
+          <ul style="margin-left: 20px; line-height: 1.7;">
+            <li>Menor activación cortical</li>
+            <li>Inhibición por OG de Golgi</li>
+            <li>Requiere aprendizaje motor</li>
+          </ul>
+        </div>
+        <div>
+          <p><strong>Implicación para la danza:</strong></p>
+          <p>La excéntrica requiere más entrenamiento técnico porque el sistema nervioso la "protege" inhibiéndola. Los bailarines deben aprender a "desinhibirla".</p>
+        </div>
+      </div>
+    </div>
+    
+    <div class="concept-card">
+      <h3>4️⃣ Adaptaciones al entrenamiento</h3>
+      <table class="comparison-table">
+        <tr>
+          <th>Tipo</th>
+          <th>Adaptaciones principales</th>
+          <th>Aplicación en danza</th>
+        </tr>
+        <tr>
+          <td>Isométrica</td>
+          <td>Mejora del reclutamiento neural, aumento de resistencia local</td>
+          <td>Mejor control de equilibrios y poses</td>
+        </tr>
+        <tr>
+          <td>Concéntrica</td>
+          <td>Hipertrofia, aumento de glucógeno, mejora de potencia</td>
+          <td>Saltos más altos, giros más rápidos</td>
+        </tr>
+        <tr>
+          <td>Excéntrica</td>
+          <td>Aumento de tejido conectivo, protección contra daño, mayor longitud de fascículos</td>
+          <td>Prevención de lesiones, mayor rango, mejor estética en descensos</td>
+        </tr>
+      </table>
+    </div>
+    
+    <div class="practical-activity">
+      <h4>🎭 Actividad integradora: "Análisis fisiológico de un salto"</h4>
+      <ol class="activity-steps">
+        <li>Realiza un <strong>grand jeté</strong> y analiza cada fase desde la fisiología:</li>
+        <li><strong>Preparación (plié):</strong> Excéntrica de cuádriceps. Almacena energía elástica en tendones. Recluta UM tipo II.</li>
+        <li><strong>Impulso:</strong> Concéntrica explosiva. CEA libera energía. Sistema de fosfágenos. UM tipo IIx.</li>
+        <li><strong>Vuelo:</strong> Isométrica relativa de core para mantener postura. Sin trabajo externo.</li>
+        <li><strong>Aterrizaje:</strong> Excéntrica intensa. Absorbe 8-10x el peso. Microroturas esperadas.</li>
+        <li><strong>Reflexión:</strong> Identifica en qué fase se produce mayor gasto energético, mayor daño, mayor reclutamiento neural.</li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- SLIDE 6: TABLA RESUMEN -->
+  <div class="slide">
+    <h2>📊 Tabla resumen fisiológica</h2>
+    
+    <table class="comparison-table">
+      <thead>
+        <tr>
+          <th>Variable fisiológica</th>
+          <th>🏛️ Isométrica</th>
+          <th>⬆️ Concéntrica</th>
+          <th>⬇️ Excéntrica</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Longitud muscular</td>
+          <td>Constante</td>
+          <td>Disminuye</td>
+          <td>Aumenta</td>
+        </tr>
+        <tr>
+          <td>Trabajo mecánico</td>
+          <td>Cero (W=0)</td>
+          <td>Positivo</td>
+          <td>Negativo</td>
+        </tr>
+        <tr>
+          <td>Tensión por puente cruzado</td>
+          <td>Media</td>
+          <td>Media-baja</td>
+          <td>Alta</td>
+        </tr>
+        <tr>
+          <td>Frecuencia de ciclos de puentes</td>
+          <td>Media</td>
+          <td>Alta</td>
+          <td>Baja</td>
+        </tr>
+        <tr>
+          <td>Coste ATP</td>
+          <td>Alto</td>
+          <td>Medio-alto</td>
+          <td>Bajo</td>
+        </tr>
+        <tr>
+          <td>Consumo de O₂</td>
+          <td>Alto (isquemia)</td>
+          <td>Proporcional a intensidad</td>
+          <td>Bajo para la misma fuerza</td>
+        </tr>
+        <tr>
+          <td>Fibras predominantes</td>
+          <td>Tipo I (postural)</td>
+          <td>Tipo I o II según velocidad</td>
+          <td>Tipo II (incluso a baja carga)</td>
+        </tr>
+        <tr>
+          <td>Activación cortical</td>
+          <td>Alta</td>
+          <td>Muy alta</td>
+          <td>Menor (inhibición Golgi)</td>
+        </tr>
+        <tr>
+          <td>Daño muscular (DOMS)</td>
+          <td>Bajo</td>
+          <td>Medio</td>
+          <td>Alto (microroturas en línea Z)</td>
+        </tr>
+        <tr>
+          <td>Fatiga</td>
+          <td>Rápida (isquemia)</td>
+          <td>Progresiva</td>
+          <td>Lenta durante el ejercicio</td>
+        </tr>
+        <tr>
+          <td>Fuerza máxima generable</td>
+          <td>Media</td>
+          <td>Menor que isométrica</td>
+          <td>Mayor (20-60% más)</td>
+        </tr>
+        <tr>
+          <td>Ejemplo en danza</td>
+          <td>Arabesque mantenido</td>
+          <td>Impulso de salto</td>
+          <td>Aterrizaje</td>
+        </tr>
+      </tbody>
+    </table>
+    
+    <div class="physio-box">
+      <h3>🎯 Conclusión fisiológica</h3>
+      <p>Los tres tipos de contracción no son meras variaciones estructurales, sino <strong>estrategias fisiológicas diferentes</strong> con implicaciones en:</p>
+      <ul>
+        <li>El <strong>reclutamiento de fibras</strong> (qué UM se activan)</li>
+        <li>El <strong>metabolismo</strong> (qué vías energéticas se usan)</li>
+        <li>El <strong>control neural</strong> (cómo el SNC gestiona el movimiento)</li>
+        <li>Las <strong>adaptaciones</strong> (qué cambios produce el entrenamiento)</li>
+        <li>El <strong>daño y la recuperación</strong> (por qué duele y cómo prevenir)</li>
+      </ul>
+      <p>Un bailarín que comprende estos mecanismos puede <strong>entrenar de forma más inteligente</strong>, prevenir lesiones y optimizar su rendimiento.</p>
+    </div>
+  </div>
+
+  <!-- SLIDE 7: QUIZ -->
+  <div class="slide">
+    <h2>🎯 Quiz: Evaluación fisiológica</h2>
+    
+    <div class="quiz-container">
+      <h3>Preguntas de fisiología aplicada</h3>
+      <div id="quizContainer"></div>
+      <button class="btn" onclick="checkQuiz()">Comprobar respuestas</button>
+      <button class="btn btn-secondary" onclick="resetQuiz()">Reiniciar</button>
+      <div class="feedback" id="fbQuiz"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+function showSlide(i, btn) {
+  document.querySelectorAll('.slide').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-tabs button').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.slide')[i].classList.add('active');
+  btn.classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+const quizData = [
+  {
+    q: "En una contracción isométrica sostenida, ¿por qué aparece fatiga rápida a pesar de no haber movimiento?",
+    opts: [
+      "Porque los puentes cruzados se agotan",
+      "Porque la tensión comprime los capilares produciendo isquemia relativa",
+      "Porque el calcio del retículo se consume",
+      "Porque la actina se degrada"
+    ],
+    correct: 1
+  },
+  {
+    q: "Según el principio de Henneman, en una contracción concéntrica de baja intensidad se reclutan primero:",
+    opts: [
+      "Fibras tipo IIx (rápidas glucolíticas)",
+      "Fibras tipo I (lentas oxidativas)",
+      "Fibras tipo IIa (rápidas oxidativas)",
+      "Todas simultáneamente"
+    ],
+    correct: 1
+  },
+  {
+    q: "¿Por qué la contracción excéntrica produce más agujetas (DOMS) que la concéntrica?",
+    opts: [
+      "Porque consume más ATP",
+      "Porque genera más lactato",
+      "Porque al reclutar menos fibras, cada una soporta más tensión produciendo microroturas",
+      "Porque el calcio se acumula en el sarcoplasma"
+    ],
+    correct: 2
+  },
+  {
+    q: "El ciclo estiramiento-acortamiento (CEA) mejora el rendimiento en saltos porque:",
+    opts: [
+      "Aumenta el tamaño del músculo",
+      "Almacena energía elástica en los tendones durante el pre-estiramiento",
+      "Reduce el consumo de O₂",
+      "Inhibe los órganos tendinosos de Golgi"
+    ],
+    correct: 1
+  },
+  {
+    q: "La curva fuerza-velocidad de Hill establece que en contracción concéntrica:",
+    opts: [
+      "A mayor velocidad, mayor fuerza",
+      "La fuerza es independiente de la velocidad",
+      "A mayor velocidad de acortamiento, menor fuerza puede generarse",
+      "Solo aplica a fibras tipo I"
+    ],
+    correct: 2
+  },
+  {
+    q: "¿Qué papel juega la titina en la contracción excéntrica?",
+    opts: [
+      "No tiene ningún papel",
+      "Se degrada produciendo daño muscular",
+      "Se despliega contribuyendo pasivamente a la fuerza total",
+      "Sustituye a la miosina en la generación de fuerza"
+    ],
+    correct: 2
+  },
+  {
+    q: "La inhibición por órganos tendinosos de Golgi durante la contracción excéntrica:",
+    opts: [
+      "Aumenta la fuerza máxima",
+      "Protege al músculo limitando la fuerza excéntrica máxima",
+      "No tiene efecto fisiológico",
+      "Solo ocurre en fibras tipo I"
+    ],
+    correct: 1
+  },
+  {
+    q: "¿Cuál es el principal sistema energético en un salto explosivo (duración <200 ms)?",
+    opts: [
+      "Glucólisis anaerobia",
+      "β-oxidación de ácidos grasos",
+      "Sistema de fosfágenos (ATP + fosfocreatina)",
+      "Ciclo de Krebs"
+    ],
+    correct: 2
+  },
+  {
+    q: "La mayor eficiencia mecánica de la contracción excéntrica se debe a que:",
+    opts: [
+      "Consume más ATP por unidad de fuerza",
+      "Recluta más fibras musculares",
+      "Requiere menos ATP por unidad de fuerza generada",
+      "No utiliza puentes cruzados"
+    ],
+    correct: 2
+  },
+  {
+    q: "En un arabesque mantenido, el temblor muscular que aparece tras unos segundos se debe a:",
+    opts: [
+      "Agotamiento total del ATP",
+      "Reclutamiento y desreclutamiento asíncrono de UM motoras por fatiga",
+      "Rotura de fibras musculares",
+      "Falta de calcio en el retículo sarcoplásmico"
+    ],
+    correct: 1
+  }
+];
+
+function renderQuiz() {
+  const cont = document.getElementById('quizContainer');
+  cont.innerHTML = '';
+  quizData.forEach((item, qi) => {
+    let html = `<div class="question-box"><p>${qi+1}. ${item.q}</p><div class="options">`;
+    item.opts.forEach((opt, oi) => {
+      html += `<label><input type="radio" name="q${qi}" value="${oi}"> ${opt}</label>`;
+    });
+    html += `</div></div>`;
+    cont.innerHTML += html;
+  });
+}
+renderQuiz();
+
+function checkQuiz() {
+  let score = 0;
+  quizData.forEach((item, qi) => {
+    const sel = document.querySelector(`input[name="q${qi}"]:checked`);
+    const labels = document.querySelectorAll(`input[name="q${qi}"]`);
+    labels.forEach(l => l.parentElement.classList.remove('correct','incorrect'));
+    if (sel) {
+      const val = parseInt(sel.value);
+      if (val === item.correct) {
+        sel.parentElement.classList.add('correct');
+        score++;
+      } else {
+        sel.parentElement.classList.add('incorrect');
+        labels[item.correct].parentElement.classList.add('correct');
+      }
+    } else {
+      labels[item.correct].parentElement.classList.add('correct');
+    }
+  });
+  const fb = document.getElementById('fbQuiz');
+  fb.classList.add('show');
+  if (score === quizData.length) {
+    fb.className = 'feedback show success';
+    fb.innerHTML = `🏆 ¡Excelente! ${score}/${quizData.length}. Dominas la fisiología de la contracción.`;
+  } else if (score >= 7) {
+    fb.className = 'feedback show info';
+    fb.innerHTML = `👍 Muy bien: ${score}/${quizData.length}. Repasa los conceptos fallados.`;
+  } else {
+    fb.className = 'feedback show error';
+    fb.innerHTML = `📚 ${score}/${quizData.length}. Revisa las diapositivas de fisiología.`;
+  }
+}
+
+function resetQuiz() {
+  document.querySelectorAll('#quizContainer input').forEach(i => { i.checked = false; i.parentElement.classList.remove('correct','incorrect'); });
+  document.getElementById('fbQuiz').classList.remove('show');
+}
+</script>
+</body>
+</html>

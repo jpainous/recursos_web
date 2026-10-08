@@ -1,0 +1,1378 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title data-i18n="titol_pagina">📖 Manual · Biblioteca Curricular</title>
+<style>
+:root{
+  --pri:#667eea; --pri2:#764ba2; --oro:#b8912f; --crema:#f7f5fb;
+  --tinta:#2a2530; --gris:#6b6570; --bord:#e0d8ea; --card:#fff;
+  --verd:#2e7d4f; --blau:#1f5f8b; --taronja:#c05621; --vermell:#a52834;
+  --grisc:#7a8288;
+  --codi-bg:#f4f1f8; --codi-txt:#5f3d8a;
+  --preceptiu-bg:#d4edda; --preceptiu-tx:#155724;
+  --transversal-bg:#cfe2ff; --transversal-tx:#084298;
+  --optatiu-bg:#fff3cd; --optatiu-tx:#856404;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--crema);color:var(--tinta);line-height:1.6}
+h1,h2,h3,h4{font-family:Georgia,"Times New Roman",serif;color:var(--pri)}
+h1{font-size:2.1em;margin:0 0 .3em}
+h2{font-size:1.5em;margin:2em 0 .6em;border-bottom:2px solid var(--bord);padding-bottom:.3em}
+h3{font-size:1.15em;margin:1.5em 0 .4em;color:var(--pri2)}
+h4{font-size:1em;margin:1.2em 0 .3em}
+p{margin:.6em 0}
+a{color:var(--pri2);text-decoration:none;border-bottom:1px dotted var(--pri2)}
+a:hover{border-bottom-style:solid}
+
+/* Layout */
+.topbar{position:sticky;top:0;z-index:50;background:linear-gradient(135deg,var(--pri) 0%,var(--pri2) 100%);color:#fff;padding:.7rem 1.2rem;display:flex;gap:1rem;align-items:center;flex-wrap:wrap;box-shadow:0 2px 10px rgba(0,0,0,.25)}
+.topbar .brand{font-family:Georgia,serif;font-size:1.1rem;font-weight:bold}
+.topbar .brand small{opacity:.8;display:block;font-size:.72rem;font-weight:normal}
+.topbar .lang{margin-left:auto;display:flex;gap:.3rem}
+.topbar .lang button{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.35);color:#fff;padding:.3rem .7rem;border-radius:20px;cursor:pointer;font-weight:600;font-size:.85rem}
+.topbar .lang button.on{background:#fff;color:var(--pri)}
+
+.layout{display:grid;grid-template-columns:260px 1fr;gap:1.5rem;max-width:1200px;margin:1.5rem auto;padding:0 1.2rem}
+nav{position:sticky;top:80px;align-self:start;background:var(--card);border:1px solid var(--bord);border-radius:12px;padding:1rem;max-height:calc(100vh - 110px);overflow:auto}
+nav .navtitle{display:block;padding:.3rem .5rem;color:var(--pri);font-size:.8rem;text-transform:uppercase;letter-spacing:.5px;font-weight:700}
+nav a{display:block;padding:.4rem .5rem;color:var(--tinta);text-decoration:none;border-radius:8px;font-size:.9rem;border:none}
+nav a:hover{background:#f1ecf7}
+nav a.on{background:var(--pri);color:#fff}
+nav .sub{padding-left:1.2rem;font-size:.85rem;opacity:.8}
+main{min-width:0}
+section.card{background:var(--card);border:1px solid var(--bord);border-radius:14px;padding:1.5rem 1.8rem;margin-bottom:1.5rem;box-shadow:0 1px 4px rgba(0,0,0,.05)}
+section.card > h2:first-child{margin-top:0}
+
+/* Blocs */
+.box{border-radius:10px;padding:1rem 1.2rem;margin:1rem 0;font-size:.95em}
+.box.note{background:#fdf6e7;border-left:4px solid var(--oro)}
+.box.info{background:#e7f3ff;border-left:4px solid var(--blau)}
+.box.ok{background:#e7f0ea;border-left:4px solid var(--verd)}
+.box.warn{background:#fdeaea;border-left:4px solid var(--vermell)}
+.box .title{font-weight:700;display:block;margin-bottom:.3rem}
+
+/* Taules */
+table{width:100%;border-collapse:collapse;margin:1rem 0;font-size:.9rem}
+th{background:var(--pri);color:#fff;text-align:left;padding:.55rem .7rem;font-weight:600}
+td{border:1px solid var(--bord);padding:.55rem .7rem;vertical-align:top}
+tbody tr:nth-child(even){background:#f9f6fc}
+td code, p code, li code{background:var(--codi-bg);color:var(--codi-txt);padding:.1rem .35rem;border-radius:4px;font-size:.88em;font-family:'Courier New',monospace}
+
+/* Steps */
+.step{display:grid;grid-template-columns:44px 1fr;gap:1rem;margin:1.4rem 0;align-items:start}
+.step-num{width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,var(--pri) 0%,var(--pri2) 100%);color:#fff;font-weight:700;font-size:1.15rem;display:flex;align-items:center;justify-content:center;box-shadow:0 3px 8px rgba(102,126,234,.3)}
+.step-body h3{margin-top:0}
+
+/* Llistes amb check */
+ul.check{list-style:none;padding-left:0}
+ul.check li{padding-left:1.7rem;position:relative;margin:.3rem 0}
+ul.check li::before{content:'✓';position:absolute;left:0;top:0;color:var(--verd);font-weight:bold;font-size:1.1em}
+
+/* Badges */
+.badge{display:inline-block;font-size:.72rem;font-weight:700;padding:.15rem .55rem;border-radius:10px;vertical-align:middle;white-space:nowrap}
+.b-preceptiu{background:var(--preceptiu-bg);color:var(--preceptiu-tx)}
+.b-transversal{background:var(--transversal-bg);color:var(--transversal-tx)}
+.b-optatiu{background:var(--optatiu-bg);color:var(--optatiu-tx)}
+.b-dev{background:var(--verd);color:#fff}
+.b-pend{background:var(--grisc);color:#fff}
+
+/* Diagrama panells */
+.panels{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:1rem;
+  margin:1.5rem 0;
+}
+.panel-card{
+  background:#fff;
+  border:2px solid var(--bord);
+  border-radius:12px;
+  padding:1rem;
+  text-align:center;
+  transition:all .2s;
+}
+.panel-card:hover{transform:translateY(-3px);box-shadow:0 6px 20px rgba(102,126,234,.15);border-color:var(--pri)}
+.panel-card .num{
+  display:inline-block;
+  background:linear-gradient(135deg,var(--pri) 0%,var(--pri2) 100%);
+  color:#fff;
+  width:36px;height:36px;line-height:36px;
+  border-radius:50%;
+  font-weight:700;
+  margin-bottom:.5rem;
+}
+.panel-card h4{margin:.3rem 0;color:var(--pri);font-size:1rem}
+.panel-card p{font-size:.85em;color:#666;margin:0}
+
+/* Flux de treball */
+.flow{
+  display:flex;gap:.6rem;flex-wrap:wrap;
+  align-items:center;justify-content:center;
+  padding:1.2rem;background:#f9f6fc;
+  border-radius:12px;border:1px dashed var(--bord);
+  margin:1rem 0;
+}
+.flow .node{
+  background:#fff;border:2px solid var(--pri);
+  border-radius:10px;padding:.6rem 1rem;
+  font-weight:600;font-size:.9rem;color:var(--pri);
+  box-shadow:0 2px 6px rgba(0,0,0,.06);
+  text-align:center;
+}
+.flow .node.final{background:var(--pri);color:#fff}
+.flow .arrow{color:var(--pri);font-size:1.4rem;font-weight:bold}
+.flow .sub{display:block;font-size:.72rem;font-weight:normal;opacity:.7;margin-top:.15rem}
+
+/* Simulació visual de la interfície */
+.sim{
+  display:grid;
+  grid-template-columns:1fr 1.5fr 1.2fr;
+  gap:.4rem;
+  background:#f0f2f5;
+  border-radius:12px;
+  padding:.8rem;
+  margin:1rem 0;
+  border:2px solid var(--bord);
+  min-height:180px;
+}
+.sim .col{background:#fff;border-radius:8px;padding:.6rem;font-size:.75em;color:#555;border:1px solid var(--bord)}
+.sim .col-title{font-weight:700;color:var(--pri);font-size:.85em;margin-bottom:.4rem;border-bottom:1px solid var(--bord);padding-bottom:.2rem}
+.sim .item{padding:.3rem .5rem;margin-bottom:.25rem;border-radius:6px;background:#f8f9fa;border-left:3px solid var(--pri)}
+.sim .item.active{background:linear-gradient(135deg,var(--pri),var(--pri2));color:#fff;border-left-color:transparent}
+.sim .item.disabled{opacity:.5;background:#f1f3f5;border-left-color:var(--grisc)}
+.sim .elem{border:1px solid var(--bord);border-radius:6px;padding:.4rem .5rem;margin-bottom:.3rem;font-size:.72em}
+.sim .elem.sel{border-color:var(--verd);background:#f0fdf4}
+
+/* Footer */
+footer{
+  text-align:center;padding:2rem 1rem;color:var(--gris);
+  font-size:.88rem;border-top:1px solid var(--bord);
+  margin-top:2rem;
+}
+
+/* Responsive */
+@media(max-width:900px){
+  .layout{grid-template-columns:1fr}
+  nav{position:static;max-height:none}
+  .panels{grid-template-columns:1fr}
+  .flow{flex-direction:column}
+  .flow .arrow{transform:rotate(90deg)}
+  .sim{grid-template-columns:1fr}
+}
+
+/* Print */
+@media print{
+  .topbar,nav,footer{display:none!important}
+  .layout{display:block;max-width:none;margin:0;padding:0}
+  section.card{border:none;box-shadow:none;page-break-inside:avoid;padding:.5rem 0}
+  body{background:#fff}
+  h2{page-break-after:avoid}
+}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand">📖 <span data-i18n="brand">Manual d'ús</span> <small data-i18n="brand_sub">Biblioteca Curricular</small></div>
+  <div class="lang" id="langBox">
+    <button type="button" data-lang="ca" class="on">CA</button>
+    <button type="button" data-lang="es">ES</button>
+    <button type="button" data-lang="en">EN</button>
+  </div>
+</header>
+
+<div class="layout">
+  <nav id="nav">
+    <strong class="navtitle" data-i18n="nav_title">Índex</strong>
+    <a href="#intro" data-i18n="nav_intro">1. Què és</a>
+    <a href="#perque" data-i18n="nav_perque">2. Per a què serveix</a>
+    <a href="#interficie" data-i18n="nav_interficie">3. La interfície</a>
+    <a href="#arees" data-i18n="nav_arees">4. Àrees / Matèries</a>
+    <a href="#tipus" data-i18n="nav_tipus">5. Tipus d'elements</a>
+    <a href="#us" data-i18n="nav_us">6. Com fer-la servir</a>
+    <a href="#sortida" data-i18n="nav_sortida">7. El llistat generat</a>
+    <a href="#copiar" data-i18n="nav_copiar">8. Copiar i portar</a>
+    <a href="#backup" data-i18n="nav_backup">9. Guardar i exportar</a>
+    <a href="#cas" data-i18n="nav_cas">10. Exemple pràctic</a>
+    <a href="#limits" data-i18n="nav_limits">11. Límits actuals</a>
+    <a href="#faq" data-i18n="nav_faq">12. Preguntes freqüents</a>
+  </nav>
+
+  <main>
+
+    <!-- 1. QUÈ ÉS -->
+    <section class="card" id="intro">
+      <h1 data-i18n="h1">📖 Manual d'ús</h1>
+      <p style="font-size:1.1em;color:var(--gris)" data-i18n="sub_h1">Biblioteca Curricular · Selecciona, combina i trasllada continguts</p>
+
+      <h2 data-i18n="s1_t">1. Què és</h2>
+      <p data-i18n="s1_p1"></p>
+
+      <div class="box info">
+        <span class="title" data-i18n="s1_box_title">💡 En una frase</span>
+        <span data-i18n="s1_box_txt"></span>
+      </div>
+
+      <h3 data-i18n="s1_req">Què necessites</h3>
+      <ul class="check">
+        <li data-i18n="s1_req1"></li>
+        <li data-i18n="s1_req2"></li>
+        <li data-i18n="s1_req3"></li>
+      </ul>
+
+      <div class="box note">
+        <span class="title" data-i18n="s1_note_title">💡 No cal Internet</span>
+        <span data-i18n="s1_note_txt"></span>
+      </div>
+    </section>
+
+    <!-- 2. PER A QUÈ SERVEIX -->
+    <section class="card" id="perque">
+      <h2 data-i18n="s2_t">2. Per a què serveix</h2>
+      <p data-i18n="s2_p1"></p>
+
+      <h3 data-i18n="s2_bene">Beneficis principals</h3>
+      <ul class="check">
+        <li data-i18n="s2_b1"></li>
+        <li data-i18n="s2_b2"></li>
+        <li data-i18n="s2_b3"></li>
+        <li data-i18n="s2_b4"></li>
+        <li data-i18n="s2_b5"></li>
+      </ul>
+
+      <div class="box ok">
+        <span class="title" data-i18n="s2_ok_title">🎯 Resultat</span>
+        <span data-i18n="s2_ok_txt"></span>
+      </div>
+    </section>
+
+    <!-- 3. LA INTERFÍCIE -->
+    <section class="card" id="interficie">
+      <h2 data-i18n="s3_t">3. La interfície</h2>
+      <p data-i18n="s3_p1"></p>
+
+      <div class="panels">
+        <div class="panel-card">
+          <span class="num">1</span>
+          <h4 data-i18n="s3_p1t">Àrees</h4>
+          <p data-i18n="s3_p1d">On tries la matèria o àrea de coneixement.</p>
+        </div>
+        <div class="panel-card">
+          <span class="num">2</span>
+          <h4 data-i18n="s3_p2t">Elements</h4>
+          <p data-i18n="s3_p2d">On navegues i selecciones continguts (competències, objectius...).</p>
+        </div>
+        <div class="panel-card">
+          <span class="num">3</span>
+          <h4 data-i18n="s3_p3t">Sortida</h4>
+          <p data-i18n="s3_p3d">On veus el llistat final i el pots copiar.</p>
+        </div>
+      </div>
+
+      <h3 data-i18n="s3_sim">Aspecte visual (simulat)</h3>
+      <div class="sim">
+        <div class="col">
+          <div class="col-title" data-i18n="s3_sim_areas">📚 Àrees</div>
+          <div class="item active" data-i18n="s3_sim_a1">🫀 Fisiologia</div>
+          <div class="item disabled" data-i18n="s3_sim_a2">🩰 Dansa clàssica</div>
+          <div class="item disabled" data-i18n="s3_sim_a3">🎵 Música</div>
+        </div>
+        <div class="col">
+          <div class="col-title" data-i18n="s3_sim_elem">🎯 Elements</div>
+          <div class="elem sel" data-i18n="s3_sim_e1">CG3 · Coneixement integral del cos humà</div>
+          <div class="elem" data-i18n="s3_sim_e2">CECI 3 · Anatomia, fisiologia i biomecànica</div>
+          <div class="elem" data-i18n="s3_sim_e3">C1 · Estructura i bases funcionals</div>
+        </div>
+        <div class="col">
+          <div class="col-title" data-i18n="s3_sim_out">📋 Llistat</div>
+          <div class="elem" data-i18n="s3_sim_o1">🎯 COMPETÈNCIES</div>
+          <div class="elem" data-i18n="s3_sim_o2">📋 CG3: Coneixement integral...</div>
+          <div class="elem" data-i18n="s3_sim_o3">📋 CECI 3: Anatomia, fisiologia...</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. ÀREES -->
+    <section class="card" id="arees">
+      <h2 data-i18n="s4_t">4. Àrees / Matèries</h2>
+      <p data-i18n="s4_p1"></p>
+
+      <table>
+        <thead>
+          <tr>
+            <th data-i18n="s4_th1">Àrea</th>
+            <th data-i18n="s4_th2">Estat</th>
+            <th data-i18n="s4_th3">Descripció</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>🫀 <span data-i18n="s4_a1">Fisiologia aplicada a la dansa</span></td>
+            <td><span class="badge b-dev" data-i18n="s4_dev">Actiu</span></td>
+            <td data-i18n="s4_d1"></td>
+          </tr>
+          <tr>
+            <td>🩰 <span data-i18n="s4_a2">Dansa clàssica</span></td>
+            <td><span class="badge b-pend" data-i18n="s4_pend">Properament</span></td>
+            <td data-i18n="s4_d2"></td>
+          </tr>
+          <tr>
+            <td>💃 <span data-i18n="s4_a3">Dansa contemporània</span></td>
+            <td><span class="badge b-pend" data-i18n="s4_pend">Properament</span></td>
+            <td data-i18n="s4_d3"></td>
+          </tr>
+          <tr>
+            <td>🎵 <span data-i18n="s4_a4">Música</span></td>
+            <td><span class="badge b-pend" data-i18n="s4_pend">Properament</span></td>
+            <td data-i18n="s4_d4"></td>
+          </tr>
+          <tr>
+            <td>📜 <span data-i18n="s4_a5">Història de la dansa</span></td>
+            <td><span class="badge b-pend" data-i18n="s4_pend">Properament</span></td>
+            <td data-i18n="s4_d5"></td>
+          </tr>
+          <tr>
+            <td>🎭 <span data-i18n="s4_a6">Repertori</span></td>
+            <td><span class="badge b-pend" data-i18n="s4_pend">Properament</span></td>
+            <td data-i18n="s4_d6"></td>
+          </tr>
+          <tr>
+            <td>🎼 <span data-i18n="s4_a7">Anàlisi musical</span></td>
+            <td><span class="badge b-pend" data-i18n="s4_pend">Properament</span></td>
+            <td data-i18n="s4_d7"></td>
+          </tr>
+          <tr>
+            <td>🤸 <span data-i18n="s4_a8">Expressió corporal</span></td>
+            <td><span class="badge b-pend" data-i18n="s4_pend">Properament</span></td>
+            <td data-i18n="s4_d8"></td>
+          </tr>
+          <tr>
+            <td>💃 <span data-i18n="s4_a9">Dansa espanyola</span></td>
+            <td><span class="badge b-pend" data-i18n="s4_pend">Properament</span></td>
+            <td data-i18n="s4_d9"></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="box note">
+        <span class="title" data-i18n="s4_note_title">💡 Sobre les àrees</span>
+        <span data-i18n="s4_note_txt"></span>
+      </div>
+    </section>
+
+    <!-- 5. TIPUS D'ELEMENTS -->
+    <section class="card" id="tipus">
+      <h2 data-i18n="s5_t">5. Tipus d'elements</h2>
+      <p data-i18n="s5_p1"></p>
+
+      <table>
+        <thead>
+          <tr>
+            <th data-i18n="s5_th1">Pestanya</th>
+            <th data-i18n="s5_th2">Què conté</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>🎯 <span data-i18n="s5_t1">Competències</span></td>
+            <td data-i18n="s5_d1"></td>
+          </tr>
+          <tr>
+            <td>🏆 <span data-i18n="s5_t2">Objectius</span></td>
+            <td data-i18n="s5_d2"></td>
+          </tr>
+          <tr>
+            <td>📖 <span data-i18n="s5_t3">Continguts</span></td>
+            <td data-i18n="s5_d3"></td>
+          </tr>
+          <tr>
+            <td>📝 <span data-i18n="s5_t4">Avaluació</span></td>
+            <td data-i18n="s5_d4"></td>
+          </tr>
+          <tr>
+            <td>🔄 <span data-i18n="s5_t5">Transversals</span></td>
+            <td data-i18n="s5_d5"></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3 data-i18n="s5_estats">Tipus / Estats (filtres)</h3>
+      <p data-i18n="s5_estats_p"></p>
+      <ul>
+        <li><span class="badge b-preceptiu" data-i18n="s5_b1">Preceptiu</span> — <span data-i18n="s5_b1d"></span></li>
+        <li><span class="badge b-transversal" data-i18n="s5_b2">Transversal</span> — <span data-i18n="s5_b2d"></span></li>
+        <li><span class="badge b-optatiu" data-i18n="s5_b3">Optatiu</span> — <span data-i18n="s5_b3d"></span></li>
+      </ul>
+    </section>
+
+    <!-- 6. COM FER-LA SERVIR -->
+    <section class="card" id="us">
+      <h2 data-i18n="s6_t">6. Com fer-la servir</h2>
+      <p data-i18n="s6_p1"></p>
+
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <h3 data-i18n="s6_st1">Tria una àrea</h3>
+          <p data-i18n="s6_st1p"></p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <h3 data-i18n="s6_st2">Navega per les pestanyes</h3>
+          <p data-i18n="s6_st2p"></p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <h3 data-i18n="s6_st3">Filtra si cal</h3>
+          <p data-i18n="s6_st3p"></p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-body">
+          <h3 data-i18n="s6_st4">Selecciona elements</h3>
+          <p data-i18n="s6_st4p"></p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">5</div>
+        <div class="step-body">
+          <h3 data-i18n="s6_st5">Consulta el llistat</h3>
+          <p data-i18n="s6_st5p"></p>
+        </div>
+      </div>
+
+      <div class="box ok">
+        <span class="title" data-i18n="s6_ok_title">✅ Tot automàtic</span>
+        <span data-i18n="s6_ok_txt"></span>
+      </div>
+    </section>
+
+    <!-- 7. EL LLISTAT GENERAT -->
+    <section class="card" id="sortida">
+      <h2 data-i18n="s7_t">7. El llistat generat</h2>
+      <p data-i18n="s7_p1"></p>
+
+      <h3 data-i18n="s7_est">Estructura</h3>
+      <p data-i18n="s7_estp"></p>
+
+      <table>
+        <thead>
+          <tr>
+            <th data-i18n="s7_th1">Secció</th>
+            <th data-i18n="s7_th2">Què mostra</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>🎯 <span data-i18n="s7_s1">Competències</span></td>
+            <td data-i18n="s7_d1"></td>
+          </tr>
+          <tr>
+            <td>🏆 <span data-i18n="s7_s2">Objectius específics</span></td>
+            <td data-i18n="s7_d2"></td>
+          </tr>
+          <tr>
+            <td>📖 <span data-i18n="s7_s3">Continguts</span></td>
+            <td data-i18n="s7_d3"></td>
+          </tr>
+          <tr>
+            <td>📝 <span data-i18n="s7_s4">Criteris d'avaluació</span></td>
+            <td data-i18n="s7_d4"></td>
+          </tr>
+          <tr>
+            <td>🔄 <span data-i18n="s7_s5">Elements transversals</span></td>
+            <td data-i18n="s7_d5"></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3 data-i18n="s7_cont">El comptador</h3>
+      <p data-i18n="s7_contp"></p>
+    </section>
+
+    <!-- 8. COPIAR I PORTAR -->
+    <section class="card" id="copiar">
+      <h2 data-i18n="s8_t">8. Copiar i portar</h2>
+      <p data-i18n="s8_p1"></p>
+
+      <h3 data-i18n="s8_b1">📋 Copiar</h3>
+      <p data-i18n="s8_b1p"></p>
+      <ul>
+        <li data-i18n="s8_b1l1"></li>
+        <li data-i18n="s8_b1l2"></li>
+        <li data-i18n="s8_b1l3"></li>
+      </ul>
+
+      <h3 data-i18n="s8_b2">📝 Copiar Markdown</h3>
+      <p data-i18n="s8_b2p"></p>
+
+      <div class="box info">
+        <span class="title" data-i18n="s8_info_title">💡 On pots enganxar-ho</span>
+        <span data-i18n="s8_info_txt"></span>
+      </div>
+
+      <h3 data-i18n="s8_b3">Destinacions habituals</h3>
+      <table>
+        <thead>
+          <tr>
+            <th data-i18n="s8_dest_th1">On</th>
+            <th data-i18n="s8_dest_th2">Què cal fer</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td data-i18n="s8_dest_r1c1">Programació Didàctica (HTML del generador)</td>
+            <td data-i18n="s8_dest_r1c2"></td>
+          </tr>
+          <tr>
+            <td data-i18n="s8_dest_r2c1">Word / Google Docs</td>
+            <td data-i18n="s8_dest_r2c2"></td>
+          </tr>
+          <tr>
+            <td data-i18n="s8_dest_r3c1">Notion / Obsidian / Logseq</td>
+            <td data-i18n="s8_dest_r3c2"></td>
+          </tr>
+          <tr>
+            <td data-i18n="s8_dest_r4c1">Moodle / Classroom</td>
+            <td data-i18n="s8_dest_r4c2"></td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- 9. GUARDAR I EXPORTAR -->
+    <section class="card" id="backup">
+      <h2 data-i18n="s9_t">9. Guardar i exportar</h2>
+      <p data-i18n="s9_p1"></p>
+
+      <h3 data-i18n="s9_auto">Guardat automàtic</h3>
+      <p data-i18n="s9_autop"></p>
+
+      <h3 data-i18n="s9_bts">Botons de còpia</h3>
+      <table>
+        <thead>
+          <tr>
+            <th data-i18n="s9_th1">Botó</th>
+            <th data-i18n="s9_th2">Què fa</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>📥 <span data-i18n="s9_b1">Exportar selecció</span></td>
+            <td data-i18n="s9_b1d"></td>
+          </tr>
+          <tr>
+            <td>📤 <span data-i18n="s9_b2">Importar selecció</span></td>
+            <td data-i18n="s9_b2d"></td>
+          </tr>
+          <tr>
+            <td>🗑️ <span data-i18n="s9_b3">Netejar tot</span></td>
+            <td data-i18n="s9_b3d"></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="box warn">
+        <span class="title" data-i18n="s9_warn_title">⚠️ Important</span>
+        <span data-i18n="s9_warn_txt"></span>
+      </div>
+    </section>
+
+    <!-- 10. EXEMPLE PRÀCTIC -->
+    <section class="card" id="cas">
+      <h2 data-i18n="s10_t">10. Exemple pràctic</h2>
+      <p data-i18n="s10_p1"></p>
+
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <h3 data-i18n="s10_e1">Necessito preparar la programació de Fisiologia</h3>
+          <p data-i18n="s10_e1p"></p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <h3 data-i18n="s10_e2">Obro la Biblioteca Curricular</h3>
+          <p data-i18n="s10_e2p"></p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <h3 data-i18n="s10_e3">Selecciono el que m'interessa</h3>
+          <p data-i18n="s10_e3p"></p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-body">
+          <h3 data-i18n="s10_e4">Copia i enganxa</h3>
+          <p data-i18n="s10_e4p"></p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">5</div>
+        <div class="step-body">
+          <h3 data-i18n="s10_e5">Adapto i completo</h3>
+          <p data-i18n="s10_e5p"></p>
+        </div>
+      </div>
+
+      <div class="box ok">
+        <span class="title" data-i18n="s10_ok_title">🎉 Resultat</span>
+        <span data-i18n="s10_ok_txt"></span>
+      </div>
+    </section>
+
+    <!-- 11. LÍMITS ACTUALS -->
+    <section class="card" id="limits">
+      <h2 data-i18n="s11_t">11. Límits actuals</h2>
+      <p data-i18n="s11_p1"></p>
+
+      <table>
+        <thead>
+          <tr>
+            <th data-i18n="s11_th1">Límit</th>
+            <th data-i18n="s11_th2">Detall</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td data-i18n="s11_l1">Només Fisiologia activa</td>
+            <td data-i18n="s11_l1d"></td>
+          </tr>
+          <tr>
+            <td data-i18n="s11_l2">Sense edició de continguts</td>
+            <td data-i18n="s11_l2d"></td>
+          </tr>
+          <tr>
+            <td data-i18n="s11_l3">Dades al navegador</td>
+            <td data-i18n="s11_l3d"></td>
+          </tr>
+          <tr>
+            <td data-i18n="s11_l4">Sense sincronització</td>
+            <td data-i18n="s11_l4d"></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="box info">
+        <span class="title" data-i18n="s11_info_title">🚀 Properes fases</span>
+        <span data-i18n="s11_info_txt"></span>
+      </div>
+    </section>
+
+    <!-- 12. FAQ -->
+    <section class="card" id="faq">
+      <h2 data-i18n="s12_t">12. Preguntes freqüents</h2>
+
+      <h4 data-i18n="q1">Puc fer-la servir sense Internet?</h4>
+      <p data-i18n="a1"></p>
+
+      <h4 data-i18n="q2">Les meves seleccions es guarden soles?</h4>
+      <p data-i18n="a2"></p>
+
+      <h4 data-i18n="q3">Puc tenir diverses assignatures alhora?</h4>
+      <p data-i18n="a3"></p>
+
+      <h4 data-i18n="q4">Què passa si tanco la finestra?</h4>
+      <p data-i18n="a4"></p>
+
+      <h4 data-i18n="q5">Puc editar els continguts de la biblioteca?</h4>
+      <p data-i18n="a5"></p>
+
+      <h4 data-i18n="q6">Per què algunes àrees surten en gris?</h4>
+      <p data-i18n="a6"></p>
+
+      <h4 data-i18n="q7">Què és el "Markdown"?</h4>
+      <p data-i18n="a7"></p>
+
+      <h4 data-i18n="q8">Puc exportar la selecció per portar-la a un company?</h4>
+      <p data-i18n="a8"></p>
+
+      <h4 data-i18n="q9">El canvi d'idioma afecta el meu contingut?</h4>
+      <p data-i18n="a9"></p>
+
+      <h4 data-i18n="q10">Es pot fer servir en mòbil o tauleta?</h4>
+      <p data-i18n="a10"></p>
+    </section>
+
+  </main>
+</div>
+
+<footer>
+  <p data-i18n="footer1">📖 Manual d'ús · Biblioteca Curricular</p>
+  <p style="font-size:.85em;opacity:.7" data-i18n="footer2">Eina de suport per a la programació didàctica · Curs 2026-2027</p>
+</footer>
+
+<script>
+// ==========================================
+// DICCIONARI COMPLET (CA / ES / EN)
+// ==========================================
+const DIC = {
+ca:{
+ titol_pagina:"📖 Manual · Biblioteca Curricular",
+ brand:"Manual d'ús", brand_sub:"Biblioteca Curricular",
+ nav_title:"Índex",
+ nav_intro:"1. Què és", nav_perque:"2. Per a què serveix", nav_interficie:"3. La interfície",
+ nav_arees:"4. Àrees / Matèries", nav_tipus:"5. Tipus d'elements", nav_us:"6. Com fer-la servir",
+ nav_sortida:"7. El llistat generat", nav_copiar:"8. Copiar i portar", nav_backup:"9. Guardar i exportar",
+ nav_cas:"10. Exemple pràctic", nav_limits:"11. Límits actuals", nav_faq:"12. Preguntes freqüents",
+
+ h1:"📖 Manual d'ús",
+ sub_h1:"Biblioteca Curricular · Selecciona, combina i trasllada continguts",
+
+ s1_t:"1. Què és",
+ s1_p1:"La Biblioteca Curricular és una eina web que et permet explorar, seleccionar i exportar els elements curriculars oficials d'una assignatura (competències, objectius, continguts, criteris d'avaluació i elements transversals) per incorporar-los a la teva programació didàctica.",
+ s1_box_title:"💡 En una frase",
+ s1_box_txt:"És una safata de continguts que t'estalvia copiar i enganxar d'un document PDF cada cop que fas una programació.",
+ s1_req:"Què necessites",
+ s1_req1:"Un navegador modern (Chrome, Firefox, Edge, Safari)",
+ s1_req2:"Saber quina assignatura vols programar",
+ s1_req3:"Opcional: tenir clar el perfil de l'alumnat per triar elements",
+ s1_note_title:"💡 No cal Internet",
+ s1_note_txt:"El fitxer és HTML autocontingut: un cop descarregat, funciona amb doble clic, sense connexió, guardant les dades al navegador.",
+
+ s2_t:"2. Per a què serveix",
+ s2_p1:"Serveix per fer **programacions didàctiques** sense haver de buscar, copiar i enganxar manualment tots els elements curriculars oficials. Reuneix en un sol lloc els continguts que habitualment estan dispersos en PDFs del pla docent.",
+ s2_bene:"Beneficis principals",
+ s2_b1:"Explorar ràpidament tots els elements curriculars oficials.",
+ s2_b2:"Seleccionar el que necessites amb un clic.",
+ s2_b3:"Filtrar per tipus (preceptiu, transversal, optatiu) i per categoria.",
+ s2_b4:"Copiar el llistat en text pla o Markdown, a punt per enganxar.",
+ s2_b5:"Guardar la selecció per a futures reutilitzacions o compartir amb companys.",
+ s2_ok_title:"🎯 Resultat",
+ s2_ok_txt:"Una programació didàctica feta amb els elements oficials alineats, en minuts en comptes d'hores, i sense oblidar-te res.",
+
+ s3_t:"3. La interfície",
+ s3_p1:"La pantalla es divideix en 3 panells que treballen junts:",
+ s3_p1t:"Àrees", s3_p1d:"On tries la matèria o àrea de coneixement.",
+ s3_p2t:"Elements", s3_p2d:"On navegues i selecciones continguts (competències, objectius...).",
+ s3_p3t:"Sortida", s3_p3d:"On veus el llistat final i el pots copiar.",
+ s3_sim:"Aspecte visual (simulat)",
+ s3_sim_areas:"📚 Àrees",
+ s3_sim_a1:"🫀 Fisiologia",
+ s3_sim_a2:"🩰 Dansa clàssica",
+ s3_sim_a3:"🎵 Música",
+ s3_sim_elem:"🎯 Elements",
+ s3_sim_e1:"CG3 · Coneixement integral del cos humà",
+ s3_sim_e2:"CECI 3 · Anatomia, fisiologia i biomecànica",
+ s3_sim_e3:"C1 · Estructura i bases funcionals",
+ s3_sim_out:"📋 Llistat",
+ s3_sim_o1:"🎯 COMPETÈNCIES",
+ s3_sim_o2:"📋 CG3: Coneixement integral...",
+ s3_sim_o3:"📋 CECI 3: Anatomia, fisiologia...",
+
+ s4_t:"4. Àrees / Matèries",
+ s4_p1:"El panell esquerre llista totes les àrees disponibles. Cada àrea mostra una icona, el nom i una etiqueta d'estat:",
+ s4_th1:"Àrea", s4_th2:"Estat", s4_th3:"Descripció",
+ s4_dev:"Actiu", s4_pend:"Properament",
+ s4_a1:"Fisiologia aplicada a la dansa",
+ s4_d1:"Àrea completa: competències, objectius, continguts, criteris d'avaluació i elements transversals.",
+ s4_a2:"Dansa clàssica", s4_d2:"Properament inclourà el currículum oficial d'aquesta matèria.",
+ s4_a3:"Dansa contemporània", s4_d3:"Properament inclourà el currículum oficial d'aquesta matèria.",
+ s4_a4:"Música", s4_d4:"Properament inclourà el currículum oficial d'aquesta matèria.",
+ s4_a5:"Història de la dansa", s4_d5:"Properament inclourà el currículum oficial d'aquesta matèria.",
+ s4_a6:"Repertori", s4_d6:"Properament inclourà el currículum oficial d'aquesta matèria.",
+ s4_a7:"Anàlisi musical", s4_d7:"Properament inclourà el currículum oficial d'aquesta matèria.",
+ s4_a8:"Expressió corporal", s4_d8:"Properament inclourà el currículum oficial d'aquesta matèria.",
+ s4_a9:"Dansa espanyola", s4_d9:"Properament inclourà el currículum oficial d'aquesta matèria.",
+ s4_note_title:"💡 Sobre les àrees",
+ s4_note_txt:"Actualment només Fisiologia aplicada a la dansa està activa. Les altres àrees estan preparades però encara no tenen els continguts carregats. Es podran afegir en fases següents.",
+
+ s5_t:"5. Tipus d'elements",
+ s5_p1:"Un cop triada una àrea, el panell central mostra els elements en 5 pestanyes:",
+ s5_th1:"Pestanya", s5_th2:"Què conté",
+ s5_t1:"Competències", s5_d1:"Les competències generals i específiques que l'alumnat ha d'assolir.",
+ s5_t2:"Objectius", s5_d2:"Els objectius d'aprenentatge classificats per àmbit (coneixements, habilitats, actituds).",
+ s5_t3:"Continguts", s5_d3:"Els continguts temàtics de l'assignatura (unitats, temes, blocs).",
+ s5_t4:"Avaluació", s5_d4:"Els criteris d'avaluació, amb indicació de l'instrument i els objectius vinculats.",
+ s5_t5:"Transversals", s5_d5:"Els elements comuns a totes les àrees (pensament crític, salut, digital...).",
+ s5_estats:"Tipus / Estats (filtres)",
+ s5_estats_p:"Cada element té un estat que pots filtrar amb els botons de sobre el llistat:",
+ s5_b1:"Preceptiu", s5_b1d:"Element obligatori, forma part del nucli formatiu.",
+ s5_b2:"Transversal", s5_b2d:"Element comú que es treballa des de totes les matèries.",
+ s5_b3:"Optatiu", s5_b3d:"Element complementari, es pot triar segons l'èmfasi del curs.",
+
+ s6_t:"6. Com fer-la servir",
+ s6_p1:"El flux és molt senzill: 5 passos de menys de 10 minuts en total.",
+ s6_st1:"Tria una àrea",
+ s6_st1p:"Al panell esquerre, clica una de les àrees actives (les que no estan en gris). Actualment només Fisiologia està activa.",
+ s6_st2:"Navega per les pestanyes",
+ s6_st2p:"Al panell central, clica les pestanyes per veure competències, objectius, continguts, avaluació o transversals.",
+ s6_st3:"Filtra si cal",
+ s6_st3p:"Si vols veure només els elements d'un tipus, clica els botons de filtre (Tots / Preceptius / Transversals / Optatius).",
+ s6_st4:"Selecciona elements",
+ s6_st4p:"Fes clic a qualsevol element per marcar-lo. Es tornarà verd i apareixerà al llistat del panell dret.",
+ s6_st5:"Consulta el llistat",
+ s6_st5p:"Al panell dret veuràs tots els elements seleccionats agrupats per tipus, a punt per copiar.",
+ s6_ok_title:"✅ Tot automàtic",
+ s6_ok_txt:"No cal prémer cap botó de guardar. Cada clic es guarda sol al navegador. Si tanques la pàgina i la tornes a obrir, tot hi serà.",
+
+ s7_t:"7. El llistat generat",
+ s7_p1:"Al panell dret (o inferior, si estàs en mòbil) veuràs el llistat dels elements seleccionats, organitzat per categories:",
+ s7_est:"Estructura",
+ s7_estp:"El llistat sempre apareix en aquest ordre:",
+ s7_th1:"Secció", s7_th2:"Què mostra",
+ s7_s1:"Competències", s7_d1:"Codi i títol de cada competència seleccionada.",
+ s7_s2:"Objectius específics", s7_d2:"Codi i títol de cada objectiu seleccionat.",
+ s7_s3:"Continguts", s7_d3:"Codi i títol de cada contingut seleccionat.",
+ s7_s4:"Criteris d'avaluació", s7_d4:"Codi, títol, instrument i objectius vinculats.",
+ s7_s5:"Elements transversals", s7_d5:"Codi i títol de cada element transversal.",
+ s7_cont:"El comptador",
+ s7_contp:"A la part superior del panell dret veuràs un comptador amb el total d'elements seleccionats. Serveix per saber d'un cop d'ull quant contingut portaràs a la teva programació.",
+
+ s8_t:"8. Copiar i portar",
+ s8_p1:"Un cop tens la selecció feta, pots exportar-la a text per enganxar-la allà on necessitis.",
+ s8_b1:"📋 Copiar",
+ s8_b1p:"Copia el llistat en text pla, amb guions i indentació. Ideal per enganxar a:",
+ s8_b1l1:"El camp de text d'un document de programació.",
+ s8_b1l2:"Un processador de textos (Word, Docs).",
+ s8_b1l3:"Un correu electrònic o un xat.",
+ s8_b2:"📝 Copiar Markdown",
+ s8_b2p:"Copia el llistat en format Markdown (##, -, **). Ideal per a editors que el reconeguin (Notion, Obsidian, GitHub, etc.).",
+ s8_info_title:"💡 On pots enganxar-ho",
+ s8_info_txt:"Un cop copiat, pots enganxar-ho directament al camp de text de la Programació Didàctica que has creat amb el generador, o a qualsevol document que accepti text.",
+ s8_b3:"Destinacions habituals",
+ s8_dest_th1:"On", s8_dest_th2:"Què cal fer",
+ s8_dest_r1c1:"Programació Didàctica (HTML del generador)", s8_dest_r1c2:"Entra en mode edició i enganxa el text a la secció que correspongui (competències, continguts, avaluació...).",
+ s8_dest_r2c1:"Word / Google Docs", s8_dest_r2c2:"Enganxa directament. Potser caldrà ajustar l'estil de les llistes.",
+ s8_dest_r3c1:"Notion / Obsidian / Logseq", s8_dest_r3c2:"Enganxa el format Markdown: es convertirà automàticament en llistes i títols.",
+ s8_dest_r4c1:"Moodle / Classroom", s8_dest_r4c2:"Enganxa-ho al camp de descripció o crea una pàgina amb el contingut.",
+
+ s9_t:"9. Guardar i exportar",
+ s9_p1:"La Biblioteca Curricular guarda automàticament el teu estat, però també pots fer còpies manuals.",
+ s9_auto:"Guardat automàtic",
+ s9_autop:"Cada cop que selecciones o deselecciones un element, l'estat es guarda sol al navegador. No cal fer res. Si tanques la finestra i la tornes a obrir, tot hi serà.",
+ s9_bts:"Botons de còpia",
+ s9_th1:"Botó", s9_th2:"Què fa",
+ s9_b1:"Exportar selecció", s9_b1d:"Descarrega un fitxer JSON amb l'estat complet de la teva selecció. Serveix per fer còpia o passar-ho a un company.",
+ s9_b2:"Importar selecció", s9_b2d:"Carrega un fitxer JSON exportat prèviament i restaura la selecció.",
+ s9_b3:"Netejar tot", s9_b3d:"Esborra tota la selecció. Cal confirmar perquè no es pot desfer.",
+ s9_warn_title:"⚠️ Important",
+ s9_warn_txt:"Les dades viuen al navegador. Si esborres la caché o canvies d'ordinador, es perdran. Fes servir 'Exportar selecció' periòdicament per tenir una còpia segura.",
+
+ s10_t:"10. Exemple pràctic",
+ s10_p1:"Vegem un cas real: preparar la programació de Fisiologia per al curs 2026-27.",
+ s10_e1:"Necessito preparar la programació de Fisiologia",
+ s10_e1p:"Tinc el pla docent en PDF, però copiar i enganxar tots els elements seria molt feixuc.",
+ s10_e2:"Obro la Biblioteca Curricular",
+ s10_e2p:"Doble clic al fitxer. Veig el panell esquerre amb les àrees i trio Fisiologia.",
+ s10_e3:"Selecciono el que m'interessa",
+ s10_e3p:"Navego per les pestanyes: trio 2 competències, els 7 objectius, els 10 continguts i els criteris d'avaluació que vull avaluar aquest curs. Marco tot el que necessito.",
+ s10_e4:"Copia i enganxa",
+ s10_e4p:"Al panell dret veig la selecció completa. Prem 'Copiar Markdown' i vaig al meu document de programació. Enganxo.",
+ s10_e5:"Adapto i completo",
+ s10_e5p:"Al document de programació ajusto el redactat, hi afegeixo exemples i concrecions pròpies, i ho deixo llest per presentar.",
+ s10_ok_title:"🎉 Resultat",
+ s10_ok_txt:"Una programació completa amb tots els elements oficials alineats, feta en menys de 30 minuts.",
+
+ s11_t:"11. Límits actuals",
+ s11_p1:"Aquesta versió és la Fase A. Té algunes limitacions que es resoldran en fases següents:",
+ s11_th1:"Límit", s11_th2:"Detall",
+ s11_l1:"Només Fisiologia activa",
+ s11_l1d:"La resta d'àrees estan preparades però buides. Es carregaran en fases següents.",
+ s11_l2:"Sense edició de continguts",
+ s11_l2d:"Els elements curriculars són fixos. No es poden modificar des de la interfície (sí exportar-los i adaptar-los fora).",
+ s11_l3:"Dades al navegador",
+ s11_l3d:"La selecció viu al localStorage. Si canvies d'ordinador no et segueix automàticament.",
+ s11_l4:"Sense sincronització",
+ s11_l4d:"No hi ha servidor ni núvol. Les còpies són manuals (Exportar / Importar).",
+ s11_info_title:"🚀 Properes fases",
+ s11_info_txt:"Fase B: afegir més àrees. Fase C: edició de continguts. Fase D: integració amb el generador de programacions perquè la selecció es pugui bolcar automàticament.",
+
+ s12_t:"12. Preguntes freqüents",
+ q1:"Puc fer-la servir sense Internet?",
+ a1:"Sí. El fitxer és HTML autocontingut. Un cop descarregat, funciona amb doble clic des de l'escriptori, sense connexió.",
+ q2:"Les meves seleccions es guarden soles?",
+ a2:"Sí, cada clic es guarda automàticament al navegador. Si tanques la pàgina i la tornes a obrir, tot hi serà.",
+ q3:"Puc tenir diverses assignatures alhora?",
+ a3:"Sí, però la selecció és única. Actualment només Fisiologia està activa, així que no hi ha risc de confusió. Quan hi hagi més àrees, es podrà exportar la selecció per matèria.",
+ q4:"Què passa si tanco la finestra?",
+ a4:"Tot es manté. L'estat es guarda al navegador cada cop que fas un canvi. Obre-la quan vulguis: tot hi serà.",
+ q5:"Puc editar els continguts de la biblioteca?",
+ a5:"No directament. Els elements són fixos per garantir l'oficialitat. Però pots exportar-los (Copiar) i editar-los fora, a la teva programació.",
+ q6:"Per què algunes àrees surten en gris?",
+ a6:"Perquè estan preparades però encara no tenen els continguts carregats. Es mostren per indicar que existiran properament.",
+ q7:"Què és el 'Markdown'?",
+ a7:"És un format de text senzill que fa servir símbols com ## per a títols i - per a llistes. Molts editors (Notion, Obsidian, GitHub) el reconeixen i el mostren amb format.",
+ q8:"Puc exportar la selecció per portar-la a un company?",
+ a8:"Sí. Prem 'Exportar selecció' i obtindràs un fitxer JSON. El teu company pot importar-lo amb 'Importar selecció'.",
+ q9:"El canvi d'idioma afecta el meu contingut?",
+ a9:"No. El canvi d'idioma només tradueix les etiquetes de la interfície (botons, títols). El contingut curricular (competències, objectius...) sí que està traduït a CA/ES/EN i canvia amb l'idioma, però la teva selecció no es modifica.",
+ q10:"Es pot fer servir en mòbil o tauleta?",
+ a10:"Sí. La interfície s'adapta a pantalles petites (els 3 panells es posen un sota l'altre). Però per treballar còmodament, millor un ordinador.",
+
+ footer1:"📖 Manual d'ús · Biblioteca Curricular",
+ footer2:"Eina de suport per a la programació didàctica · Curs 2026-2027"
+},
+
+es:{
+ titol_pagina:"📖 Manual · Biblioteca Curricular",
+ brand:"Manual de uso", brand_sub:"Biblioteca Curricular",
+ nav_title:"Índice",
+ nav_intro:"1. Qué es", nav_perque:"2. Para qué sirve", nav_interficie:"3. La interfaz",
+ nav_arees:"4. Áreas / Materias", nav_tipus:"5. Tipos de elementos", nav_us:"6. Cómo usarla",
+ nav_sortida:"7. El listado generado", nav_copiar:"8. Copiar y llevar", nav_backup:"9. Guardar y exportar",
+ nav_cas:"10. Ejemplo práctico", nav_limits:"11. Límites actuales", nav_faq:"12. Preguntas frecuentes",
+
+ h1:"📖 Manual de uso",
+ sub_h1:"Biblioteca Curricular · Selecciona, combina y traslada contenidos",
+
+ s1_t:"1. Qué es",
+ s1_p1:"La Biblioteca Curricular es una herramienta web que te permite explorar, seleccionar y exportar los elementos curriculares oficiales de una asignatura (competencias, objetivos, contenidos, criterios de evaluación y elementos transversales) para incorporarlos a tu programación didáctica.",
+ s1_box_title:"💡 En una frase",
+ s1_box_txt:"Es una bandeja de contenidos que te ahorra copiar y pegar de un PDF cada vez que haces una programación.",
+ s1_req:"Qué necesitas",
+ s1_req1:"Un navegador moderno (Chrome, Firefox, Edge, Safari)",
+ s1_req2:"Saber qué asignatura quieres programar",
+ s1_req3:"Opcional: tener claro el perfil del alumnado para elegir elementos",
+ s1_note_title:"💡 No necesitas Internet",
+ s1_note_txt:"El archivo es HTML autocontenido: una vez descargado, funciona con doble clic, sin conexión, guardando los datos en el navegador.",
+
+ s2_t:"2. Para qué sirve",
+ s2_p1:"Sirve para hacer **programaciones didácticas** sin tener que buscar, copiar y pegar manualmente todos los elementos curriculares oficiales. Reúne en un solo lugar los contenidos que habitualmente están dispersos en PDFs del plan docente.",
+ s2_bene:"Beneficios principales",
+ s2_b1:"Explorar rápidamente todos los elementos curriculares oficiales.",
+ s2_b2:"Seleccionar lo que necesitas con un clic.",
+ s2_b3:"Filtrar por tipo (preceptivo, transversal, optativo) y por categoría.",
+ s2_b4:"Copiar el listado en texto plano o Markdown, listo para pegar.",
+ s2_b5:"Guardar la selección para futuras reutilizaciones o compartir con compañeros.",
+ s2_ok_title:"🎯 Resultado",
+ s2_ok_txt:"Una programación didáctica hecha con los elementos oficiales alineados, en minutos en lugar de horas, y sin olvidarte nada.",
+
+ s3_t:"3. La interfaz",
+ s3_p1:"La pantalla se divide en 3 paneles que trabajan juntos:",
+ s3_p1t:"Áreas", s3_p1d:"Donde eliges la materia o área de conocimiento.",
+ s3_p2t:"Elementos", s3_p2d:"Donde navegas y seleccionas contenidos (competencias, objetivos...).",
+ s3_p3t:"Salida", s3_p3d:"Donde ves el listado final y lo puedes copiar.",
+ s3_sim:"Aspecto visual (simulado)",
+ s3_sim_areas:"📚 Áreas",
+ s3_sim_a1:"🫀 Fisiología",
+ s3_sim_a2:"🩰 Danza clásica",
+ s3_sim_a3:"🎵 Música",
+ s3_sim_elem:"🎯 Elementos",
+ s3_sim_e1:"CG3 · Conocimiento integral del cuerpo humano",
+ s3_sim_e2:"CECI 3 · Anatomía, fisiología y biomecánica",
+ s3_sim_e3:"C1 · Estructura y bases funcionales",
+ s3_sim_out:"📋 Listado",
+ s3_sim_o1:"🎯 COMPETENCIAS",
+ s3_sim_o2:"📋 CG3: Conocimiento integral...",
+ s3_sim_o3:"📋 CECI 3: Anatomía, fisiología...",
+
+ s4_t:"4. Áreas / Materias",
+ s4_p1:"El panel izquierdo lista todas las áreas disponibles. Cada área muestra un icono, el nombre y una etiqueta de estado:",
+ s4_th1:"Área", s4_th2:"Estado", s4_th3:"Descripción",
+ s4_dev:"Activo", s4_pend:"Próximamente",
+ s4_a1:"Fisiología aplicada a la danza",
+ s4_d1:"Área completa: competencias, objetivos, contenidos, criterios de evaluación y elementos transversales.",
+ s4_a2:"Danza clásica", s4_d2:"Próximamente incluirá el currículum oficial de esta materia.",
+ s4_a3:"Danza contemporánea", s4_d3:"Próximamente incluirá el currículum oficial de esta materia.",
+ s4_a4:"Música", s4_d4:"Próximamente incluirá el currículum oficial de esta materia.",
+ s4_a5:"Historia de la danza", s4_d5:"Próximamente incluirá el currículum oficial de esta materia.",
+ s4_a6:"Repertorio", s4_d6:"Próximamente incluirá el currículum oficial de esta materia.",
+ s4_a7:"Análisis musical", s4_d7:"Próximamente incluirá el currículum oficial de esta materia.",
+ s4_a8:"Expresión corporal", s4_d8:"Próximamente incluirá el currículum oficial de esta materia.",
+ s4_a9:"Danza española", s4_d9:"Próximamente incluirá el currículum oficial de esta materia.",
+ s4_note_title:"💡 Sobre las áreas",
+ s4_note_txt:"Actualmente solo Fisiología aplicada a la danza está activa. Las demás áreas están preparadas pero todavía no tienen los contenidos cargados. Se podrán añadir en fases siguientes.",
+
+ s5_t:"5. Tipos de elementos",
+ s5_p1:"Una vez elegida un área, el panel central muestra los elementos en 5 pestañas:",
+ s5_th1:"Pestaña", s5_th2:"Qué contiene",
+ s5_t1:"Competencias", s5_d1:"Las competencias generales y específicas que el alumnado debe alcanzar.",
+ s5_t2:"Objetivos", s5_d2:"Los objetivos de aprendizaje clasificados por ámbito (conocimientos, habilidades, actitudes).",
+ s5_t3:"Contenidos", s5_d3:"Los contenidos temáticos de la asignatura (unidades, temas, bloques).",
+ s5_t4:"Evaluación", s5_d4:"Los criterios de evaluación, con indicación del instrumento y los objetivos vinculados.",
+ s5_t5:"Transversales", s5_d5:"Los elementos comunes a todas las áreas (pensamiento crítico, salud, digital...).",
+ s5_estats:"Tipos / Estados (filtros)",
+ s5_estats_p:"Cada elemento tiene un estado que puedes filtrar con los botones encima del listado:",
+ s5_b1:"Preceptivo", s5_b1d:"Elemento obligatorio, forma parte del núcleo formativo.",
+ s5_b2:"Transversal", s5_b2d:"Elemento común que se trabaja desde todas las materias.",
+ s5_b3:"Optativo", s5_b3d:"Elemento complementario, se puede elegir según el énfasis del curso.",
+
+ s6_t:"6. Cómo usarla",
+ s6_p1:"El flujo es muy sencillo: 5 pasos de menos de 10 minutos en total.",
+ s6_st1:"Elige un área",
+ s6_st1p:"En el panel izquierdo, haz clic en una de las áreas activas (las que no están en gris). Actualmente solo Fisiología está activa.",
+ s6_st2:"Navega por las pestañas",
+ s6_st2p:"En el panel central, haz clic en las pestañas para ver competencias, objetivos, contenidos, evaluación o transversales.",
+ s6_st3:"Filtra si hace falta",
+ s6_st3p:"Si quieres ver solo los elementos de un tipo, haz clic en los botones de filtro (Todos / Preceptivos / Transversales / Optativos).",
+ s6_st4:"Selecciona elementos",
+ s6_st4p:"Haz clic en cualquier elemento para marcarlo. Se pondrá verde y aparecerá en el listado del panel derecho.",
+ s6_st5:"Consulta el listado",
+ s6_st5p:"En el panel derecho verás todos los elementos seleccionados agrupados por tipo, listos para copiar.",
+ s6_ok_title:"✅ Todo automático",
+ s6_ok_txt:"No hace falta pulsar ningún botón de guardar. Cada clic se guarda solo en el navegador. Si cierras la página y la vuelves a abrir, todo estará ahí.",
+
+ s7_t:"7. El listado generado",
+ s7_p1:"En el panel derecho (o inferior, si estás en móvil) verás el listado de los elementos seleccionados, organizado por categorías:",
+ s7_est:"Estructura",
+ s7_estp:"El listado siempre aparece en este orden:",
+ s7_th1:"Sección", s7_th2:"Qué muestra",
+ s7_s1:"Competencias", s7_d1:"Código y título de cada competencia seleccionada.",
+ s7_s2:"Objetivos específicos", s7_d2:"Código y título de cada objetivo seleccionado.",
+ s7_s3:"Contenidos", s7_d3:"Código y título de cada contenido seleccionado.",
+ s7_s4:"Criterios de evaluación", s7_d4:"Código, título, instrumento y objetivos vinculados.",
+ s7_s5:"Elementos transversales", s7_d5:"Código y título de cada elemento transversal.",
+ s7_cont:"El contador",
+ s7_contp:"En la parte superior del panel derecho verás un contador con el total de elementos seleccionados. Sirve para saber de un vistazo cuánto contenido llevarás a tu programación.",
+
+ s8_t:"8. Copiar y llevar",
+ s8_p1:"Una vez tienes la selección hecha, puedes exportarla a texto para pegarla donde necesites.",
+ s8_b1:"📋 Copiar",
+ s8_b1p:"Copia el listado en texto plano, con guiones e indentación. Ideal para pegar en:",
+ s8_b1l1:"El campo de texto de un documento de programación.",
+ s8_b1l2:"Un procesador de textos (Word, Docs).",
+ s8_b1l3:"Un correo electrónico o un chat.",
+ s8_b2:"📝 Copiar Markdown",
+ s8_b2p:"Copia el listado en formato Markdown (##, -, **). Ideal para editores que lo reconozcan (Notion, Obsidian, GitHub, etc.).",
+ s8_info_title:"💡 Dónde puedes pegarlo",
+ s8_info_txt:"Una vez copiado, puedes pegarlo directamente en el campo de texto de la Programación Didáctica que has creado con el generador, o en cualquier documento que acepte texto.",
+ s8_b3:"Destinos habituales",
+ s8_dest_th1:"Dónde", s8_dest_th2:"Qué hay que hacer",
+ s8_dest_r1c1:"Programación Didáctica (HTML del generador)", s8_dest_r1c2:"Entra en modo edición y pega el texto en la sección correspondiente (competencias, contenidos, evaluación...).",
+ s8_dest_r2c1:"Word / Google Docs", s8_dest_r2c2:"Pega directamente. Puede que haya que ajustar el estilo de las listas.",
+ s8_dest_r3c1:"Notion / Obsidian / Logseq", s8_dest_r3c2:"Pega el formato Markdown: se convertirá automáticamente en listas y títulos.",
+ s8_dest_r4c1:"Moodle / Classroom", s8_dest_r4c2:"Pégalo en el campo de descripción o crea una página con el contenido.",
+
+ s9_t:"9. Guardar y exportar",
+ s9_p1:"La Biblioteca Curricular guarda automáticamente tu estado, pero también puedes hacer copias manuales.",
+ s9_auto:"Guardado automático",
+ s9_autop:"Cada vez que seleccionas o deseleccionas un elemento, el estado se guarda solo en el navegador. No hay que hacer nada. Si cierras la ventana y la vuelves a abrir, todo estará ahí.",
+ s9_bts:"Botones de copia",
+ s9_th1:"Botón", s9_th2:"Qué hace",
+ s9_b1:"Exportar selección", s9_b1d:"Descarga un archivo JSON con el estado completo de tu selección. Sirve para hacer copia o pasarlo a un compañero.",
+ s9_b2:"Importar selección", s9_b2d:"Carga un archivo JSON exportado previamente y restaura la selección.",
+ s9_b3:"Limpiar todo", s9_b3d:"Borra toda la selección. Requiere confirmación porque no se puede deshacer.",
+ s9_warn_title:"⚠️ Importante",
+ s9_warn_txt:"Los datos viven en el navegador. Si borras la caché o cambias de ordenador, se perderán. Usa 'Exportar selección' periódicamente para tener una copia segura.",
+
+ s10_t:"10. Ejemplo práctico",
+ s10_p1:"Veamos un caso real: preparar la programación de Fisiología para el curso 2026-27.",
+ s10_e1:"Necesito preparar la programación de Fisiología",
+ s10_e1p:"Tengo el plan docente en PDF, pero copiar y pegar todos los elementos sería muy pesado.",
+ s10_e2:"Abro la Biblioteca Curricular",
+ s10_e2p:"Doble clic en el archivo. Veo el panel izquierdo con las áreas y elijo Fisiología.",
+ s10_e3:"Selecciono lo que me interesa",
+ s10_e3p:"Navego por las pestañas: elijo 2 competencias, los 7 objetivos, los 10 contenidos y los criterios de evaluación que quiero evaluar este curso. Marco todo lo que necesito.",
+ s10_e4:"Copio y pego",
+ s10_e4p:"En el panel derecho veo la selección completa. Pulso 'Copiar Markdown' y voy a mi documento de programación. Pego.",
+ s10_e5:"Adapto y completo",
+ s10_e5p:"En el documento de programación ajusto el redactado, añado ejemplos y concreciones propias, y lo dejo listo para presentar.",
+ s10_ok_title:"🎉 Resultado",
+ s10_ok_txt:"Una programación completa con todos los elementos oficiales alineados, hecha en menos de 30 minutos.",
+
+ s11_t:"11. Límites actuales",
+ s11_p1:"Esta versión es la Fase A. Tiene algunas limitaciones que se resolverán en fases siguientes:",
+ s11_th1:"Límite", s11_th2:"Detalle",
+ s11_l1:"Solo Fisiología activa",
+ s11_l1d:"Las demás áreas están preparadas pero vacías. Se cargarán en fases siguientes.",
+ s11_l2:"Sin edición de contenidos",
+ s11_l2d:"Los elementos curriculares son fijos. No se pueden modificar desde la interfaz (sí exportarlos y adaptarlos fuera).",
+ s11_l3:"Datos en el navegador",
+ s11_l3d:"La selección vive en el localStorage. Si cambias de ordenador no te sigue automáticamente.",
+ s11_l4:"Sin sincronización",
+ s11_l4d:"No hay servidor ni nube. Las copias son manuales (Exportar / Importar).",
+ s11_info_title:"🚀 Próximas fases",
+ s11_info_txt:"Fase B: añadir más áreas. Fase C: edición de contenidos. Fase D: integración con el generador de programaciones para que la selección se pueda volcar automáticamente.",
+
+ s12_t:"12. Preguntas frecuentes",
+ q1:"¿Puedo usarla sin Internet?",
+ a1:"Sí. El archivo es HTML autocontenido. Una vez descargado, funciona con doble clic desde el escritorio, sin conexión.",
+ q2:"¿Mis selecciones se guardan solas?",
+ a2:"Sí, cada clic se guarda automáticamente en el navegador. Si cierras la página y la vuelves a abrir, todo estará ahí.",
+ q3:"¿Puedo tener varias asignaturas a la vez?",
+ a3:"Sí, pero la selección es única. Actualmente solo Fisiología está activa, así que no hay riesgo de confusión. Cuando haya más áreas, se podrá exportar la selección por materia.",
+ q4:"¿Qué pasa si cierro la ventana?",
+ a4:"Todo se mantiene. El estado se guarda en el navegador cada vez que haces un cambio. Ábrela cuando quieras: todo estará ahí.",
+ q5:"¿Puedo editar los contenidos de la biblioteca?",
+ a5:"No directamente. Los elementos son fijos para garantizar la oficialidad. Pero puedes exportarlos (Copiar) y editarlos fuera, en tu programación.",
+ q6:"¿Por qué algunas áreas salen en gris?",
+ a6:"Porque están preparadas pero todavía no tienen los contenidos cargados. Se muestran para indicar que existirán próximamente.",
+ q7:"¿Qué es el 'Markdown'?",
+ a7:"Es un formato de texto sencillo que usa símbolos como ## para títulos y - para listas. Muchos editores (Notion, Obsidian, GitHub) lo reconocen y lo muestran con formato.",
+ q8:"¿Puedo exportar la selección para llevarla a un compañero?",
+ a8:"Sí. Pulsa 'Exportar selección' y obtendrás un archivo JSON. Tu compañero puede importarlo con 'Importar selección'.",
+ q9:"¿El cambio de idioma afecta a mi contenido?",
+ a9:"No. El cambio de idioma solo traduce las etiquetas de la interfaz (botones, títulos). El contenido curricular (competencias, objetivos...) sí está traducido a CA/ES/EN y cambia con el idioma, pero tu selección no se modifica.",
+ q10:"¿Se puede usar en móvil o tableta?",
+ a10:"Sí. La interfaz se adapta a pantallas pequeñas (los 3 paneles se ponen uno debajo del otro). Pero para trabajar cómodamente, mejor un ordenador.",
+
+ footer1:"📖 Manual de uso · Biblioteca Curricular",
+ footer2:"Herramienta de apoyo para la programación didáctica · Curso 2026-2027"
+},
+
+en:{
+ titol_pagina:"📖 Manual · Curricular Library",
+ brand:"User manual", brand_sub:"Curricular Library",
+ nav_title:"Contents",
+ nav_intro:"1. What it is", nav_perque:"2. What it's for", nav_interficie:"3. The interface",
+ nav_arees:"4. Areas / Subjects", nav_tipus:"5. Element types", nav_us:"6. How to use it",
+ nav_sortida:"7. The generated list", nav_copiar:"8. Copy and carry", nav_backup:"9. Save and export",
+ nav_cas:"10. Practical example", nav_limits:"11. Current limits", nav_faq:"12. FAQ",
+
+ h1:"📖 User manual",
+ sub_h1:"Curricular Library · Select, combine and transfer content",
+
+ s1_t:"1. What it is",
+ s1_p1:"The Curricular Library is a web tool that lets you explore, select and export the official curricular elements of a subject (competencies, objectives, contents, assessment criteria and cross-curricular elements) to incorporate them into your teaching programme.",
+ s1_box_title:"💡 In one sentence",
+ s1_box_txt:"It's a content tray that saves you copying and pasting from a PDF every time you write a programme.",
+ s1_req:"What you need",
+ s1_req1:"A modern browser (Chrome, Firefox, Edge, Safari)",
+ s1_req2:"Knowing which subject you want to programme",
+ s1_req3:"Optional: knowing your students' profile to choose elements",
+ s1_note_title:"💡 No Internet needed",
+ s1_note_txt:"The file is self-contained HTML: once downloaded, it works with a double click, offline, saving data in the browser.",
+
+ s2_t:"2. What it's for",
+ s2_p1:"It's used to write **teaching programmes** without having to search, copy and paste manually all the official curricular elements. It gathers in one place the contents that are usually scattered in the teaching plan PDFs.",
+ s2_bene:"Main benefits",
+ s2_b1:"Quickly explore all official curricular elements.",
+ s2_b2:"Select what you need with one click.",
+ s2_b3:"Filter by type (mandatory, cross-curricular, optional) and category.",
+ s2_b4:"Copy the list in plain text or Markdown, ready to paste.",
+ s2_b5:"Save the selection for future reuse or to share with colleagues.",
+ s2_ok_title:"🎯 Result",
+ s2_ok_txt:"A teaching programme built with aligned official elements, in minutes instead of hours, and without forgetting anything.",
+
+ s3_t:"3. The interface",
+ s3_p1:"The screen is divided into 3 panels that work together:",
+ s3_p1t:"Areas", s3_p1d:"Where you choose the subject or knowledge area.",
+ s3_p2t:"Elements", s3_p2d:"Where you browse and select content (competencies, objectives...).",
+ s3_p3t:"Output", s3_p3d:"Where you see the final list and can copy it.",
+ s3_sim:"Visual appearance (simulated)",
+ s3_sim_areas:"📚 Areas",
+ s3_sim_a1:"🫀 Physiology",
+ s3_sim_a2:"🩰 Classical dance",
+ s3_sim_a3:"🎵 Music",
+ s3_sim_elem:"🎯 Elements",
+ s3_sim_e1:"GC3 · Comprehensive knowledge of the human body",
+ s3_sim_e2:"CECI 3 · Anatomy, physiology and biomechanics",
+ s3_sim_e3:"K1 · Structure and functional bases",
+ s3_sim_out:"📋 List",
+ s3_sim_o1:"🎯 COMPETENCIES",
+ s3_sim_o2:"📋 GC3: Comprehensive knowledge...",
+ s3_sim_o3:"📋 CECI 3: Anatomy, physiology...",
+
+ s4_t:"4. Areas / Subjects",
+ s4_p1:"The left panel lists all available areas. Each area shows an icon, name and status tag:",
+ s4_th1:"Area", s4_th2:"Status", s4_th3:"Description",
+ s4_dev:"Active", s4_pend:"Coming soon",
+ s4_a1:"Physiology applied to dance",
+ s4_d1:"Complete area: competencies, objectives, contents, assessment criteria and cross-curricular elements.",
+ s4_a2:"Classical dance", s4_d2:"Coming soon it will include the official curriculum for this subject.",
+ s4_a3:"Contemporary dance", s4_d3:"Coming soon it will include the official curriculum for this subject.",
+ s4_a4:"Music", s4_d4:"Coming soon it will include the official curriculum for this subject.",
+ s4_a5:"History of dance", s4_d5:"Coming soon it will include the official curriculum for this subject.",
+ s4_a6:"Repertoire", s4_d6:"Coming soon it will include the official curriculum for this subject.",
+ s4_a7:"Musical analysis", s4_d7:"Coming soon it will include the official curriculum for this subject.",
+ s4_a8:"Body expression", s4_d8:"Coming soon it will include the official curriculum for this subject.",
+ s4_a9:"Spanish dance", s4_d9:"Coming soon it will include the official curriculum for this subject.",
+ s4_note_title:"💡 About the areas",
+ s4_note_txt:"Currently only Physiology applied to dance is active. The other areas are prepared but don't have the contents loaded yet. They will be added in future phases.",
+
+ s5_t:"5. Element types",
+ s5_p1:"Once you've chosen an area, the central panel shows the elements in 5 tabs:",
+ s5_th1:"Tab", s5_th2:"What it contains",
+ s5_t1:"Competencies", s5_d1:"The general and specific competencies students must achieve.",
+ s5_t2:"Objectives", s5_d2:"Learning objectives classified by domain (knowledge, skills, attitudes).",
+ s5_t3:"Contents", s5_d3:"The subject's thematic contents (units, topics, blocks).",
+ s5_t4:"Assessment", s5_d4:"Assessment criteria, indicating the instrument and linked objectives.",
+ s5_t5:"Cross-curricular", s5_d5:"Elements common to all areas (critical thinking, health, digital...).",
+ s5_estats:"Types / States (filters)",
+ s5_estats_p:"Each element has a state you can filter with the buttons above the list:",
+ s5_b1:"Mandatory", s5_b1d:"Compulsory element, part of the core training.",
+ s5_b2:"Cross-curricular", s5_b2d:"Common element worked on from all subjects.",
+ s5_b3:"Optional", s5_b3d:"Complementary element, can be chosen depending on the course emphasis.",
+
+ s6_t:"6. How to use it",
+ s6_p1:"The flow is very simple: 5 steps in less than 10 minutes in total.",
+ s6_st1:"Choose an area",
+ s6_st1p:"In the left panel, click one of the active areas (the ones not in grey). Currently only Physiology is active.",
+ s6_st2:"Browse the tabs",
+ s6_st2p:"In the central panel, click the tabs to see competencies, objectives, contents, assessment or cross-curricular elements.",
+ s6_st3:"Filter if needed",
+ s6_st3p:"If you want to see only elements of one type, click the filter buttons (All / Mandatory / Cross-curricular / Optional).",
+ s6_st4:"Select elements",
+ s6_st4p:"Click any element to mark it. It will turn green and appear in the right panel's list.",
+ s6_st5:"Check the list",
+ s6_st5p:"In the right panel you'll see all selected elements grouped by type, ready to copy.",
+ s6_ok_title:"✅ All automatic",
+ s6_ok_txt:"No need to press any save button. Every click saves automatically in the browser. If you close the page and reopen it, everything will still be there.",
+
+ s7_t:"7. The generated list",
+ s7_p1:"In the right panel (or bottom, on mobile) you'll see the list of selected elements, organised by categories:",
+ s7_est:"Structure",
+ s7_estp:"The list always appears in this order:",
+ s7_th1:"Section", s7_th2:"What it shows",
+ s7_s1:"Competencies", s7_d1:"Code and title of each selected competency.",
+ s7_s2:"Specific objectives", s7_d2:"Code and title of each selected objective.",
+ s7_s3:"Contents", s7_d3:"Code and title of each selected content.",
+ s7_s4:"Assessment criteria", s7_d4:"Code, title, instrument and linked objectives.",
+ s7_s5:"Cross-curricular elements", s7_d5:"Code and title of each cross-curricular element.",
+ s7_cont:"The counter",
+ s7_contp:"At the top of the right panel you'll see a counter with the total selected elements. It tells you at a glance how much content you'll take to your programme.",
+
+ s8_t:"8. Copy and carry",
+ s8_p1:"Once you have the selection done, you can export it to text to paste wherever you need.",
+ s8_b1:"📋 Copy",
+ s8_b1p:"Copies the list in plain text, with hyphens and indentation. Ideal for pasting into:",
+ s8_b1l1:"The text field of a programme document.",
+ s8_b1l2:"A word processor (Word, Docs).",
+ s8_b1l3:"An email or chat.",
+ s8_b2:"📝 Copy Markdown",
+ s8_b2p:"Copies the list in Markdown format (##, -, **). Ideal for editors that recognise it (Notion, Obsidian, GitHub, etc.).",
+ s8_info_title:"💡 Where you can paste it",
+ s8_info_txt:"Once copied, you can paste it directly into the text field of the Teaching Programme you've created with the generator, or into any document that accepts text.",
+ s8_b3:"Usual destinations",
+ s8_dest_th1:"Where", s8_dest_th2:"What to do",
+ s8_dest_r1c1:"Teaching Programme (generator HTML)", s8_dest_r1c2:"Enter edit mode and paste the text in the corresponding section (competencies, contents, assessment...).",
+ s8_dest_r2c1:"Word / Google Docs", s8_dest_r2c2:"Paste directly. You may need to adjust the list style.",
+ s8_dest_r3c1:"Notion / Obsidian / Logseq", s8_dest_r3c2:"Paste the Markdown format: it will automatically convert into lists and headings.",
+ s8_dest_r4c1:"Moodle / Classroom", s8_dest_r4c2:"Paste it into the description field or create a page with the content.",
+
+ s9_t:"9. Save and export",
+ s9_p1:"The Curricular Library saves your state automatically, but you can also make manual copies.",
+ s9_auto:"Automatic saving",
+ s9_autop:"Every time you select or deselect an element, the state is saved automatically in the browser. Nothing to do. If you close the window and reopen it, everything will still be there.",
+ s9_bts:"Copy buttons",
+ s9_th1:"Button", s9_th2:"What it does",
+ s9_b1:"Export selection", s9_b1d:"Downloads a JSON file with the complete state of your selection. Useful for backup or to pass it to a colleague.",
+ s9_b2:"Import selection", s9_b2d:"Loads a previously exported JSON file and restores the selection.",
+ s9_b3:"Clear all", s9_b3d:"Deletes all selection. Requires confirmation because it can't be undone.",
+ s9_warn_title:"⚠️ Important",
+ s9_warn_txt:"Data lives in the browser. If you clear the cache or change computer, it will be lost. Use 'Export selection' regularly to keep a safe copy.",
+
+ s10_t:"10. Practical example",
+ s10_p1:"Let's see a real case: preparing the Physiology programme for the 2026-27 course.",
+ s10_e1:"I need to prepare the Physiology programme",
+ s10_e1p:"I have the teaching plan in PDF, but copying and pasting all elements would be very tedious.",
+ s10_e2:"I open the Curricular Library",
+ s10_e2p:"Double click on the file. I see the left panel with areas and choose Physiology.",
+ s10_e3:"I select what I need",
+ s10_e3p:"I browse the tabs: I pick 2 competencies, all 7 objectives, the 10 contents and the assessment criteria I want to assess this course. I mark everything I need.",
+ s10_e4:"Copy and paste",
+ s10_e4p:"In the right panel I see the complete selection. I press 'Copy Markdown' and go to my programme document. I paste.",
+ s10_e5:"I adapt and complete",
+ s10_e5p:"In the programme document I adjust the wording, add my own examples and specifics, and leave it ready to present.",
+ s10_ok_title:"🎉 Result",
+ s10_ok_txt:"A complete programme with all official elements aligned, done in less than 30 minutes.",
+
+ s11_t:"11. Current limits",
+ s11_p1:"This version is Phase A. It has some limitations that will be resolved in future phases:",
+ s11_th1:"Limit", s11_th2:"Detail",
+ s11_l1:"Only Physiology active",
+ s11_l1d:"The other areas are prepared but empty. They will be loaded in future phases.",
+ s11_l2:"No content editing",
+ s11_l2d:"Curricular elements are fixed. They can't be modified from the interface (but can be exported and adapted outside).",
+ s11_l3:"Data in the browser",
+ s11_l3d:"The selection lives in localStorage. If you change computer it doesn't follow automatically.",
+ s11_l4:"No synchronisation",
+ s11_l4d:"No server or cloud. Copies are manual (Export / Import).",
+ s11_info_title:"🚀 Future phases",
+ s11_info_txt:"Phase B: add more areas. Phase C: content editing. Phase D: integration with the programme generator so the selection can be automatically transferred.",
+
+ s12_t:"12. FAQ",
+ q1:"Can I use it without Internet?",
+ a1:"Yes. The file is self-contained HTML. Once downloaded, it works with a double click from the desktop, offline.",
+ q2:"Are my selections saved automatically?",
+ a2:"Yes, every click is saved automatically in the browser. If you close the page and reopen it, everything will still be there.",
+ q3:"Can I have several subjects at once?",
+ a3:"Yes, but the selection is unique. Currently only Physiology is active, so there's no risk of confusion. When there are more areas, you'll be able to export the selection per subject.",
+ q4:"What happens if I close the window?",
+ a4:"Everything is kept. The state is saved in the browser every time you make a change. Open it whenever you want: everything will still be there.",
+ q5:"Can I edit the library contents?",
+ a5:"Not directly. The elements are fixed to guarantee their official status. But you can export them (Copy) and edit them outside, in your programme.",
+ q6:"Why are some areas greyed out?",
+ a6:"Because they're prepared but don't have contents loaded yet. They're shown to indicate they'll exist soon.",
+ q7:"What is 'Markdown'?",
+ a7:"It's a simple text format that uses symbols like ## for headings and - for lists. Many editors (Notion, Obsidian, GitHub) recognise it and display it with formatting.",
+ q8:"Can I export the selection to pass it to a colleague?",
+ a8:"Yes. Press 'Export selection' and you'll get a JSON file. Your colleague can import it with 'Import selection'.",
+ q9:"Does the language change affect my content?",
+ a9:"No. The language change only translates the interface labels (buttons, titles). The curricular content (competencies, objectives...) is translated into CA/ES/EN and changes with the language, but your selection doesn't change.",
+ q10:"Can it be used on mobile or tablet?",
+ a10:"Yes. The interface adapts to small screens (the 3 panels stack one below the other). But for comfortable work, a computer is better.",
+
+ footer1:"📖 User manual · Curricular Library",
+ footer2:"Support tool for teaching programming · Course 2026-2027"
+}
+};
+
+// ==========================================
+// APLICAR IDIOMA
+// ==========================================
+function aplicarIdioma(lang){
+  localStorage.setItem('manual_biblio_lang', lang);
+  document.documentElement.lang = lang;
+  const dic = DIC[lang] || DIC.ca;
+
+  if(dic.titol_pagina) document.title = dic.titol_pagina;
+
+  document.querySelectorAll('[data-i18n]').forEach(el=>{
+    const k = el.getAttribute('data-i18n');
+    if(dic[k] !== undefined){
+      if(/<\/?code>|<\/?strong>|<\/?b>|<\/?i>|<\/?a /.test(dic[k])){
+        el.innerHTML = dic[k];
+      }else{
+        el.textContent = dic[k];
+      }
+    }
+  });
+
+  document.querySelectorAll('#langBox button').forEach(b=>{
+    b.classList.toggle('on', b.dataset.lang === lang);
+  });
+}
+
+document.querySelectorAll('#langBox button').forEach(b=>{
+  b.addEventListener('click', ()=> aplicarIdioma(b.dataset.lang));
+});
+
+/* ==========================================
+   NAVEGACIÓ ACTIVA
+   ========================================== */
+const sections = document.querySelectorAll('section.card');
+const navLinks = document.querySelectorAll('nav a');
+const observer = new IntersectionObserver(entries=>{
+  entries.forEach(entry=>{
+    if(entry.isIntersecting){
+      navLinks.forEach(a=>a.classList.toggle('on', a.getAttribute('href')==='#'+entry.target.id));
+    }
+  });
+},{rootMargin:'-30% 0px -60% 0px'});
+sections.forEach(s=>observer.observe(s));
+
+/* Scroll suau */
+document.querySelectorAll('nav a[href^="#"]').forEach(a=>{
+  a.addEventListener('click', e=>{
+    const target = document.querySelector(a.getAttribute('href'));
+    if(target){ e.preventDefault(); target.scrollIntoView({behavior:'smooth', block:'start'}); }
+  });
+});
+
+/* Inici */
+aplicarIdioma(localStorage.getItem('manual_biblio_lang') || 'ca');
+</script>
+
+</body>
+</html>

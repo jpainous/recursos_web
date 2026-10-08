@@ -1,0 +1,1135 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Activitat T1.1 · El termòstat del cos</title>
+<style>
+  :root{
+    --navy:#0b1f3a; --navy-2:#132f55;
+    --gold:#c9a227; --gold-2:#e6c65c;
+    --bg:#f7f4ee; --white:#ffffff;
+    --text:#1a1a1a; --muted:#6b6b6b;
+    --ok:#2e7d32; --ok-bg:#e8f3ec;
+    --err:#c62828; --err-bg:#fdecea;
+    --pi:#1b8a3a; --pi-bg:#e6f6ea; --pi-border:#8fd3a3;
+    --bloc-a:#1565c0; --bloc-a-bg:#e3f0fb;
+    --bloc-b:#ef6c00; --bloc-b-bg:#fff3e0;
+    --bloc-c:#6a1b9a; --bloc-c-bg:#f3e5f5;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{font-family: Georgia, "Times New Roman", serif;background:var(--bg);color:var(--text);font-size:22px;line-height:1.65;padding:1.2rem}
+  .wrap{max-width:960px;margin:0 auto}
+
+  .menu{background:linear-gradient(135deg,var(--navy),var(--navy-2));color:#fff;border-radius:16px;padding:1rem 1.2rem;box-shadow:0 8px 22px rgba(11,31,58,.18);margin-bottom:1rem}
+  .menu h1{margin:0 0 .25rem;font-size:1.7rem;color:#fff}
+  .menu .sub{margin:0 0 .8rem;color:#dbe6f5;font-size:1.05rem}
+  .menu-row{display:flex;flex-wrap:wrap;gap:.5rem;align-items:center;justify-content:space-between}
+  .menu-row .progres{font-size:1.05rem;color:var(--gold-2);font-weight:700}
+  .menu-row .controls{display:flex;gap:.5rem;flex-wrap:wrap}
+  .menu-row button{background:var(--gold);color:var(--navy);border:0;padding:.6rem 1.15rem;border-radius:999px;font-family:inherit;font-weight:700;font-size:.95rem;cursor:pointer}
+  .menu-row button:hover{background:var(--gold-2)}
+  .menu-row button.ghost{background:transparent;color:#fff;border:1px solid rgba(230,198,92,.6)}
+  .menu-row button.ghost:hover{background:rgba(230,198,92,.15)}
+  .menu-row button.actiu{background:var(--pi);color:#fff;border-color:var(--pi);box-shadow:0 0 0 3px rgba(27,138,58,.25)}
+  #btn-adaptat{font-size:1.15rem;padding:.5rem .75rem;line-height:1}
+  #btn-adaptat.ghost{background:rgba(27,138,58,.18);border-color:rgba(143,211,163,.7);color:#fff}
+  #btn-adaptat.ghost:hover{background:rgba(27,138,58,.32)}
+  .lang-switch{display:flex;gap:.35rem;margin-top:.7rem}
+  .lang-switch button{background:rgba(255,255,255,.08);color:#fff;border:1px solid rgba(230,198,92,.5);padding:.35rem .85rem;border-radius:999px;font-family:inherit;font-size:.9rem;cursor:pointer}
+  .lang-switch button.active{background:var(--gold);color:var(--navy);font-weight:700}
+
+  .index{background:#fff;border-radius:16px;box-shadow:0 6px 18px rgba(11,31,58,.08);margin-bottom:1rem;overflow:hidden}
+  .index-header{display:flex;align-items:center;justify-content:space-between;padding:1rem 1.2rem;cursor:pointer;background:#fbf8f1;border:0;width:100%;font-family:inherit;font-size:1.1rem;font-weight:700;color:var(--navy);text-align:left}
+  .index-header:hover{background:#f5efdf}
+  .index-header .arrow{transition:transform .25s;font-size:1.1rem;color:var(--gold)}
+  .index-header.open .arrow{transform:rotate(90deg)}
+  .index-body{max-height:0;overflow:hidden;transition:max-height .4s ease;padding:0 1.2rem}
+  .index-body.open{max-height:3000px;padding:.4rem 1.2rem 1.2rem}
+  .index-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:.8rem}
+  @media (max-width:640px){.index-grid{grid-template-columns:1fr}}
+  .bloc-wrap{display:flex;flex-direction:column}
+  .bloc-btn{text-align:left;background:#fff;border:2px solid #e0dccf;border-radius:12px;padding:.8rem .9rem;cursor:pointer;font-family:inherit;font-size:1rem;color:var(--navy);transition:all .15s;display:flex;flex-direction:column;gap:.25rem}
+  .bloc-btn:hover{transform:translateY(-1px)}
+  .bloc-btn.active{box-shadow:0 0 0 3px rgba(201,162,39,.35)}
+  .bloc-btn .bloc-titol{font-weight:700;font-size:1.05rem}
+  .bloc-btn .bloc-meta{font-size:.85rem;color:#666}
+  .bloc-btn .bloc-meta .pi{color:var(--pi);font-weight:700}
+  .bloc-btn .barra{height:8px;background:#eee;border-radius:999px;overflow:hidden;margin-top:.3rem}
+  .bloc-btn .barra span{display:block;height:100%;width:0%;transition:width .3s}
+  .bloc-btn[data-bloc="A"]{border-left:7px solid var(--bloc-a);background:linear-gradient(90deg,#fff,var(--bloc-a-bg))}
+  .bloc-btn[data-bloc="B"]{border-left:7px solid var(--bloc-b);background:linear-gradient(90deg,#fff,var(--bloc-b-bg))}
+  .bloc-btn[data-bloc="C"]{border-left:7px solid var(--bloc-c);background:linear-gradient(90deg,#fff,var(--bloc-c-bg))}
+  .bloc-btn[data-bloc="A"] .barra span{background:var(--bloc-a)}
+  .bloc-btn[data-bloc="B"] .barra span{background:var(--bloc-b)}
+  .bloc-btn[data-bloc="C"] .barra span{background:var(--bloc-c)}
+
+  .objectiu-toggle{display:block;width:100%;margin-top:.7rem;background:#fff;border:1px dashed var(--gold);color:var(--navy);padding:.6rem 1rem;border-radius:10px;font-family:inherit;font-size:.98rem;font-weight:700;cursor:pointer;text-align:left}
+  .objectiu-toggle:hover{background:#fff8e1}
+  .objectiu-panel{display:none;margin-top:.7rem;background:#fffdf5;border-left:5px solid var(--gold);border-radius:10px;padding:1rem 1.1rem;font-size:.98rem;color:#333}
+  .objectiu-panel.open{display:block}
+  .objectiu-panel h4{margin:.9rem 0 .35rem;color:var(--navy);font-size:.95rem;text-transform:uppercase;letter-spacing:.05em}
+  .objectiu-panel h4:first-child{margin-top:0}
+  .objectiu-panel p{margin:.2rem 0 .6rem}
+  .objectiu-panel ul{margin:.2rem 0 .6rem;padding-left:1.3rem}
+  .objectiu-panel li{margin:.2rem 0}
+  .objectiu-panel .vocab{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.3rem}
+  .objectiu-panel .vocab span{background:var(--navy);color:#fff;border-radius:999px;padding:.25rem .75rem;font-size:.88rem}
+  .objectiu-panel .objectiu-pi{background:var(--pi-bg);border-left:5px solid var(--pi);border-radius:8px;padding:.7rem .9rem;margin-top:.7rem}
+  .objectiu-panel .objectiu-pi h4{color:var(--pi);margin-top:0}
+  .objectiu-toggle-card{margin-top:1rem;background:#fbf8f1;font-size:1rem;padding:.7rem 1.1rem}
+
+  .card{background:#fff;border-radius:18px;padding:1.6rem 1.5rem 1.8rem;box-shadow:0 10px 26px rgba(11,31,58,.10);border-top:8px solid var(--gold);transition:border-color .25s;position:relative}
+  .card[data-bloc="A"]{border-top-color:var(--bloc-a)}
+  .card[data-bloc="B"]{border-top-color:var(--bloc-b)}
+  .card[data-bloc="C"]{border-top-color:var(--bloc-c)}
+  .card.pi{box-shadow:0 0 0 3px var(--pi-border), 0 10px 26px rgba(11,31,58,.10)}
+
+  .bloc-tag{display:inline-block;font-size:.85rem;font-weight:700;padding:.25rem .7rem;border-radius:999px;margin-bottom:.6rem;color:#fff;letter-spacing:.04em}
+  .bloc-tag[data-bloc="A"]{background:var(--bloc-a)}
+  .bloc-tag[data-bloc="B"]{background:var(--bloc-b)}
+  .bloc-tag[data-bloc="C"]{background:var(--bloc-c)}
+
+  .pi-badge{display:none;float:right;align-items:center;justify-content:center;background:var(--pi-bg);color:var(--pi);border:1px solid var(--pi-border);border-radius:999px;padding:.25rem .65rem;font-size:1rem;font-weight:700;min-width:36px}
+  .card.pi-obligatoria .pi-badge{display:inline-flex}
+
+  .icon{font-size:3.4rem;text-align:center;margin-bottom:.3rem}
+  .situacio{font-size:1.35rem;color:var(--navy);font-weight:700;text-align:center;margin:.2rem 0 .7rem}
+  .pregunta{font-size:1.2rem;color:#333;text-align:center;margin:0 0 1.3rem}
+  .pregunta strong{color:var(--navy)}
+
+  .opcions{display:flex;gap:.8rem;justify-content:center;flex-wrap:wrap}
+  .opcions button{flex:1 1 280px;padding:1.15rem 1rem;border-radius:14px;border:2px solid var(--navy);background:#fff;font-family:inherit;font-size:1.1rem;font-weight:700;color:var(--navy);cursor:pointer;transition:all .15s;line-height:1.35}
+  .opcions button span{display:block;font-size:.95rem;font-weight:400;color:#555;margin-top:.3rem}
+  .opcions button:hover:not(:disabled){background:var(--navy);color:#fff}
+  .opcions button:hover:not(:disabled) span{color:#dbe6f5}
+  .opcions button:disabled{cursor:default;opacity:.9}
+
+  .feedback{margin-top:1.3rem;padding:1.1rem 1.2rem;border-radius:12px;font-size:1.1rem;display:none}
+  .feedback.ok{background:var(--ok-bg);color:#1b5e20;border-left:6px solid var(--ok);display:block}
+  .feedback.err{background:var(--err-bg);color:#8a1c1c;border-left:6px solid var(--err);display:block}
+  .feedback strong{display:block;margin-bottom:.25rem}
+
+  .info-toggle{display:block;margin:1.3rem auto 0;background:#fff;border:1px solid var(--gold);color:var(--navy);padding:.6rem 1.2rem;border-radius:999px;font-family:inherit;font-size:1rem;font-weight:700;cursor:pointer}
+  .info-toggle:hover{background:#fff8e1}
+  .info-panel{display:none;margin-top:.9rem;background:#fffdf5;border-left:5px solid var(--gold);border-radius:10px;padding:1rem 1.2rem;font-size:1.05rem;color:#333}
+  .info-panel.open{display:block}
+  .info-panel h3{margin:0 0 .4rem;color:var(--navy);font-size:1.1rem}
+  .info-panel p{margin:.2rem 0 .6rem}
+  .info-panel .exemple{background:#fff;border-radius:8px;padding:.7rem .9rem;font-size:1rem;border:1px dashed var(--gold)}
+  .info-panel a{color:var(--navy);font-weight:700;text-decoration:none;border-bottom:1px solid var(--gold)}
+
+  .nav-next{text-align:center;margin-top:1.3rem;display:flex;gap:.6rem;justify-content:center;flex-wrap:wrap}
+  .nav-next button{background:var(--gold);color:var(--navy);border:0;padding:.8rem 1.5rem;border-radius:999px;font-family:inherit;font-weight:700;font-size:1.05rem;cursor:pointer}
+  .nav-next button:hover{background:var(--gold-2)}
+  .nav-next button.ghost{background:#fff;color:var(--navy);border:1px solid var(--gold)}
+
+  .resum{text-align:center;padding:1rem 0}
+  .resum .icon{font-size:3.8rem}
+  .resum .missatge{font-size:1.4rem;color:var(--navy);font-weight:700;margin:.5rem 0 .7rem}
+  .resum p{color:#555;font-size:1.05rem;margin:.2rem 0 1rem}
+
+  @media (max-width:640px){body{font-size:19px;padding:.9rem}.menu h1{font-size:1.35rem}.opcions button{flex:1 1 100%}.situacio{font-size:1.2rem}}
+
+  @media print{
+    body{background:#fff;font-size:12pt}
+    .menu{background:#fff;color:#0b1f3a;border:0;box-shadow:none;border-bottom:3px solid var(--gold);border-radius:0}
+    .menu h1,.menu .sub,.menu .progres{color:#0b1f3a}
+    .menu-row button,.lang-switch{display:none}
+    .index{display:none}
+    .card{box-shadow:none;border:1px solid #ddd;page-break-inside:avoid}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="menu">
+    <h1 id="ui-titol">Activitat T1.1 · El termòstat del cos</h1>
+    <p class="sub" id="ui-sub">Cinquanta preguntes sobre el bucle homeostàtic.</p>
+    <div class="menu-row">
+      <span class="progres" id="ui-progres">Progrés: 0 / 50</span>
+      <div class="controls">
+        <button id="btn-adaptat" class="ghost" aria-label="Verd">🌿</button>
+        <button id="btn-continuar" class="ghost" data-i18n="continuar">Continuar</button>
+        <button id="btn-repas" class="ghost" data-i18n="repas">🔁 Mode repàs</button>
+        <button id="btn-imprimir" class="ghost" data-i18n="imprimir">🖨 Imprimir</button>
+        <button id="btn-exportar" class="ghost" data-i18n="exportar">Exportar progrés</button>
+        <button id="btn-reset" data-i18n="reset">Començar de nou</button>
+      </div>
+    </div>
+    <div class="lang-switch" role="group" aria-label="Idioma">
+      <button data-lang="ca" class="active" type="button">CA</button>
+      <button data-lang="es" type="button">ES</button>
+      <button data-lang="en" type="button">EN</button>
+    </div>
+  </div>
+
+  <div class="index">
+    <button class="index-header" id="index-header" type="button">
+      <span id="ui-index-titol">Índex de blocs d'estudi</span>
+      <span class="arrow">▶</span>
+    </button>
+    <div class="index-body" id="index-body">
+      <div class="index-grid" id="index-grid"></div>
+    </div>
+  </div>
+
+  <div class="card" id="card" data-bloc="A">
+    <span class="pi-badge" id="pi-badge">🌿</span>
+    <div class="bloc-tag" id="bloc-tag" data-bloc="A">Bloc A</div>
+    <div class="icon" id="icon">🔁</div>
+    <div class="situacio" id="situacio">…</div>
+    <p class="pregunta" id="pregunta">…</p>
+
+    <div class="opcions" id="opcions">
+      <button data-resp="correcte"><span data-i18n="op-correcte-titol">Correcte</span><span data-i18n="op-correcte-desc">Aquesta és la resposta adequada.</span></button>
+      <button data-resp="incorrecte"><span data-i18n="op-incorrecte-titol">Incorrecte</span><span data-i18n="op-incorrecte-desc">Aquesta no és la resposta adequada.</span></button>
+    </div>
+
+    <div class="feedback" id="feedback"></div>
+
+    <button class="info-toggle" id="btn-info" data-i18n="mes-info">＋ Més informació</button>
+    <div class="info-panel" id="info-panel">
+      <h3 id="info-titol">…</h3>
+      <p id="info-text">…</p>
+      <div class="exemple" id="info-exemple">…</div>
+      <p style="margin-top:.7rem"><a id="info-link" href="#" target="_blank" rel="noopener noreferrer" data-i18n="recurs">→ Veure el recurs del tema</a></p>
+    </div>
+
+    <button class="objectiu-toggle objectiu-toggle-card" id="btn-objectiu-card" type="button">🎯 Objectiu del bloc</button>
+    <div class="objectiu-panel" id="objectiu-card"></div>
+
+    <div class="nav-next">
+      <button id="prev" class="ghost" data-i18n="anterior">← Anterior</button>
+      <button id="next" data-i18n="seguent">Següent →</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+/* ============================================================
+   BASE
+   ============================================================ */
+const BASE_URL = "https://jpainous.github.io/dansa_tema03/";
+const STORAGE_KEY = "t1_activitat01_progres_v3";
+
+/* ============================================================
+   UI
+   ============================================================ */
+const UI = {
+  ca:{
+    titol:"Activitat T1.1 · El termòstat del cos",
+    sub:"Cinquanta preguntes sobre el bucle homeostàtic.",
+    progresGlobal:(f,t)=>`Progrés: ${f} / ${t}`,
+    progresAdaptat:(f,t)=>`🌿 ${f} / ${t}`,
+    reset:"Començar de nou", continuar:"Continuar",
+    adaptat:"🌿", adaptatActiu:"🌿",
+    repas:"🔁 Mode repàs", repasActiu:"🔁 Repàs actiu",
+    repasBuit:"No hi ha preguntes fallades. Bona feina!",
+    repasInfo:(n)=>`Mode repàs: ${n} preguntes per repassar`,
+    exportar:"Exportar progrés", imprimir:"🖨 Imprimir",
+    "index-titol":"Índex de blocs d'estudi",
+    "op-correcte-titol":"Correcte","op-correcte-desc":"Aquesta és la resposta adequada.",
+    "op-incorrecte-titol":"Incorrecte","op-incorrecte-desc":"Aquesta no és la resposta adequada.",
+    "mes-info":"＋ Més informació","menys-info":"－ Tancar informació",
+    recurs:"→ Veure el recurs del tema",seguent:"Següent →",anterior:"← Anterior",
+    correcte:"✔ Correcte",incorrecte:"✘ No exactament",
+    resumGlobal:(e,t)=>`Has encertat ${e} de ${t} en total.`,
+    resumSub:"El teu progrés s'ha desat automàticament.",
+    tornar:"Tornar a començar",
+    confirmReset:"Segur que vols esborrar tot el progrés?",
+    exportat:"Progrés exportat correctament.",
+    objectiu:"🎯 Objectiu del bloc", tancarObjectiu:"✕ Tancar objectiu",
+    queAprens:"Què aprendràs", preguntesClau:"Preguntes clau",
+    perQue:"Per què és important per a la dansa", vocabulari:"Vocabulari clau",
+    objectiuGeneral:"Objectiu general", objectiuAdaptat:"Objectiu adaptat",
+    imprimirTitol:"Full de resultats · Activitat T1.1",
+    imprimirAlumne:"Alumne/a:", imprimirData:"Data:",
+    imprimirResum:"Resum", imprimirTotal:"Total preguntes",
+    imprimirFetes:"Respostes fetes", imprimirEncerts:"Encerts",
+    imprimirPct:"Percentatge", imprimirPerBloc:"Resultats per bloc",
+    imprimirBloc:"Bloc", imprimirDetall:"Detall de preguntes",
+    imprimirNum:"Núm.", imprimirSituacio:"Situació", imprimirResposta:"Resposta",
+    imprimirCorrecta:"Correcta", imprimirEncert:"Encert",
+    imprimirSi:"Sí", imprimirNo:"No", imprimirPendent:"Pendent",
+    imprimirPi:"🌿"
+  },
+  es:{
+    titol:"Actividad T1.1 · El termostato del cuerpo",
+    sub:"Cincuenta preguntas sobre el bucle homeostático.",
+    progresGlobal:(f,t)=>`Progreso: ${f} / ${t}`,
+    progresAdaptat:(f,t)=>`🌿 ${f} / ${t}`,
+    reset:"Empezar de nuevo", continuar:"Continuar",
+    adaptat:"🌿", adaptatActiu:"🌿",
+    repas:"🔁 Modo repaso", repasActiu:"🔁 Repaso activo",
+    repasBuit:"No hay preguntas falladas. ¡Buen trabajo!",
+    repasInfo:(n)=>`Modo repaso: ${n} preguntas por repasar`,
+    exportar:"Exportar progreso", imprimir:"🖨 Imprimir",
+    "index-titol":"Índice de bloques de estudio",
+    "op-correcte-titol":"Correcto","op-correcte-desc":"Esta es la respuesta adecuada.",
+    "op-incorrecte-titol":"Incorrecto","op-incorrecte-desc":"Esta no es la respuesta adecuada.",
+    "mes-info":"＋ Más información","menys-info":"－ Cerrar información",
+    recurs:"→ Ver el recurso del tema",seguent:"Siguiente →",anterior:"← Anterior",
+    correcte:"✔ Correcto",incorrecte:"✘ No exactamente",
+    resumGlobal:(e,t)=>`Has acertado ${e} de ${t} en total.`,
+    resumSub:"Tu progreso se ha guardado automáticamente.",
+    tornar:"Volver a empezar",
+    confirmReset:"¿Seguro que quieres borrar todo el progreso?",
+    exportat:"Progreso exportado correctamente.",
+    objectiu:"🎯 Objetivo del bloque", tancarObjectiu:"✕ Cerrar objetivo",
+    queAprens:"Qué aprenderás", preguntesClau:"Preguntas clave",
+    perQue:"Por qué es importante para la danza", vocabulari:"Vocabulario clave",
+    objectiuGeneral:"Objetivo general", objectiuAdaptat:"Objetivo adaptado",
+    imprimirTitol:"Hoja de resultados · Actividad T1.1",
+    imprimirAlumne:"Alumno/a:", imprimirData:"Fecha:",
+    imprimirResum:"Resumen", imprimirTotal:"Total preguntas",
+    imprimirFetes:"Respuestas hechas", imprimirEncerts:"Aciertos",
+    imprimirPct:"Porcentaje", imprimirPerBloc:"Resultados por bloque",
+    imprimirBloc:"Bloque", imprimirDetall:"Detalle de preguntas",
+    imprimirNum:"N.º", imprimirSituacio:"Situación", imprimirResposta:"Respuesta",
+    imprimirCorrecta:"Correcta", imprimirEncert:"Acierto",
+    imprimirSi:"Sí", imprimirNo:"No", imprimirPendent:"Pendiente",
+    imprimirPi:"🌿"
+  },
+  en:{
+    titol:"Activity T1.1 · The body's thermostat",
+    sub:"Fifty questions on the homeostatic loop.",
+    progresGlobal:(f,t)=>`Progress: ${f} / ${t}`,
+    progresAdaptat:(f,t)=>`🌿 ${f} / ${t}`,
+    reset:"Start over", continuar:"Continue",
+    adaptat:"🌿", adaptatActiu:"🌿",
+    repas:"🔁 Review mode", repasActiu:"🔁 Review active",
+    repasBuit:"No failed questions. Good job!",
+    repasInfo:(n)=>`Review mode: ${n} questions to review`,
+    exportar:"Export progress", imprimir:"🖨 Print",
+    "index-titol":"Study block index",
+    "op-correcte-titol":"Correct","op-correcte-desc":"This is the right answer.",
+    "op-incorrecte-titol":"Incorrect","op-incorrecte-desc":"This is not the right answer.",
+    "mes-info":"＋ More information","menys-info":"－ Close information",
+    recurs:"→ View the topic resource",seguent:"Next →",anterior:"← Previous",
+    correcte:"✔ Correct",incorrecte:"✘ Not exactly",
+    resumGlobal:(e,t)=>`You got ${e} out of ${t} overall.`,
+    resumSub:"Your progress has been saved automatically.",
+    tornar:"Start over",
+    confirmReset:"Are you sure you want to erase all progress?",
+    exportat:"Progress exported successfully.",
+    objectiu:"🎯 Block objective", tancarObjectiu:"✕ Close objective",
+    queAprens:"What you will learn", preguntesClau:"Key questions",
+    perQue:"Why it matters for dance", vocabulari:"Key vocabulary",
+    objectiuGeneral:"General objective", objectiuAdaptat:"Adapted objective",
+    imprimirTitol:"Results sheet · Activity T1.1",
+    imprimirAlumne:"Student:", imprimirData:"Date:",
+    imprimirResum:"Summary", imprimirTotal:"Total questions",
+    imprimirFetes:"Questions answered", imprimirEncerts:"Correct",
+    imprimirPct:"Percentage", imprimirPerBloc:"Results by block",
+    imprimirBloc:"Block", imprimirDetall:"Question detail",
+    imprimirNum:"No.", imprimirSituacio:"Situation", imprimirResposta:"Answer",
+    imprimirCorrecta:"Correct", imprimirEncert:"Correct?",
+    imprimirSi:"Yes", imprimirNo:"No", imprimirPendent:"Pending",
+    imprimirPi:"🌿"
+  }
+};
+
+const BLOCS = {
+  ca:[{id:"A",titol:"El bucle homeostàtic"},{id:"B",titol:"Sensors i efectors"},{id:"C",titol:"Casos reals a la dansa"}],
+  es:[{id:"A",titol:"El bucle homeostático"},{id:"B",titol:"Sensores y efectores"},{id:"C",titol:"Casos reales en la danza"}],
+  en:[{id:"A",titol:"The homeostatic loop"},{id:"B",titol:"Sensors and effectors"},{id:"C",titol:"Real cases in dance"}]
+};
+
+/* ============================================================
+   OBJECTIUS (general + adaptat)
+   ============================================================ */
+const OBJECTIUS = {
+  A:{
+    general:{
+      que:{ca:"Entendre què és l'homeòstasi i com funciona el bucle que manté el cos en equilibri.",es:"Entender qué es la homeostasis y cómo funciona el bucle que mantiene el cuerpo en equilibrio.",en:"Understand what homeostasis is and how the loop that keeps the body in balance works."},
+      clau:{ca:["Què és l'homeòstasi.","Els tres elements del bucle: sensor → centre d'integració → efector.","Per què el cos ha de corregir contínuament les desviacions."],es:["Qué es la homeostasis.","Los tres elementos del bucle: sensor → centro de integración → efector.","Por qué el cuerpo debe corregir continuamente las desviaciones."],en:["What homeostasis is.","The three elements of the loop: sensor → integration centre → effector.","Why the body must continuously correct deviations."]},
+      importancia:{ca:"El bucle homeostàtic és la base de tota la fisiologia: sense entendre'l no es pot entendre per què el cos reacciona davant l'esforç.",es:"El bucle homeostático es la base de toda la fisiología: sin entenderlo no se puede entender por qué el cuerpo reacciona ante el esfuerzo.",en:"The homeostatic loop is the basis of all physiology: without understanding it you cannot understand why the body reacts to effort."}
+    },
+    adaptat:{
+      que:{ca:"Reconèixer els elements del bucle en situacions quotidianes i de dansa.",es:"Reconocer los elementos del bucle en situaciones cotidianas y de danza.",en:"Recognise the elements of the loop in everyday and dance situations."},
+      clau:{ca:["Identificar el sensor, el centre i l'efector en un exemple.","Relacionar cada element amb la seva funció.","Aplicar-ho a un cas de la dansa."],es:["Identificar el sensor, el centro y el efector en un ejemplo.","Relacionar cada elemento con su función.","Aplicarlo a un caso de la danza."],en:["Identify the sensor, the centre and the effector in an example.","Relate each element to its function.","Apply it to a dance case."]},
+      importancia:{ca:"Amb aquestes preguntes aprens a reconèixer el bucle en situacions reals, que és el que et caldrà per entendre la resta del curs.",es:"Con estas preguntas aprendes a reconocer el bucle en situaciones reales, que es lo que necesitarás para entender el resto del curso.",en:"With these questions you learn to recognise the loop in real situations, which is what you will need to understand the rest of the course."}
+    },
+    vocabulari:{ca:["Homeòstasi","Medi intern","Variable","Punt d'ajust","Desviació","Correcció"],es:["Homeostasis","Medio interno","Variable","Punto de ajuste","Desviación","Corrección"],en:["Homeostasis","Internal environment","Variable","Set point","Deviation","Correction"]}
+  },
+  B:{
+    general:{
+      que:{ca:"Saber identificar sensors, centres d'integració i efectors en qualsevol bucle.",es:"Saber identificar sensores, centros de integración y efectores en cualquier bucle.",en:"Know how to identify sensors, integration centres and effectors in any loop."},
+      clau:{ca:["Sensors principals (termo, quimio, osmo).","Sistemes d'integració: nerviós i endocrí.","Efectors: músculs, glàndules i vasos."],es:["Sensores principales (termo, quimio, osmo).","Sistemas de integración: nervioso y endocrino.","Efectores: músculos, glándulas y vasos."],en:["Main sensors (thermo, chemo, osmo).","Integration systems: nervous and endocrine.","Effectors: muscles, glands and vessels."]},
+      importancia:{ca:"Saber qui detecta, qui decideix i qui executa et permet analitzar qualsevol resposta del cos.",es:"Saber quién detecta, quién decide y quién ejecuta te permite analizar cualquier respuesta del cuerpo.",en:"Knowing who detects, who decides and who executes lets you analyse any body response."}
+    },
+    adaptat:{
+      que:{ca:"Associar cada sensor i cada efector amb un exemple senzill.",es:"Asociar cada sensor y cada efector con un ejemplo sencillo.",en:"Match each sensor and each effector with a simple example."},
+      clau:{ca:["Termoreceptors ↔ temperatura.","Quimioreceptors ↔ O₂/CO₂.","Osmorreceptors ↔ líquid."],es:["Termorreceptores ↔ temperatura.","Quimiorreceptores ↔ O₂/CO₂.","Osmoreceptores ↔ líquido."],en:["Thermoreceptors ↔ temperature.","Chemoreceptors ↔ O₂/CO₂.","Osmoreceptors ↔ fluid."]},
+      importancia:{ca:"Relacionar cada sensor amb el seu senyal et dona una base clara per estudiar la resta del tema.",es:"Relacionar cada sensor con su señal te da una base clara para estudiar el resto del tema.",en:"Matching each sensor to its signal gives you a clear basis for studying the rest of the topic."}
+    },
+    vocabulari:{ca:["Sensor","Centre d'integració","Efector","Termoreceptor","Quimioreceptor","Hipotàlem","Bulb raquidi","Glàndula"],es:["Sensor","Centro de integración","Efector","Termorreceptor","Quimiorreceptor","Hipotálamo","Bulbo raquídeo","Glándula"],en:["Sensor","Integration centre","Effector","Thermoreceptor","Chemoreceptor","Hypothalamus","Medulla oblongata","Gland"]}
+  },
+  C:{
+    general:{
+      que:{ca:"Aplicar el bucle homeostàtic a situacions reals de la dansa.",es:"Aplicar el bucle homeostático a situaciones reales de la danza.",en:"Apply the homeostatic loop to real dance situations."},
+      clau:{ca:["Regulació tèrmica.","Regulació gasosa.","Regulació metabòlica."],es:["Regulación térmica.","Regulación gaseosa.","Regulación metabólica."],en:["Thermal regulation.","Gas regulation.","Metabolic regulation."]},
+      importancia:{ca:"El bucle passa cada cop que balles: entendre'l et permet escoltar el cos i entrenar amb criteri.",es:"El bucle ocurre cada vez que bailas: entenderlo te permite escuchar el cuerpo y entrenar con criterio.",en:"The loop happens every time you dance: understanding it lets you listen to your body and train with judgement."}
+    },
+    adaptat:{
+      que:{ca:"Identificar què fa el cos en situacions de dansa quotidianes.",es:"Identificar qué hace el cuerpo en situaciones de danza cotidianas.",en:"Identify what the body does in everyday dance situations."},
+      clau:{ca:["Què passa quan fa calor en un assaig.","Què passa quan puja el CO₂.","Què passa quan baixa la glucosa."],es:["Qué pasa cuando hace calor en un ensayo.","Qué pasa cuando sube el CO₂.","Qué pasa cuando baja la glucosa."],en:["What happens when it is hot in a rehearsal.","What happens when CO₂ rises.","What happens when glucose drops."]},
+      importancia:{ca:"Reconèixer aquestes respostes al teu cos és el que et permetrà aplicar-ho al teu entrenament.",es:"Reconocer estas respuestas en tu cuerpo es lo que te permitirá aplicarlo a tu entrenamiento.",en:"Recognising these responses in your body is what will let you apply it to your training."}
+    },
+    vocabulari:{ca:["Regulació tèrmica","Regulació gasosa","Regulació metabòlica","Sudoració","Vasodilatació","Glucagó","Insulina"],es:["Regulación térmica","Regulación gaseosa","Regulación metabólica","Sudoración","Vasodilatación","Glucagón","Insulina"],en:["Thermal regulation","Gas regulation","Metabolic regulation","Sweating","Vasodilation","Glucagon","Insulin"]}
+  }
+};
+
+/* ============================================================
+   PREGUNTES (50) — bloc A (16), B (17), C (17)
+   camp "pi": true → marcada amb 🌿 (ajuda a l'objectiu)
+   ============================================================ */
+const PREGUNTES = [
+  /* -------- BLOC A · BUCLE HOMEOSTÀTIC (16) -------- */
+  {bloc:"A",pi:true,icon:"⚖️",correcte:"correcte",recurs:"homeostasis_movimiento.html",
+    situacio:{ca:"El cos manté la temperatura entre 36 i 37,5 °C encara que faci fred o calor.",es:"El cuerpo mantiene la temperatura entre 36 y 37,5 °C aunque haga frío o calor.",en:"The body keeps temperature between 36 and 37.5 °C even when it is cold or hot."},
+    pregunta:{ca:"Això és un exemple d'<strong>homeòstasi</strong>?",es:"¿Esto es un ejemplo de <strong>homeostasis</strong>?",en:"Is this an example of <strong>homeostasis</strong>?"},
+    explica:{ca:"Sí. L'homeòstasi és el manteniment dinàmic del medi intern dins d'un rang estable.",es:"Sí. La homeostasis es el mantenimiento dinámico del medio interno dentro de un rango estable.",en:"Yes. Homeostasis is the dynamic maintenance of the internal environment within a stable range."},
+    info:{titol:{ca:"Què és l'homeòstasi",es:"Qué es la homeostasis",en:"What homeostasis is"},text:{ca:"L'homeòstasi és el conjunt de mecanismes que mantenen el medi intern dins d'un rang estable.",es:"La homeostasis es el conjunto de mecanismos que mantienen el medio interno dentro de un rango estable.",en:"Homeostasis is the set of mechanisms that keep the internal environment within a stable range."},exemple:{ca:"Encara que faci fred al vestidor, la temperatura corporal es manté entre 36 i 37,5 °C.",es:"Aunque haga frío en el vestuario, la temperatura corporal se mantiene entre 36 y 37,5 °C.",en:"Even if it is cold in the changing room, body temperature stays between 36 and 37.5 °C."}}},
+  {bloc:"A",pi:true,icon:"🌡️",correcte:"correcte",recurs:"homeostasis_movimiento.html",
+    situacio:{ca:"La temperatura del cos puja durant un assaig.",es:"La temperatura del cuerpo sube durante un ensayo.",en:"Body temperature rises during a rehearsal."},
+    pregunta:{ca:"Quin element del bucle <strong>detecta</strong> aquest canvi?",es:"¿Qué elemento del bucle <strong>detecta</strong> este cambio?",en:"Which loop element <strong>detects</strong> this change?"},
+    explica:{ca:"El <strong>sensor</strong>. En aquest cas, els termoreceptors.",es:"El <strong>sensor</strong>. En este caso, los termorreceptores.",en:"The <strong>sensor</strong>. In this case, thermoreceptors."},
+    info:{titol:{ca:"El sensor",es:"El sensor",en:"The sensor"},text:{ca:"El sensor mesura la variable i detecta si està fora del rang.",es:"El sensor mide la variable y detecta si está fuera del rango.",en:"The sensor measures the variable and detects if it is outside the range."},exemple:{ca:"Els termoreceptors de la pell noten la calor i envien senyals al sistema nerviós.",es:"Los termorreceptores de la piel notan el calor y envían señales al sistema nervioso.",en:"Skin thermoreceptors feel the heat and send signals to the nervous system."}}},
+  {bloc:"A",pi:true,icon:"🧠",correcte:"correcte",recurs:"estabilidad_control.html",
+    situacio:{ca:"Els sensors envien senyals al sistema nerviós.",es:"Los sensores envían señales al sistema nervioso.",en:"Sensors send signals to the nervous system."},
+    pregunta:{ca:"Quin element <strong>decideix</strong> què cal fer?",es:"¿Qué elemento <strong>decide</strong> qué hay que hacer?",en:"Which element <strong>decides</strong> what to do?"},
+    explica:{ca:"El <strong>centre d'integració</strong>. En la temperatura, l'hipotàlem.",es:"El <strong>centro de integración</strong>. En la temperatura, el hipotálamo.",en:"The <strong>integration centre</strong>. For temperature, the hypothalamus."},
+    info:{titol:{ca:"El centre d'integració",es:"El centro de integración",en:"The integration centre"},text:{ca:"Rep la informació dels sensors i decideix la resposta.",es:"Recibe la información de los sensores y decide la respuesta.",en:"It receives sensor information and decides the response."},exemple:{ca:"L'hipotàlem decideix activar la sudoració per refredar el cos.",es:"El hipotálamo decide activar la sudoración para enfriar el cuerpo.",en:"The hypothalamus decides to activate sweating to cool the body."}}},
+  {bloc:"A",pi:true,icon:"⚙️",correcte:"correcte",recurs:"homeostasis_movimiento.html",
+    situacio:{ca:"El centre d'integració envia una ordre per corregir el canvi.",es:"El centro de integración envía una orden para corregir el cambio.",en:"The integration centre sends an order to correct the change."},
+    pregunta:{ca:"Quin element <strong>executa</strong> la resposta?",es:"¿Qué elemento <strong>ejecuta</strong> la respuesta?",en:"Which element <strong>executes</strong> the response?"},
+    explica:{ca:"L'<strong>efector</strong>. Pot ser un múscul, una glàndula o un vas sanguini.",es:"El <strong>efector</strong>. Puede ser un músculo, una glándula o un vaso sanguíneo.",en:"The <strong>effector</strong>. It can be a muscle, a gland or a blood vessel."},
+    info:{titol:{ca:"L'efector",es:"El efector",en:"The effector"},text:{ca:"L'efector executa la correcció.",es:"El efector ejecuta la corrección.",en:"The effector executes the correction."},exemple:{ca:"Les glàndules sudorípares produeixen suor; els vasos es dilaten per perdre calor.",es:"Las glándulas sudoríparas producen sudor; los vasos se dilatan para perder calor.",en:"Sweat glands produce sweat; vessels dilate to lose heat."}}},
+  {bloc:"A",pi:true,icon:"🔁",correcte:"correcte",recurs:"homeostasis_movimiento.html",
+    situacio:{ca:"Un cop la temperatura ha tornat al rang, la resposta s'atura.",es:"Una vez la temperatura ha vuelto al rango, la respuesta se detiene.",en:"Once temperature has returned to range, the response stops."},
+    pregunta:{ca:"Aquest tipus de retroalimentació és <strong>negativa</strong> o <strong>positiva</strong>?",es:"¿Este tipo de retroalimentación es <strong>negativa</strong> o <strong>positiva</strong>?",en:"Is this type of feedback <strong>negative</strong> or <strong>positive</strong>?"},
+    explica:{ca:"És <strong>negativa</strong>: corregeix el canvi i torna la variable al punt d'ajust.",es:"Es <strong>negativa</strong>: corrige el cambio y devuelve la variable al punto de ajuste.",en:"It is <strong>negative</strong>: it corrects the change and returns the variable to the set point."},
+    info:{titol:{ca:"Retroalimentació negativa",es:"Retroalimentación negativa",en:"Negative feedback"},text:{ca:"Corregeix el canvi i torna la variable al rang.",es:"Corrige el cambio y devuelve la variable al rango.",en:"It corrects the change and returns the variable to range."},exemple:{ca:"Quan la temperatura torna a 36,8 °C, la sudoració s'atura.",es:"Cuando la temperatura vuelve a 36,8 °C, la sudoración se detiene.",en:"When temperature returns to 36.8 °C, sweating stops."}}},
+  {bloc:"A",pi:true,icon:"⚖️",correcte:"correcte",recurs:"homeostasis_movimiento.html",
+    situacio:{ca:"En repòs, totes les variables del cos estan dins dels seus rangs.",es:"En reposo, todas las variables del cuerpo están dentro de sus rangos.",en:"At rest, all body variables are within their ranges."},
+    pregunta:{ca:"L'homeòstasi és un estat <strong>estàtic</strong> o un <strong>equilibri dinàmic</strong>?",es:"¿La homeostasis es un estado <strong>estático</strong> o un <strong>equilibrio dinámico</strong>?",en:"Is homeostasis a <strong>static</strong> state or a <strong>dynamic balance</strong>?"},
+    explica:{ca:"És un <strong>equilibri dinàmic</strong>: el cos fa micro-ajustos constantment.",es:"Es un <strong>equilibrio dinámico</strong>: el cuerpo hace micro-ajustes constantemente.",en:"It is a <strong>dynamic balance</strong>: the body makes constant micro-adjustments."},
+    info:{titol:{ca:"Equilibri dinàmic",es:"Equilibrio dinámico",en:"Dynamic balance"},text:{ca:"L'homeòstasi no és un estat fix, sinó un equilibri amb ajustos continus.",es:"La homeostasis no es un estado fijo, sino un equilibrio con ajustes continuos.",en:"Homeostasis is not a fixed state, but a balance with continuous adjustments."},exemple:{ca:"És com un equilibrista: sembla quiet, però fa micro-ajustos.",es:"Es como un equilibrista: parece quieto, pero hace micro-ajustes.",en:"It is like a tightrope walker: seemingly still, but making micro-adjustments."}}},
+
+  /* 7–16: A · ampliació (pi:false) */
+  {bloc:"A",pi:false,icon:"🔎",correcte:"correcte",recurs:"homeostasis_movimiento.html",
+    situacio:{ca:"El punt d'ajust és el valor que el cos considera «normal» per a una variable.",es:"El punto de ajuste es el valor que el cuerpo considera «normal» para una variable.",en:"The set point is the value the body considers “normal” for a variable."},
+    pregunta:{ca:"El punt d'ajust de la temperatura és al voltant de 36,8 °C?",es:"¿El punto de ajuste de la temperatura está alrededor de 36,8 °C?",en:"Is the temperature set point around 36.8 °C?"},
+    explica:{ca:"Sí. El punt d'ajust de la temperatura és ~36,8 °C, dins del rang 36–37,5 °C.",es:"Sí. El punto de ajuste de la temperatura es ~36,8 °C, dentro del rango 36–37,5 °C.",en:"Yes. The temperature set point is ~36.8 °C, within the 36–37.5 °C range."},
+    info:{titol:{ca:"Punt d'ajust",es:"Punto de ajuste",en:"Set point"},text:{ca:"És el valor objectiu que el cos intenta mantenir.",es:"Es el valor objetivo que el cuerpo intenta mantener.",en:"It is the target value the body tries to keep."},exemple:{ca:"Si puja per sobre, el cos corregeix.",es:"Si sube por encima, el cuerpo corrige.",en:"If it rises above, the body corrects."}}},
+  {bloc:"A",pi:false,icon:"🧭",correcte:"correcte",recurs:"homeostasis_movimiento.html",
+    situacio:{ca:"Una desviació és quan una variable surt del seu rang.",es:"Una desviación es cuando una variable sale de su rango.",en:"A deviation is when a variable leaves its range."},
+    pregunta:{ca:"Qualsevol desviació activa una correcció del cos?",es:"¿Cualquier desviación activa una corrección del cuerpo?",en:"Does any deviation trigger a body correction?"},
+    explica:{ca:"Sí, si és prou gran. Canvis molt petits no sempre activen el bucle.",es:"Sí, si es lo bastante grande. Cambios muy pequeños no siempre activan el bucle.",en:"Yes, if it is big enough. Very small changes do not always trigger the loop."},
+    info:{titol:{ca:"Desviació",es:"Desviación",en:"Deviation"},text:{ca:"El cos detecta desviacions significatives i activa correccions.",es:"El cuerpo detecta desviaciones significativas y activa correcciones.",en:"The body detects significant deviations and activates corrections."},exemple:{ca:"Un canvi d'1 dècim de grau no activa res; una febre sí.",es:"Un cambio de 1 décima de grado no activa nada; una fiebre sí.",en:"A 0.1 °C change does nothing; a fever does."}}},
+  {bloc:"A",pi:false,icon:"🔄",correcte:"correcte",recurs:"homeostasis_movimiento.html",
+    situacio:{ca:"La retroalimentació negativa és el mecanisme més habitual del cos.",es:"La retroalimentación negativa es el mecanismo más habitual del cuerpo.",en:"Negative feedback is the body's most common mechanism."},
+    pregunta:{ca:"La majoria de bucles homeostàtics són de retroalimentació negativa?",es:"¿La mayoría de bucles homeostáticos son de retroalimentación negativa?",en:"Are most homeostatic loops negative feedback?"},
+    explica:{ca:"Sí. La negativa manté l'equilibri; la positiva és més rara i s'usa per completar processos.",es:"Sí. La negativa mantiene el equilibrio; la positiva es más rara y se usa para completar procesos.",en:"Yes. Negative maintains balance; positive is rarer and used to complete processes."},
+    info:{titol:{ca:"Negativa vs positiva",es:"Negativa vs positiva",en:"Negative vs positive"},text:{ca:"Negativa: corregeix. Positiva: amplifica.",es:"Negativa: corrige. Positiva: amplifica.",en:"Negative: corrects. Positive: amplifies."},exemple:{ca:"Temperatura: negativa. Part: positiva.",es:"Temperatura: negativa. Parto: positiva.",en:"Temperature: negative. Childbirth: positive."}}},
+  {bloc:"A",pi:false,icon:"🌡️",correcte:"correcte",recurs:"homeostasis_movimiento.html",
+    situacio:{ca:"Durant un assaig llarg, la temperatura corporal puja.",es:"Durante un ensayo largo, la temperatura corporal sube.",en:"During a long rehearsal, body temperature rises."},
+    pregunta:{ca:"Quin sistema fa de centre d'integració principal en la temperatura?",es:"¿Qué sistema actúa como centro de integración principal en la temperatura?",en:"Which system acts as the main integration centre for temperature?"},
+    explica:{ca:"El <strong>sistema nerviós</strong>, concretament l'hipotàlem.",es:"El <strong>sistema nervioso</strong>, concretamente el hipotálamo.",en:"The <strong>nervous system</strong>, specifically the hypothalamus."},
+    info:{titol:{ca:"Hipotàlem",es:"Hipotálamo",en:"Hypothalamus"},text:{ca:"L'hipotàlem regula la temperatura, la set, la fam i el son.",es:"El hipotálamo regula la temperatura, la sed, el hambre y el sueño.",en:"The hypothalamus regulates temperature, thirst, hunger and sleep."},exemple:{ca:"Si tens calor, l'hipotàlem activa la sudoració.",es:"Si tienes calor, el hipotálamo activa la sudoración.",en:"If you are hot, the hypothalamus activates sweating."}}},
+  {bloc:"A",pi:false,icon:"💧",correcte:"correcte",recurs:"homeostasis_movimiento.html",
+    situacio:{ca:"El 60 % del cos humà és líquid.",es:"El 60 % del cuerpo humano es líquido.",en:"60 % of the human body is fluid."},
+    pregunta:{ca:"El medi intern és el líquid <strong>dins</strong> de les cèl·lules o <strong>fora</strong>?",es:"¿El medio interno es el líquido <strong>dentro</strong> de las células o <strong>fuera</strong>?",en:"Is the internal environment the fluid <strong>inside</strong> cells or <strong>outside</strong>?"},
+    explica:{ca:"És el líquid <strong>fora</strong> de les cèl·lules: el LEC.",es:"Es el líquido <strong>fuera</strong> de las células: el LEC.",en:"It is the fluid <strong>outside</strong> cells: the ECF."},
+    info:{titol:{ca:"Medi intern",es:"Medio interno",en:"Internal environment"},text:{ca:"El medi intern és el LEC (35–40 % del líquid corporal).",es:"El medio interno es el LEC (35–40 % del líquido corporal).",en:"The internal environment is the ECF (35–40 % of body fluid)."},exemple:{ca:"Quan sues, perds líquid del medi intern.",es:"Cuando sudas, pierdes líquido del medio interno.",en:"When you sweat, you lose fluid from the internal environment."}}},
+  {bloc:"A",pi:false,icon:"📏",correcte:"correcte",recurs:"homeostasis_movimiento.html",
+    situacio:{ca:"El pH de la sang s'ha de mantenir entre 7,35 i 7,45.",es:"El pH de la sangre debe mantenerse entre 7,35 y 7,45.",en:"Blood pH must be kept between 7.35 and 7.45."},
+    pregunta:{ca:"El pH és una variable homeostàtica?",es:"¿El pH es una variable homeostática?",en:"Is pH a homeostatic variable?"},
+    explica:{ca:"Sí. El cos regula el pH amb la respiració i els ronyons.",es:"Sí. El cuerpo regula el pH con la respiración y los riñones.",en:"Yes. The body regulates pH through breathing and the kidneys."},
+    info:{titol:{ca:"pH",es:"pH",en:"pH"},text:{ca:"El pH mesura l'acidesa de la sang. Rang: 7,35–7,45.",es:"El pH mide la acidez de la sangre. Rango: 7,35–7,45.",en:"pH measures blood acidity. Range: 7.35–7.45."},exemple:{ca:"Després d'un esforç intens, respires ràpid per eliminar CO₂ i tornar el pH al rang.",es:"Después de un esfuerzo intenso, respiras rápido para eliminar CO₂ y devolver el pH al rango.",en:"After intense effort, you breathe fast to remove CO₂ and bring pH back to range."}}},
+  {bloc:"A",pi:false,icon:"🩸",correcte:"correcte",recurs:"homeostasis_movimiento.html",
+    situacio:{ca:"La glucosa en sang ha de mantenir-se entre 75 i 110 mg/dL.",es:"La glucosa en sangre debe mantenerse entre 75 y 110 mg/dL.",en:"Blood glucose must be kept between 75 and 110 mg/dL."},
+    pregunta:{ca:"Si la glucosa baixa, el cos l'apuja o la baixa encara més?",es:"Si la glucosa baja, ¿el cuerpo la sube o la baja aún más?",en:"If glucose drops, does the body raise it or lower it further?"},
+    explica:{ca:"L'<strong>apuja</strong>. El pàncrees allibera glucagó i el fetge allibera glucosa.",es:"La <strong>sube</strong>. El páncreas libera glucagón y el hígado libera glucosa.",en:"It <strong>raises</strong> it. The pancreas releases glucagon and the liver releases glucose."},
+    info:{titol:{ca:"Glucosa",es:"Glucosa",en:"Glucose"},text:{ca:"El glucagó i la insulina regulen la glucosa en sang.",es:"El glucagón y la insulina regulan la glucosa en sangre.",en:"Glucagon and insulin regulate blood glucose."},exemple:{ca:"Si assages sense esmorzar, el cos allibera glucagó.",es:"Si ensayas sin desayunar, el cuerpo libera glucagón.",en:"If you rehearse without breakfast, the body releases glucagon."}}},
+  {bloc:"A",pi:false,icon:"🎯",correcte:"incorrecte",recurs:"homeostasis_movimiento.html",
+    situacio:{ca:"Un company diu que l'homeòstasi és «mantenir el cos sempre igual».",es:"Un compañero dice que la homeostasis es «mantener el cuerpo siempre igual».",en:"A classmate says homeostasis is “keeping the body always the same”."},
+    pregunta:{ca:"És correcte aquesta definició?",es:"¿Es correcta esta definición?",en:"Is this definition correct?"},
+    explica:{ca:"No exactament. L'homeòstasi és <strong>mantenir el medi intern dins d'un rang</strong>, no sempre igual.",es:"No exactamente. La homeostasis es <strong>mantener el medio interno dentro de un rango</strong>, no siempre igual.",en:"Not exactly. Homeostasis is <strong>keeping the internal environment within a range</strong>, not always the same."},
+    info:{titol:{ca:"Rang, no valor fix",es:"Rango, no valor fijo",en:"Range, not fixed value"},text:{ca:"Cada variable té un rang; el cos no busca un valor únic.",es:"Cada variable tiene un rango; el cuerpo no busca un valor único.",en:"Each variable has a range; the body does not aim for a single value."},exemple:{ca:"La temperatura pot estar a 36,5 o 37,2 °C i totes dues són normals.",es:"La temperatura puede estar a 36,5 o 37,2 °C y ambas son normales.",en:"Temperature can be 36.5 or 37.2 °C and both are normal."}}},
+  {bloc:"A",pi:false,icon:"⏱️",correcte:"correcte",recurs:"homeostasis_movimiento.html",
+    situacio:{ca:"El cos corregeix les desviacions contínuament, fins i tot en repòs.",es:"El cuerpo corrige las desviaciones continuamente, incluso en reposo.",en:"The body corrects deviations continuously, even at rest."},
+    pregunta:{ca:"En repòs, el cos deixa de regular?",es:"¿En reposo, el cuerpo deja de regular?",en:"At rest, does the body stop regulating?"},
+    explica:{ca:"No. El cos segueix fent micro-ajustos contínuament.",es:"No. El cuerpo sigue haciendo micro-ajustes continuamente.",en:"No. The body keeps making micro-adjustments continuously."},
+    info:{titol:{ca:"Sempre actiu",es:"Siempre activo",en:"Always active"},text:{ca:"L'homeòstasi no descansa mai.",es:"La homeostasis nunca descansa.",en:"Homeostasis never rests."},exemple:{ca:"Fins i tot dormint, el cos regula temperatura, glucosa i pH.",es:"Incluso durmiendo, el cuerpo regula temperatura, glucosa y pH.",en:"Even while sleeping, the body regulates temperature, glucose and pH."}}},
+  {bloc:"A",pi:false,icon:"🧩",correcte:"correcte",recurs:"homeostasis_movimiento.html",
+    situacio:{ca:"El bucle homeostàtic té tres elements.",es:"El bucle homeostático tiene tres elementos.",en:"The homeostatic loop has three elements."},
+    pregunta:{ca:"Quin és l'ordre correcte?",es:"¿Cuál es el orden correcto?",en:"What is the correct order?"},
+    explica:{ca:"<strong>Sensor → centre d'integració → efector</strong>.",es:"<strong>Sensor → centro de integración → efector</strong>.",en:"<strong>Sensor → integration centre → effector</strong>."},
+    info:{titol:{ca:"Ordre del bucle",es:"Orden del bucle",en:"Loop order"},text:{ca:"Primer es detecta, després es decideix, finalment s'executa.",es:"Primero se detecta, después se decide, finalmente se ejecuta.",en:"First detect, then decide, finally execute."},exemple:{ca:"Termoreceptors → hipotàlem → glàndules sudorípares.",es:"Termorreceptores → hipotálamo → glándulas sudoríparas.",en:"Thermoreceptors → hypothalamus → sweat glands."}}},
+  {bloc:"A",pi:false,icon:"⚠️",correcte:"incorrecte",recurs:"homeostasis_movimiento.html",
+    situacio:{ca:"Un company diu: «L'homeòstasi només funciona quan estem desperts».",es:"Un compañero dice: «La homeostasis solo funciona cuando estamos despiertos».",en:"A classmate says: “Homeostasis only works when we are awake.”"},
+    pregunta:{ca:"És correcte?",es:"¿Es correcto?",en:"Is that correct?"},
+    explica:{ca:"No. L'homeòstasi funciona també durant el son.",es:"No. La homeostasis funciona también durante el sueño.",en:"No. Homeostasis also works during sleep."},
+    info:{titol:{ca:"Durant el son",es:"Durante el sueño",en:"During sleep"},text:{ca:"Durant el son es regulen hormones, temperatura i glucosa.",es:"Durante el sueño se regulan hormonas, temperatura y glucosa.",en:"During sleep, hormones, temperature and glucose are regulated."},exemple:{ca:"Per això dormir malament afecta tot el cos.",es:"Por eso dormir mal afecta a todo el cuerpo.",en:"That is why poor sleep affects the whole body."}}},
+  {bloc:"A",pi:false,icon:"🌍",correcte:"correcte",recurs:"homeostasis_movimiento.html",
+    situacio:{ca:"Quan fas exercici en un ambient molt calorós, el cos regula la temperatura.",es:"Cuando haces ejercicio en un ambiente muy caluroso, el cuerpo regula la temperatura.",en:"When you exercise in a very hot environment, the body regulates temperature."},
+    pregunta:{ca:"Això és homeòstasi?",es:"¿Esto es homeostasis?",en:"Is this homeostasis?"},
+    explica:{ca:"Sí. El cos respon a un canvi extern per mantenir el medi intern estable.",es:"Sí. El cuerpo responde a un cambio externo para mantener el medio interno estable.",en:"Yes. The body responds to an external change to keep the internal environment stable."},
+    info:{titol:{ca:"Canvi extern, correcció interna",es:"Cambio externo, corrección interna",en:"External change, internal correction"},text:{ca:"L'homeòstasi respon tant a canvis externs com interns.",es:"La homeostasis responde tanto a cambios externos como internos.",en:"Homeostasis responds to both external and internal changes."},exemple:{ca:"A 35 °C a l'ombra, el cos suda més.",es:"A 35 °C a la sombra, el cuerpo suda más.",en:"At 35 °C in the shade, the body sweats more."}}},
+
+  /* -------- BLOC B · SENSORS I EFECTORS (17) -------- */
+  {bloc:"B",pi:true,icon:"🌡️",correcte:"correcte",recurs:"homeostasis_movimiento.html",
+    situacio:{ca:"Quan la temperatura puja, uns receptors de la pell detecten el canvi.",es:"Cuando la temperatura sube, unos receptores de la piel detectan el cambio.",en:"When temperature rises, receptors in the skin detect the change."},
+    pregunta:{ca:"Com es diuen aquests sensors?",es:"¿Cómo se llaman estos sensores?",en:"What are these sensors called?"},
+    explica:{ca:"<strong>Termoreceptors</strong>.",es:"<strong>Termorreceptores</strong>.",en:"<strong>Thermoreceptors</strong>."},
+    info:{titol:{ca:"Termoreceptors",es:"Termorreceptores",en:"Thermoreceptors"},text:{ca:"Es troben a la pell i en òrgans interns.",es:"Se encuentran en la piel y en órganos internos.",en:"They are found in the skin and internal organs."},exemple:{ca:"En un assaig amb calor, envien senyals a l'hipotàlem.",es:"En un ensayo con calor, envían señales al hipotálamo.",en:"In a hot rehearsal, they send signals to the hypothalamus."}}},
+  {bloc:"B",pi:true,icon:"💨",correcte:"correcte",recurs:"homeostasis_movimiento.html",
+    situacio:{ca:"Durant un exercici intens, el CO₂ a la sang augmenta.",es:"Durante un ejercicio intenso, el CO₂ en la sangre aumenta.",en:"During intense exercise, blood CO₂ rises."},
+    pregunta:{ca:"Quin tipus de sensor ho detecta?",es:"¿Qué tipo de sensor lo detecta?",en:"Which type of sensor detects it?"},
+    explica:{ca:"Els <strong>quimioreceptors</strong>.",es:"Los <strong>quimiorreceptores</strong>.",en:"<strong>Chemoreceptors</strong>."},
+    info:{titol:{ca:"Quimioreceptors",es:"Quimiorreceptores",en:"Chemoreceptors"},text:{ca:"Detecten canvis de CO₂, O₂ i pH.",es:"Detectan cambios de CO₂, O₂ y pH.",en:"They detect changes in CO₂, O₂ and pH."},exemple:{ca:"Quan el CO₂ puja, envien senyals al bulb raquidi.",es:"Cuando el CO₂ sube, envían señales al bulbo raquídeo.",en:"When CO₂ rises, they send signals to the medulla oblongata."}}},
+  {bloc:"B",pi:true,icon:"💧",correcte:"correcte",recurs:"homeostasis_movimiento.html",
+    situacio:{ca:"Una ballarina sua molt i perd líquid.",es:"Una bailarina suda mucho y pierde líquido.",en:"A dancer sweats a lot and loses fluid."},
+    pregunta:{ca:"Quin tipus de sensor detecta la pèrdua de líquid?",es:"¿Qué tipo de sensor detecta la pérdida de líquido?",en:"Which type of sensor detects fluid loss?"},
+    explica:{ca:"Els <strong>osmorreceptors</strong>.",es:"Los <strong>osmoreceptores</strong>.",en:"<strong>Osmoreceptors</strong>."},
+    info:{titol:{ca:"Osmorreceptors",es:"Osmorreceptores",en:"Osmoreceptors"},text:{ca:"Es troben a l'hipotàlem.",es:"Se encuentran en el hipotálamo.",en:"They are found in the hypothalamus."},exemple:{ca:"Activen la set i l'alliberament d'ADH.",es:"Activan la sed y la liberación de ADH.",en:"They activate thirst and ADH release."}}},
+  {bloc:"B",pi:true,icon:"🧠",correcte:"correcte",recurs:"estabilidad_control.html",
+    situacio:{ca:"El cos necessita decidir la resposta a un canvi intern.",es:"El cuerpo necesita decidir la respuesta a un cambio interno.",en:"The body needs to decide the response to an internal change."},
+    pregunta:{ca:"Quins són els dos sistemes d'integració principals?",es:"¿Cuáles son los dos sistemas de integración principales?",en:"Which are the two main integration systems?"},
+    explica:{ca:"El <strong>sistema nerviós</strong> i el <strong>sistema endocrí</strong>.",es:"El <strong>sistema nervioso</strong> y el <strong>sistema endocrino</strong>.",en:"The <strong>nervous system</strong> and the <strong>endocrine system</strong>."},
+    info:{titol:{ca:"Sistemes d'integració",es:"Sistemas de integración",en:"Integration systems"},text:{ca:"Nerviós: ràpid. Endocrí: més lent però sostingut.",es:"Nervioso: rápido. Endocrino: más lento pero sostenido.",en:"Nervous: fast. Endocrine: slower but sustained."},exemple:{ca:"Bulb raquidi → respiració. Pàncrees → glucosa.",es:"Bulbo raquídeo → respiración. Páncreas → glucosa.",en:"Medulla oblongata → breathing. Pancreas → glucose."}}},
+  {bloc:"B",pi:true,icon:"💦",correcte:"correcte",recurs:"homeostasis_movimiento.html",
+    situacio:{ca:"Quan fa calor, les glàndules sudorípares s'activen.",es:"Cuando hace calor, las glándulas sudoríparas se activan.",en:"When it is hot, sweat glands activate."},
+    pregunta:{ca:"Les glàndules sudorípares són un <strong>sensor</strong> o un <strong>efector</strong>?",es:"¿Las glándulas sudoríparas son un <strong>sensor</strong> o un <strong>efector</strong>?",en:"Are sweat glands a <strong>sensor</strong> or an <strong>effector</strong>?"},
+    explica:{ca:"Són un <strong>efector</strong>.",es:"Son un <strong>efector</strong>.",en:"They are an <strong>effector</strong>."},
+    info:{titol:{ca:"Efectors",es:"Efectores",en:"Effectors"},text:{ca:"Músculs, glàndules i vasos sanguinis.",es:"Músculos, glándulas y vasos sanguíneos.",en:"Muscles, glands and blood vessels."},exemple:{ca:"Quan l'hipotàlem ho ordena, les glàndules suen.",es:"Cuando el hipotálamo lo ordena, las glándulas sudan.",en:"When the hypothalamus orders it, glands sweat."}}},
+  {bloc:"B",pi:true,icon:"⚙️",correcte:"correcte",recurs:"homeostasis_movimiento.html",
+    situacio:{ca:"Quan fa fred, el cos tremola per generar calor.",es:"Cuando hace frío, el cuerpo tiembla para generar calor.",en:"When it is cold, the body shivers to generate heat."},
+    pregunta:{ca:"Quin tipus d'efector intervé?",es:"¿Qué tipo de efector interviene?",en:"Which type of effector is involved?"},
+    explica:{ca:"Els <strong>músculs</strong> es contreuen ràpidament i generen calor.",es:"Los <strong>músculos</strong> se contraen rápidamente y generan calor.",en:"The <strong>muscles</strong> contract quickly and generate heat."},
+    info:{titol:{ca:"Músculs com a efectors",es:"Músculos como efectores",en:"Muscles as effectors"},text:{ca:"Les contraccions ràpides alliberen energia en forma de calor.",es:"Las contracciones rápidas liberan energía en forma de calor.",en:"Rapid contractions release energy as heat."},exemple:{ca:"En un vestidor fred, la ballarina tremola sense voler.",es:"En un vestuario frío, la bailarina tiembla sin querer.",en:"In a cold changing room, the dancer shivers involuntarily."}}},
+  {bloc:"B",pi:false,icon:"👁️",correcte:"correcte",recurs:"homeostasis_movimiento.html",
+    situacio:{ca:"Els sensors estan distribuïts pel cos.",es:"Los sensores están distribuidos por el cuerpo.",en:"Sensors are distributed throughout the body."},
+    pregunta:{ca:"Els sensors estan només al cervell?",es:"¿Los sensores están solo en el cerebro?",en:"Are sensors only in the brain?"},
+    explica:{ca:"No. N'hi ha a la pell, als vasos, als òrgans interns...",es:"No. Los hay en la piel, en los vasos, en los órganos internos...",en:"No. They are in the skin, vessels, internal organs..."},
+    info:{titol:{ca:"Sensors distribuïts",es:"Sensores distribuidos",en:"Distributed sensors"},text:{ca:"El cos té sensors a molts llocs per detectar canvis localment.",es:"El cuerpo tiene sensores en muchos lugares para detectar cambios localmente.",en:"The body has sensors in many places to detect local changes."},exemple:{ca:"Els termoreceptors de la pell detecten la calor allà on toca.",es:"Los termorreceptores de la piel detectan el calor donde toca.",en:"Skin thermoreceptors detect heat where it hits."}}},
+  {bloc:"B",pi:false,icon:"🧪",correcte:"correcte",recurs:"homeostasis_movimiento.html",
+    situacio:{ca:"El pH també té sensors.",es:"El pH también tiene sensores.",en:"pH also has sensors."},
+    pregunta:{ca:"Quin tipus de sensor detecta canvis de pH?",es:"¿Qué tipo de sensor detecta cambios de pH?",en:"Which type of sensor detects pH changes?"},
+    explica:{ca:"Els <strong>quimioreceptors</strong>, perquè detecten concentracions químiques.",es:"Los <strong>quimiorreceptores</strong>, porque detectan concentraciones químicas.",en:"<strong>Chemoreceptors</strong>, because they detect chemical concentrations."},
+    info:{titol:{ca:"Quimioreceptors i pH",es:"Quimiorreceptores y pH",en:"Chemoreceptors and pH"},text:{ca:"Detecten ions H⁺ i per tant el pH.",es:"Detectan iones H⁺ y por tanto el pH.",en:"They detect H⁺ ions and therefore pH."},exemple:{ca:"Quan el pH baixa, el cos activa la respiració per eliminar CO₂.",es:"Cuando el pH baja, el cuerpo activa la respiración para eliminar CO₂.",en:"When pH drops, the body activates breathing to remove CO₂."}}},
+  {bloc:"B",pi:false,icon:"🔥",correcte:"correcte",recurs:"homeostasis_movimiento.html",
+    situacio:{ca:"Els efectors poden ser músculs, glàndules o vasos.",es:"Los efectores pueden ser músculos, glándulas o vasos.",en:"Effectors can be muscles, glands or vessels."},
+    pregunta:{ca:"Quin és l'efector principal de la temperatura?",es:"¿Cuál es el efector principal de la temperatura?",en:"What is the main effector for temperature?"},
+    explica:{ca:"Els <strong>vasos sanguinis</strong> i les <strong>glàndules sudorípares</strong>.",es:"Los <strong>vasos sanguíneos</strong> y las <strong>glándulas sudoríparas</strong>.",en:"<strong>Blood vessels</strong> and <strong>sweat glands</strong>."},
+    info:{titol:{ca:"Efectors tèrmics",es:"Efectores térmicos",en:"Thermal effectors"},text:{ca:"Els vasos es dilaten o contreuen; les glàndules suen.",es:"Los vasos se dilatan o contraen; las glándulas sudan.",en:"Vessels dilate or constrict; glands sweat."},exemple:{ca:"Quan fa calor, els vasos es dilaten per perdre calor.",es:"Cuando hace calor, los vasos se dilatan para perder calor.",en:"When it is hot, vessels dilate to lose heat."}}},
+  {bloc:"B",pi:false,icon:"🫁",correcte:"correcte",recurs:"homeostasis_movimiento.html",
+    situacio:{ca:"En la regulació de la respiració, el centre d'integració és el bulb raquidi.",es:"En la regulación de la respiración, el centro de integración es el bulbo raquídeo.",en:"In breathing regulation, the integration centre is the medulla oblongata."},
+    pregunta:{ca:"El bulb raquidi és un sensor o un centre d'integració?",es:"¿El bulbo raquídeo es un sensor o un centro de integración?",en:"Is the medulla oblongata a sensor or an integration centre?"},
+    explica:{ca:"És un <strong>centre d'integració</strong>.",es:"Es un <strong>centro de integración</strong>.",en:"It is an <strong>integration centre</strong>."},
+    info:{titol:{ca:"Bulb raquidi",es:"Bulbo raquídeo",en:"Medulla oblongata"},text:{ca:"Rep senyals i decideix la resposta respiratòria.",es:"Recibe señales y decide la respuesta respiratoria.",en:"It receives signals and decides the respiratory response."},exemple:{ca:"Quan el CO₂ puja, activa la respiració ràpida.",es:"Cuando el CO₂ sube, activa la respiración rápida.",en:"When CO₂ rises, it activates rapid breathing."}}},
+  {bloc:"B",pi:false,icon:"🌡️",correcte:"incorrecte",recurs:"homeostasis_movimiento.html",
+    situacio:{ca:"Un company diu: «L'efector és el que detecta el canvi».",es:"Un compañero dice: «El efector es el que detecta el cambio».",en:"A classmate says: “The effector is what detects the change.”"},
+    pregunta:{ca:"És correcte?",es:"¿Es correcto?",en:"Is that correct?"},
+    explica:{ca:"No. El que detecta és el <strong>sensor</strong>. L'efector executa la correcció.",es:"No. El que detecta es el <strong>sensor</strong>. El efector ejecuta la corrección.",en:"No. The <strong>sensor</strong> detects. The effector executes the correction."},
+    info:{titol:{ca:"No confonguis",es:"No confundas",en:"Do not confuse"},text:{ca:"Sensor: detecta. Centre: decideix. Efector: executa.",es:"Sensor: detecta. Centro: decide. Efector: ejecuta.",en:"Sensor: detects. Centre: decides. Effector: executes."},exemple:{ca:"Termoreceptors → hipotàlem → glàndules sudorípares.",es:"Termorreceptores → hipotálamo → glándulas sudoríparas.",en:"Thermoreceptors → hypothalamus → sweat glands."}}},
+  {bloc:"B",pi:false,icon:"🔗",correcte:"correcte",recurs:"homeostasis_movimiento.html",
+    situacio:{ca:"Els sensors envien la informació al centre d'integració.",es:"Los sensores envían la información al centro de integración.",en:"Sensors send information to the integration centre."},
+    pregunta:{ca:"Aquesta comunicació és elèctrica o hormonal?",es:"¿Esta comunicación es eléctrica u hormonal?",en:"Is this communication electrical or hormonal?"},
+    explica:{ca:"Principalment <strong>elèctrica</strong> (senyals nervioses).",es:"Principalmente <strong>eléctrica</strong> (señales nerviosas).",en:"Mainly <strong>electrical</strong> (nerve signals)."},
+    info:{titol:{ca:"Senyal nerviosa",es:"Señal nerviosa",en:"Nerve signal"},text:{ca:"Els sensors envien impulsos elèctrics al sistema nerviós.",es:"Los sensores envían impulsos eléctricos al sistema nervioso.",en:"Sensors send electrical impulses to the nervous system."},exemple:{ca:"És molt ràpid: mil·lisegons.",es:"Es muy rápido: milisegundos.",en:"It is very fast: milliseconds."}}},
+  {bloc:"B",pi:false,icon:"🧩",correcte:"correcte",recurs:"homeostasis_movimiento.html",
+    situacio:{ca:"El sistema nerviós central rep senyals de tot el cos.",es:"El sistema nervioso central recibe señales de todo el cuerpo.",en:"The central nervous system receives signals from the whole body."},
+    pregunta:{ca:"El cervell forma part del sistema d'integració?",es:"¿El cerebro forma parte del sistema de integración?",en:"Is the brain part of the integration system?"},
+    explica:{ca:"Sí. Forma part del sistema nerviós, que és un centre d'integració.",es:"Sí. Forma parte del sistema nervioso, que es un centro de integración.",en:"Yes. It is part of the nervous system, which is an integration centre."},
+    info:{titol:{ca:"Cervell",es:"Cerebro",en:"Brain"},text:{ca:"El cervell processa informació i decideix respostes.",es:"El cerebro procesa información y decidece respuestas.",en:"The brain processes information and decides responses."},exemple:{ca:"Quan tens set, el cervell t'ho fa notar.",es:"Cuando tienes sed, el cerebro te lo hace notar.",en:"When you are thirsty, the brain makes you notice."}}},
+  {bloc:"B",pi:false,icon:"💊",correcte:"correcte",recurs:"homeostasis_movimiento.html",
+    situacio:{ca:"El sistema endocrí també és un centre d'integració.",es:"El sistema endocrino también es un centro de integración.",en:"The endocrine system is also an integration centre."},
+    pregunta:{ca:"Les hormones són missatgers químics?",es:"¿Las hormonas son mensajeros químicos?",en:"Are hormones chemical messengers?"},
+    explica:{ca:"Sí. Viatgen per la sang i actuen sobre òrgans concrets.",es:"Sí. Viajan por la sangre y actúan sobre órganos concretos.",en:"Yes. They travel through the blood and act on specific organs."},
+    info:{titol:{ca:"Hormones",es:"Hormonas",en:"Hormones"},text:{ca:"Són missatgers químics del sistema endocrí.",es:"Son mensajeros químicos del sistema endocrino.",en:"They are chemical messengers of the endocrine system."},exemple:{ca:"El glucagó i la insulina són hormones.",es:"El glucagón y la insulina son hormonas.",en:"Glucagon and insulin are hormones."}}},
+  {bloc:"B",pi:false,icon:"🔬",correcte:"correcte",recurs:"homeostasis_movimiento.html",
+    situacio:{ca:"Els sensors detecten canvis molt petits.",es:"Los sensores detectan cambios muy pequeños.",en:"Sensors detect very small changes."},
+    pregunta:{ca:"El cos té sensors interns i externs?",es:"¿El cuerpo tiene sensores internos y externos?",en:"Does the body have internal and external sensors?"},
+    explica:{ca:"Sí. N'hi ha a la pell (externs) i als òrgans (interns).",es:"Sí. Los hay en la piel (externos) y en los órganos (internos).",en:"Yes. There are some in the skin (external) and in organs (internal)."},
+    info:{titol:{ca:"Sensors interns i externs",es:"Sensores internos y externos",en:"Internal and external sensors"},text:{ca:"Els externs detecten el medi; els interns, l'estat del cos.",es:"Los externos detectan el medio; los internos, el estado del cuerpo.",en:"External ones detect the environment; internal ones, the body's state."},exemple:{ca:"Els termoreceptors de la pell són externs; els de l'hipotàlem, interns.",es:"Los termorreceptores de la piel son externos; los del hipotálamo, internos.",en:"Skin thermoreceptors are external; hypothalamic ones are internal."}}},
+  {bloc:"B",pi:false,icon:"🚦",correcte:"correcte",recurs:"homeostasis_movimiento.html",
+    situacio:{ca:"Quan el cos detecta un canvi, activa una resposta.",es:"Cuando el cuerpo detecta un cambio, activa una respuesta.",en:"When the body detects a change, it activates a response."},
+    pregunta:{ca:"La resposta sempre és immediata?",es:"¿La respuesta siempre es inmediata?",en:"Is the response always immediate?"},
+    explica:{ca:"Depèn: el sistema nerviós respon molt ràpid; el endocrí, més lent.",es:"Depende: el sistema nervioso responde muy rápido; el endocrino, más lento.",en:"It depends: the nervous system responds very fast; the endocrine, slower."},
+    info:{titol:{ca:"Velocitat de resposta",es:"Velocidad de respuesta",en:"Response speed"},text:{ca:"Nerviós: mil·lisegons. Endocrí: segons o minuts.",es:"Nervioso: milisegundos. Endocrino: segundos o minutos.",en:"Nervous: milliseconds. Endocrine: seconds or minutes."},exemple:{ca:"Retirar la mà d'una superfície calenta és ràpid (nerviós).",es:"Retirar la mano de una superficie caliente es rápido (nervioso).",en:"Pulling your hand from a hot surface is fast (nervous)."}}},
+  {bloc:"B",pi:false,icon:"🧠",correcte:"correcte",recurs:"estabilidad_control.html",
+    situacio:{ca:"El sistema nerviós autònom regula funcions involuntàries.",es:"El sistema nervioso autónomo regula funciones involuntarias.",en:"The autonomic nervous system regulates involuntary functions."},
+    pregunta:{ca:"La respiració és una funció involuntària?",es:"¿La respiración es una función involuntaria?",en:"Is breathing an involuntary function?"},
+    explica:{ca:"Sí, tot i que la podem controlar temporalment.",es:"Sí, aunque la podemos controlar temporalmente.",en:"Yes, although we can control it temporarily."},
+    info:{titol:{ca:"Sistema autònom",es:"Sistema autónomo",en:"Autonomic system"},text:{ca:"Regula cor, respiració, digestió i temperatura.",es:"Regula corazón, respiración, digestión y temperatura.",en:"It regulates heart, breathing, digestion and temperature."},exemple:{ca:"Mentre dorms, segueixes respirant sense pensar-hi.",es:"Mientras duermes, sigues respirando sin pensarlo.",en:"While you sleep, you keep breathing without thinking about it."}}},
+  {bloc:"B",pi:false,icon:"🌡️",correcte:"correcte",recurs:"homeostasis_movimiento.html",
+    situacio:{ca:"Els sensors de temperatura estan a la pell i a l'hipotàlem.",es:"Los sensores de temperatura están en la piel y en el hipotálamo.",en:"Temperature sensors are in the skin and in the hypothalamus."},
+    pregunta:{ca:"Per què hi ha sensors interns de temperatura?",es:"¿Por qué hay sensores internos de temperatura?",en:"Why are there internal temperature sensors?"},
+    explica:{ca:"Perquè el cos ha de saber la temperatura dels òrgans, no només de la pell.",es:"Porque el cuerpo debe saber la temperatura de los órganos, no solo de la piel.",en:"Because the body needs to know organ temperature, not just skin temperature."},
+    info:{titol:{ca:"Sensors interns",es:"Sensores internos",en:"Internal sensors"},text:{ca:"Detecten la temperatura dels òrgans vitals.",es:"Detectan la temperatura de los órganos vitales.",en:"They detect the temperature of vital organs."},exemple:{ca:"Si els òrgans estan massa calents, el cos activa la sudoració.",es:"Si los órganos están demasiado calientes, el cuerpo activa la sudoración.",en:"If organs are too hot, the body activates sweating."}}},
+
+  /* -------- BLOC C · CASOS REALS A LA DANSA (17) -------- */
+  {bloc:"C",pi:true,icon:"🌡️",correcte:"correcte",recurs:"homeostasis_movimiento.html",
+    situacio:{ca:"Durant un assaig, la temperatura del cos puja per sobre de 37,5 °C.",es:"Durante un ensayo, la temperatura del cuerpo sube por encima de 37,5 °C.",en:"During a rehearsal, body temperature rises above 37.5 °C."},
+    pregunta:{ca:"Quin ordre segueix el bucle?",es:"¿Qué orden sigue el bucle?",en:"What order does the loop follow?"},
+    explica:{ca:"Termoreceptors (sensor) → hipotàlem (centre) → vasos i glàndules sudorípares (efector).",es:"Termorreceptores (sensor) → hipotálamo (centro) → vasos y glándulas sudoríparas (efector).",en:"Thermoreceptors (sensor) → hypothalamus (centre) → vessels and sweat glands (effector)."},
+    info:{titol:{ca:"Bucle complet",es:"Bucle completo",en:"Full loop"},text:{ca:"Es repeteix en tots els bucles homeostàtics.",es:"Se repite en todos los bucles homeostáticos.",en:"It repeats in all homeostatic loops."},exemple:{ca:"En un assaig llarg, la ballarina sua. El bucle ha funcionat.",es:"En un ensayo largo, la bailarina suda. El bucle ha funcionado.",en:"In a long rehearsal, the dancer sweats. The loop has worked."}}},
+  {bloc:"C",pi:true,icon:"🫁",correcte:"correcte",recurs:"homeostasis_movimiento.html",
+    situacio:{ca:"Durant un exercici intens, el CO₂ augmenta i l'O₂ baixa.",es:"Durante un ejercicio intenso, el CO₂ aumenta y el O₂ baja.",en:"During intense exercise, CO₂ rises and O₂ falls."},
+    pregunta:{ca:"Quina és la resposta del cos?",es:"¿Cuál es la respuesta del cuerpo?",en:"What is the body's response?"},
+    explica:{ca:"Augmentar la freqüència respiratòria i el gasto cardíac.",es:"Aumentar la frecuencia respiratoria y el gasto cardíaco.",en:"Increase respiratory rate and cardiac output."},
+    info:{titol:{ca:"Regulació gasosa",es:"Regulación gaseosa",en:"Gas regulation"},text:{ca:"Els quimioreceptors detecten i el bulb raquidi respon.",es:"Los quimiorreceptores detectan y el bulbo raquídeo responde.",en:"Chemoreceptors detect and the medulla oblongata responds."},exemple:{ca:"En un solo intens, la ballarina respira més ràpid.",es:"En un solo intenso, la bailarina respira más rápido.",en:"In an intense solo, the dancer breathes faster."}}},
+  {bloc:"C",pi:true,icon:"🩸",correcte:"correcte",recurs:"homeostasis_movimiento.html",
+    situacio:{ca:"Una ballarina assaja sense esmorzar i la glucosa en sang baixa.",es:"Una bailarina ensaya sin desayunar y la glucosa en sangre baja.",en:"A dancer rehearses without breakfast and blood glucose drops."},
+    pregunta:{ca:"Quina és la resposta del cos?",es:"¿Cuál es la respuesta del cuerpo?",en:"What is the body's response?"},
+    explica:{ca:"El pàncrees allibera glucagó i el fetge allibera glucosa.",es:"El páncreas libera glucagón y el hígado libera glucosa.",en:"The pancreas releases glucagon and the liver releases glucose."},
+    info:{titol:{ca:"Regulació metabòlica",es:"Regulación metabólica",en:"Metabolic regulation"},text:{ca:"El glucagó i la insulina mantenen la glucosa en rang.",es:"El glucagón y la insulina mantienen la glucosa en rango.",en:"Glucagon and insulin keep glucose in range."},exemple:{ca:"Si una ballarina nota mareig, ja s'ha activat el glucagó.",es:"Si una bailarina nota mareo, ya se ha activado el glucagón.",en:"If a dancer feels dizzy, glucagon has already been activated."}}},
+  {bloc:"C",pi:true,icon:"💧",correcte:"correcte",recurs:"homeostasis_movimiento.html",
+    situacio:{ca:"Una ballarina sua molt i perd aigua i sals.",es:"Una bailarina suda mucho y pierde agua y sales.",en:"A dancer sweats a lot and loses water and salts."},
+    pregunta:{ca:"Quina és la resposta del cos?",es:"¿Cuál es la respuesta del cuerpo?",en:"What is the body's response?"},
+    explica:{ca:"Activar la set i alliberar ADH per retenir líquid.",es:"Activar la sed y liberar ADH para retener líquido.",en:"Activate thirst and release ADH to retain fluid."},
+    info:{titol:{ca:"Volum de líquid",es:"Volumen de líquido",en:"Fluid volume"},text:{ca:"Els osmorreceptors activen la set i l'ADH.",es:"Los osmoreceptores activan la sed y la ADH.",en:"Osmoreceptors activate thirst and ADH."},exemple:{ca:"Després d'un assaig llarg, la ballarina té set.",es:"Después de un ensayo largo, la bailarina tiene sed.",en:"After a long rehearsal, the dancer is thirsty."}}},
+  {bloc:"C",pi:true,icon:"🌙",correcte:"correcte",recurs:"homeostasis_movimiento.html",
+    situacio:{ca:"Després d'un dia intens, la ballarina dorm 8 hores.",es:"Después de un día intenso, la bailarina duerme 8 horas.",en:"After an intense day, the dancer sleeps 8 hours."},
+    pregunta:{ca:"Quin efecte té el son sobre el bucle?",es:"¿Qué efecto tiene el sueño sobre el bucle?",en:"What effect does sleep have on the loop?"},
+    explica:{ca:"El son <strong>restaura</strong> l'equilibri perdut durant l'exercici.",es:"El sueño <strong>restaura</strong> el equilibrio perdido durante el ejercicio.",en:"Sleep <strong>restores</strong> the balance lost during exercise."},
+    info:{titol:{ca:"El repòs restaura",es:"El reposo restaura",en:"Rest restores"},text:{ca:"Durant el son, el cos regula hormones i torna el medi intern al rang.",es:"Durante el sueño, el cuerpo regula hormonas y devuelve el medio interno al rango.",en:"During sleep, the body regulates hormones and returns the internal environment to range."},exemple:{ca:"Després d'un dia intens, la ballarina dorm 8 hores.",es:"Después de un día intenso, la bailarina duerme 8 horas.",en:"After an intense day, the dancer sleeps 8 hours."}}},
+  {bloc:"C",pi:true,icon:"🥵",correcte:"incorrecte",recurs:"homeostasis_movimiento.html",
+    situacio:{ca:"En un assaig amb molta calor i sense aigua, la temperatura puja sense control.",es:"En un ensayo con mucho calor y sin agua, la temperatura sube sin control.",en:"In a very hot rehearsal without water, temperature rises uncontrollably."},
+    pregunta:{ca:"Ha funcionat correctament la retroalimentació negativa?",es:"¿Ha funcionado correctamente la retroalimentación negativa?",en:"Has negative feedback worked correctly?"},
+    explica:{ca:"No. Ha <strong>fallat</strong>: sense poder suar ni vasodilatar, la temperatura no es corregeix.",es:"No. Ha <strong>fallado</strong>: sin poder sudar ni vasodilatar, la temperatura no se corrige.",en:"No. It has <strong>failed</strong>: without being able to sweat or vasodilate, temperature is not corrected."},
+    info:{titol:{ca:"Quan la regulació falla",es:"Cuando la regulación falla",en:"When regulation fails"},text:{ca:"Si el cos no pot respondre, la variable s'allunya del rang.",es:"Si el cuerpo no puede responder, la variable se aleja del rango.",en:"If the body cannot respond, the variable moves out of range."},exemple:{ca:"Cal beure aigua durant els assajos llargs.",es:"Hay que beber agua durante los ensayos largos.",en:"You must drink water during long rehearsals."}}},
+  {bloc:"C",pi:false,icon:"🥶",correcte:"correcte",recurs:"homeostasis_movimiento.html",
+    situacio:{ca:"En un vestidor fred, la temperatura baixa per sota de 36 °C.",es:"En un vestuario frío, la temperatura baja por debajo de 36 °C.",en:"In a cold changing room, temperature drops below 36 °C."},
+    pregunta:{ca:"Quina és la resposta del cos?",es:"¿Cuál es la respuesta del cuerpo?",en:"What is the body's response?"},
+    explica:{ca:"Vasoconstricció i tremolor per generar calor.",es:"Vasoconstricción y temblor para generar calor.",en:"Vasoconstriction and shivering to generate heat."},
+    info:{titol:{ca:"Regulació del fred",es:"Regulación del frío",en:"Cold regulation"},text:{ca:"L'hipotàlem activa la vasoconstricció i el tremolor.",es:"El hipotálamo activa la vasoconstricción y el temblor.",en:"The hypothalamus activates vasoconstriction and shivering."},exemple:{ca:"Abans d'entrar a classe, la ballarina tremola.",es:"Antes de entrar a clase, la bailarina tiembla.",en:"Before class, the dancer shivers."}}},
+  {bloc:"C",pi:false,icon:"💨",correcte:"correcte",recurs:"homeostasis_movimiento.html",
+    situacio:{ca:"Durant un salt, els músculs consumeixen O₂ ràpidament.",es:"Durante un salto, los músculos consumen O₂ rápidamente.",en:"During a jump, muscles consume O₂ quickly."},
+    pregunta:{ca:"El cos augmenta o redueix l'aportació d'O₂?",es:"¿El cuerpo aumenta o reduce el aporte de O₂?",en:"Does the body increase or reduce O₂ supply?"},
+    explica:{ca:"L'<strong>augmenta</strong>: més freqüència respiratòria i gasto cardíac.",es:"Lo <strong>aumenta</strong>: más frecuencia respiratoria y gasto cardíaco.",en:"It <strong>increases</strong> it: more respiratory rate and cardiac output."},
+    info:{titol:{ca:"Aportació d'O₂",es:"Aporte de O₂",en:"O₂ supply"},text:{ca:"El bulb raquidi i el cor augmenten l'aportació.",es:"El bulbo raquídeo y el corazón aumentan el aporte.",en:"The medulla oblongata and heart increase the supply."},exemple:{ca:"En un grand jeté, la ballarina respira fondo abans de saltar.",es:"En un grand jeté, la bailarina respira hondo antes de saltar.",en:"In a grand jeté, the dancer breathes deeply before jumping."}}},
+  {bloc:"C",pi:false,icon:"😰",correcte:"correcte",recurs:"estabilidad_control.html",
+    situacio:{ca:"Abans d'una actuació, la ballarina nota el cor accelerat.",es:"Antes de una actuación, la bailarina nota el corazón acelerado.",en:"Before a performance, the dancer notices a fast heartbeat."},
+    pregunta:{ca:"Això és una alteració que el cos ha de regular?",es:"¿Esto es una alteración que el cuerpo debe regular?",en:"Is this an alteration the body must regulate?"},
+    explica:{ca:"Sí. L'estrès activa el sistema simpàtic; després el cos torna a l'equilibri.",es:"Sí. El estrés activa el sistema simpático; después el cuerpo vuelve al equilibrio.",en:"Yes. Stress activates the sympathetic system; then the body returns to balance."},
+    info:{titol:{ca:"Estrès i homeòstasi",es:"Estrés y homeostasis",en:"Stress and homeostasis"},text:{ca:"L'adrenalina accelera el cor; després torna al repòs.",es:"La adrenalina acelera el corazón; después vuelve al reposo.",en:"Adrenaline speeds up the heart; then it returns to rest."},exemple:{ca:"En sortir a escena, la ballarina nota l'adrenalina.",es:"Al salir a escena, la bailarina nota la adrenalina.",en:"When going on stage, the dancer feels adrenaline."}}},
+  {bloc:"C",pi:false,icon:"🔥",correcte:"correcte",recurs:"homeostasis_movimiento.html",
+    situacio:{ca:"Una ballarina té febre de 39 °C per una infecció.",es:"Una bailarina tiene fiebre de 39 °C por una infección.",en:"A dancer has a fever of 39 °C due to an infection."},
+    pregunta:{ca:"La febre és un exemple de retroalimentació negativa?",es:"¿La fiebre es un ejemplo de retroalimentación negativa?",en:"Is fever an example of negative feedback?"},
+    explica:{ca:"Sí. La febre és temporal; després el cos torna a 36–37,5 °C.",es:"Sí. La fiebre es temporal; después el cuerpo vuelve a 36–37,5 °C.",en:"Yes. Fever is temporary; then the body returns to 36–37.5 °C."},
+    info:{titol:{ca:"Febre",es:"Fiebre",en:"Fever"},text:{ca:"L'hipotàlem apuja temporalment el punt d'ajust.",es:"El hipotálamo sube temporalmente el punto de ajuste.",en:"The hypothalamus temporarily raises the set point."},exemple:{ca:"És com pujar la calefacció per matar un virus: després es torna a baixar.",es:"Es como subir la calefacción para matar un virus: después se vuelve a bajar.",en:"It is like turning up the heating to kill a virus: then you turn it down."}}},
+  {bloc:"C",pi:false,icon:"🍎",correcte:"correcte",recurs:"homeostasis_movimiento.html",
+    situacio:{ca:"Una ballarina menja un plat de pasta abans d'assaig.",es:"Una bailarina come un plato de pasta antes del ensayo.",en:"A dancer eats a plate of pasta before rehearsal."},
+    pregunta:{ca:"La glucosa puja i el cos l'ha de regular?",es:"¿La glucosa sube y el cuerpo debe regularla?",en:"Does glucose rise and the body must regulate it?"},
+    explica:{ca:"Sí. La insulina baixa la glucosa al rang.",es:"Sí. La insulina baja la glucosa al rango.",en:"Yes. Insulin lowers glucose into range."},
+    info:{titol:{ca:"Insulina",es:"Insulina",en:"Insulin"},text:{ca:"Les cèl·lules beta del pàncrees alliberen insulina.",es:"Las células beta del páncreas liberan insulina.",en:"Pancreatic beta cells release insulin."},exemple:{ca:"Després de dinar, la ballarina se sent amb energia.",es:"Después de comer, la bailarina se siente con energía.",en:"After lunch, the dancer feels energetic."}}},
+  {bloc:"C",pi:false,icon:"☕",correcte:"correcte",recurs:"estabilidad_control.html",
+    situacio:{ca:"Una ballarina pren un cafè i nota el cor més accelerat.",es:"Una bailarina toma un café y nota el corazón más acelerado.",en:"A dancer drinks coffee and notices a faster heartbeat."},
+    pregunta:{ca:"La cafeïna activa el sistema nerviós?",es:"¿La cafeína activa el sistema nervioso?",en:"Does caffeine activate the nervous system?"},
+    explica:{ca:"Sí. Activa el simpàtic i accelera el cor; després torna al rang.",es:"Sí. Activa el simpático y acelera el corazón; después vuelve al rango.",en:"Yes. It activates the sympathetic system and speeds up the heart; then it returns to range."},
+    info:{titol:{ca:"Sistema nerviós autònom",es:"Sistema nervioso autónomo",en:"Autonomic nervous system"},text:{ca:"Regula cor, respiració i digestió.",es:"Regula corazón, respiración y digestión.",en:"It regulates heart, breathing and digestion."},exemple:{ca:"Després del cafè, el cor torna a la normalitat.",es:"Después del café, el corazón vuelve a la normalidad.",en:"After coffee, the heart returns to normal."}}},
+  {bloc:"C",pi:false,icon:"❄️",correcte:"correcte",recurs:"homeostasis_movimiento.html",
+    situacio:{ca:"Una ballarina balla en un escenari fred.",es:"Una bailarina baila en un escenario frío.",en:"A dancer performs on a cold stage."},
+    pregunta:{ca:"Quin sistema intervé principalment?",es:"¿Qué sistema interviene principalmente?",en:"Which system is mainly involved?"},
+    explica:{ca:"El <strong>nerviós</strong>, via hipotàlem.",es:"El <strong>nervioso</strong>, vía hipotálamo.",en:"The <strong>nervous</strong> one, via the hypothalamus."},
+    info:{titol:{ca:"Resposta ràpida",es:"Respuesta rápida",en:"Fast response"},text:{ca:"El sistema nerviós respon en mil·lisegons.",es:"El sistema nervioso responde en milisegundos.",en:"The nervous system responds in milliseconds."},exemple:{ca:"La pell es posa de gallina i els vasos es tanquen.",es:"La piel se pone de gallina y los vasos se cierran.",en:"The skin gets goosebumps and vessels constrict."}}},
+  {bloc:"C",pi:false,icon:"🏃",correcte:"correcte",recurs:"homeostasis_movimiento.html",
+    situacio:{ca:"Després d'un esprint, la ballarina respira molt ràpid.",es:"Después de un sprint, la bailarina respira muy rápido.",en:"After a sprint, the dancer breathes very fast."},
+    pregunta:{ca:"Aquesta respiració ràpida ajuda a tornar a l'equilibri?",es:"¿Esta respiración rápida ayuda a volver al equilibrio?",en:"Does this fast breathing help return to balance?"},
+    explica:{ca:"Sí. Elimina CO₂ i aporta O₂ per tornar al rang.",es:"Sí. Elimina CO₂ y aporta O₂ para volver al rango.",en:"Yes. It removes CO₂ and supplies O₂ to return to range."},
+    info:{titol:{ca:"Per què respirem ràpid",es:"Por qué respiramos rápido",en:"Why we breathe fast"},text:{ca:"El bulb raquidi activa la respiració ràpida.",es:"El bulbo raquídeo activa la respiración rápida.",en:"The medulla oblongata activates rapid breathing."},exemple:{ca:"En acabar un esprint, la ballarina respira fondo uns segons.",es:"Al acabar un sprint, la bailarina respira hondo unos segundos.",en:"After a sprint, the dancer breathes deeply for a few seconds."}}},
+  {bloc:"C",pi:false,icon:"💊",correcte:"correcte",recurs:"homeostasis_movimiento.html",
+    situacio:{ca:"El sistema endocrí utilitza hormones per regular.",es:"El sistema endocrino utiliza hormonas para regular.",en:"The endocrine system uses hormones to regulate."},
+    pregunta:{ca:"Les hormones viatgen per la sang?",es:"¿Las hormonas viajan por la sangre?",en:"Do hormones travel through the blood?"},
+    explica:{ca:"Sí. Arriben a òrgans concrets i hi actuen.",es:"Sí. Llegan a órganos concretos y actúan allí.",en:"Yes. They reach specific organs and act there."},
+    info:{titol:{ca:"Hormones a la sang",es:"Hormonas en la sangre",en:"Hormones in blood"},text:{ca:"Són missatgers químics del sistema endocrí.",es:"Son mensajeros químicos del sistema endocrino.",en:"They are chemical messengers of the endocrine system."},exemple:{ca:"El glucagó i la insulina són hormones.",es:"El glucagón y la insulina son hormonas.",en:"Glucagon and insulin are hormones."}}},
+  {bloc:"C",pi:false,icon:"🫀",correcte:"correcte",recurs:"homeostasis_movimiento.html",
+    situacio:{ca:"Durant un exercici, el cor accelera per aportar més O₂.",es:"Durante un ejercicio, el corazón se acelera para aportar más O₂.",en:"During exercise, the heart speeds up to supply more O₂."},
+    pregunta:{ca:"Això és homeòstasi?",es:"¿Esto es homeostasis?",en:"Is this homeostasis?"},
+    explica:{ca:"Sí. És la resposta del cos per mantenir l'aportació d'O₂ als músculs.",es:"Sí. Es la respuesta del cuerpo para mantener el aporte de O₂ a los músculos.",en:"Yes. It is the body's response to keep O₂ supply to the muscles."},
+    info:{titol:{ca:"Resposta cardiovascular",es:"Respuesta cardiovascular",en:"Cardiovascular response"},text:{ca:"El cor accelera per mantenir O₂ als músculs.",es:"El corazón se acelera para mantener O₂ en los músculos.",en:"The heart speeds up to maintain O₂ in the muscles."},exemple:{ca:"En un solo intens, el cor accelera i després torna al repòs.",es:"En un solo intenso, el corazón se acelera y después vuelve al reposo.",en:"In an intense solo, the heart speeds up and then returns to rest."}}},
+  {bloc:"C",pi:false,icon:"🌡️",correcte:"incorrecte",recurs:"homeostasis_movimiento.html",
+    situacio:{ca:"Un company diu: «La febre és positiva perquè amplifica la temperatura».",es:"Un compañero dice: «La fiebre es positiva porque amplifica la temperatura».",en:"A classmate says: “Fever is positive because it amplifies temperature.”"},
+    pregunta:{ca:"És correcte?",es:"¿Es correcto?",en:"Is that correct?"},
+    explica:{ca:"No. La febre és <strong>negativa</strong>: després el cos torna a 36–37,5 °C.",es:"No. La fiebre es <strong>negativa</strong>: después el cuerpo vuelve a 36–37,5 °C.",en:"No. Fever is <strong>negative</strong>: afterwards the body returns to 36–37.5 °C."},
+    info:{titol:{ca:"Error típic",es:"Error típico",en:"Common mistake"},text:{ca:"«Positiva» no vol dir «bona». Vol dir «amplifica».",es:"«Positiva» no significa «buena». Significa «amplifica».",en:"“Positive” does not mean “good”. It means “amplifies”."},exemple:{ca:"Part: positiu. Febre: negatiu.",es:"Parto: positivo. Fiebre: negativo.",en:"Childbirth: positive. Fever: negative."}}}
+];
+
+/* ============================================================
+   ESTAT
+   ============================================================ */
+let currentLang = "ca";
+let idx = 0;
+let respost = false;
+let modeAdaptat = false;
+let modeRepas = false;
+let estat = carregarEstat();
+
+const elProgres    = document.getElementById("ui-progres");
+const elIcon       = document.getElementById("icon");
+const elSituacio   = document.getElementById("situacio");
+const elPregunta   = document.getElementById("pregunta");
+const elOpcions    = document.getElementById("opcions");
+const elFeedback   = document.getElementById("feedback");
+const elNext       = document.getElementById("next");
+const elPrev       = document.getElementById("prev");
+const elInfoPanel  = document.getElementById("info-panel");
+const elInfoTitol  = document.getElementById("info-titol");
+const elInfoText   = document.getElementById("info-text");
+const elInfoEx     = document.getElementById("info-exemple");
+const elInfoLink   = document.getElementById("info-link");
+const elBtnInfo    = document.getElementById("btn-info");
+const elIndexGrid  = document.getElementById("index-grid");
+const elCard       = document.getElementById("card");
+const elBlocTag    = document.getElementById("bloc-tag");
+const elIndexBody  = document.getElementById("index-body");
+const elIndexHead  = document.getElementById("index-header");
+const elObjCard    = document.getElementById("objectiu-card");
+const elBtnObjCard = document.getElementById("btn-objectiu-card");
+const elBtnRepas   = document.getElementById("btn-repas");
+const elBtnAdaptat = document.getElementById("btn-adaptat");
+
+function carregarEstat(){
+  try{
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if(!raw) return { idxActual:0, respostes:{}, blocActual:null, modeAdaptat:false };
+    const p = JSON.parse(raw);
+    return { idxActual:p.idxActual||0, respostes:p.respostes||{}, blocActual:p.blocActual||null, modeAdaptat:!!p.modeAdaptat };
+  }catch(e){
+    return { idxActual:0, respostes:{}, blocActual:null, modeAdaptat:false };
+  }
+}
+function desarEstat(){
+  try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(estat)); }catch(e){}
+}
+
+function getIndexosVisibles(){
+  let visibles = PREGUNTES.map((_,i)=>i);
+  if(modeRepas){
+    visibles = visibles.filter(i => {
+      const resp = estat.respostes[i];
+      return resp === undefined || resp !== PREGUNTES[i].correcte;
+    });
+  }
+  return visibles;
+}
+
+function esObligatoriaPI(i){ return !!PREGUNTES[i].pi; }
+function totalObligatories(){ return PREGUNTES.filter(p => p.pi).length; }
+
+function actualitzarBotoRepas(){
+  const t = UI[currentLang];
+  elBtnRepas.textContent = modeRepas ? t.repasActiu : t.repas;
+  elBtnRepas.classList.toggle("actiu", modeRepas);
+  elBtnRepas.classList.toggle("ghost", !modeRepas);
+}
+function actualitzarBotoAdaptat(){
+  elBtnAdaptat.textContent = "🌿";
+  elBtnAdaptat.classList.toggle("actiu", modeAdaptat);
+  elBtnAdaptat.classList.toggle("ghost", !modeAdaptat);
+}
+
+function htmlObjectiu(blocId){
+  const obj = OBJECTIUS[blocId];
+  const lang = currentLang;
+  const t = UI[lang];
+  const g = obj.general, a = obj.adaptat;
+  return `
+    <h4>${t.objectiuGeneral}</h4>
+    <p>${g.que[lang]}</p>
+    <ul>${g.clau[lang].map(c => `<li>${c}</li>`).join("")}</ul>
+    <p>${g.importancia[lang]}</p>
+    <div class="objectiu-pi">
+      <h4>${t.objectiuAdaptat}</h4>
+      <p>${a.que[lang]}</p>
+      <ul>${a.clau[lang].map(c => `<li>${c}</li>`).join("")}</ul>
+      <p>${a.importancia[lang]}</p>
+    </div>
+    <h4>${t.vocabulari}</h4>
+    <div class="vocab">${obj.vocabulari[lang].map(v => `<span>${v}</span>`).join("")}</div>
+  `;
+}
+function toggleObjectiu(blocId, contenidor){
+  const existent = contenidor.querySelector(".objectiu-panel");
+  if(existent){ existent.classList.toggle("open"); return; }
+  const panel = document.createElement("div");
+  panel.className = "objectiu-panel open";
+  panel.innerHTML = htmlObjectiu(blocId);
+  contenidor.appendChild(panel);
+}
+
+function renderIndex(){
+  elIndexGrid.innerHTML = "";
+  const blocs = BLOCS[currentLang];
+  blocs.forEach(b => {
+    const items = PREGUNTES.map((p,i)=>({...p, idxGlobal:i})).filter(p => p.bloc === b.id);
+    const oblig = items.filter(p => p.pi);
+    const fetes = items.filter(p => estat.respostes[p.idxGlobal] !== undefined).length;
+    const fetesObl = oblig.filter(p => estat.respostes[p.idxGlobal] !== undefined).length;
+    const total = items.length;
+    const totalObl = oblig.length;
+    const pct = total ? (fetes/total)*100 : 0;
+
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "bloc-btn" + (estat.blocActual === b.id ? " active" : "");
+    btn.dataset.bloc = b.id;
+    btn.innerHTML = `
+      <span class="bloc-titol">Bloc ${b.id} · ${b.titol}</span>
+      <span class="bloc-meta">${fetes} / ${total} · <span class="pi">${fetesObl} / ${totalObl} 🌿</span></span>
+      <span class="barra"><span style="width:${pct}%"></span></span>
+    `;
+    btn.addEventListener("click", () => {
+      const primeraNoFeta = items.find(p => estat.respostes[p.idxGlobal] === undefined) || items[0];
+      estat.blocActual = b.id; idx = primeraNoFeta.idxGlobal;
+      desarEstat(); render(); renderIndex();
+      elIndexBody.classList.remove("open"); elIndexHead.classList.remove("open");
+    });
+    const wrap = document.createElement("div");
+    wrap.className = "bloc-wrap";
+    wrap.appendChild(btn);
+    const btnObj = document.createElement("button");
+    btnObj.type = "button";
+    btnObj.className = "objectiu-toggle";
+    btnObj.textContent = UI[currentLang].objectiu;
+    btnObj.addEventListener("click", (e) => { e.stopPropagation(); toggleObjectiu(b.id, wrap); });
+    wrap.appendChild(btnObj);
+    elIndexGrid.appendChild(wrap);
+  });
+}
+
+function aplicarUI(){
+  const t = UI[currentLang];
+  document.documentElement.lang = currentLang;
+  document.getElementById("ui-titol").textContent = t.titol;
+  document.getElementById("ui-sub").textContent = t.sub;
+  document.getElementById("btn-reset").textContent = t.reset;
+  document.getElementById("btn-continuar").textContent = t.continuar;
+  document.getElementById("btn-exportar").textContent = t.exportar;
+  document.getElementById("btn-imprimir").textContent = t.imprimir;
+  document.getElementById("ui-index-titol").textContent = t["index-titol"];
+  document.querySelectorAll("[data-i18n]").forEach(el => {
+    const key = el.dataset.i18n;
+    if(t[key]) el.textContent = t[key];
+  });
+  elNext.textContent = t.seguent;
+  elPrev.textContent = t.anterior;
+  elBtnObjCard.textContent = elObjCard.classList.contains("open") ? t.tancarObjectiu : t.objectiu;
+  document.querySelectorAll(".lang-switch button").forEach(b => b.classList.toggle("active", b.dataset.lang === currentLang));
+  actualitzarBotoRepas();
+  actualitzarBotoAdaptat();
+}
+
+function actualitzarProgresGlobal(){
+  const t = UI[currentLang];
+  if(modeRepas){
+    const visibles = getIndexosVisibles();
+    elProgres.textContent = t.repasInfo(visibles.length);
+    return;
+  }
+  if(modeAdaptat){
+    const fetes = PREGUNTES.filter((p,i) => p.pi && estat.respostes[i] !== undefined).length;
+    elProgres.textContent = t.progresAdaptat(fetes, totalObligatories());
+  } else {
+    const fetes = Object.keys(estat.respostes).length;
+    elProgres.textContent = t.progresGlobal(fetes, PREGUNTES.length);
+  }
+}
+
+function render(){
+  const visibles = getIndexosVisibles();
+  const t = UI[currentLang];
+  const lang = currentLang;
+
+  if(visibles.length === 0){
+    elCard.dataset.bloc = "A";
+    elCard.classList.remove("pi-obligatoria","pi");
+    elCard.innerHTML = `
+      <div class="resum">
+        <div class="icon">✅</div>
+        <div class="missatge">${t.repasBuit}</div>
+        <div class="nav-next"><button id="sortir-repas">${t.repas}</button></div>
+      </div>`;
+    document.getElementById("sortir-repas").addEventListener("click", () => {
+      modeRepas = false; actualitzarBotoRepas(); render(); renderIndex();
+    });
+    actualitzarProgresGlobal();
+    return;
+  }
+  if(!visibles.includes(idx)) idx = visibles[0];
+
+  respost = false;
+  const p = PREGUNTES[idx];
+  const pi = esObligatoriaPI(idx);
+
+  estat.idxActual = idx; estat.blocActual = p.bloc; desarEstat();
+
+  elCard.dataset.bloc = p.bloc;
+  elCard.classList.toggle("pi-obligatoria", pi);
+  elCard.classList.toggle("pi", pi && modeAdaptat);
+  elBlocTag.dataset.bloc = p.bloc;
+  const blocInfo = BLOCS[lang].find(b => b.id === p.bloc);
+  elBlocTag.textContent = `Bloc ${p.bloc} · ${blocInfo.titol}`;
+
+  elIcon.textContent = p.icon;
+  elSituacio.textContent = p.situacio[lang];
+  elPregunta.innerHTML = p.pregunta[lang];
+
+  elFeedback.className = "feedback";
+  elFeedback.innerHTML = "";
+  elNext.style.display = "inline-block";
+  elPrev.style.display = "inline-block";
+
+  elInfoPanel.classList.remove("open");
+  elBtnInfo.textContent = t["mes-info"];
+  elInfoTitol.textContent = p.info.titol[lang];
+  elInfoText.textContent = p.info.text[lang];
+  elInfoEx.textContent = p.info.exemple[lang];
+  elInfoLink.href = BASE_URL + p.recurs;
+
+  elObjCard.innerHTML = htmlObjectiu(p.bloc);
+  elObjCard.classList.remove("open");
+  elBtnObjCard.textContent = t.objectiu;
+
+  elOpcions.style.display = "flex";
+  elOpcions.querySelectorAll("button").forEach(b => {
+    b.disabled = false;
+    b.style.background = "#fff";
+    b.style.color = "#0b1f3a";
+    b.style.borderColor = "#0b1f3a";
+  });
+
+  if(estat.respostes[idx] !== undefined) mostrarResposta(estat.respostes[idx]);
+  actualitzarProgresGlobal();
+}
+
+function mostrarResposta(resp){
+  respost = true;
+  const p = PREGUNTES[idx];
+  const t = UI[currentLang];
+  const correcte = resp === p.correcte;
+  if(correcte){
+    elFeedback.className = "feedback ok";
+    elFeedback.innerHTML = `<strong>${t.correcte}</strong>${p.explica[currentLang]}`;
+  } else {
+    elFeedback.className = "feedback err";
+    elFeedback.innerHTML = `<strong>${t.incorrecte}</strong>${p.explica[currentLang]}`;
+  }
+  elOpcions.querySelectorAll("button").forEach(x => {
+    x.disabled = true;
+    if(x.dataset.resp === p.correcte){ x.style.background = "#e8f3ec"; x.style.borderColor = "#2e7d32"; }
+    else if(x.dataset.resp === resp){ x.style.background = "#fdecea"; x.style.borderColor = "#c62828"; }
+  });
+}
+
+elOpcions.querySelectorAll("button").forEach(b => {
+  b.addEventListener("click", () => {
+    if(respost) return;
+    estat.respostes[idx] = b.dataset.resp;
+    desarEstat(); mostrarResposta(b.dataset.resp); renderIndex(); actualitzarProgresGlobal();
+  });
+});
+
+elBtnInfo.addEventListener("click", () => {
+  const t = UI[currentLang];
+  const obert = elInfoPanel.classList.toggle("open");
+  elBtnInfo.textContent = obert ? t["menys-info"] : t["mes-info"];
+});
+elBtnObjCard.addEventListener("click", () => {
+  const t = UI[currentLang];
+  const obert = elObjCard.classList.toggle("open");
+  elBtnObjCard.textContent = obert ? t.tancarObjectiu : t.objectiu;
+});
+
+elNext.addEventListener("click", () => {
+  const visibles = getIndexosVisibles();
+  const pos = visibles.indexOf(idx);
+  if(pos < visibles.length - 1){ idx = visibles[pos+1]; render(); renderIndex(); }
+  else mostrarResum();
+});
+elPrev.addEventListener("click", () => {
+  const visibles = getIndexosVisibles();
+  const pos = visibles.indexOf(idx);
+  if(pos > 0){ idx = visibles[pos-1]; render(); renderIndex(); }
+});
+
+function mostrarResum(){
+  const t = UI[currentLang];
+  let encerts = 0, encertsPI = 0;
+  PREGUNTES.forEach((p,i) => {
+    if(estat.respostes[i] === p.correcte){ encerts++; if(p.pi) encertsPI++; }
+  });
+  elCard.classList.remove("pi-obligatoria","pi");
+  elCard.innerHTML = `
+    <div class="resum">
+      <div class="icon">🎯</div>
+      <div class="missatge">${t.resumGlobal(encerts, PREGUNTES.length)}</div>
+      <p>${t.resumSub}</p>
+      <p><strong>🌿 Objectiu:</strong> ${encertsPI} / ${totalObligatories()}</p>
+      <div class="nav-next"><button id="tornar">${t.tornar}</button></div>
+    </div>`;
+  document.getElementById("tornar").addEventListener("click", () => {
+    if(confirm(t.confirmReset)){ localStorage.removeItem(STORAGE_KEY); location.reload(); }
+  });
+}
+
+document.getElementById("btn-reset").addEventListener("click", () => {
+  if(confirm(UI[currentLang].confirmReset)){ localStorage.removeItem(STORAGE_KEY); location.reload(); }
+});
+document.getElementById("btn-continuar").addEventListener("click", () => {
+  idx = estat.idxActual || 0; render(); renderIndex();
+});
+
+elBtnRepas.addEventListener("click", () => {
+  const t = UI[currentLang];
+  if(!modeRepas){
+    const pendents = getIndexosVisibles();
+    if(pendents.length === 0){ alert(t.repasBuit); return; }
+    modeRepas = true; idx = pendents[0];
+  } else { modeRepas = false; }
+  actualitzarBotoRepas(); render(); renderIndex();
+});
+
+elBtnAdaptat.addEventListener("click", () => {
+  modeAdaptat = !modeAdaptat;
+  estat.modeAdaptat = modeAdaptat;
+  desarEstat(); actualitzarBotoAdaptat(); render(); renderIndex();
+});
+
+document.getElementById("btn-exportar").addEventListener("click", () => {
+  const t = UI[currentLang];
+  let encerts=0, encertsPI=0, fetes=0, fetesPI=0;
+  const detall = PREGUNTES.map((p,i) => {
+    const resp = estat.respostes[i];
+    const ok = resp === p.correcte;
+    if(resp !== undefined){ fetes++; if(p.pi) fetesPI++; }
+    if(ok){ encerts++; if(p.pi) encertsPI++; }
+    return { num:i+1, bloc:p.bloc, pi:p.pi, situacio:p.situacio.ca, correcte:p.correcte, resposta: resp||null, encert: resp===undefined ? null : ok };
+  });
+  const data = {
+    activitat:"T1.1 · El termòstat del cos",
+    data_exportacio:new Date().toISOString(),
+    idioma_actual:currentLang,
+    mode_adaptat:modeAdaptat,
+    total_preguntes:PREGUNTES.length,
+    total_marcades_objectiu:totalObligatories(),
+    respostes_fetes:fetes,
+    respostes_marcades_fetes:fetesPI,
+    encerts:encerts,
+    encerts_marcades:encertsPI,
+    detall
+  };
+  const blob = new Blob([JSON.stringify(data,null,2)],{type:"application/json"});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = `t1_activitat01_progres_${new Date().toISOString().slice(0,10)}.json`;
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  alert(t.exportat);
+});
+
+document.getElementById("btn-imprimir").addEventListener("click", () => {
+  const t = UI[currentLang], lang = currentLang;
+  let encerts=0, fetes=0, encertsPI=0, fetesPI=0;
+  const perBloc = {};
+  BLOCS[lang].forEach(b => perBloc[b.id] = { encerts:0, total:0, fetes:0, piTotal:0, piEncerts:0 });
+  PREGUNTES.forEach((p,i) => {
+    perBloc[p.bloc].total++;
+    if(p.pi) perBloc[p.bloc].piTotal++;
+    const resp = estat.respostes[i];
+    if(resp !== undefined){
+      fetes++; if(p.pi) fetesPI++;
+      perBloc[p.bloc].fetes++;
+      if(resp === p.correcte){
+        encerts++; if(p.pi){ encertsPI++; perBloc[p.bloc].piEncerts++; }
+        perBloc[p.bloc].encerts++;
+      }
+    }
+  });
+  const pct = PREGUNTES.length ? Math.round((encerts/PREGUNTES.length)*100) : 0;
+  const pctPI = totalObligatories() ? Math.round((encertsPI/totalObligatories())*100) : 0;
+  const filesBloc = BLOCS[lang].map(b => {
+    const d = perBloc[b.id];
+    return `<tr><td>${b.id} · ${b.titol}</td><td>${d.encerts} / ${d.total}</td><td>${d.piEncerts} / ${d.piTotal}</td></tr>`;
+  }).join("");
+  const filesDetall = PREGUNTES.map((p,i) => {
+    const resp = estat.respostes[i];
+    const correcte = resp === p.correcte;
+    const est = resp===undefined ? t.imprimirPendent : (correcte ? t.imprimirSi : t.imprimirNo);
+    const color = resp===undefined ? "#999" : (correcte ? "#2e7d32" : "#c62828");
+    return `<tr><td>${i+1}</td><td>${p.bloc}</td><td>${p.pi ? "🌿" : "—"}</td><td>${p.situacio[lang]}</td><td>${resp||"—"}</td><td>${p.correcte}</td><td style="color:${color};font-weight:700">${est}</td></tr>`;
+  }).join("");
+  const html = `<!DOCTYPE html><html lang="${lang}"><head><meta charset="UTF-8"><title>${t.imprimirTitol}</title>
+    <style>
+      body{font-family:Georgia,serif;color:#1a1a1a;padding:1.5rem;font-size:12pt}
+      h1{color:#0b1f3a;font-size:18pt;margin:0 0 .3rem}
+      h2{color:#0b1f3a;font-size:14pt;margin:1.2rem 0 .4rem;border-bottom:2px solid #c9a227;padding-bottom:.2rem}
+      .meta{display:flex;gap:2rem;margin-bottom:1rem;font-size:11pt}
+      .meta span{display:inline-block;border-bottom:1px solid #999;min-width:180px}
+      table{width:100%;border-collapse:collapse;margin:.6rem 0;font-size:10.5pt}
+      th,td{border:1px solid #ccc;padding:.35rem .5rem;text-align:left;vertical-align:top}
+      th{background:#f0f4fa;color:#0b1f3a}
+      .resum-grid{display:grid;grid-template-columns:1fr 1fr;gap:.4rem 1.5rem;font-size:11pt}
+      .resum-grid div{padding:.3rem 0}
+      @media print{body{padding:0}}
+    </style></head><body>
+    <h1>${t.imprimirTitol}</h1>
+    <div class="meta">
+      <div>${t.imprimirAlumne} <span></span></div>
+      <div>${t.imprimirData} <span>${new Date().toLocaleDateString()}</span></div>
+    </div>
+    <h2>${t.imprimirResum}</h2>
+    <div class="resum-grid">
+      <div><strong>${t.imprimirTotal}:</strong> ${PREGUNTES.length}</div>
+      <div><strong>${t.imprimirFetes}:</strong> ${fetes}</div>
+      <div><strong>${t.imprimirEncerts}:</strong> ${encerts}</div>
+      <div><strong>${t.imprimirPct}:</strong> ${pct} %</div>
+      <div><strong>🌿 fetes:</strong> ${fetesPI} / ${totalObligatories()}</div>
+      <div><strong>🌿 encerts:</strong> ${encertsPI} / ${totalObligatories()} (${pctPI} %)</div>
+    </div>
+    <h2>${t.imprimirPerBloc}</h2>
+    <table><thead><tr><th>${t.imprimirBloc}</th><th>${t.imprimirEncerts}</th><th>🌿</th></tr></thead><tbody>${filesBloc}</tbody></table>
+    <h2>${t.imprimirDetall}</h2>
+    <table><thead><tr>
+      <th>${t.imprimirNum}</th><th>${t.imprimirBloc}</th><th>🌿</th>
+      <th>${t.imprimirSituacio}</th><th>${t.imprimirResposta}</th>
+      <th>${t.imprimirCorrecta}</th><th>${t.imprimirEncert}</th>
+    </tr></thead><tbody>${filesDetall}</tbody></table>
+    </body></html>`;
+  const win = window.open("", "_blank");
+  win.document.write(html); win.document.close(); win.focus();
+  setTimeout(() => win.print(), 300);
+});
+
+elIndexHead.addEventListener("click", () => {
+  const obert = elIndexBody.classList.toggle("open");
+  elIndexHead.classList.toggle("open", obert);
+});
+
+document.querySelectorAll(".lang-switch button").forEach(b => {
+  b.addEventListener("click", () => {
+    currentLang = b.dataset.lang;
+    aplicarUI(); render(); renderIndex();
+  });
+});
+
+aplicarUI();
+modeAdaptat = !!estat.modeAdaptat;
+actualitzarBotoAdaptat();
+actualitzarBotoRepas();
+idx = estat.idxActual || 0;
+render();
+renderIndex();
+</script>
+
+</body>
+</html>

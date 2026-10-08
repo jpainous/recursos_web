@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>La Unidad Motora - Fisiología de la Danza</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+  body { background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); min-height: 100vh; padding: 20px; }
+  .container { max-width: 900px; margin: 0 auto; background: #fff; border-radius: 20px; overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,0.3); }
+  header { background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); color: white; padding: 40px; text-align: center; }
+  header h1 { font-size: 2.2em; margin-bottom: 10px; }
+  .section { padding: 30px 40px; border-bottom: 1px solid #eee; }
+  .section h2 { color: #11998e; font-size: 1.6em; margin-bottom: 15px; border-left: 5px solid #38ef7d; padding-left: 15px; }
+  .section h3 { color: #0d7a6e; margin: 20px 0 10px; font-size: 1.2em; }
+  .section p { line-height: 1.7; margin-bottom: 12px; font-size: 1.05em; }
+  .analogy { background: #fff3e0; border-left: 4px solid #ff9800; padding: 15px 20px; margin: 15px 0; border-radius: 8px; }
+  .analogy strong { color: #e65100; }
+  .dance-example { background: #e0f2f1; border-left: 4px solid #00897b; padding: 15px 20px; margin: 15px 0; border-radius: 8px; }
+  .dance-example strong { color: #004d40; }
+  .comparison { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 20px 0; }
+  .comparison-card { background: #f1f8e9; padding: 20px; border-radius: 12px; border-top: 4px solid #11998e; }
+  .comparison-card h4 { color: #0d7a6e; margin-bottom: 10px; }
+  .comparison-card .number { font-size: 2.5em; font-weight: bold; color: #11998e; }
+  .highlight { background: #c8e6c9; padding: 2px 6px; border-radius: 4px; font-weight: 600; }
+  .activity { background: #e8f5e9; border: 2px dashed #4caf50; padding: 20px; border-radius: 12px; margin: 20px 0; }
+  .activity h3 { color: #2e7d32; }
+  .quiz-option { display: block; background: white; padding: 12px 18px; margin: 8px 0; border-radius: 8px; cursor: pointer; border: 2px solid #ddd; transition: all 0.3s; }
+  .quiz-option:hover { border-color: #4caf50; transform: translateX(5px); }
+  .quiz-option.correct { background: #c8e6c9; border-color: #2e7d32; }
+  .quiz-option.incorrect { background: #ffcdd2; border-color: #c62828; }
+  .feedback { margin-top: 12px; padding: 12px; border-radius: 8px; display: none; }
+  .feedback.show { display: block; }
+  .feedback.ok { background: #c8e6c9; color: #1b5e20; }
+  .feedback.bad { background: #ffcdd2; color: #b71c1c; }
+  .diagram { background: #fafafa; padding: 20px; border-radius: 12px; text-align: center; margin: 20px 0; }
+  .motor-unit { display: inline-block; background: linear-gradient(135deg, #11998e, #38ef7d); color: white; padding: 15px 25px; border-radius: 50px; font-weight: bold; margin: 5px; }
+  footer { background: #0d7a6e; color: white; text-align: center; padding: 20px; }
+</style>
+</head>
+<body>
+<div class="container">
+
+<header>
+  <h1>⚡ La Unidad Motora</h1>
+  <p>El equipo mínimo para mover un músculo</p>
+</header>
+
+<div class="section">
+  <h2>🧠 ¿De dónde sale la orden?</h2>
+  <p>Toda orden de movimiento nace en las <strong>motoneuronas</strong>, unas células nerviosas especiales situadas en el <span class="highlight">asta anterior de la médula espinal</span>.</p>
+  <p>Desde allí, la orden viaja por un "cable" (el axón) hasta llegar al músculo. Pero la orden no va a todo el músculo de golpe: va a <strong>grupos concretos de fibras</strong>.</p>
+
+  <div class="analogy">
+    <strong>🧠 Analogía:</strong> Imagina una orquesta. El director (cerebro) no toca todos los instrumentos a la vez. Da la orden a cada violinista (motoneurona), y cada violinista se encarga de unas cuantas cuerdas (fibras musculares). El conjunto de un violinista + sus cuerdas es la <strong>unidad motora</strong>.
+  </div>
+</div>
+
+<div class="section">
+  <h2>🎯 Definición de Unidad Motora</h2>
+  <p>Una <strong>unidad motora</strong> está formada por:</p>
+  <ul style="margin-left: 30px; line-height: 2; font-size: 1.05em;">
+    <li>🧠 <strong>1 motoneurona</strong> (la que da la orden)</li>
+    <li>💪 <strong>Un conjunto de fibras musculares</strong> que esa neurona controla</li>
+  </ul>
+  <p style="margin-top: 15px;">Cuando la motoneurona se activa, <strong>todas</strong> las fibras de su unidad motora se contraen a la vez. Es "todo o nada".</p>
+
+  <div class="diagram">
+    <div class="motor-unit">🧠 Motoneurona</div>
+    <div style="font-size: 2em; color: #11998e;">⬇️</div>
+    <div>
+      <div class="motor-unit" style="font-size: 0.8em;">💪 Fibra 1</div>
+      <div class="motor-unit" style="font-size: 0.8em;">💪 Fibra 2</div>
+      <div class="motor-unit" style="font-size: 0.8em;">💪 Fibra 3</div>
+      <div class="motor-unit" style="font-size: 0.8em;">💪 ...</div>
+    </div>
+    <p style="margin-top: 15px; font-style: italic; color: #555;">= 1 Unidad Motora</p>
+  </div>
+</div>
+
+<div class="section">
+  <h2>🎭 Unidades pequeñas vs. grandes</h2>
+  <p>No todas las unidades motoras son iguales. El número de fibras que controla una motoneurona depende de la <strong>precisión</strong> que necesite el músculo.</p>
+
+  <div class="comparison">
+    <div class="comparison-card">
+      <h4>🎯 Unidad motora PEQUEÑA</h4>
+      <div class="number">3-10 fibras</div>
+      <p><strong>Músculos de precisión:</strong> ojos, manos, dedos.</p>
+      <p><em>Ejemplo:</em> Los músculos que mueven los dedos del pie en danza para apuntar bien el pie.</p>
+    </div>
+    <div class="comparison-card">
+      <h4>💪 Unidad motora GRANDE</h4>
+      <div class="number">1000-2000 fibras</div>
+      <p><strong>Músculos de fuerza:</strong> cuádriceps, glúteos, gemelos.</p>
+      <p><em>Ejemplo:</em> Los gemelos que te elevan en un <em>relevé</em>.</p>
+    </div>
+  </div>
+
+  <div class="dance-example">
+    <strong>💃 Ejemplo en danza:</strong> Cuando haces un <em>bourrée</em> sobre las puntas, necesitas <strong>muchísima precisión</strong> en los dedos del pie (unidades pequeñas) y <strong>muchísima fuerza</strong> en los gemelos (unidades grandes). Ambos tipos trabajan a la vez.
+  </div>
+</div>
+
+<div class="section">
+  <h2>📈 ¿Cómo controlamos la fuerza?</h2>
+  <p>El cuerpo tiene dos formas de hacer un movimiento más fuerte:</p>
+  <ol style="margin-left: 30px; line-height: 2; font-size: 1.05em;">
+    <li><strong>Reclutar más unidades motoras</strong> (activar más "equipos").</li>
+    <li><strong>Aumentar la frecuencia</strong> de los impulsos nerviosos (que cada equipo se contraiga más veces por segundo).</li>
+  </ol>
+
+  <div class="analogy">
+    <strong>🧠 Analogía:</strong> Si quieres levantar algo ligero, reclutas pocos equipos (pocas unidades motoras). Si quieres levantar algo pesado, reclutas muchos equipos a la vez. Así se gradúa la fuerza.
+  </div>
+
+  <p>Además, las unidades motoras se reclutan en un <strong>orden inteligente</strong>: primero las pequeñas (precisas y resistentes) y luego las grandes (fuertes pero se cansan antes). Esto se llama <span class="highlight">principio del tamaño de Henneman</span>.</p>
+
+  <div class="dance-example">
+    <strong>💃 Ejemplo en danza:</strong> Cuando haces un <em>plié</em> suave, se activan primero unidades pequeñas. Si el <em>plié</em> se convierte en un salto explosivo, se van sumando unidades más grandes.
+  </div>
+</div>
+
+<div class="section">
+  <h2>🎯 Actividades</h2>
+
+  <div class="activity">
+    <h3>❓ Pregunta 1: ¿Qué forma una unidad motora?</h3>
+    <div class="quiz-option" onclick="checkAnswer(this, false, 'f1')">a) Todo un músculo y su nervio</div>
+    <div class="quiz-option" onclick="checkAnswer(this, true, 'f1')">b) Una motoneurona + las fibras musculares que inerva</div>
+    <div class="quiz-option" onclick="checkAnswer(this, false, 'f1')">c) Un sarcómero y su línea Z</div>
+    <div class="quiz-option" onclick="checkAnswer(this, false, 'f1')">d) Dos músculos que trabajan juntos</div>
+    <div class="feedback" id="f1"></div>
+  </div>
+
+  <div class="activity">
+    <h3>❓ Pregunta 2: ¿Por qué los músculos de los dedos tienen unidades motoras pequeñas?</h3>
+    <div class="quiz-option" onclick="checkAnswer(this, false, 'f2')">a) Porque son músculos débiles</div>
+    <div class="quiz-option" onclick="checkAnswer(this, true, 'f2')">b) Porque necesitan mucha precisión de movimiento</div>
+    <div class="quiz-option" onclick="checkAnswer(this, false, 'f2')">c) Porque tienen pocas fibras en total</div>
+    <div class="quiz-option" onclick="checkAnswer(this, false, 'f2')">d) Porque se cansan antes</div>
+    <div class="feedback" id="f2"></div>
+  </div>
+
+  <div class="activity">
+    <h3>❓ Pregunta 3: Para hacer un salto más alto, el cuerpo...</h3>
+    <div class="quiz-option" onclick="checkAnswer(this, false, 'f3')">a) Contrae solo las unidades pequeñas</div>
+    <div class="quiz-option" onclick="checkAnswer(this, true, 'f3')">b) Recluta más unidades motoras y aumenta la frecuencia de impulsos</div>
+    <div class="quiz-option" onclick="checkAnswer(this, false, 'f3')">c) Relaja los músculos primero</div>
+    <div class="quiz-option" onclick="checkAnswer(this, false, 'f3')">d) Desconecta las unidades grandes</div>
+    <div class="feedback" id="f3"></div>
+  </div>
+
+  <div class="activity">
+    <h3>🩰 Reflexión práctica</h3>
+    <p>Compara estos dos gestos de danza y piensa en qué tipo de unidades motoras predominan en cada uno:</p>
+    <ul style="margin-left: 30px; line-height: 2;">
+      <li><strong>Marcar los dedos del pie en el aire</strong> (como en un <em>développé</em>): predominan unidades ______.</li>
+      <li><strong>Hacer un <em>grand jeté</em></strong>: predominan unidades ______.</li>
+    </ul>
+    <p style="margin-top: 15px; font-style: italic; color: #2e7d32;">💡 Pista: precisión vs. fuerza.</p>
+  </div>
+</div>
+
+<footer>
+  🩰 Fisiología aplicada a la Danza | La Unidad Motora
+</footer>
+
+</div>
+
+<script>
+function checkAnswer(el, isCorrect, feedbackId) {
+  const feedback = document.getElementById(feedbackId);
+  const siblings = el.parentElement.querySelectorAll('.quiz-option');
+  siblings.forEach(s => s.style.pointerEvents = 'none');
+  if (isCorrect) {
+    el.classList.add('correct');
+    feedback.className = 'feedback show ok';
+    feedback.textContent = '✅ ¡Correcto!';
+  } else {
+    el.classList.add('incorrect');
+    feedback.className = 'feedback show bad';
+    feedback.textContent = '❌ Revisa la sección e inténtalo otra vez.';
+    setTimeout(() => {
+      siblings.forEach(s => { s.style.pointerEvents = 'auto'; s.classList.remove('incorrect'); });
+      feedback.className = 'feedback';
+    }, 2000);
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fisiología de los Tendones - 10 Casos Prácticos</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, sans-serif; }
+  body {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    padding: 20px;
+  }
+  .container {
+    max-width: 1000px;
+    margin: 0 auto;
+    background: #fff;
+    border-radius: 20px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    overflow: hidden;
+  }
+  header {
+    background: linear-gradient(90deg, #1e3c72, #2a5298);
+    color: white;
+    padding: 35px;
+    text-align: center;
+  }
+  header h1 { font-size: 2.1em; margin-bottom: 10px; }
+  header p { opacity: 0.95; font-size: 1.1em; }
+  
+  .intro {
+    padding: 30px;
+    background: #f8f9fa;
+    border-bottom: 3px solid #dee2e6;
+  }
+  
+  .intro h2 {
+    color: #2a5298;
+    margin-bottom: 15px;
+    font-size: 1.5em;
+  }
+  
+  .intro p {
+    line-height: 1.7;
+    margin-bottom: 10px;
+    color: #333;
+  }
+  
+  .case {
+    margin: 25px 30px;
+    padding: 25px;
+    background: white;
+    border: 2px solid #dee2e6;
+    border-radius: 15px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+  }
+  
+  .case-header {
+    background: linear-gradient(90deg, #2a5298, #1e3c72);
+    color: white;
+    padding: 12px 20px;
+    margin: -25px -25px 20px -25px;
+    border-radius: 13px 13px 0 0;
+    font-size: 1.2em;
+    font-weight: 600;
+  }
+  
+  .case-description {
+    background: #fff3cd;
+    border-left: 4px solid #ffc107;
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 0 8px 8px 0;
+    line-height: 1.6;
+  }
+  
+  .options {
+    margin: 20px 0;
+  }
+  
+  .option {
+    background: #f8f9fa;
+    border: 2px solid #dee2e6;
+    padding: 15px;
+    margin: 10px 0;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+  
+  .option:hover {
+    background: #e3f2fd;
+    border-color: #2a5298;
+    transform: translateX(5px);
+  }
+  
+  .option.selected {
+    background: #bbdefb;
+    border-color: #1976d2;
+    border-width: 3px;
+  }
+  
+  .option.correct {
+    background: #c8e6c9;
+    border-color: #4caf50;
+  }
+  
+  .option.incorrect {
+    background: #ffcdd2;
+    border-color: #f44336;
+  }
+  
+  .btn-check {
+    background: linear-gradient(90deg, #2a5298, #1e3c72);
+    color: white;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 25px;
+    font-size: 1em;
+    font-weight: 600;
+    cursor: pointer;
+    margin: 15px 5px;
+    transition: all 0.3s;
+  }
+  
+  .btn-check:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(42,82,152,0.4);
+  }
+  
+  .btn-check:disabled {
+    background: #bdc3c7;
+    cursor: not-allowed;
+    transform: none;
+  }
+  
+  .explanation-box {
+    display: none;
+    margin-top: 20px;
+    padding: 20px;
+    border-radius: 10px;
+    animation: slideDown 0.3s ease;
+  }
+  
+  @keyframes slideDown {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  
+  .explanation-box.show {
+    display: block;
+  }
+  
+  .explanation-box.correct {
+    background: #e8f5e9;
+    border: 2px solid #4caf50;
+  }
+  
+  .explanation-box.incorrect {
+    background: #ffebee;
+    border: 2px solid #f44336;
+  }
+  
+  .explanation-box h4 {
+    margin-bottom: 10px;
+    font-size: 1.1em;
+  }
+  
+  .explanation-box.correct h4 {
+    color: #2e7d32;
+  }
+  
+  .explanation-box.incorrect h4 {
+    color: #c62828;
+  }
+  
+  .explanation-content {
+    line-height: 1.7;
+    color: #333;
+  }
+  
+  .explanation-content strong {
+    color: #2a5298;
+  }
+  
+  .key-concept {
+    background: #fff9c4;
+    padding: 10px 15px;
+    border-radius: 5px;
+    margin-top: 15px;
+    font-size: 0.95em;
+    border-left: 4px solid #fbc02d;
+  }
+  
+  .progress-bar {
+    background: #f8f9fa;
+    padding: 20px 30px;
+    border-top: 3px solid #dee2e6;
+    text-align: center;
+  }
+  
+  .progress-text {
+    font-size: 1.1em;
+    color: #2a5298;
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+  
+  .progress-fill {
+    background: linear-gradient(90deg, #667eea, #764ba2);
+    height: 10px;
+    border-radius: 5px;
+    transition: width 0.5s;
+  }
+  
+  @media (max-width: 768px) {
+    header h1 { font-size: 1.6em; }
+    .case { margin: 15px; padding: 20px; }
+    .case-header { margin: -20px -20px 15px -20px; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <h1>🦵 Fisiología de los Tendones</h1>
+    <p>10 Casos Prácticos: Transmisión de Fuerza y Energía Elástica</p>
+  </header>
+  
+  <div class="intro">
+    <h2>📚 Introducción</h2>
+    <p>Los tendones son estructuras especializadas que conectan los músculos con los huesos. Su función principal es <strong>transmitir la fuerza</strong> generada por la contracción muscular al esqueleto para producir movimiento.</p>
+    <p>Pero los tendones no son simples "cuerdas" pasivas. Son tejidos <strong>viscoelásticos complejos</strong> que:</p>
+    <ul style="margin-left: 25px; line-height: 1.8;">
+      <li>Almacenan y liberan <strong>energía elástica</strong> (como un muelle)</li>
+      <li>Se adaptan lentamente al entrenamiento (más lento que el músculo)</li>
+      <li>Tienen <strong>poca vascularización</strong>, lo que explica su lenta curación</li>
+      <li>Responden a las cargas mecánicas mediante <strong>mecanotransducción</strong></li>
+    </ul>
+    <p style="margin-top: 15px;"><strong>Instrucciones:</strong> Lee cada caso, selecciona la respuesta que creas correcta y pulsa "Verificar". Luego abre el cajón para ver la explicación fisiológica detallada.</p>
+  </div>
+
+  <!-- CASO 1 -->
+  <div class="case" id="case1">
+    <div class="case-header">Caso 1: El Misterio del Dolor en el Tendón de Aquiles</div>
+    <div class="case-description">
+      <p><strong>Situación:</strong> María, una bailarina de 22 años, lleva 3 semanas con dolor en el tendón de Aquiles. El dolor aparece al empezar a bailar, disminuye durante el calentamiento, pero vuelve al final de la clase. No ha habido ningún traumatismo agudo.</p>
+      <p><strong>Pregunta:</strong> ¿Cuál es la explicación fisiológica más probable de este patrón de dolor?</p>
+    </div>
+    
+    <div class="options">
+      <div class="option" data-value="A">
+        <strong>A)</strong> El tendón tiene una rotura completa y necesita cirugía inmediata
+      </div>
+      <div class="option" data-value="B">
+        <strong>B)</strong> Es una tendinopatía degenerativa: los microdaños acumulados superan la capacidad de reparación del tendón por su baja vascularización
+      </div>
+      <div class="option" data-value="C">
+        <strong>C)</strong> Es solo fatiga muscular y desaparecerá con descanso de 2 días
+      </div>
+    </div>
+    
+    <button class="btn-check" onclick="checkAnswer(1, 'B')">Verificar Respuesta</button>
+    
+    <div class="explanation-box" id="explanation1">
+      <h4>✅ Respuesta Correcta: B</h4>
+      <div class="explanation-content">
+        <p><strong>Explicación fisiológica:</strong></p>
+        <p>El patrón descrito (dolor al inicio que mejora con el movimiento pero reaparece) es clásico de una <strong>tendinopatía</strong> (antes llamada tendinitis, aunque no es principalmente inflamatoria).</p>
+        <p><strong>Claves fisiológicas:</strong></p>
+        <ul style="margin-left: 20px; margin-top: 10px;">
+          <li><strong>Baja vascularización:</strong> El tendón de Aquiles tiene una zona de "watershed" (zona crítica) a 2-6 cm de su inserción en el calcáneo con muy poco riego sanguíneo. Esto limita su capacidad de reparación.</li>
+          <li><strong>Tasa metabólica lenta:</strong> Los tenocitos (células del tendón) tienen una tasa metabólica muy baja. La síntesis de colágeno nuevo tarda semanas o meses.</li>
+          <li><strong>Desequilibrio carga/reparación:</strong> Cuando los microdaños por sobreuso superan la capacidad de reparación (lenta por la pobre vascularización), se acumulan cambios degenerativos.</li>
+          <li><strong>El dolor que "calienta":</strong> Al moverse, aumenta temporalmente el flujo sanguíneo y la viscosidad del tejido mejora, pero al enfriarse vuelve el dolor.</li>
+        </ul>
+        <div class="key-concept">
+          <strong>💡 Concepto clave:</strong> Los tendones tienen una vascularización 7-8 veces menor que el músculo. Por eso sus lesiones tardan 3-6 meses en curarse (vs. 3-6 semanas del músculo).
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CASO 2 -->
+  <div class="case" id="case2">
+    <div class="case-header">Caso 2: La Paradoja del Entrenamiento Excéntrico</div>
+    <div class="case-description">
+      <p><strong>Situación:</strong> Carlos, un corredor, tiene tendinopatía rotuliana. Su fisioterapeuta le prescribe ejercicios excéntricos (bajadas lentas de escalón). Carlos nota que al principio le duele MÁS durante el ejercicio, pero a las 12 semanas su tendón está mucho mejor.</p>
+      <p><strong>Pregunta:</strong> ¿Por qué los ejercicios excéntricos, aunque duelan al principio, son efectivos para la rehabilitación tendinosa?</p>
+    </div>
+    
+    <div class="options">
+      <div class="option" data-value="A">
+        <strong>A)</strong> Porque estiran el tendón y lo hacen más largo y flexible
+      </div>
+      <div class="option" data-value="B">
+        <strong>B)</strong> Porque generan una tensión mecánica alta que estimula a los tenocitos a producir más colágeno tipo I (más fuerte) y reorganizar las fibras en la dirección de la carga
+      </div>
+      <div class="option" data-value="C">
+        <strong>C)</strong> Porque relajan el músculo y quitan tensión del tendón
+      </div>
+    </div>
+    
+    <button class="btn-check" onclick="checkAnswer(2, 'B')">Verificar Respuesta</button>
+    
+    <div class="explanation-box" id="explanation2">
+      <h4>✅ Respuesta Correcta: B</h4>
+      <div class="explanation-content">
+        <p><strong>Explicación fisiológica:</strong></p>
+        <p>Los ejercicios excéntricos son el "gold standard" para tendinopatías por razones fisiológicas específicas:</p>
+        <p><strong>Mecanismos fisiológicos:</strong></p>
+        <ul style="margin-left: 20px; margin-top: 10px;">
+          <li><strong>Alta tensión mecánica:</strong> La contracción excéntrica genera 20-60% más fuerza que la concéntrica. Esta alta tensión es detectada por los tenocitos mediante mecanotransducción.</li>
+          <li><strong>Estimulación de la síntesis de colágeno:</strong> Los tenocitos responden a la carga mecánica aumentando la producción de colágeno tipo I (el más fuerte y organizado) vs. tipo III (más débil, típico de tejido cicatricial).</li>
+          <li><strong>Reorientación de fibras:</strong> Las fibras de colágeno se alinean en la dirección de la carga (Ley de Wolff aplicada a tendones). Los ejercicios excéntricos promueven esta alineación paralela, mejorando la resistencia a la tracción.</li>
+          <li><strong>Engrosamiento del tendón:</strong> Con el tiempo (12+ semanas), el tendón aumenta su área de sección transversal, distribuyendo mejor la carga.</li>
+          <li><strong>El dolor inicial:</strong> Es normal y no indica daño. Refleja la sensibilización del tejido, no lesión.</li>
+        </ul>
+        <div class="key-concept">
+          <strong>💡 Concepto clave:</strong> Los tendones se adaptan MUY lentamente. Se necesitan 3-4 meses de carga progresiva para ver cambios estructurales (vs. 4-6 semanas para el músculo). ¡La paciencia es fisiológica!
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CASO 3 -->
+  <div class="case" id="case3">
+    <div class="case-header">Caso 3: El Salto del Canguro vs. el Humano</div>
+    <div class="case-description">
+      <p><strong>Situación:</strong> Un canguro puede saltar continuamente gastando muy poca energía. Un humano que salta repetidamente se fatiga rápidamente. Ambos usan el tendón de Aquiles.</p>
+      <p><strong>Pregunta:</strong> ¿Qué propiedad fisiológica del tendón explica la diferencia en eficiencia energética?</p>
+    </div>
+    
+    <div class="options">
+      <div class="option" data-value="A">
+        <strong>A)</strong> Los humanos tienen tendones más cortos que los canguros
+      </div>
+      <div class="option" data-value="B">
+        <strong>B)</strong> El tendón de Aquiles humano tiene menor capacidad de almacenamiento y retorno de energía elástica (menor eficiencia en el ciclo estiramiento-acortamiento) comparado con el canguro
+      </div>
+      <div class="option" data-value="C">
+        <strong>C)</strong> Los canguros tienen músculos más fuertes
+      </div>
+    </div>
+    
+    <button class="btn-check" onclick="checkAnswer(3, 'B')">Verificar Respuesta</button>
+    
+    <div class="explanation-box" id="explanation3">
+      <h4>✅ Respuesta Correcta: B</h4>
+      <div class="explanation-content">
+        <p><strong>Explicación fisiológica:</strong></p>
+        <p>Los tendones actúan como <strong>muelles biológicos</strong> que almacenan y liberan energía elástica:</p>
+        <p><strong>Mecanismo del ciclo estiramiento-acortamiento (CEA):</strong></p>
+        <ul style="margin-left: 20px; margin-top: 10px;">
+          <li><strong>Fase excéntrica (aterrizaje):</strong> El tendón se estira y almacena energía elástica (como estirar una goma). Hasta el 35% de la energía mecánica puede almacenarse.</li>
+          <li><strong>Fase de amortización:</strong> Breve pausa (debe ser <200ms para máxima eficiencia).</li>
+          <li><strong>Fase concéntrica (impulso):</strong> El tendón se acorta liberando la energía almacenada, ayudando al músculo.</li>
+        </ul>
+        <p><strong>Diferencias canguro-humano:</strong></p>
+        <ul style="margin-left: 20px; margin-top: 10px;">
+          <li><strong>Canguro:</strong> Sus tendones son extremadamente eficientes (90-95% de retorno de energía). Pueden saltar a 20 km/h gastando la misma energía que a 6 km/h. ¡El tendón hace la mayor parte del trabajo!</li>
+          <li><strong>Humano:</strong> Nuestro tendón de Aquiles tiene 80-90% de eficiencia. Mejor que muchos mamíferos, pero peor que el canguro.</li>
+          <li><strong>Histeresis:</strong> Es la energía "perdida" (disipada como calor) en cada ciclo. Menor histeresis = mayor eficiencia.</li>
+        </ul>
+        <div class="key-concept">
+          <strong>💡 Concepto clave:</strong> Un tendón sano puede almacenar ~50 J de energía por paso al correr. En una hora de carrera, esto ahorra ~180 kcal. ¡Los tendones son "baterías biológicas"!
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CASO 4 -->
+  <div class="case" id="case4">
+    <div class="case-header">Caso 4: El Efecto del Envejecimiento en el Tendón</div>
+    <div class="case-description">
+      <p><strong>Situación:</strong> Ana tiene 65 años y nota que sus tendones están "más rígidos". Le cuesta más estirarse y siente que sus movimientos son menos fluidos que cuando tenía 30 años.</p>
+      <p><strong>Pregunta:</strong> ¿Qué cambios fisiológicos ocurren en los tendones con la edad?</p>
+    </div>
+    
+    <div class="options">
+      <div class="option" data-value="A">
+        <strong>A)</strong> Los tendones se vuelven más elásticos y flexibles con la edad
+      </div>
+      <div class="option" data-value="B">
+        <strong>B)</strong> Disminuye el contenido de agua, aumentan los enlaces cruzados (cross-links) entre las fibras de colágeno, y se reduce la tasa de recambio del colágeno → el tendón se vuelve más rígido y menos capaz de adaptarse
+      </div>
+      <div class="option" data-value="C">
+        <strong>C)</strong> Los tendones no cambian con la edad, solo los músculos
+      </div>
+    </div>
+    
+    <button class="btn-check" onclick="checkAnswer(4, 'B')">Verificar Respuesta</button>
+    
+    <div class="explanation-box" id="explanation4">
+      <h4>✅ Respuesta Correcta: B</h4>
+      <div class="explanation-content">
+        <p><strong>Explicación fisiológica:</strong></p>
+        <p>El envejecimiento produce cambios estructurales y bioquímicos en los tendones:</p>
+        <p><strong>Cambios principales:</strong></p>
+        <ul style="margin-left: 20px; margin-top: 10px;">
+          <li><strong>Disminución del contenido de agua:</strong> De ~70% en jóvenes a ~55% en mayores. El agua es esencial para la viscoelasticidad y el deslizamiento entre fibras.</li>
+          <li><strong>Aumento de cross-links (enlaces cruzados):</strong> Se forman enlaces químicos avanzados de glicación (AGEs) entre las moléculas de colágeno. Estos "pegan" las fibras entre sí, reduciendo su capacidad de deslizamiento → mayor rigidez.</li>
+          <li><strong>Menor tasa de recambio:</strong> En jóvenes, el colágeno se renueva constantemente. En mayores, la síntesis disminuye y el colágeno viejo (más rígido, más dañado) se acumula.</li>
+          <li><strong>Cambios en proteoglicanos:</strong> Disminuyen los proteoglicanos (como el decorina) que regulan el diámetro de las fibras de colágeno y mantienen la hidratación.</li>
+          <li><strong>Consecuencias:</strong> Mayor rigidez (menos capacidad de almacenar energía elástica), menor capacidad de adaptación al entrenamiento, mayor riesgo de rotura.</li>
+        </ul>
+        <div class="key-concept">
+          <strong>💡 Concepto clave:</strong> A partir de los 30 años, perdemos ~1% de masa tendinosa por año. Pero el entrenamiento de fuerza puede ralentizar este proceso hasta en un 50%. ¡Nunca es tarde para entrenar!
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CASO 5 -->
+  <div class="case" id="case5">
+    <div class="case-header">Caso 5: La Lesión del Manguito Rotador</div>
+    <div class="case-description">
+      <p><strong>Situación:</strong> Pedro, un pintor de 45 años, tiene dolor en el hombro. La resonancia muestra una rotura parcial del tendón supraespinoso (manguito rotador). El cirujano le dice que es "poco probable que cure completamente" incluso con cirugía.</p>
+      <p><strong>Pregunta:</strong> ¿Por qué los tendones del manguito rotador tienen tan mala capacidad de curación?</p>
+    </div>
+    
+    <div class="options">
+      <div class="option" data-value="A">
+        <strong>A)</strong> Porque están muy cerca de la piel y se infectan fácilmente
+      </div>
+      <div class="option" data-value="B">
+        <strong>B)</strong> Porque tienen una zona crítica de hipovascularización (zona "watershed") a 1 cm de la inserción, y la carga mecánica constante impide la formación de tejido de granulación estable
+      </div>
+      <div class="option" data-value="C">
+        <strong>C)</strong> Porque son tendones muy cortos
+      </div>
+    </div>
+    
+    <button class="btn-check" onclick="checkAnswer(5, 'B')">Verificar Respuesta</button>
+    
+    <div class="explanation-box" id="explanation5">
+      <h4>✅ Respuesta Correcta: B</h4>
+      <div class="explanation-content">
+        <p><strong>Explicación fisiológica:</strong></p>
+        <p>El manguito rotador (especialmente el supraespinoso) es el tendón con peor pronóstico de curación por razones anatómicas y fisiológicas:</p>
+        <p><strong>Factores que limitan la curación:</strong></p>
+        <ul style="margin-left: 20px; margin-top: 10px;">
+          <li><strong>Zona crítica hipovascular:</strong> A 1 cm de la inserción en el húmero hay una zona con muy poco riego sanguíneo (descrita por Codman en 1934). Sin sangre, no llegan nutrientes, oxígeno ni células reparadoras.</li>
+          <li><strong>Carga mecánica constante:</strong> El hombro se mueve constantemente (incluso durmiendo). El movimiento continuo impide la formación de un coágulo estable y la maduración del tejido de granulación.</li>
+          <li><strong>Estrés de cizallamiento:</strong> El tendón roza contra el acromion (hueso del hombro) en cada elevación del brazo, produciendo microtraumatismos continuos.</li>
+          <li><strong>Edad y degeneración:</strong> A partir de los 40 años, es común encontrar degeneración tendinosa asintomática. Cuando se rompe, el tejido ya es de mala calidad.</li>
+          <li><strong>Respuesta inflamatoria deficiente:</strong> La pobre vascularización limita la llegada de células inflamatorias necesarias para iniciar la reparación.</li>
+        </ul>
+        <div class="key-concept">
+          <strong>💡 Concepto clave:</strong> Solo el 30-40% de las roturas completas del manguito rotador curan estructuralmente incluso con cirugía. Pero el 70-80% mejoran sintomáticamente con rehabilitación (el cuerpo compensa con otros músculos).
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CASO 6 -->
+  <div class="case" id="case6">
+    <div class="case-header">Caso 6: El Efecto de los Corticoides en el Tendón</div>
+    <div class="case-description">
+      <p><strong>Situación:</strong> Laura, una tenista, recibe una infiltración de corticoides en el codo para su "codo de tenista" (epicondilitis). El dolor desaparece 2 semanas, pero 3 meses después sufre una rotura parcial del tendón durante un partido.</p>
+      <p><strong>Pregunta:</strong> ¿Cuál es el mecanismo fisiológico por el cual los corticoides pueden debilitar el tendón?</p>
+    </div>
+    
+    <div class="options">
+      <div class="option" data-value="A">
+        <strong>A)</strong> Los corticoides no afectan a los tendones, solo reducen el dolor
+      </div>
+      <div class="option" data-value="B">
+        <strong>B)</strong> Los corticoides inhiben la síntesis de colágeno por los tenocitos, aumentan la actividad de las metaloproteinasas (enzimas que degradan colágeno) y pueden producir apoptosis (muerte) de tenocitos → el tendón se vuelve más débil estructuralmente
+      </div>
+      <div class="option" data-value="C">
+        <strong>C)</strong> Los corticoides hacen el tendón más fuerte al reducir la inflamación
+      </div>
+    </div>
+    
+    <button class="btn-check" onclick="checkAnswer(6, 'B')">Verificar Respuesta</button>
+    
+    <div class="explanation-box" id="explanation6">
+      <h4>✅ Respuesta Correcta: B</h4>
+      <div class="explanation-content">
+        <p><strong>Explicación fisiológica:</strong></p>
+        <p>Los corticoides son antiinflamatorios potentes, pero tienen efectos adversos importantes en el tejido tendinoso:</p>
+        <p><strong>Mecanismos de debilitamiento:</strong></p>
+        <ul style="margin-left: 20px; margin-top: 10px;">
+          <li><strong>Inhibición de la síntesis de colágeno:</strong> Los corticoides reducen la expresión de genes que codifican para colágeno tipo I. Los tenocitos producen menos "material de construcción".</li>
+          <li><strong>Aumento de la degradación:</strong> Estimulan la producción de metaloproteinasas (MMPs), enzimas que degradan el colágeno existente. Es como tener más "tijeras" cortando las fibras.</li>
+          <li><strong>Apoptosis de tenocitos:</strong> Los corticoides pueden inducir muerte celular programada en los tenocitos. Menos células = menos capacidad de mantenimiento y reparación.</li>
+          <li><strong>Alteración de la arquitectura:</strong> Las fibras de colágeno se vuelven más desorganizadas y elásticas (menos resistentes a la tracción).</li>
+          <li><strong>Efecto temporal:</strong> El alivio del dolor dura 2-6 semanas, pero los cambios estructurales negativos pueden durar 3-6 meses.</li>
+          <li><strong>Riesgo de rotura:</strong> Estudios muestran que las infiltraciones repetidas (>3) aumentan el riesgo de rotura tendinosa hasta 4 veces.</li>
+        </ul>
+        <div class="key-concept">
+          <strong>💡 Concepto clave:</strong> Los corticoides "enmascaran" el dolor pero no curan la tendinopatía. Deben usarse con precaución y nunca antes de competir (aumentan el riesgo de rotura).
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CASO 7 -->
+  <div class="case" id="case7">
+    <div class="case-header">Caso 7: La Importancia del Calentamiento</div>
+    <div class="case-description">
+      <p><strong>Situación:</strong> Dos corredores salen a correr. Juan calienta 15 minutos (trote suave + estiramientos dinámicos). Pedro sale directamente a correr a máxima velocidad. Pedro sufre una distensión del tendón isquiotibial a los 5 minutos.</p>
+      <p><strong>Pregunta:</strong> ¿Qué cambio fisiológico produce el calentamiento que protege al tendón?</p>
+    </div>
+    
+    <div class="options">
+      <div class="option" data-value="A">
+        <strong>A)</strong> El calentamiento solo sirve para preparar el músculo, no afecta al tendón
+      </div>
+      <div class="option" data-value="B">
+        <strong>B)</strong> El calentamiento aumenta la temperatura del tendón, lo que reduce su viscosidad y aumenta su elasticidad, permitiendo mayor deformación antes de la rotura y mejor almacenamiento de energía elástica
+      </div>
+      <div class="option" data-value="C">
+        <strong>C)</strong> El calentamiento endurece el tendón para que sea más resistente
+      </div>
+    </div>
+    
+    <button class="btn-check" onclick="checkAnswer(7, 'B')">Verificar Respuesta</button>
+    
+    <div class="explanation-box" id="explanation7">
+      <h4>✅ Respuesta Correcta: B</h4>
+      <div class="explanation-content">
+        <p><strong>Explicación fisiológica:</strong></p>
+        <p>Los tendones son tejidos <strong>viscoelásticos</strong>: tienen propiedades tanto viscosas (como un líquido espeso) como elásticas (como un muelle). La temperatura afecta directamente a estas propiedades:</p>
+        <p><strong>Efectos del aumento de temperatura (2-3°C con calentamiento):</strong></p>
+        <ul style="margin-left: 20px; margin-top: 10px;">
+          <li><strong>Disminución de la viscosidad:</strong> El "fluido" dentro del tendón (agua y proteoglicanos) se vuelve menos espeso. Las fibras de colágeno pueden deslizarse más fácilmente unas sobre otras.</li>
+          <li><strong>Aumento de la extensibilidad:</strong> Un tendón calentado puede estirarse 15-20% más antes de romperse vs. un tendón frío.</li>
+          <li><strong>Mayor eficiencia elástica:</strong> Un tendón caliente tiene menor histeresis (pierde menos energía como calor), por lo que devuelve más energía elástica en el ciclo estiramiento-acortamiento.</li>
+          <li><strong>Aumento del flujo sanguíneo:</strong> Aunque los tendones tienen poco riego, el calentamiento aumenta el flujo en la unión miotendinosa y en la vaina sinovial (si existe), mejorando la oxigenación.</li>
+          <li><strong>Activación neural:</strong> El calentamiento prepara también los reflejos neuromusculares que protegen al tendón de cargas excesivas súbitas.</li>
+        </ul>
+        <div class="key-concept">
+          <strong>💡 Concepto clave:</strong> Un tendón a 37°C puede absorber 20-30% más energía antes de romperse que uno a 33°C. ¡Esos 4°C marcan la diferencia entre una buena sesión y una lesión!
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CASO 8 -->
+  <div class="case" id="case8">
+    <div class="case-header">Caso 8: Tendón vs. Ligamento - Diferencias Fisiológicas</div>
+    <div class="case-description">
+      <p><strong>Situación:</strong> En una clase de anatomía, el profesor pregunta: "Tanto tendones como ligamentos están hechos principalmente de colágeno tipo I. ¿Por qué los tendones son más eficientes almacenando energía elástica que los ligamentos?"</p>
+      <p><strong>Pregunta:</strong> ¿Cuál es la diferencia fisiológica clave?</p>
+    </div>
+    
+    <div class="options">
+      <div class="option" data-value="A">
+        <strong>A)</strong> No hay diferencia, ambos almacenan energía igual de bien
+      </div>
+      <div class="option" data-value="B">
+        <strong>B)</strong> Los tendones tienen una organización de fibras de colágeno más paralela y alineada con la dirección de la carga, menor contenido de proteoglicanos, y mayor módulo de elasticidad, lo que los hace más eficientes almacenando energía. Los ligamentos tienen fibras más entrelazadas para resistir cargas multidireccionales
+      </div>
+      <div class="option" data-value="C">
+        <strong>C)</strong> Los ligamentos son más fuertes que los tendones
+      </div>
+    </div>
+    
+    <button class="btn-check" onclick="checkAnswer(8, 'B')">Verificar Respuesta</button>
+    
+    <div class="explanation-box" id="explanation8">
+      <h4>✅ Respuesta Correcta: B</h4>
+      <div class="explanation-content">
+        <p><strong>Explicación fisiológica:</strong></p>
+        <p>Aunque ambos tejidos son conectivos densos con colágeno tipo I, sus diferencias estructurales reflejan sus funciones diferentes:</p>
+        <p><strong>Diferencias clave:</strong></p>
+        <ul style="margin-left: 20px; margin-top: 10px;">
+          <li><strong>Organización de fibras:</strong>
+            <ul style="margin-left: 15px; margin-top: 5px;">
+              <li><strong>Tendón:</strong> Fibras de colágeno muy paralelas y alineadas con el eje de carga. Máxima eficiencia en tracción unidireccional.</li>
+              <li><strong>Ligamento:</strong> Fibras más entrelazadas y orientadas en múltiples direcciones. Deben resistir cargas multidireccionales (estabilizan articulaciones).</li>
+            </ul>
+          </li>
+          <li><strong>Contenido de proteoglicanos:</strong>
+            <ul style="margin-left: 15px; margin-top: 5px;">
+              <li><strong>Tendón:</strong> Menor contenido (especialmente en tendones de almacenamiento de energía como el Aquiles). Menos proteoglicanos = menos resistencia al deslizamiento = mayor eficiencia elástica.</li>
+              <li><strong>Ligamento:</strong> Mayor contenido de proteoglicanos, especialmente en la zona de inserción ósea.</li>
+            </ul>
+          </li>
+          <li><strong>Módulo de elasticidad (rigidez):</strong>
+            <ul style="margin-left: 15px; margin-top: 5px;">
+              <li><strong>Tendón:</strong> Mayor rigidez (módulo de Young: ~1-2 GPa). Se deforma menos bajo carga, almacenando más energía elástica.</li>
+              <li><strong>Ligamento:</strong> Menor rigidez (~0.5-1 GPa). Más "cedencia" para permitir movimiento articular.</li>
+            </ul>
+          </li>
+          <li><strong>Relación longitud/diámetro:</strong>
+            <ul style="margin-left: 15px; margin-top: 5px;">
+              <li><strong>Tendón:</strong> Generalmente más largos en relación a su diámetro (mejor para almacenar energía).</li>
+              <li><strong>Ligamento:</strong> Generalmente más cortos y anchos.</li>
+            </ul>
+          </li>
+        </ul>
+        <div class="key-concept">
+          <strong>💡 Concepto clave:</strong> Un tendón como el de Aquiles puede almacenar ~35 J de energía en cada paso al correr. Un ligamento típico almacena <5 J. ¡7 veces menos! La forma sigue a la función.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CASO 9 -->
+  <div class="case" id="case9">
+    <div class="case-header">Caso 9: El Papel de la Nutrición en la Salud Tendinosa</div>
+    <div class="case-description">
+      <p><strong>Situación:</strong> Un nutricionista deportivo recomienda a un atleta con tendinopatía aumentar la ingesta de vitamina C, proteínas y gelatina/colágeno hidrolizado 1 hora antes del entrenamiento.</p>
+      <p><strong>Pregunta:</strong> ¿Cuál es la base fisiológica de esta recomendación?</p>
+    </div>
+    
+    <div class="options">
+      <div class="option" data-value="A">
+        <strong>A)</strong> Es un mito, la nutrición no afecta a los tendones
+      </div>
+      <div class="option" data-value="B">
+        <strong>B)</strong> La vitamina C es cofactor esencial para la hidroxilación de prolina y lisina en la síntesis de colágeno. Las proteínas proporcionan aminoácidos (especialmente glicina, prolina). Tomarlos 1h antes del entrenamiento coincide con el pico de aminoácidos en sangre con el aumento de flujo sanguíneo al tendón por el ejercicio, maximizando la síntesis de colágeno
+      </div>
+      <div class="option" data-value="C">
+        <strong>C)</strong> Solo importa comer mucho, no importa el tipo de nutriente
+      </div>
+    </div>
+    
+    <button class="btn-check" onclick="checkAnswer(9, 'B')">Verificar Respuesta</button>
+    
+    <div class="explanation-box" id="explanation9">
+      <h4>✅ Respuesta Correcta: B</h4>
+      <div class="explanation-content">
+        <p><strong>Explicación fisiológica:</strong></p>
+        <p>La nutrición juega un papel crucial en la salud y reparación tendinosa, aunque su efecto es más lento que en el músculo:</p>
+        <p><strong>Mecanismos nutricionales:</strong></p>
+        <ul style="margin-left: 20px; margin-top: 10px;">
+          <li><strong>Vitamina C (ácido ascórbico):</strong>
+            <ul style="margin-left: 15px; margin-top: 5px;">
+              <li>Es cofactor esencial para las enzimas prolil-hidroxilasa y lisil-hidroxilasa.</li>
+              <li>Estas enzimas añaden grupos OH a la prolina y lisina del colágeno, permitiendo la formación de puentes de hidrógeno que estabilizan la triple hélice del colágeno.</li>
+              <li>Sin vitamina C, el colágeno es inestable y se degrada fácilmente (escorbuto es el ejemplo extremo).</li>
+            </ul>
+          </li>
+          <li><strong>Aminoácidos específicos:</strong>
+            <ul style="margin-left: 15px; margin-top: 5px;">
+              <li><strong>Glicina:</strong> Representa ~33% del colágeno (cada tercera posición en la secuencia).</li>
+              <li><strong>Prolina e hidroxiprolina:</strong> ~22% del colágeno.</li>
+              <li><strong>Lisina:</strong> Importante para los enlaces cruzados entre fibras.</li>
+            </ul>
+          </li>
+          <li><strong>Timing (1h antes del entrenamiento):</strong>
+            <ul style="margin-left: 15px; margin-top: 5px;">
+              <li>Los tendones tienen muy poco flujo sanguíneo en reposo.</li>
+              <li>Durante el ejercicio, el flujo aumenta temporalmente (aunque menos que en el músculo).</li>
+              <li>Tomar colágeno/gelatina + vitamina C 1h antes hace que los aminoácidos estén en sangre justo cuando aumenta el flujo al tendón → mayor captación.</li>
+              <li>Estudios muestran que esto puede aumentar la síntesis de colágeno hasta 2 veces vs. tomarlo en reposo.</li>
+            </ul>
+          </li>
+        </ul>
+        <div class="key-concept">
+          <strong>💡 Concepto clave:</strong> Estudios recientes (Shaw et al., 2017) muestran que 15g de gelatina + 50mg de vitamina C 1h antes del ejercicio aumenta la síntesis de colágeno tendinoso en ~100% vs. placebo. ¡El timing importa!
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CASO 10 -->
+  <div class="case" id="case10">
+    <div class="case-header">Caso 10: La Unión Mi tendinosa - El Punto Débil</div>
+    <div class="case-description">
+      <p><strong>Situación:</strong> En una autopsia de un atleta, se observa que las roturas musculares suelen ocurrir cerca de la unión miotendinosa (donde el músculo se une al tendón), no en el centro del músculo ni en el centro del tendón.</p>
+      <p><strong>Pregunta:</strong> ¿Por qué la unión miotendinosa es el punto más vulnerable?</p>
+    </div>
+    
+    <div class="options">
+      <div class="option" data-value="A">
+        <strong>A)</strong> Es solo casualidad, no hay razón fisiológica
+      </div>
+      <div class="option" data-value="B">
+        <strong>B)</strong> La unión miotendinosa es una zona de transición donde dos tejidos con propiedades mecánicas muy diferentes (músculo blando y elástico vs. tendón rígido y fuerte) se unen. Esta diferencia crea un gradiente de tensión y concentración de estrés mecánico. Además, es una zona de alta actividad metabólica y remodelación constante
+      </div>
+      <div class="option" data-value="C">
+        <strong>C)</strong> Porque ahí es donde se insertan los nervios
+      </div>
+    </div>
+    
+    <button class="btn-check" onclick="checkAnswer(10, 'B')">Verificar Respuesta</button>
+    
+    <div class="explanation-box" id="explanation10">
+      <h4>✅ Respuesta Correcta: B</h4>
+      <div class="explanation-content">
+        <p><strong>Explicación fisiológica:</strong></p>
+        <p>La unión miotendinosa (MTJ) es una de las estructuras más fascinantes y complejas del sistema musculoesquelético:</p>
+        <p><strong>Razones de su vulnerabilidad:</strong></p>
+        <ul style="margin-left: 20px; margin-top: 10px;">
+          <li><strong>Gradiente de propiedades mecánicas:</strong>
+            <ul style="margin-left: 15px; margin-top: 5px;">
+              <li><strong>Músculo:</strong> Módulo de elasticidad ~0.01-0.1 MPa (blando, muy deformable).</li>
+              <li><strong>Tendón:</strong> Módulo de elasticidad ~1000-2000 MPa (rígido, poco deformable).</li>
+              <li><strong>La MTJ:</strong> Debe transicionar de una propiedad a otra en solo 1-2 mm. Esto crea una concentración de tensión (stress concentration) en la interfaz.</li>
+            </ul>
+          </li>
+          <li><strong>Arquitectura especial:</strong>
+            <ul style="margin-left: 15px; margin-top: 5px;">
+              <li>Las fibras musculares terminan en forma de "dedos" que se interdigitan con el tendón.</li>
+              <li>Esto aumenta la superficie de contacto ~10-15 veces vs. una unión plana.</li>
+              <li>Las proteínas de adhesión (integrinas, distroglicano) unen el citoesqueleto de actina del músculo a la matriz extracelular del tendón.</li>
+            </ul>
+          </li>
+          <li><strong>Alta tasa de recambio:</strong>
+            <ul style="margin-left: 15px; margin-top: 5px;">
+              <li>La MTJ es una zona de alta actividad metabólica.</li>
+              <li>Las proteínas de unión se degradan y sintetizan constantemente.</li>
+              <li>Durante el ejercicio intenso, puede haber daño en las proteínas de adhesión que tarda 24-48h en repararse.</li>
+            </ul>
+          </li>
+          <li><strong>Punto de fallo:</strong>
+            <ul style="margin-left: 15px; margin-top: 5px;">
+              <li>En una carga excesiva, es más probable que falle la MTJ (donde hay cambio brusco de propiedades) que el centro del músculo o del tendón (más homogéneos).</li>
+              <li>~70% de las lesiones musculares ocurren en o cerca de la MTJ.</li>
+            </ul>
+          </li>
+        </ul>
+        <div class="key-concept">
+          <strong>💡 Concepto clave:</strong> La MTJ es como pegar goma espuma (músculo) a una cuerda (tendón). Aunque uses el mejor pegamento, la zona de transición siempre será el punto más débil. Por eso el 70% de las roturas musculares ocurren ahí.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="progress-bar">
+    <div class="progress-text">Progreso: <span id="progress">0</span>/10 casos completados</div>
+    <div class="progress-fill" id="progressBar" style="width: 0%"></div>
+  </div>
+</div>
+
+<script>
+let completedCases = 0;
+const totalCases = 10;
+
+function checkAnswer(caseNum, correctAnswer) {
+  const caseElement = document.getElementById(`case${caseNum}`);
+  const options = caseElement.querySelectorAll('.option');
+  const btn = caseElement.querySelector('.btn-check');
+  const explanation = document.getElementById(`explanation${caseNum}`);
+  
+  // Disable button
+  btn.disabled = true;
+  
+  // Check which option was selected
+  let selectedValue = null;
+  options.forEach(option => {
+    if (option.classList.contains('selected')) {
+      selectedValue = option.getAttribute('data-value');
+    }
+    // Disable all options
+    option.style.pointerEvents = 'none';
+    option.style.opacity = '0.7';
+  });
+  
+  if (!selectedValue) {
+    alert('Por favor, selecciona una respuesta primero');
+    btn.disabled = false;
+    options.forEach(option => {
+      option.style.pointerEvents = 'auto';
+      option.style.opacity = '1';
+    });
+    return;
+  }
+  
+  // Show if correct or incorrect
+  options.forEach(option => {
+    if (option.getAttribute('data-value') === correctAnswer) {
+      option.classList.add('correct');
+      option.style.opacity = '1';
+    } else if (option.getAttribute('data-value') === selectedValue && selectedValue !== correctAnswer) {
+      option.classList.add('incorrect');
+      option.style.opacity = '1';
+    }
+  });
+  
+  // Show explanation
+  if (selectedValue === correctAnswer) {
+    explanation.classList.add('correct', 'show');
+    completedCases++;
+  } else {
+    explanation.classList.add('incorrect', 'show');
+  }
+  
+  // Update progress
+  updateProgress();
+}
+
+// Add click event to options
+document.querySelectorAll('.option').forEach(option => {
+  option.addEventListener('click', function() {
+    // Remove selected from siblings
+    const parent = this.parentElement;
+    parent.querySelectorAll('.option').forEach(opt => {
+      opt.classList.remove('selected');
+    });
+    // Add selected to clicked
+    this.classList.add('selected');
+  });
+});
+
+function updateProgress() {
+  const progress = (completedCases / totalCases) * 100;
+  document.getElementById('progressBar').style.width = progress + '%';
+  document.getElementById('progress').textContent = completedCases;
+  
+  if (completedCases === totalCases) {
+    setTimeout(() => {
+      alert('🎉 ¡Felicidades! Has completado todos los casos prácticos sobre fisiología de tendones. Ahora tienes una comprensión sólida de cómo funcionan estos fascinantes tejidos.');
+    }, 500);
+  }
+}
+</script>
+</body>
+</html>

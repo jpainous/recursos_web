@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cuadro de Mapeo - Archivos HTML vs. Diapositivas</title>
+<style>
+  :root { 
+    --primary: #4f46e5; 
+    --secondary: #7c3aed; 
+    --pres1: #667eea;
+    --pres2: #11998e;
+    --bg: #f8fafc; 
+    --text: #1e293b; 
+    --card-bg: #ffffff; 
+    --accent-1: #059669;
+    --accent-2: #d97706;
+    --accent-3: #0284c7;
+  }
+  * { box-sizing: border-box; }
+  body { 
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; 
+    line-height: 1.6; 
+    color: var(--text); 
+    background: var(--bg); 
+    margin: 0; 
+    padding: 0; 
+  }
+  .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+  
+  header { 
+    background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%); 
+    color: white; 
+    padding: 40px 20px; 
+    text-align: center; 
+    border-radius: 0 0 24px 24px; 
+    margin-bottom: 30px; 
+    box-shadow: 0 10px 25px rgba(79, 70, 229, 0.2); 
+  }
+  header h1 { margin: 0; font-size: 2.2em; font-weight: 800; letter-spacing: -0.5px; }
+  header p { margin: 12px 0 0; opacity: 0.9; font-size: 1.1em; font-weight: 300; }
+  
+  .info-box {
+    background: var(--card-bg);
+    border-radius: 12px;
+    padding: 20px 25px;
+    margin-bottom: 25px;
+    box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+    border-left: 5px solid var(--primary);
+  }
+  .info-box h3 { color: var(--primary); margin-top: 0; font-size: 1.2em; }
+  .info-box p { color: #475569; margin-bottom: 8px; }
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-top: 15px;
+  }
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.95em;
+  }
+  .legend-color {
+    width: 20px;
+    height: 20px;
+    border-radius: 4px;
+  }
+  .color-pres1 { background: var(--pres1); }
+  .color-pres2 { background: var(--pres2); }
+  .color-both { background: linear-gradient(135deg, var(--pres1) 50%, var(--pres2) 50%); }
+  .color-none { background: #cbd5e1; }
+  
+  .table-container {
+    background: var(--card-bg);
+    border-radius: 16px;
+    padding: 25px;
+    margin-bottom: 30px;
+    box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+    overflow-x: auto;
+  }
+  
+  table { 
+    width: 100%; 
+    border-collapse: separate; 
+    border-spacing: 0; 
+    border-radius: 8px; 
+    overflow: hidden; 
+    border: 1px solid #e2e8f0; 
+    min-width: 700px;
+  }
+  th, td { 
+    padding: 14px 18px; 
+    text-align: left; 
+    border-bottom: 1px solid #e2e8f0; 
+  }
+  th { 
+    background-color: #f1f5f9; 
+    color: #334155; 
+    font-weight: 700; 
+    font-size: 0.9em; 
+    text-transform: uppercase; 
+    letter-spacing: 0.5px;
+    position: sticky;
+    top: 0;
+  }
+  th.pres1-header { background-color: #eef2ff; color: var(--pres1); }
+  th.pres2-header { background-color: #ecfdf5; color: var(--pres2); }
+  
+  tr:last-child td { border-bottom: none; }
+  tr:hover { background-color: #f8fafc; transition: background-color 0.2s; }
+  
+  a.resource-link { 
+    color: var(--primary); 
+    text-decoration: none; 
+    font-weight: 600; 
+    display: inline-flex; 
+    align-items: center; 
+    gap: 6px; 
+    transition: all 0.2s; 
+  }
+  a.resource-link:hover { color: var(--secondary); text-decoration: underline; }
+  a.resource-link::after { content: "↗"; font-size: 0.8em; opacity: 0.7; }
+  
+  .slides-ref { 
+    font-family: 'Courier New', monospace; 
+    font-weight: 600; 
+    color: #64748b; 
+    background: #f1f5f9; 
+    padding: 4px 10px; 
+    border-radius: 6px; 
+    font-size: 0.9em; 
+    white-space: nowrap;
+    display: inline-block;
+  }
+  .slides-ref.pres1 { background: #eef2ff; color: var(--pres1); }
+  .slides-ref.pres2 { background: #ecfdf5; color: var(--pres2); }
+  
+  .no-relation {
+    color: #94a3b8;
+    font-weight: 700;
+    font-size: 1.1em;
+    text-align: center;
+  }
+  
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+  }
+  .stat-card {
+    background: var(--card-bg);
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+    border-top: 4px solid var(--primary);
+  }
+  .stat-card.pres1 { border-top-color: var(--pres1); }
+  .stat-card.pres2 { border-top-color: var(--pres2); }
+  .stat-card.total { border-top-color: var(--accent-2); }
+  .stat-number {
+    font-size: 2.5em;
+    font-weight: 800;
+    color: var(--primary);
+    line-height: 1;
+  }
+  .stat-card.pres1 .stat-number { color: var(--pres1); }
+  .stat-card.pres2 .stat-number { color: var(--pres2); }
+  .stat-card.total .stat-number { color: var(--accent-2); }
+  .stat-label {
+    font-size: 0.95em;
+    color: #64748b;
+    margin-top: 8px;
+    font-weight: 500;
+  }
+  
+  footer { 
+    text-align: center; 
+    padding: 30px 20px; 
+    color: #64748b; 
+    font-size: 0.95em; 
+    border-top: 1px solid #e2e8f0; 
+    margin-top: 40px; 
+  }
+  
+  @media (max-width: 768px) {
+    header h1 { font-size: 1.6em; }
+    .container { padding: 15px; }
+    .table-container { padding: 15px; }
+    th, td { padding: 10px 12px; font-size: 0.9em; }
+    .slides-ref { font-size: 0.8em; padding: 3px 8px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>📋 Cuadro de Mapeo: Archivos HTML vs. Diapositivas</h1>
+  <p>Sistema Musculoesquelético · Fisiología de la Danza · Curso 2026-2027<br>Dra. Cèlia Painous, MD, PhD</p>
+</header>
+
+<div class="container">
+
+  <div class="info-box">
+    <h3>ℹ️ Instrucciones de lectura</h3>
+    <p>Este cuadro muestra la relación entre los <strong>30 archivos HTML</strong> del repositorio y las diapositivas de las dos presentaciones del curso.</p>
+    <p>Cada nombre de archivo es un <strong>enlace directo</strong> al recurso interactivo. Los números indican las diapositivas de referencia. Si un archivo no tiene relación con una presentación, aparece una <strong>"X"</strong>.</p>
+    <div class="legend">
+      <div class="legend-item">
+        <div class="legend-color color-pres1"></div>
+        <span>Presentación I (Fisiología Celular)</span>
+      </div>
+      <div class="legend-item">
+        <div class="legend-color color-pres2"></div>
+        <span>Presentación II (Anatomía y Biomecánica)</span>
+      </div>
+      <div class="legend-item">
+        <div class="legend-color color-both"></div>
+        <span>Transversal (ambas presentaciones)</span>
+      </div>
+      <div class="legend-item">
+        <div class="legend-color color-none"></div>
+        <span>Sin relación (X)</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th>Archivo HTML</th>
+          <th class="pres1-header">Presentación I<br><small style="font-weight:400;text-transform:none;">(Diapositivas)</small></th>
+          <th class="pres2-header">Presentación II<br><small style="font-weight:400;text-transform:none;">(Diapositivas)</small></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><a class="resource-link" href="https://jpainous.github.io/dansa_tema03/actividades_sarcomero.html" target="_blank">actividades_sarcomero.html</a></td>
+          <td><span class="slides-ref pres1">10, 11, 17-22</span></td>
+          <td><span class="slides-ref pres2">6-8</span></td>
+        </tr>
+        <tr>
+          <td><a class="resource-link" href="https://jpainous.github.io/dansa_tema03/calcio_atp.html" target="_blank">calcio_atp.html</a></td>
+          <td><span class="slides-ref pres1">13-15, 34-41</span></td>
+          <td><span class="slides-ref pres2">9-10</span></td>
+        </tr>
+        <tr>
+          <td><a class="resource-link" href="https://jpainous.github.io/dansa_tema03/calcio_atp1.html" target="_blank">calcio_atp1.html</a></td>
+          <td><span class="slides-ref pres1">13-15, 34-41</span></td>
+          <td><span class="slides-ref pres2">9-10</span></td>
+        </tr>
+        <tr>
+          <td><a class="resource-link" href="https://jpainous.github.io/dansa_tema03/casos_practicos02_A.html" target="_blank">casos_practicos02_A.html</a></td>
+          <td><span class="slides-ref pres1">3-16, 34-50</span></td>
+          <td><span class="slides-ref pres2">6-15</span></td>
+        </tr>
+        <tr>
+          <td><a class="resource-link" href="https://jpainous.github.io/dansa_tema03/casos_practicos02_B.html" target="_blank">casos_practicos02_B.html</a></td>
+          <td><span class="no-relation">X</span></td>
+          <td><span class="slides-ref pres2">1-5, 26-75</span></td>
+        </tr>
+        <tr>
+          <td><a class="resource-link" href="https://jpainous.github.io/dansa_tema03/contraccion_muscular.html" target="_blank">contraccion_muscular.html</a></td>
+          <td><span class="slides-ref pres1">14-16, 34-42</span></td>
+          <td><span class="slides-ref pres2">10-15</span></td>
+        </tr>
+        <tr>
+          <td><a class="resource-link" href="https://jpainous.github.io/dansa_tema03/esqueleto_00_A.html" target="_blank">esqueleto_00_A.html</a></td>
+          <td><span class="slides-ref pres1">1, 2, 8</span></td>
+          <td><span class="slides-ref pres2">1-5</span></td>
+        </tr>
+        <tr>
+          <td><a class="resource-link" href="https://jpainous.github.io/dansa_tema03/esqueleto_00_B.html" target="_blank">esqueleto_00_B.html</a></td>
+          <td><span class="slides-ref pres1">1, 2</span></td>
+          <td><span class="slides-ref pres2">1-5</span></td>
+        </tr>
+        <tr>
+          <td><a class="resource-link" href="https://jpainous.github.io/dansa_tema03/esqueleto_01_A.html" target="_blank">esqueleto_01_A.html</a></td>
+          <td><span class="no-relation">X</span></td>
+          <td><span class="slides-ref pres2">26-30</span></td>
+        </tr>
+        <tr>
+          <td><a class="resource-link" href="https://jpainous.github.io/dansa_tema03/esqueleto_02_A.html" target="_blank">esqueleto_02_A.html</a></td>
+          <td><span class="no-relation">X</span></td>
+          <td><span class="slides-ref pres2">31-35</span></td>
+        </tr>
+        <tr>
+          <td><a class="resource-link" href="https://jpainous.github.io/dansa_tema03/esqueleto_03_A.html" target="_blank">esqueleto_03_A.html</a></td>
+          <td><span class="no-relation">X</span></td>
+          <td><span class="slides-ref pres2">36-40</span></td>
+        </tr>
+        <tr>
+          <td><a class="resource-link" href="https://jpainous.github.io/dansa_tema03/esqueleto_03_B.html" target="_blank">esqueleto_03_B.html</a></td>
+          <td><span class="no-relation">X</span></td>
+          <td><span class="slides-ref pres2">36-40</span></td>
+        </tr>
+        <tr>
+          <td><a class="resource-link" href="https://jpainous.github.io/dansa_tema03/esqueleto_03_C.html" target="_blank">esqueleto_03_C.html</a></td>
+          <td><span class="no-relation">X</span></td>
+          <td><span class="slides-ref pres2">36-40</span></td>
+        </tr>
+        <tr>
+          <td><a class="resource-link" href="https://jpainous.github.io/dansa_tema03/esqueleto_03_D.html" target="_blank">esqueleto_03_D.html</a></td>
+          <td><span class="no-relation">X</span></td>
+          <td><span class="slides-ref pres2">46-50</span></td>
+        </tr>
+        <tr>
+          <td><a class="resource-link" href="https://jpainous.github.io/dansa_tema03/esqueleto_03_E.html" target="_blank">esqueleto_03_E.html</a></td>
+          <td><span class="no-relation">X</span></td>
+          <td><span class="slides-ref pres2">46-50</span></td>
+        </tr>
+        <tr>
+          <td><a class="resource-link" href="https://jpainous.github.io/dansa_tema03/esqueleto_03_F.html" target="_blank">esqueleto_03_F.html</a></td>
+          <td><span class="no-relation">X</span></td>
+          <td><span class="slides-ref pres2">46-50</span></td>
+        </tr>
+        <tr>
+          <td><a class="resource-link" href="https://jpainous.github.io/dansa_tema03/esqueleto_04_tendones.html" target="_blank">esqueleto_04_tendones.html</a></td>
+          <td><span class="slides-ref pres1">8, 42-50</span></td>
+          <td><span class="slides-ref pres2">1-5, 51-55</span></td>
+        </tr>
+        <tr>
+          <td><a class="resource-link" href="https://jpainous.github.io/dansa_tema03/esqueleto_05_articulaciones_A.html" target="_blank">esqueleto_05_articulaciones_A.html</a></td>
+          <td><span class="no-relation">X</span></td>
+          <td><span class="slides-ref pres2">56-60</span></td>
+        </tr>
+        <tr>
+          <td><a class="resource-link" href="https://jpainous.github.io/dansa_tema03/esqueleto_05_articulaciones_B.html" target="_blank">esqueleto_05_articulaciones_B.html</a></td>
+          <td><span class="no-relation">X</span></td>
+          <td><span class="slides-ref pres2">56-60</span></td>
+        </tr>
+        <tr>
+          <td><a class="resource-link" href="https://jpainous.github.io/dansa_tema03/esqueleto_mano.html" target="_blank">esqueleto_mano.html</a></td>
+          <td><span class="no-relation">X</span></td>
+          <td><span class="slides-ref pres2">26-30</span></td>
+        </tr>
+        <tr>
+          <td><a class="resource-link" href="https://jpainous.github.io/dansa_tema03/esqueleto_test_final.html" target="_blank">esqueleto_test_final.html</a></td>
+          <td><span class="no-relation">X</span></td>
+          <td><span class="slides-ref pres2">Cierre</span></td>
+        </tr>
+        <tr>
+          <td><a class="resource-link" href="https://jpainous.github.io/dansa_tema03/estabilidad_control.html" target="_blank">estabilidad_control.html</a></td>
+          <td><span class="slides-ref pres1">16, 42-50</span></td>
+          <td><span class="slides-ref pres2">21-25, 71-75</span></td>
+        </tr>
+        <tr>
+          <td><a class="resource-link" href="https://jpainous.github.io/dansa_tema03/estabilidad_control_1.html" target="_blank">estabilidad_control_1.html</a></td>
+          <td><span class="slides-ref pres1">16, 42-50</span></td>
+          <td><span class="slides-ref pres2">11-15, 21-25</span></td>
+        </tr>
+        <tr>
+          <td><a class="resource-link" href="https://jpainous.github.io/dansa_tema03/estabilidad_control_2.html" target="_blank">estabilidad_control_2.html</a></td>
+          <td><span class="slides-ref pres1">16, 42-50</span></td>
+          <td><span class="slides-ref pres2">11-15, 21-25, 71-75</span></td>
+        </tr>
+        <tr>
+          <td><a class="resource-link" href="https://jpainous.github.io/dansa_tema03/homeostasis_movimiento.html" target="_blank">homeostasis_movimiento.html</a></td>
+          <td><span class="slides-ref pres1">3-7</span></td>
+          <td><span class="no-relation">X</span></td>
+        </tr>
+        <tr>
+          <td><a class="resource-link" href="https://jpainous.github.io/dansa_tema03/miosina_actina.html" target="_blank">miosina_actina.html</a></td>
+          <td><span class="slides-ref pres1">9-11, 14, 17-22</span></td>
+          <td><span class="slides-ref pres2">6-10</span></td>
+        </tr>
+        <tr>
+          <td><a class="resource-link" href="https://jpainous.github.io/dansa_tema03/musculos_tr_equipo.html" target="_blank">musculos_tr_equipo.html</a></td>
+          <td><span class="slides-ref pres1">16, 42-50</span></td>
+          <td><span class="slides-ref pres2">16-25</span></td>
+        </tr>
+        <tr>
+          <td><a class="resource-link" href="https://jpainous.github.io/dansa_tema03/planos_movimiento.html" target="_blank">planos_movimiento.html</a></td>
+          <td><span class="slides-ref pres1">16, 42-50</span></td>
+          <td><span class="slides-ref pres2">61-75</span></td>
+        </tr>
+        <tr>
+          <td><a class="resource-link" href="https://jpainous.github.io/dansa_tema03/trabajo_musculos.html" target="_blank">trabajo_musculos.html</a></td>
+          <td><span class="slides-ref pres1">12, 16, 42-50</span></td>
+          <td><span class="slides-ref pres2">16-25</span></td>
+        </tr>
+        <tr>
+          <td><a class="resource-link" href="https://jpainous.github.io/dansa_tema03/unidad_motora.html" target="_blank">unidad_motora.html</a></td>
+          <td><span class="slides-ref pres1">12, 23-25</span></td>
+          <td><span class="no-relation">X</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="info-box">
+    <h3>📊 Estadísticas de Cobertura</h3>
+    <div class="stats-grid">
+      <div class="stat-card total">
+        <div class="stat-number">30</div>
+        <div class="stat-label">Archivos HTML totales</div>
+      </div>
+      <div class="stat-card pres1">
+        <div class="stat-number">23</div>
+        <div class="stat-label">Archivos que cubren Pres. I</div>
+      </div>
+      <div class="stat-card pres2">
+        <div class="stat-number">28</div>
+        <div class="stat-label">Archivos que cubren Pres. II</div>
+      </div>
+      <div class="stat-card total">
+        <div class="stat-number">21</div>
+        <div class="stat-label">Archivos transversales (ambas)</div>
+      </div>
+    </div>
+    <p style="margin-top: 20px;"><strong>Archivos exclusivos de la Presentación I:</strong> <code>homeostasis_movimiento.html</code>, <code>unidad_motora.html</code></p>
+    <p><strong>Archivos exclusivos de la Presentación II:</strong> <code>esqueleto_01_A</code>, <code>02_A</code>, <code>03_A</code> a <code>03_F</code>, <code>esqueleto_mano</code>, <code>esqueleto_05_articulaciones_A/B</code>, <code>casos_practicos02_B</code>, <code>esqueleto_test_final</code></p>
+    <p><strong>Archivos transversales</strong> (cubren ambas presentaciones): 21 archivos, que actúan como "puente" conceptual entre fisiología celular y biomecánica aplicada.</p>
+  </div>
+
+</div>
+
+<footer>
+  <p>🩰 Fisiología aplicada a la Danza · Dra. Cèlia Painous, MD, PhD · Curso 2026-2027</p>
+  <p style="font-size: 0.85em; margin-top: 8px;">Todos los enlaces abren en una nueva pestaña para facilitar la navegación.</p>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Simulador del Sarcómero</title>
+<style>
+  body { font-family: 'Segoe UI', sans-serif; background: #0f172a; color: #e2e8f0; margin: 0; padding: 20px; }
+  h1 { text-align: center; color: #38bdf8; }
+  .container { max-width: 900px; margin: auto; background: #1e293b; padding: 25px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.4); }
+  canvas { background: #0b1220; border-radius: 8px; display: block; margin: 20px auto; }
+  .controls { display: flex; justify-content: space-around; margin-top: 20px; flex-wrap: wrap; }
+  .slider-box { flex: 1; min-width: 220px; margin: 10px; padding: 15px; background: #334155; border-radius: 8px; }
+  input[type=range] { width: 100%; }
+  .info { margin-top: 20px; padding: 15px; background: #0f172a; border-left: 4px solid #38bdf8; border-radius: 4px; min-height: 80px; }
+  .estado { font-weight: bold; color: #fbbf24; }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>🧬 Simulador del Sarcómero</h1>
+  <canvas id="canvas" width="850" height="220"></canvas>
+  <div class="controls">
+    <div class="slider-box">
+      <label>🟡 Nivel de Calcio (Ca²⁺): <span id="caVal">0</span>%</label>
+      <input type="range" id="ca" min="0" max="100" value="0">
+    </div>
+    <div class="slider-box">
+      <label>🔵 Nivel de ATP: <span id="atpVal">100</span>%</label>
+      <input type="range" id="atp" min="0" max="100" value="100">
+    </div>
+  </div>
+  <div class="info" id="info">Ajusta los sliders para ver cómo responde el sarcómero.</div>
+</div>
+
+<script>
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+const caSlider = document.getElementById('ca');
+const atpSlider = document.getElementById('atp');
+const info = document.getElementById('info');
+
+function draw() {
+  const ca = parseInt(caSlider.value);
+  const atp = parseInt(atpSlider.value);
+  document.getElementById('caVal').textContent = ca;
+  document.getElementById('atpVal').textContent = atp;
+
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  // Cálculo de acortamiento según Ca y ATP
+  let acortamiento = 0;
+  let estado = "";
+  if (ca > 30 && atp > 20) {
+    acortamiento = Math.min(80, (ca/100) * 100 * (atp/100));
+    estado = "✅ CONTRACCIÓN ACTIVA: puentes cruzados funcionando.";
+  } else if (ca > 30 && atp <= 20) {
+    acortamiento = 60; // rigor
+    estado = "⚠️ RIGOR: Ca²⁺ alto pero sin ATP → miosina bloqueada (rigor mortis).";
+  } else if (ca <= 30 && atp > 20) {
+    acortamiento = 0;
+    estado = "💤 RELAJACIÓN: sin Ca²⁺, la tropomiosina tapa los sitios activos de la actina.";
+  } else {
+    acortamiento = 0;
+    estado = "⛔ BLOQUEO TOTAL: sin Ca²⁺ y sin ATP.";
+  }
+
+  const offsetX = acortamiento;
+  const y = 110;
+
+  // Líneas Z
+  ctx.strokeStyle = "#22d3ee"; ctx.lineWidth = 4;
+  ctx.beginPath(); ctx.moveTo(50, 40); ctx.lineTo(50, 180); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(800 - offsetX, 40); ctx.lineTo(800 - offsetX, 180); ctx.stroke();
+  ctx.fillStyle = "#22d3ee"; ctx.font = "14px sans-serif";
+  ctx.fillText("Línea Z", 20, 30);
+  ctx.fillText("Línea Z", 770 - offsetX, 30);
+
+  // Filamentos gruesos (miosina) - fijos
+  ctx.fillStyle = "#64748b";
+  for (let x = 200; x < 650; x += 40) {
+    ctx.fillRect(x, 70, 15, 80);
+  }
+  ctx.fillStyle = "#94a3b8"; ctx.font = "12px sans-serif";
+  ctx.fillText("Miosina (gruesos)", 380, 60);
+
+  // Filamentos finos (actina) - se desplazan
+  ctx.fillStyle = "#f472b6";
+  for (let x = 60; x < 250 - offsetX/2; x += 20) {
+    ctx.fillRect(x, 85, 12, 50);
+  }
+  for (let x = 600 + offsetX/2; x < 790 - offsetX; x += 20) {
+    ctx.fillRect(x, 85, 12, 50);
+  }
+  ctx.fillStyle = "#f9a8d4";
+  ctx.fillText("Actina (finos)", 100, 160);
+
+  // Puentes cruzados (solo si hay Ca y ATP)
+  if (ca > 30) {
+    ctx.strokeStyle = atp > 20 ? "#fbbf24" : "#ef4444";
+    ctx.lineWidth = 2;
+    const heads = [[210,110],[290,110],[370,110],[450,110],[530,110],[610,110]];
+    heads.forEach(([hx,hy]) => {
+      const targetX = hx - 30 + offsetX/3;
+      if (targetX > 200 - offsetX/2 && targetX < 600 + offsetX/2) {
+        ctx.beginPath();
+        ctx.moveTo(hx, hy);
+        ctx.lineTo(targetX, hy + (atp>20?-10:0));
+        ctx.stroke();
+      }
+    });
+  }
+
+  // Tropomiosina (visible solo si Ca bajo)
+  if (ca <= 30) {
+    ctx.fillStyle = "rgba(148,163,184,0.7)";
+    ctx.fillRect(80, 105, 150 - offsetX/2, 4);
+    ctx.fillRect(620 + offsetX/2, 105, 150 - offsetX/2, 4);
+    ctx.fillStyle = "#cbd5e1"; ctx.font = "11px sans-serif";
+    ctx.fillText("Tropomiosina bloqueando sitios activos", 100, 125);
+  }
+
+  info.innerHTML = `<span class="estado">${estado}</span><br><br>
+    <b>Mecanismo:</b> ${ca>30 ? "El Ca²⁺ se une a la troponina → desplaza la tropomiosina → expone sitios activos de la actina." : "Sin Ca²⁺, la tropomiosina oculta los sitios activos de la actina."}
+    ${atp<=20 && ca>30 ? "<br><b>⚠️ El ATP es necesario para DESACOPLAR la miosina de la actina.</b>" : ""}`;
+}
+
+caSlider.addEventListener('input', draw);
+atpSlider.addEventListener('input', draw);
+draw();
+</script>
+</body>
+</html>

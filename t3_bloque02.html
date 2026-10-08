@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+<meta charset="UTF-8">
+<title>FAQ Reflexiu - Nutrició, Hidratació i Prevenció de Lesions</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    color: #e2e8f0;
+    min-height: 100vh;
+    overflow: hidden;
+  }
+  .presentacion {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+  .header {
+    background: rgba(15, 23, 42, 0.8);
+    padding: 12px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid #334155;
+    backdrop-filter: blur(10px);
+    z-index: 10;
+  }
+  .titulo-header {
+    color: #f59e0b;
+    font-size: 18px;
+    font-weight: bold;
+  }
+  .progreso-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .progreso-bar {
+    width: 200px;
+    height: 8px;
+    background: #334155;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .progreso-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #f59e0b, #ef4444);
+    transition: width 0.4s;
+  }
+  .contador {
+    color: #94a3b8;
+    font-size: 14px;
+    min-width: 60px;
+    text-align: right;
+  }
+  .slide-container {
+    flex: 1;
+    position: relative;
+    overflow: hidden;
+  }
+  .slide {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%;
+    height: 100%;
+    padding: 30px 50px;
+    display: none;
+    overflow-y: auto;
+    animation: fadeIn 0.5s;
+  }
+  .slide.activa { display: flex; flex-direction: column; }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .slide h1 {
+    font-size: 36px;
+    color: #f59e0b;
+    margin-bottom: 15px;
+    border-bottom: 3px solid #f59e0b;
+    padding-bottom: 10px;
+  }
+  .slide h2 {
+    font-size: 26px;
+    color: #fbbf24;
+    margin-bottom: 15px;
+  }
+  .slide p { font-size: 16px; line-height: 1.7; margin-bottom: 12px; }
+  .slide ul, .slide ol { margin-left: 25px; margin-bottom: 15px; }
+  .slide li { margin-bottom: 10px; line-height: 1.6; font-size: 15px; }
+  
+  /* Portada */
+  .portada {
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background: radial-gradient(circle at center, #422006 0%, #0f172a 70%);
+  }
+  .portada h1 {
+    font-size: 54px;
+    border: none;
+    background: linear-gradient(90deg, #f59e0b, #ef4444, #ec4899);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .portada .subtitulo {
+    font-size: 22px;
+    color: #94a3b8;
+    margin-top: 20px;
+  }
+  .portada .emoji-grande { font-size: 100px; margin-bottom: 20px; }
+  
+  /* Pregunta destacada */
+  .pregunta-box {
+    background: linear-gradient(135deg, #1e3a5f 0%, #0f172a 100%);
+    padding: 25px 30px;
+    border-radius: 16px;
+    border: 3px solid #38bdf8;
+    margin-bottom: 20px;
+    position: relative;
+    box-shadow: 0 4px 20px rgba(56, 189, 248, 0.2);
+  }
+  .pregunta-box .num {
+    position: absolute;
+    top: -20px;
+    left: 20px;
+    background: #f59e0b;
+    color: #0f172a;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 20px;
+    border: 3px solid #0f172a;
+  }
+  .pregunta-box .tema {
+    color: #38bdf8;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 10px;
+    display: block;
+  }
+  .pregunta-box .texto {
+    font-size: 22px;
+    font-weight: 600;
+    color: #f1f5f9;
+    line-height: 1.4;
+    margin-top: 10px;
+  }
+  
+  /* Zona de reflexió */
+  .reflexion-box {
+    background: rgba(251, 191, 36, 0.1);
+    border: 2px dashed #fbbf24;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 20px;
+  }
+  .reflexion-box h3 {
+    color: #fbbf24;
+    margin-bottom: 10px;
+    font-size: 18px;
+  }
+  .reflexion-box p {
+    color: #cbd5e1;
+    font-size: 14px;
+    margin-bottom: 12px;
+  }
+  .reflexion-box textarea {
+    width: 100%;
+    min-height: 80px;
+    background: #0f172a;
+    border: 1px solid #475569;
+    border-radius: 8px;
+    color: #e2e8f0;
+    padding: 12px;
+    font-family: inherit;
+    font-size: 14px;
+    resize: vertical;
+  }
+  .reflexion-box textarea:focus {
+    outline: none;
+    border-color: #fbbf24;
+  }
+  
+  /* Botó revelar */
+  .btn-revelar {
+    background: linear-gradient(90deg, #10b981, #34d399);
+    color: #0f172a;
+    border: none;
+    padding: 14px 30px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 16px;
+    margin: 10px auto;
+    display: block;
+    transition: all 0.3s;
+    box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+  }
+  .btn-revelar:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(16, 185, 129, 0.5);
+  }
+  
+  /* Resposta */
+  .respuesta-box {
+    background: rgba(16, 185, 129, 0.08);
+    border: 2px solid #10b981;
+    border-radius: 12px;
+    padding: 25px;
+    margin-top: 15px;
+    display: none;
+    animation: slideDown 0.5s;
+  }
+  .respuesta-box.visible { display: block; }
+  @keyframes slideDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .respuesta-box h3 {
+    color: #34d399;
+    margin-bottom: 15px;
+    font-size: 20px;
+  }
+  .respuesta-box .keyword {
+    display: inline-block;
+    background: #334155;
+    color: #fbbf24;
+    padding: 2px 10px;
+    border-radius: 12px;
+    font-weight: bold;
+    font-size: 13px;
+    margin: 2px;
+  }
+  .respuesta-box .keyword.azul { color: #38bdf8; }
+  .respuesta-box .keyword.rojo { color: #ef4444; }
+  .respuesta-box .keyword.verde { color: #34d399; }
+  .respuesta-box .keyword.rosa { color: #f472b6; }
+  .respuesta-box .ejemplo {
+    background: rgba(56, 189, 248, 0.1);
+    border-left: 4px solid #38bdf8;
+    padding: 12px 15px;
+    border-radius: 6px;
+    margin: 15px 0;
+    font-size: 14px;
+  }
+  .respuesta-box .alerta {
+    background: rgba(239, 68, 68, 0.1);
+    border-left: 4px solid #ef4444;
+    padding: 12px 15px;
+    border-radius: 6px;
+    margin: 15px 0;
+    font-size: 14px;
+  }
+  
+  /* Grid per índex */
+  .indice-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 15px;
+    margin-top: 20px;
+  }
+  .indice-item {
+    background: rgba(30, 41, 59, 0.8);
+    padding: 18px;
+    border-radius: 10px;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: all 0.3s;
+    border-left: 4px solid #f59e0b;
+  }
+  .indice-item:hover {
+    border-color: #f59e0b;
+    transform: translateX(5px);
+  }
+  .indice-item .num {
+    display: inline-block;
+    background: #f59e0b;
+    color: #0f172a;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 30px;
+    font-weight: bold;
+    margin-right: 10px;
+  }
+  .indice-item .cat {
+    font-size: 11px;
+    color: #38bdf8;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    display: block;
+    margin-bottom: 5px;
+  }
+  
+  /* Navegació */
+  .nav {
+    background: rgba(15, 23, 42, 0.9);
+    padding: 15px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 2px solid #334155;
+  }
+  .btn {
+    background: #f59e0b;
+    color: #0f172a;
+    border: none;
+    padding: 10px 24px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 15px;
+    transition: all 0.2s;
+  }
+  .btn:hover:not(:disabled) { background: #d97706; transform: translateY(-2px); }
+  .btn:disabled { background: #475569; cursor: not-allowed; opacity: 0.5; }
+  .btn.indice { background: #38bdf8; }
+  .btn.indice:hover { background: #0ea5e9; }
+  
+  /* Scrollbar */
+  .slide::-webkit-scrollbar { width: 8px; }
+  .slide::-webkit-scrollbar-track { background: #1e293b; }
+  .slide::-webkit-scrollbar-thumb { background: #475569; border-radius: 4px; }
+  
+  /* Síntesi final */
+  .sintesis-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 15px;
+    margin-top: 20px;
+  }
+  .sintesis-card {
+    background: rgba(30, 41, 59, 0.8);
+    padding: 18px;
+    border-radius: 12px;
+    border-top: 4px solid #f59e0b;
+  }
+  .sintesis-card h4 {
+    color: #fbbf24;
+    margin-bottom: 10px;
+    font-size: 16px;
+  }
+  .sintesis-card p {
+    font-size: 14px;
+    color: #cbd5e1;
+  }
+  
+  /* Responsive */
+  @media (max-width: 768px) {
+    .slide { padding: 20px; }
+    .slide h1 { font-size: 26px; }
+    .pregunta-box .texto { font-size: 18px; }
+    .portada h1 { font-size: 34px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="presentacion">
+  <div class="header">
+    <div class="titulo-header">❓ FAQ Reflexiu · Nutrició, Hidratació i Prevenció</div>
+    <div class="progreso-container">
+      <div class="progreso-bar"><div class="progreso-fill" id="progresoFill"></div></div>
+      <div class="contador" id="contador">1 / 12</div>
+    </div>
+  </div>
+
+  <div class="slide-container" id="slideContainer">
+
+    <!-- SLIDE 1: PORTADA -->
+    <div class="slide portada activa">
+      <div class="emoji-grande">❓🩰💭</div>
+      <h1>Preguntes per<br>Reflexionar</h1>
+      <p class="subtitulo">Nutrició · Hidratació · Prevenció de Lesions</p>
+      <p style="margin-top:30px; color:#94a3b8; max-width:600px;">
+        Aquesta presentació et convida a <b>pensar abans de respondre</b>.<br>
+        A cada diapositiva trobaràs una pregunta: primer reflexiona i escriu la teva hipòtesi, després revela la resposta científica.
+      </p>
+      <p style="margin-top:20px; color:#64748b; font-size:14px;">Usa les fletxes ← → del teclat o els botons per navegar</p>
+    </div>
+
+    <!-- SLIDE 2: ÍNDEX -->
+    <div class="slide">
+      <h1>🗺️ Les 10 Preguntes Clau</h1>
+      <p>Fes clic en qualsevol per anar-hi directament. Recorda: <b>pensa primer, després mira la resposta</b>.</p>
+      <div class="indice-grid">
+        <div class="indice-item" onclick="irA(2)"><span class="num">1</span><span class="cat">RED-S</span>Per què entrenar molt no garanteix ossos forts?</div>
+        <div class="indice-item" onclick="irA(3)"><span class="num">2</span><span class="cat">Hidratació</span>Per què apareixen rampes i com ajuden els electròlits?</div>
+        <div class="indice-item" onclick="irA(4)"><span class="num">3</span><span class="cat">ATP</span>Per què la falta d'ATP provoca rigidesa?</div>
+        <div class="indice-item" onclick="irA(5)"><span class="num">4</span><span class="cat">Cartílag</span>Com es nodreixen les articulacions sense vasos sanguinis?</div>
+        <div class="indice-item" onclick="irA(6)"><span class="num">5</span><span class="cat">Ligaments</span>Què és la "Warning Zone" i per què augmenta el risc d'esguinços?</div>
+        <div class="indice-item" onclick="irA(7)"><span class="num">6</span><span class="cat">Control nerviós</span>Com gradua el SN la força entre un micro-ajust i un salt?</div>
+        <div class="indice-item" onclick="irA(8)"><span class="num">7</span><span class="cat">Biomecànica</span>Per què el demi-plié ha de tenir profunditat intermèdia?</div>
+        <div class="indice-item" onclick="irA(9)"><span class="num">8</span><span class="cat">Fatiga</span>Diferència entre fatiga central i perifèrica?</div>
+        <div class="indice-item" onclick="irA(10)"><span class="num">9</span><span class="cat">Coactivació</span>Quan la coactivació és perjudicial?</div>
+        <div class="indice-item" onclick="irA(11)"><span class="num">10</span><span class="cat">Homeòstasi</span>Com reacciona l'organisme davant l'augment de temperatura i CO₂?</div>
+      </div>
+    </div>
+
+    <!-- PREGUNTA 1 -->
+    <div class="slide">
+      <div class="pregunta-box">
+        <div class="num">1</div>
+        <span class="tema">🦴 RED-S i Salut Òssia</span>
+        <div class="texto">Per què entrenar molt NO és suficient per tenir ossos forts si la dieta és insuficient?</div>
+      </div>
+      <div class="reflexion-box">
+        <h3>💭 La teva hipòtesi</h3>
+        <p>Abans de mirar la resposta, escriu què penses que passa al cos d'un ballarí que entrena moltes hores però menja poc:</p>
+        <textarea placeholder="Escriu aquí la teva reflexió..."></textarea>
+      </div>
+      <button class="btn-revelar" onclick="revelar(this)">🔍 Revelar resposta científica</button>
+      <div class="respuesta-box">
+        <h3>📚 Resposta</h3>
+        <p>Entrenar dur <b>no garanteix</b> una bona densitat òssia si la <span class="keyword azul">disponibilitat energètica</span> és insuficient (síndrome <span class="keyword rojo">RED-S</span>).</p>
+        <p>Quan un ballarí no consumeix l'energia necessària:</p>
+        <ul>
+          <li>S'altera la <b>funció hormonal</b>.</li>
+          <li>S'interromp el treball dels <span class="keyword verde">osteoblasts</span> (cèl·lules que dipositen la nova matriu òssia o <span class="keyword">osteoide</span>).</li>
+          <li>La reparació dels microdanys causats pels salts no compensa l'impacte rebut.</li>
+        </ul>
+        <div class="alerta">
+          <b>⚠️ Conseqüència:</b> Acumulació de microdany → <b>fractures per estrès</b>.
+        </div>
+        <p><b>Nutrients imprescindibles:</b> energia suficient, proteïnes, calci i vitamina D.</p>
+      </div>
+    </div>
+
+    <!-- PREGUNTA 2 -->
+    <div class="slide">
+      <div class="pregunta-box">
+        <div class="num">2</div>
+        <span class="tema">💧 Hidratació i Rampes</span>
+        <div class="texto">Per què apareixen les rampes musculars i com ajuda la hidratació amb electròlits?</div>
+      </div>
+      <div class="reflexion-box">
+        <h3>💭 La teva hipòtesi</h3>
+        <p>Què creus que passa a nivell cel·lular quan un múscul es contreu de forma involuntària i dolorosa?</p>
+        <textarea placeholder="Escriu aquí la teva reflexió..."></textarea>
+      </div>
+      <button class="btn-revelar" onclick="revelar(this)">🔍 Revelar resposta científica</button>
+      <div class="respuesta-box">
+        <h3>📚 Resposta</h3>
+        <p>Una <b>rampa muscular</b> és una contracció involuntària, brusca i dolorosa provocada per l'augment d'excitabilitat de la <span class="keyword azul">motoneurona α</span>, que genera descàrregues elèctriques repetitives mantingudes.</p>
+        <p><b>Factors que la disparen:</b></p>
+        <ul>
+          <li>Exercici intens</li>
+          <li>Calor i deshidratació</li>
+          <li>Pèrdua d'<span class="keyword rosa">electròlits</span> essencials: Na⁺, K⁺, Mg²⁺</li>
+        </ul>
+        <div class="ejemplo">
+          <b>💡 Solució:</b> Beure aigua amb electròlits de forma fraccionada durant l'assaig → reponeix els minerals perduts al <span class="keyword">líquid extracel·lular (LEC)</span> → restableix l'<b>homeòstasi</b> → prevé espasmes.
+        </div>
+      </div>
+    </div>
+
+    <!-- PREGUNTA 3 -->
+    <div class="slide">
+      <div class="pregunta-box">
+        <div class="num">3</div>
+        <span class="tema">⚡ ATP i Rigidesa</span>
+        <div class="texto">Per què la falta d'ATP provoca rigidesa muscular al final de l'assaig?</div>
+      </div>
+      <div class="reflexion-box">
+        <h3>💭 La teva hipòtesi</h3>
+        <p>L'ATP és "energia". Però... per què la falta d'energia provoca rigidesa en lloc de debilitat?</p>
+        <textarea placeholder="Escriu aquí la teva reflexió..."></textarea>
+      </div>
+      <button class="btn-revelar" onclick="revelar(this)">🔍 Revelar resposta científica</button>
+      <div class="respuesta-box">
+        <h3>📚 Resposta</h3>
+        <p>L'<span class="keyword azul">ATP</span> és indispensable perquè la <b>miosina es desacobli i se separi de l'actina</b> al finalitzar cada cicle de contracció.</p>
+        <p>Durant assajos prolongats:</p>
+        <ul>
+          <li>La <span class="keyword rojo">fatiga perifèrica</span> esgota les reserves energètiques.</li>
+          <li>S'interromp el maneig del <span class="keyword rosa">Ca²⁺</span>.</li>
+          <li>Al reduir-se l'ATP, les <b>caps de miosina triguen a deixar l'actina</b>.</li>
+        </ul>
+        <div class="alerta">
+          <b>⚠️ Conseqüència:</b> Dificulta la <b>amortiguació excèntrica</b> → incrementa la rigidesa i pesadesa muscular.
+        </div>
+        <div class="ejemplo">
+          <b>💡 Curiositat:</b> Aquest és el mateix mecanisme del <i>rigor mortis</i>: sense ATP, la miosina queda "enganxada" a l'actina.
+        </div>
+      </div>
+    </div>
+
+    <!-- PREGUNTA 4 -->
+    <div class="slide">
+      <div class="pregunta-box">
+        <div class="num">4</div>
+        <span class="tema">🦵 Nutrició del Cartílag</span>
+        <div class="texto">Com es nodreixen les articulacions si el cartílag no té vasos sanguinis?</div>
+      </div>
+      <div class="reflexion-box">
+        <h3>💭 La teva hipòtesi</h3>
+        <p>Si el cartílag no rep sang, d'on treu els nutrients? Com creus que arriba l'aliment a les cèl·lules?</p>
+        <textarea placeholder="Escriu aquí la teva reflexió..."></textarea>
+      </div>
+      <button class="btn-revelar" onclick="revelar(this)">🔍 Revelar resposta científica</button>
+      <div class="respuesta-box">
+        <h3>📚 Resposta</h3>
+        <p>El <span class="keyword verde">cartílag articular</span> és un teixit <b>avascular</b>: no rep sang directament. La seva nutrició depèn del <span class="keyword azul">líquid sinovial</span> mitjançant un mecanisme de <b>bombeig mecànic per pressió</b>.</p>
+        <p>El cicle funciona així:</p>
+        <ul>
+          <li><b>Fase de càrrega</b> (compressió en suport o salt): el cartílag <b>expulsa aigua i metabòlits de rebuig</b>.</li>
+          <li><b>Fase de descàrrega</b> (en reduir la pressió): el líquid sinovial torna a entrar <b>carregat de nutrients</b>.</li>
+        </ul>
+        <div class="ejemplo">
+          <b>💡 Aplicació pràctica:</b> Fer moviments suaus en descàrrega durant les pauses estimula la nutrició articular sense desgastar l'estructura.
+        </div>
+      </div>
+    </div>
+
+    <!-- PREGUNTA 5 -->
+    <div class="slide">
+      <div class="pregunta-box">
+        <div class="num">5</div>
+        <span class="tema">🛡️ Ligaments i Warning Zone</span>
+        <div class="texto">Què és la "Warning Zone" i per què la fatiga augmenta el risc d'esguinços?</div>
+      </div>
+      <div class="reflexion-box">
+        <h3>💭 La teva hipòtesi</h3>
+        <p>Quan els músculs es cansen, què passa amb les forces d'impacte? Qui les absorbeix llavors?</p>
+        <textarea placeholder="Escriu aquí la teva reflexió..."></textarea>
+      </div>
+      <button class="btn-revelar" onclick="revelar(this)">🔍 Revelar resposta científica</button>
+      <div class="respuesta-box">
+        <h3>📚 Resposta</h3>
+        <p>Els <span class="keyword verde">lligaments</span> són bandes de teixit connectiu que uneixen os amb os per aportar <b>estabilitat mecànica passiva</b> i mantenir l'articulació dins de rangs de moviment segurs.</p>
+        <p>Quan la <b>fatiga muscular</b> disminueix la capacitat de contenció i frenat actiu:</p>
+        <ul>
+          <li>Les forces d'impacte deixen de dissipar-se al múscul.</li>
+          <li>Es traslladen <b>directament als lligaments</b>.</li>
+          <li>L'articulació es desplaça cap als seus límits de mobilitat passiva.</li>
+        </ul>
+        <div class="alerta">
+          <b>⚠️ Warning Zone:</b> Aquesta zona de risc exposa les bandes connectives a sobreestiraments, distensions o <b>esguinços</b>.
+        </div>
+      </div>
+    </div>
+
+    <!-- PREGUNTA 6 -->
+    <div class="slide">
+      <div class="pregunta-box">
+        <div class="num">6</div>
+        <span class="tema">🧠 Control Nervios de la Força</span>
+        <div class="texto">Com gradua el sistema nerviós la força muscular entre un micro-ajust postural i un salt explosiu?</div>
+      </div>
+      <div class="reflexion-box">
+        <h3>💭 La teva hipòtesi</h3>
+        <p>Quins mecanismes creus que fa servir el cervell per passar d'un moviment molt subtil a un de molt potent?</p>
+        <textarea placeholder="Escriu aquí la teva reflexió..."></textarea>
+      </div>
+      <button class="btn-revelar" onclick="revelar(this)">🔍 Revelar resposta científica</button>
+      <div class="respuesta-box">
+        <h3>📚 Resposta</h3>
+        <p>El sistema nerviós gradua la força de <b>dues formes principals</b>:</p>
+        <h4 style="color:#fbbf24; margin:15px 0 10px;">1a. Reclutament d'unitats motores (Principi del Tamany)</h4>
+        <p>Les unitats motores s'activen automàticament de <b>menor a major tamany</b>:</p>
+        <ul>
+          <li><span class="keyword azul">Fibras Tipus I</span> (petites, lentes, resistents) → per a correccions posturals fines o equilibri.</li>
+          <li><span class="keyword rojo">Fibras Tipus IIx</span> (grans, ràpides, potents) → per al despreniment d'un <i>grand jeté</i>.</li>
+        </ul>
+        <h4 style="color:#fbbf24; margin:15px 0 10px;">1b. Augment de la freqüència de descàrrega</h4>
+        <p>La motoneurona envia impulsos nerviosos més freqüents (<span class="keyword rosa">sumació temporal</span>) per incrementar progressivament la tensió generada.</p>
+      </div>
+    </div>
+
+    <!-- PREGUNTA 7 -->
+    <div class="slide">
+      <div class="pregunta-box">
+        <div class="num">7</div>
+        <span class="tema">🎯 Demi-Plié i Longitud-Tensió</span>
+        <div class="texto">Per què el demi-plié previ a un salt ha de tenir una profunditat intermèdia segons la fisiologia?</div>
+      </div>
+      <div class="reflexion-box">
+        <h3>💭 La teva hipòtesi</h3>
+        <p>Si com més profund és el plié més s'estira el múscul... per què no és millor fer-lo molt profund per guanyar més força?</p>
+        <textarea placeholder="Escriu aquí la teva reflexió..."></textarea>
+      </div>
+      <button class="btn-revelar" onclick="revelar(this)">🔍 Revelar resposta científica</button>
+      <div class="respuesta-box">
+        <h3>📚 Resposta</h3>
+        <p>La capacitat del múscul per generar força activa depèn de la seva <span class="keyword azul">longitud inicial</span> abans de la contracció (relació <b>longitud-tensió</b>).</p>
+        <p>A una <b>longitud intermèdia</b>, el solapament entre els filaments d'<span class="keyword rosa">actina</span> i <span class="keyword">miosina</span> dins del sarcòmer és <b>òptim</b>, permetent la màxima formació de ponts creuats.</p>
+        <div class="alerta">
+          <b>⚠️ Als extrems:</b>
+          <ul style="margin-top:8px;">
+            <li>Plié massa <b>profund</b> → múscul massa estirat → solapament ineficient.</li>
+            <li>Plié massa <b>superficial</b> → múscul massa acurtat → solapament ineficient.</li>
+          </ul>
+          En tots dos casos, la força generada per al salt <b>disminueix</b>.
+        </div>
+      </div>
+    </div>
+
+    <!-- PREGUNTA 8 -->
+    <div class="slide">
+      <div class="pregunta-box">
+        <div class="num">8</div>
+        <span class="tema">😓 Tipus de Fatiga</span>
+        <div class="texto">Quina diferència hi ha entre la fatiga central i la fatiga perifèrica durant un assaig o funció?</div>
+      </div>
+      <div class="reflexion-box">
+        <h3>💭 La teva hipòtesi</h3>
+        <p>La fatiga pot originar-se al cervell o al múscul. Quines conseqüències creus que té cadascuna?</p>
+        <textarea placeholder="Escriu aquí la teva reflexió..."></textarea>
+      </div>
+      <button class="btn-revelar" onclick="revelar(this)">🔍 Revelar resposta científica</button>
+      <div class="respuesta-box">
+        <h3>📚 Resposta</h3>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:15px; margin-top:10px;">
+          <div style="background:rgba(139, 92, 246, 0.15); padding:15px; border-radius:8px; border-left:4px solid #8b5cf6;">
+            <h4 style="color:#a78bfa;">🧠 Fatiga CENTRAL</h4>
+            <p style="font-size:14px;">Es produeix al <b>sistema nerviós central</b>.</p>
+            <p style="font-size:14px;"><b>Efecte:</b> Disminució de l'activació nerviosa.</p>
+            <p style="font-size:14px;"><b>Conseqüència:</b> Redueix la <b>precisió, coordinació i control motor fi</b>.</p>
+          </div>
+          <div style="background:rgba(239, 68, 68, 0.15); padding:15px; border-radius:8px; border-left:4px solid #ef4444;">
+            <h4 style="color:#f87171;">💪 Fatiga PERIFÈRICA</h4>
+            <p style="font-size:14px;">Es produeix al <b>pròpi múscul</b>.</p>
+            <p style="font-size:14px;"><b>Efecte:</b> Esgotament de substrats (ATP), acumulació de metabòlits, alteració del <span class="keyword rosa">Ca²⁺</span>.</p>
+            <p style="font-size:14px;"><b>Conseqüència:</b> Redueix directament la <b>capacitat mecànica</b> de generar força.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PREGUNTA 9 -->
+    <div class="slide">
+      <div class="pregunta-box">
+        <div class="num">9</div>
+        <span class="tema">⚖️ Coactivació Muscular</span>
+        <div class="texto">Per què la coactivació muscular és clau per al control postural i quan resulta perjudicial?</div>
+      </div>
+      <div class="reflexion-box">
+        <h3>💭 La teva hipòtesi</h3>
+        <p>Si la coactivació és la contracció simultània d'agonistes i antagonistes... quin avantatge té i quin inconvenient?</p>
+        <textarea placeholder="Escriu aquí la teva reflexió..."></textarea>
+      </div>
+      <button class="btn-revelar" onclick="revelar(this)">🔍 Revelar resposta científica</button>
+      <div class="respuesta-box">
+        <h3>📚 Resposta</h3>
+        <p>La <span class="keyword verde">coactivació</span> és la contracció simultània dels músculs agonistes i antagonistes al voltant d'una articulació.</p>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:15px; margin-top:15px;">
+          <div style="background:rgba(16, 185, 129, 0.15); padding:15px; border-radius:8px;">
+            <h4 style="color:#34d399;">✅ Quan és BENEFICIOSA</h4>
+            <p style="font-size:14px;">A la dansa, la seva funció principal és aportar <b>estabilitat articular</b> i permetre <b>micro-ajustos fluids</b> en equilibris o aterratges exigents.</p>
+          </div>
+          <div style="background:rgba(239, 68, 68, 0.15); padding:15px; border-radius:8px;">
+            <h4 style="color:#f87171;">❌ Quan és PERJUDICIAL</h4>
+            <p style="font-size:14px;">Si es torna <b>excessiva</b> (per fatiga o estrès):</p>
+            <ul style="font-size:14px; margin-top:8px;">
+              <li>Genera <b>rigidesa articular</b>.</li>
+              <li>Incrementa el <b>gast energètic</b>.</li>
+              <li>Accelerar l'esgotament.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PREGUNTA 10 -->
+    <div class="slide">
+      <div class="pregunta-box">
+        <div class="num">10</div>
+        <span class="tema">🌡️ Homeòstasi i Termoregulació</span>
+        <div class="texto">Com reacciona l'organisme per restaurar l'homeòstasi davant l'augment de temperatura i CO₂ en un assaig intens?</div>
+      </div>
+      <div class="reflexion-box">
+        <h3>💭 La teva hipòtesi</h3>
+        <p>Quan el cos s'escalfa i acumula CO₂, quins mecanismes s'activen per refredar-lo i eliminar el gas?</p>
+        <textarea placeholder="Escriu aquí la teva reflexió..."></textarea>
+      </div>
+      <button class="btn-revelar" onclick="revelar(this)">🔍 Revelar resposta científica</button>
+      <div class="respuesta-box">
+        <h3>📚 Resposta</h3>
+        <p>Durant l'esforç físic, el <span class="keyword azul">medi intern (LEC)</span> trenca el seu equilibri dinàmic o <span class="keyword verde">homeòstasi</span>. El cos activa bucles de <b>retroalimentació negativa</b> per contrarestar les desviacions:</p>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:15px; margin-top:15px;">
+          <div style="background:rgba(239, 68, 68, 0.15); padding:15px; border-radius:8px;">
+            <h4 style="color:#f87171;">🌡️ Temperatura</h4>
+            <p style="font-size:14px;">Els <b>termoreceptors</b> detecten l'ascens tèrmic → informen l'<b>hipotàlem</b> → desencadenen:</p>
+            <ul style="font-size:14px; margin-top:8px;">
+              <li><span class="keyword rojo">Vasodilatació</span></li>
+              <li><span class="keyword rosa">Sudoració</span></li>
+            </ul>
+            <p style="font-size:14px; margin-top:8px;">→ Dissipen calor.</p>
+          </div>
+          <div style="background:rgba(56, 189, 248, 0.15); padding:15px; border-radius:8px;">
+            <h4 style="color:#38bdf8;">💨 CO₂ i O₂</h4>
+            <p style="font-size:14px;">Els <b>quimioreceptors</b> detecten l'augment de CO₂ i la caiguda d'O₂ → envien senyals al <b>centre respiratori del bulb raquidi</b> → augmenten:</p>
+            <ul style="font-size:14px; margin-top:8px;">
+              <li><span class="keyword azul">Freqüència respiratòria</span></li>
+              <li><span class="keyword azul">Gast cardíac</span></li>
+            </ul>
+            <p style="font-size:14px; margin-top:8px;">→ Eliminen CO₂ i restauren O₂.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE FINAL: SÍNTESI -->
+    <div class="slide">
+      <h1>🎯 Síntesi: Els 5 Grans Principis</h1>
+      <p>Les 10 preguntes es redueixen a <b>5 idees clau</b> que has de dominar:</p>
+      <div class="sintesis-grid">
+        <div class="sintesis-card">
+          <h4>🔋 1. L'energia ho condiciona tot</h4>
+          <p>Sense disponibilitat energètica adequada, ni l'os es remodela, ni el múscul es contrau eficientment (RED-S).</p>
+        </div>
+        <div class="sintesis-card">
+          <h4>💧 2. L'homeòstasi és dinàmica</h4>
+          <p>El cos constantment ajusta temperatura, pH, electròlits i gasos mitjançant retroalimentació negativa.</p>
+        </div>
+        <div class="sintesis-card">
+          <h4>⚡ 3. ATP = llibertat de moviment</h4>
+          <p>No només dóna energia: permet el desacoblatge. Sense ATP, hi ha rigidesa (encara que hi hagi Ca²⁺).</p>
+        </div>
+        <div class="sintesis-card">
+          <h4>🧠 4. El control nerviós gradua la força</h4>
+          <p>Reclutament per tamany + freqüència de descàrrega = des de micro-ajustos fins a salts explosius.</p>
+        </div>
+        <div class="sintesis-card">
+          <h4>🛡️ 5. La fatiga és un senyal d'alarma</h4>
+          <p>Central (al cervell) i perifèrica (al múscul). Ignorar-la → compensacions → lesions (Warning Zone).</p>
+        </div>
+      </div>
+      <div style="background:rgba(251, 191, 36, 0.15); border-left:5px solid #fbbf24; padding:20px; border-radius:8px; margin-top:25px; text-align:center;">
+        <b style="font-size:18px; color:#fbbf24;">💡 Missatge final:</b>
+        <p style="margin-top:10px; font-size:16px;">El cos del ballarí és un <b>sistema integrat</b>. Cada decisió (nutrició, hidratació, descans, dosificació de càrrega) afecta tots els nivells: molecular, muscular, articular i nerviós.</p>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="nav">
+    <button class="btn" id="btnAnt" onclick="anterior()">← Anterior</button>
+    <button class="btn indice" onclick="irA(1)">🗺️ Índex</button>
+    <button class="btn" id="btnSig" onclick="siguiente()">Següent →</button>
+  </div>
+</div>
+
+<script>
+let actual = 0;
+const slides = document.querySelectorAll('.slide');
+const total = slides.length;
+
+function mostrar(n) {
+  slides.forEach(s => s.classList.remove('activa'));
+  slides[n].classList.add('activa');
+  slides[n].scrollTop = 0;
+  document.getElementById('contador').textContent = `${n+1} / ${total}`;
+  document.getElementById('progresoFill').style.width = ((n+1)/total*100) + '%';
+  document.getElementById('btnAnt').disabled = n === 0;
+  document.getElementById('btnSig').disabled = n === total - 1;
+  actual = n;
+}
+
+function siguiente() { if (actual < total - 1) mostrar(actual + 1); }
+function anterior() { if (actual > 0) mostrar(actual - 1); }
+function irA(n) { mostrar(n); }
+
+function revelar(btn) {
+  const respuesta = btn.nextElementSibling;
+  respuesta.classList.toggle('visible');
+  btn.textContent = respuesta.classList.contains('visible') ? '🙈 Amagar resposta' : '🔍 Revelar resposta científica';
+}
+
+document.addEventListener('keydown', e => {
+  if (e.target.tagName === 'TEXTAREA') return;
+  if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); siguiente(); }
+  if (e.key === 'ArrowLeft') { e.preventDefault(); anterior(); }
+  if (e.key === 'Home') { e.preventDefault(); mostrar(0); }
+  if (e.key === 'End') { e.preventDefault(); mostrar(total - 1); }
+});
+
+mostrar(0);
+</script>
+
+</body>
+</html>

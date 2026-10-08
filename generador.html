@@ -1,0 +1,1722 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title data-i18n="titol_pagina">🎨 Generador d'Eines Didàctiques</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:linear-gradient(135deg,#f093fb 0%,#f5576c 100%);min-height:100vh;padding:20px;color:#333}
+.container{max-width:900px;margin:0 auto;background:white;border-radius:20px;box-shadow:0 20px 60px rgba(0,0,0,.3);overflow:hidden}
+header{background:linear-gradient(135deg,#f093fb 0%,#f5576c 100%);color:white;padding:40px;text-align:center;position:relative}
+header h1{font-size:2.2em;margin-bottom:10px;text-shadow:2px 2px 4px rgba(0,0,0,.2)}
+header h2{font-size:1.2em;font-weight:300;margin-bottom:10px}
+.subtitle{font-size:.95em;opacity:.9}
+.language-selector{position:absolute;top:20px;right:20px;display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.15);padding:6px 12px;border-radius:20px}
+.language-selector label{color:white;font-size:1.1em}
+.language-selector select{padding:6px 10px;border:none;border-radius:6px;font-family:inherit;cursor:pointer;background:white;color:#f5576c;font-weight:600}
+.progress-bar{background:#f8f9fa;padding:20px 40px;border-bottom:2px solid #e9ecef}
+.progress-steps{display:flex;justify-content:space-between;align-items:center;position:relative}
+.progress-steps::before{content:'';position:absolute;top:20px;left:5%;right:5%;height:3px;background:#e9ecef;z-index:0}
+.progress-step{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:8px;flex:1}
+.step-circle{width:40px;height:40px;border-radius:50%;background:white;border:3px solid #e9ecef;display:flex;align-items:center;justify-content:center;font-weight:700;color:#adb5bd;transition:all .3s;cursor:pointer}
+.step-circle:hover{border-color:#f5576c;transform:scale(1.05)}
+.step-label{font-size:.8em;color:#6c757d;text-align:center;font-weight:500}
+.progress-step.active .step-circle{background:linear-gradient(135deg,#f093fb 0%,#f5576c 100%);border-color:#f5576c;color:white;transform:scale(1.1);box-shadow:0 4px 12px rgba(245,87,108,.4)}
+.progress-step.active .step-label{color:#f5576c;font-weight:700}
+.progress-step.completed .step-circle{background:#28a745;border-color:#28a745;color:white}
+.progress-step.completed .step-label{color:#28a745}
+.controls{padding:20px 40px;background:#f8f9fa;border-bottom:2px solid #e9ecef;display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.btn{padding:12px 24px;border:none;border-radius:8px;font-size:1em;cursor:pointer;transition:all .3s;font-weight:600;font-family:inherit}
+.btn-primary{background:linear-gradient(135deg,#f093fb 0%,#f5576c 100%);color:white}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(245,87,108,.4)}
+.btn-secondary{background:#6c757d;color:white}
+.btn-secondary:hover{background:#5a6268}
+.btn-success{background:linear-gradient(135deg,#11998e 0%,#38ef7d 100%);color:white}
+.btn-danger{background:#dc3545;color:white}
+.btn-info{background:linear-gradient(135deg,#17a2b8 0%,#138496 100%);color:white}
+.pas{display:none;padding:40px}
+.pas.active{display:block;animation:fadeIn .3s ease-out}
+@keyframes fadeIn{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:translateY(0)}}
+.pas-header{margin-bottom:25px;padding-bottom:15px;border-bottom:2px solid #e9ecef}
+.pas-header h2{color:#f5576c;font-size:1.6em;margin-bottom:5px}
+.pas-header p{color:#666;font-size:.95em}
+.form-group{margin-bottom:20px}
+.form-group label{display:block;margin-bottom:8px;font-weight:600;color:#333;font-size:.95em}
+.form-group input,.form-group textarea,.form-group select{width:100%;padding:10px 14px;border:2px solid #e9ecef;border-radius:8px;font-size:1em;font-family:inherit;transition:border-color .2s}
+.form-group input:focus,.form-group textarea:focus,.form-group select:focus{outline:none;border-color:#f5576c;box-shadow:0 0 0 3px rgba(245,87,108,.1)}
+.form-group textarea{resize:vertical;min-height:80px}
+.form-group .help-text{font-size:.85em;color:#6c757d;margin-top:4px}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:15px}
+.seccio-titol{font-size:1.1em;color:#f5576c;margin:25px 0 15px 0;padding-bottom:8px;border-bottom:1px solid #e9ecef;font-weight:700}
+.color-picker-row{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.color-picker-row input[type="color"]{width:60px;height:40px;border:2px solid #e9ecef;border-radius:8px;cursor:pointer;padding:2px}
+.color-picker-row input[type="text"]{flex:1}
+.temes-color{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px;margin-top:15px}
+.tema-color{padding:12px;border:2px solid #e9ecef;border-radius:10px;cursor:pointer;text-align:center;transition:all .2s;font-size:.9em;font-weight:600}
+.tema-color:hover{transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,0,0,.1)}
+.tema-color.selected{border-color:#f5576c;box-shadow:0 0 0 3px rgba(245,87,108,.2)}
+.tema-color-preview{height:30px;border-radius:6px;margin-bottom:8px}
+.sessio-item{background:#f8f9fa;border:2px solid #e9ecef;border-radius:10px;padding:15px;margin-bottom:12px;display:grid;grid-template-columns:150px 1fr auto;gap:10px;align-items:center;position:relative}
+.sessio-item .btn-remove{background:#dc3545;color:white;border:none;width:28px;height:28px;border-radius:50%;cursor:pointer;font-size:.9em}
+.btn-add{background:linear-gradient(135deg,#28a745 0%,#20c997 100%);color:white;padding:10px 20px;border:none;border-radius:8px;cursor:pointer;font-weight:600;margin-top:10px;font-family:inherit}
+.csv-box{background:#e7f3ff;border:2px dashed #2196F3;border-radius:12px;padding:20px;margin:20px 0;text-align:center}
+.csv-box h4{color:#1976D2;margin-bottom:10px}
+.csv-box code{background:#f8f9fa;padding:2px 6px;border-radius:4px;font-size:.85em;color:#c7254e}
+.resum-box{background:linear-gradient(135deg,#e7f3ff 0%,#d1e7ff 100%);border:2px solid #2196F3;border-radius:12px;padding:25px;margin:20px 0}
+.resum-item{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid #c7d2fe}
+.resum-item:last-child{border-bottom:none}
+.resum-label{font-weight:600;color:#0c5460}
+.generar-box{background:linear-gradient(135deg,#d4edda 0%,#c3e6cb 100%);border:2px solid #28a745;border-radius:12px;padding:30px;text-align:center;margin:25px 0}
+.generar-box h3{color:#155724;margin-bottom:15px;font-size:1.4em}
+.generar-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:15px;margin-top:20px}
+.generar-card{background:white;border:2px solid #e9ecef;border-radius:12px;padding:20px;text-align:center;transition:all .3s}
+.generar-card:hover{transform:translateY(-3px);box-shadow:0 8px 20px rgba(0,0,0,.1);border-color:#28a745}
+.generar-card-icon{font-size:3em;margin-bottom:10px}
+.generar-card h4{color:#333;margin-bottom:8px;font-size:1.1em}
+.generar-card p{color:#666;font-size:.85em;margin-bottom:15px}
+.btn-generar-card{background:linear-gradient(135deg,#28a745 0%,#20c997 100%);color:white;padding:10px 20px;border:none;border-radius:8px;cursor:pointer;font-weight:600;font-family:inherit;width:100%}
+.btn-generar-tots{background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);color:white;padding:14px 30px;border:none;border-radius:10px;cursor:pointer;font-size:1.1em;font-weight:700;font-family:inherit;margin-top:20px;width:100%}
+.navegacio{display:flex;justify-content:space-between;margin-top:30px;padding-top:20px;border-top:2px solid #e9ecef}
+.toast{position:fixed;bottom:30px;right:30px;background:#333;color:white;padding:14px 24px;border-radius:8px;box-shadow:0 8px 25px rgba(0,0,0,.3);z-index:2000;font-weight:500;animation:slideIn .3s ease-out}
+.toast.success{background:#28a745}.toast.error{background:#dc3545}.toast.info{background:#17a2b8}
+@keyframes slideIn{from{transform:translateX(100%);opacity:0}to{transform:translateX(0);opacity:1}}
+footer{text-align:center;padding:25px 20px;color:#64748b;font-size:.9em;border-top:1px solid #e9ecef;background:#f8f9fa}
+@media(max-width:768px){header h1{font-size:1.6em}.form-row{grid-template-columns:1fr}.sessio-item{grid-template-columns:1fr}.language-selector{position:static;margin:15px auto 0;width:fit-content}}
+</style>
+</head>
+<body>
+<div class="container">
+<header>
+<h1 data-i18n="titol_pagina">🎨 Generador d'Eines Didàctiques</h1>
+<h2 data-i18n="subtitol">Crea 3 eines per a qualsevol assignatura</h2>
+<p class="subtitle" data-i18n="subtitol2">Programació · Planificador · Fitxa de l'alumne</p>
+<div class="language-selector">
+<label for="selectorIdioma">🌐</label>
+<select id="selectorIdioma" onchange="aplicarIdioma(this.value)">
+<option value="ca">Català</option>
+<option value="es">Español</option>
+<option value="en">English</option>
+</select>
+</div>
+</header>
+
+<div class="progress-bar">
+<div class="progress-steps">
+<div class="progress-step active" data-pas="1" onclick="anarAlPas(1)"><div class="step-circle">1</div><div class="step-label" data-i18n="pas1">Dades</div></div>
+<div class="progress-step" data-pas="2" onclick="anarAlPas(2)"><div class="step-circle">2</div><div class="step-label" data-i18n="pas2">Aparença</div></div>
+<div class="progress-step" data-pas="3" onclick="anarAlPas(3)"><div class="step-circle">3</div><div class="step-label" data-i18n="pas3">Sessions</div></div>
+<div class="progress-step" data-pas="4" onclick="anarAlPas(4)"><div class="step-circle">4</div><div class="step-label" data-i18n="pas4">Generar</div></div>
+</div>
+</div>
+
+<div class="controls">
+<button class="btn btn-secondary" onclick="exportarConfig()" data-i18n="btn_exportar">💾 Exportar config</button>
+<button class="btn btn-secondary" onclick="document.getElementById('fileInput').click()" data-i18n="btn_importar">📤 Importar config</button>
+<input type="file" id="fileInput" accept=".json" style="display:none" onchange="importarConfig(event)">
+<button class="btn btn-danger" onclick="netejarTot()" data-i18n="btn_netejar">🗑️ Netejar</button>
+</div>
+
+<!-- PAS 1 -->
+<div class="pas active" id="pas1">
+<div class="pas-header"><h2 data-i18n="pas1_titol">📚 Pas 1: Dades bàsiques</h2><p data-i18n="pas1_desc">Informació de l'assignatura i del professorat</p></div>
+<div class="seccio-titol" data-i18n="sec_assignatura">📚 Assignatura</div>
+<div class="form-group"><label data-i18n="lbl_nom_assignatura">Nom complet:</label><input type="text" id="cfg_nomAssignatura" placeholder="Ex: Fisiologia aplicada a la dansa" data-campo="nomAssignatura"></div>
+<div class="form-row">
+<div class="form-group"><label data-i18n="lbl_nom_curt">Nom curt (per URLs):</label><input type="text" id="cfg_nomCurt" placeholder="Ex: fisiologia" data-campo="nomCurt"></div>
+<div class="form-group"><label data-i18n="lbl_curs">Curs acadèmic:</label><input type="text" id="cfg_cursAcademic" placeholder="2026-2027" data-campo="cursAcademic"></div>
+</div>
+<div class="form-row">
+<div class="form-group"><label data-i18n="lbl_nivell">Nivell:</label><input type="text" id="cfg_nivell" placeholder="Ex: Grau en Dansa" data-campo="nivell"></div>
+<div class="form-group"><label data-i18n="lbl_caracter">Caràcter:</label>
+<select id="cfg_caracter" data-campo="caracter">
+<option data-i18n="opt_obligatoria">Obligatòria</option>
+<option data-i18n="opt_optativa">Optativa</option>
+<option data-i18n="opt_formacio">Formació bàsica</option>
+</select>
+</div>
+</div>
+<div class="form-group"><label data-i18n="lbl_codi">Codi assignatura (opcional):</label><input type="text" id="cfg_codi" placeholder="410005" data-campo="codi"></div>
+<div class="seccio-titol" data-i18n="sec_professorat">👤 Professorat</div>
+<div class="form-row">
+<div class="form-group"><label data-i18n="lbl_nom_professor">Nom complet:</label><input type="text" id="cfg_nomProfessor" placeholder="Cèlia Painous" data-campo="nomProfessor"></div>
+<div class="form-group"><label data-i18n="lbl_titol">Títol:</label><input type="text" id="cfg_titolProfessor" placeholder="Dra." data-campo="titolProfessor"></div>
+</div>
+<div class="form-group"><label data-i18n="lbl_email">Email:</label><input type="email" id="cfg_email" placeholder="exemple@centre.cat" data-campo="email"></div>
+<div class="form-group"><label data-i18n="lbl_centre">Centre / Institució:</label><input type="text" id="cfg_centre" placeholder="Institut del Teatre" data-campo="centre"></div>
+<div class="navegacio"><div></div><button class="btn btn-primary" onclick="seguentPas()" data-i18n="btn_seguent">Següent →</button></div>
+</div>
+
+<!-- PAS 2 -->
+<div class="pas" id="pas2">
+<div class="pas-header"><h2 data-i18n="pas2_titol">🎨 Pas 2: Aparença</h2><p data-i18n="pas2_desc">Icona i colors</p></div>
+<div class="form-group"><label data-i18n="lbl_icona">Icona principal (emoji):</label><input type="text" id="cfg_icona" maxlength="2" placeholder="📚" data-campo="icona"></div>
+<div class="seccio-titol" data-i18n="sec_colors">🎨 Colors</div>
+<div class="form-row">
+<div class="form-group"><label data-i18n="lbl_color1">Color principal:</label><div class="color-picker-row"><input type="color" id="cfg_color1" value="#4b2e6f" data-campo="color1"><input type="text" id="cfg_color1_text" value="#4b2e6f"></div></div>
+<div class="form-group"><label data-i18n="lbl_color2">Color secundari:</label><div class="color-picker-row"><input type="color" id="cfg_color2" value="#b8912f" data-campo="color2"><input type="text" id="cfg_color2_text" value="#b8912f"></div></div>
+</div>
+<div class="seccio-titol" data-i18n="sec_temes">✨ Temes</div>
+<div class="temes-color" id="temesColor"></div>
+<div class="navegacio"><button class="btn btn-secondary" onclick="pasAnterior()" data-i18n="btn_anterior">← Anterior</button><button class="btn btn-primary" onclick="seguentPas()" data-i18n="btn_seguent">Següent →</button></div>
+</div>
+
+<!-- PAS 3 -->
+<div class="pas" id="pas3">
+<div class="pas-header"><h2 data-i18n="pas3_titol">📅 Pas 3: Sessions inicials</h2><p data-i18n="pas3_desc">Pots afegir-les ara o després des del planificador</p></div>
+<div class="form-group"><label data-i18n="lbl_horari">Horari habitual:</label><input type="text" id="cfg_horari" placeholder="Divendres 12:00-15:00" data-campo="horari"></div>
+<div class="csv-box">
+<h4 data-i18n="csv_titol">📋 Importar sessions des de CSV</h4>
+<p data-i18n="csv_desc">Format: data,titol (una per línia)</p>
+<input type="file" id="csvInput" accept=".csv,.txt" onchange="importarCSV(event)" style="display:none">
+<button class="btn btn-info" onclick="document.getElementById('csvInput').click()" data-i18n="btn_csv">📂 Seleccionar CSV</button>
+<button class="btn btn-secondary" onclick="descarregarExempleCSV()" style="margin-left:10px" data-i18n="btn_exemple">📥 Exemple</button>
+</div>
+<div class="seccio-titol" data-i18n="sec_sessions">📋 Sessions</div>
+<div id="sessionsContainer"></div>
+<button class="btn-add" onclick="afegirSessio()" data-i18n="btn_add_sessio">+ Afegir sessió</button>
+<div class="navegacio"><button class="btn btn-secondary" onclick="pasAnterior()" data-i18n="btn_anterior">← Anterior</button><button class="btn btn-primary" onclick="seguentPas()" data-i18n="btn_seguent">Següent →</button></div>
+</div>
+
+<!-- PAS 4 -->
+<div class="pas" id="pas4">
+<div class="pas-header"><h2 data-i18n="pas4_titol">🚀 Pas 4: Generar</h2><p data-i18n="pas4_desc">Crea els 3 arxius per a la teva assignatura</p></div>
+<div class="resum-box"><h3 style="color:#0c5460;margin-bottom:15px" data-i18n="resum_titol">📋 Resum</h3><div id="resumContingut"></div></div>
+<div class="generar-box">
+<h3 data-i18n="generar_titol">🎉 Tot llest!</h3>
+<p data-i18n="generar_desc">Es descarregaran 3 fitxers HTML. Després podràs obrir-los i omplir-los amb contingut.</p>
+<div class="generar-grid">
+<div class="generar-card">
+<div class="generar-card-icon">📚</div>
+<h4 data-i18n="card_prog">Programació Didàctica</h4>
+<p data-i18n="card_prog_desc">Document oficial amb 10 seccions editables</p>
+<button class="btn-generar-card" onclick="generarProgramacio()" data-i18n="btn_gen_prog">📥 Generar</button>
+</div>
+<div class="generar-card">
+<div class="generar-card-icon">📅</div>
+<h4 data-i18n="card_plan">Planificador de Sessions</h4>
+<p data-i18n="card_plan_desc">Eina per preparar cada sessió</p>
+<button class="btn-generar-card" onclick="generarPlanificador()" data-i18n="btn_gen_plan">📥 Generar</button>
+</div>
+<div class="generar-card">
+<div class="generar-card-icon">📝</div>
+<h4 data-i18n="card_fitxa">Fitxa de l'Alumne</h4>
+<p data-i18n="card_fitxa_desc">Fitxa de seguiment per a l'alumnat</p>
+<button class="btn-generar-card" onclick="generarFitxa()" data-i18n="btn_gen_fitxa">📥 Generar</button>
+</div>
+</div>
+<button class="btn-generar-tots" onclick="generarTots()" data-i18n="btn_gen_tots">🚀 GENERAR ELS 3 FITXERS</button>
+</div>
+<div class="navegacio"><button class="btn btn-secondary" onclick="pasAnterior()" data-i18n="btn_anterior">← Anterior</button><div></div></div>
+</div>
+
+</div>
+
+<footer>
+  <p data-i18n="footer">🎨 Generador d'Eines Didàctiques · Codi obert</p>
+  <p style="margin-top:8px;font-size:.85em;opacity:.75">Fet amb l'ajut de DeepSeek</p>
+</footer>
+
+<script>
+// ==========================================
+// DICCIONARI
+// ==========================================
+const diccionario = {
+ca:{
+ titol_pagina:"🎨 Generador d'Eines Didàctiques",
+ subtitol:"Crea 3 eines per a qualsevol assignatura",
+ subtitol2:"Programació · Planificador · Fitxa de l'alumne",
+ pas1:"Dades",pas2:"Aparença",pas3:"Sessions",pas4:"Generar",
+ btn_exportar:"💾 Exportar config",btn_importar:"📤 Importar config",btn_netejar:"🗑️ Netejar",
+ pas1_titol:"📚 Pas 1: Dades bàsiques",pas1_desc:"Informació de l'assignatura i del professorat",
+ sec_assignatura:"📚 Assignatura",
+ lbl_nom_assignatura:"Nom complet:",lbl_nom_curt:"Nom curt (per URLs):",lbl_curs:"Curs acadèmic:",
+ lbl_nivell:"Nivell:",lbl_caracter:"Caràcter:",lbl_codi:"Codi assignatura (opcional):",
+ opt_obligatoria:"Obligatòria",opt_optativa:"Optativa",opt_formacio:"Formació bàsica",
+ sec_professorat:"👤 Professorat",
+ lbl_nom_professor:"Nom complet:",lbl_titol:"Títol:",lbl_email:"Email:",lbl_centre:"Centre / Institució:",
+ btn_seguent:"Següent →",btn_anterior:"← Anterior",
+ pas2_titol:"🎨 Pas 2: Aparença",pas2_desc:"Icona i colors",
+ lbl_icona:"Icona principal (emoji):",sec_colors:"🎨 Colors",lbl_color1:"Color principal:",lbl_color2:"Color secundari:",sec_temes:"✨ Temes",
+ pas3_titol:"📅 Pas 3: Sessions inicials",pas3_desc:"Pots afegir-les ara o després des del planificador",
+ lbl_horari:"Horari habitual:",csv_titol:"📋 Importar sessions des de CSV",
+ csv_desc:"Format: data,titol (una per línia)",btn_csv:"📂 Seleccionar CSV",btn_exemple:"📥 Exemple",
+ sec_sessions:"📋 Sessions",btn_add_sessio:"+ Afegir sessió",
+ ph_data_sessio:"Títol de la sessió",no_sessions:"Cap sessió. Pots afegir-les ara o després.",
+ pas4_titol:"🚀 Pas 4: Generar",pas4_desc:"Crea els 3 arxius per a la teva assignatura",
+ resum_titol:"📋 Resum",resum_assignatura:"Assignatura:",resum_professor:"Professor/a:",resum_curs:"Curs:",resum_sessions:"Sessions:",resum_nom_curt:"Nom curt (URLs):",
+ generar_titol:"🎉 Tot llest!",generar_desc:"Es descarregaran 3 fitxers HTML. Després podràs obrir-los i omplir-los amb contingut.",
+ card_prog:"Programació Didàctica",card_prog_desc:"Document oficial amb 10 seccions editables",
+ card_plan:"Planificador de Sessions",card_plan_desc:"Eina per preparar cada sessió",
+ card_fitxa:"Fitxa de l'Alumne",card_fitxa_desc:"Fitxa de seguiment per a l'alumnat",
+ btn_gen_prog:"📥 Generar",btn_gen_plan:"📥 Generar",btn_gen_fitxa:"📥 Generar",
+ btn_gen_tots:"🚀 GENERAR ELS 3 FITXERS",
+ footer:"🎨 Generador d'Eines Didàctiques · Codi obert",
+ toast_exportat:"💾 Config exportada",toast_importat:"📤 Config importada",toast_error:"❌ Error",
+ toast_netejat:"🗑️ Netejat",toast_generat:"🎉 Fitxer generat!",toast_3:"🎉 3 fitxers generats!",
+ toast_sense_dades:"⚠️ Cal el nom de l'assignatura i del professor/a",toast_csv:"sessions importades",
+ confirm_netejar:"Segur que vols netejar?"
+},
+es:{
+ titol_pagina:"🎨 Generador de Herramientas Didácticas",
+ subtitol:"Crea 3 herramientas para cualquier asignatura",
+ subtitol2:"Programación · Planificador · Ficha del alumno",
+ pas1:"Datos",pas2:"Apariencia",pas3:"Sesiones",pas4:"Generar",
+ btn_exportar:"💾 Exportar config",btn_importar:"📤 Importar config",btn_netejar:"🗑️ Limpiar",
+ pas1_titol:"📚 Paso 1: Datos básicos",pas1_desc:"Información de la asignatura y del profesorado",
+ sec_assignatura:"📚 Asignatura",
+ lbl_nom_assignatura:"Nombre completo:",lbl_nom_curt:"Nombre corto (para URLs):",lbl_curs:"Curso académico:",
+ lbl_nivell:"Nivel:",lbl_caracter:"Carácter:",lbl_codi:"Código asignatura (opcional):",
+ opt_obligatoria:"Obligatoria",opt_optativa:"Optativa",opt_formacio:"Formación básica",
+ sec_professorat:"👤 Profesorado",
+ lbl_nom_professor:"Nombre completo:",lbl_titol:"Título:",lbl_email:"Email:",lbl_centre:"Centro / Institución:",
+ btn_seguent:"Siguiente →",btn_anterior:"← Anterior",
+ pas2_titol:"🎨 Paso 2: Apariencia",pas2_desc:"Icono y colores",
+ lbl_icona:"Icono principal (emoji):",sec_colors:"🎨 Colores",lbl_color1:"Color principal:",lbl_color2:"Color secundario:",sec_temes:"✨ Temas",
+ pas3_titol:"📅 Paso 3: Sesiones iniciales",pas3_desc:"Puedes añadirlas ahora o después desde el planificador",
+ lbl_horari:"Horario habitual:",csv_titol:"📋 Importar sesiones desde CSV",
+ csv_desc:"Formato: fecha,título (una por línea)",btn_csv:"📂 Seleccionar CSV",btn_exemple:"📥 Ejemplo",
+ sec_sessions:"📋 Sesiones",btn_add_sessio:"+ Añadir sesión",
+ ph_data_sessio:"Título de la sesión",no_sessions:"Sin sesiones. Puedes añadirlas ahora o después.",
+ pas4_titol:"🚀 Paso 4: Generar",pas4_desc:"Crea los 3 archivos para tu asignatura",
+ resum_titol:"📋 Resumen",resum_assignatura:"Asignatura:",resum_professor:"Profesor/a:",resum_curs:"Curso:",resum_sessions:"Sesiones:",resum_nom_curt:"Nombre corto (URLs):",
+ generar_titol:"🎉 ¡Todo listo!",generar_desc:"Se descargarán 3 archivos HTML. Luego podrás abrirlos y rellenarlos con contenido.",
+ card_prog:"Programación Didáctica",card_prog_desc:"Documento oficial con 10 secciones editables",
+ card_plan:"Planificador de Sesiones",card_plan_desc:"Herramienta para preparar cada sesión",
+ card_fitxa:"Ficha del Alumno",card_fitxa_desc:"Ficha de seguimiento para el alumnado",
+ btn_gen_prog:"📥 Generar",btn_gen_plan:"📥 Generar",btn_gen_fitxa:"📥 Generar",
+ btn_gen_tots:"🚀 GENERAR LOS 3 ARCHIVOS",
+ footer:"🎨 Generador de Herramientas Didácticas · Código abierto",
+ toast_exportat:"💾 Config exportada",toast_importat:"📤 Config importada",toast_error:"❌ Error",
+ toast_netejat:"🗑️ Limpiado",toast_generat:"🎉 ¡Archivo generado!",toast_3:"🎉 ¡3 archivos generados!",
+ toast_sense_dades:"⚠️ Se necesita el nombre de la asignatura y del profesor/a",toast_csv:"sesiones importadas",
+ confirm_netejar:"¿Seguro que quieres limpiar?"
+},
+en:{
+ titol_pagina:"🎨 Teaching Tools Generator",
+ subtitol:"Create 3 tools for any subject",
+ subtitol2:"Programme · Planner · Student sheet",
+ pas1:"Data",pas2:"Appearance",pas3:"Sessions",pas4:"Generate",
+ btn_exportar:"💾 Export config",btn_importar:"📤 Import config",btn_netejar:"🗑️ Clear",
+ pas1_titol:"📚 Step 1: Basic data",pas1_desc:"Subject and teacher information",
+ sec_assignatura:"📚 Subject",
+ lbl_nom_assignatura:"Full name:",lbl_nom_curt:"Short name (for URLs):",lbl_curs:"Academic year:",
+ lbl_nivell:"Level:",lbl_caracter:"Type:",lbl_codi:"Subject code (optional):",
+ opt_obligatoria:"Compulsory",opt_optativa:"Optional",opt_formacio:"Core training",
+ sec_professorat:"👤 Teacher",
+ lbl_nom_professor:"Full name:",lbl_titol:"Title:",lbl_email:"Email:",lbl_centre:"Centre / Institution:",
+ btn_seguent:"Next →",btn_anterior:"← Previous",
+ pas2_titol:"🎨 Step 2: Appearance",pas2_desc:"Icon and colours",
+ lbl_icona:"Main icon (emoji):",sec_colors:"🎨 Colours",lbl_color1:"Primary colour:",lbl_color2:"Secondary colour:",sec_temes:"✨ Themes",
+ pas3_titol:"📅 Step 3: Initial sessions",pas3_desc:"You can add them now or later from the planner",
+ lbl_horari:"Regular schedule:",csv_titol:"📋 Import sessions from CSV",
+ csv_desc:"Format: date,title (one per line)",btn_csv:"📂 Select CSV",btn_exemple:"📥 Example",
+ sec_sessions:"📋 Sessions",btn_add_sessio:"+ Add session",
+ ph_data_sessio:"Session title",no_sessions:"No sessions. You can add them now or later.",
+ pas4_titol:"🚀 Step 4: Generate",pas4_desc:"Create the 3 files for your subject",
+ resum_titol:"📋 Summary",resum_assignatura:"Subject:",resum_professor:"Teacher:",resum_curs:"Year:",resum_sessions:"Sessions:",resum_nom_curt:"Short name (URLs):",
+ generar_titol:"🎉 All ready!",generar_desc:"3 HTML files will be downloaded. You can then open and fill them with content.",
+ card_prog:"Teaching Programme",card_prog_desc:"Official document with 10 editable sections",
+ card_plan:"Session Planner",card_plan_desc:"Tool to prepare each session",
+ card_fitxa:"Student Sheet",card_fitxa_desc:"Tracking sheet for students",
+ btn_gen_prog:"📥 Generate",btn_gen_plan:"📥 Generate",btn_gen_fitxa:"📥 Generate",
+ btn_gen_tots:"🚀 GENERATE THE 3 FILES",
+ footer:"🎨 Teaching Tools Generator · Open source",
+ toast_exportat:"💾 Config exported",toast_importat:"📤 Config imported",toast_error:"❌ Error",
+ toast_netejat:"🗑️ Cleared",toast_generat:"🎉 File generated!",toast_3:"🎉 3 files generated!",
+ toast_sense_dades:"⚠️ Subject and teacher names required",toast_csv:"sessions imported",
+ confirm_netejar:"Are you sure you want to clear?"
+}
+};
+
+function t(k){
+  const lang = localStorage.getItem('gen_idioma')||'ca';
+  return (diccionario[lang]&&diccionario[lang][k]) || (diccionario.ca[k]) || k;
+}
+
+function aplicarIdioma(lang){
+  localStorage.setItem('gen_idioma', lang);
+  document.documentElement.lang = lang;
+  const sel = document.getElementById('selectorIdioma');
+  if(sel) sel.value = lang;
+  document.querySelectorAll('[data-i18n]').forEach(el=>{
+    const k = el.getAttribute('data-i18n');
+    if(diccionario[lang] && diccionario[lang][k]) el.innerHTML = diccionario[lang][k];
+  });
+  renderitzarSessions();
+  renderitzarTemes();
+  if(pasActual===4) renderitzarResum();
+}
+
+// ==========================================
+// CONFIGURACIÓ
+// ==========================================
+const STORAGE_KEY = 'generadorConfig_v4';
+let config = {
+  nomAssignatura:'', nomCurt:'', cursAcademic:'2026-2027', nivell:'',
+  caracter:'Obligatòria', codi:'', nomProfessor:'', titolProfessor:'',
+  email:'', centre:'', icona:'📚', color1:'#4b2e6f', color2:'#b8912f',
+  horari:'', sessions:[]
+};
+let pasActual = 1;
+
+const temesColor = [
+  {nom:'Violeta', color1:'#4b2e6f', color2:'#b8912f'},
+  {nom:'Blau', color1:'#1f5f8b', color2:'#2a7aab'},
+  {nom:'Verd', color1:'#2e7d4f', color2:'#4caf7d'},
+  {nom:'Taronja', color1:'#c05621', color2:'#e8883a'},
+  {nom:'Vermell', color1:'#a52834', color2:'#d9534f'},
+  {nom:'Gris', color1:'#495057', color2:'#6c757d'}
+];
+
+function guardarConfig(){ try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(config)); }catch(e){} }
+function carregarConfig(){ try{ const d = localStorage.getItem(STORAGE_KEY); if(d) config = Object.assign({}, config, JSON.parse(d)); }catch(e){} }
+function recollirFormulari(){
+  document.querySelectorAll('[data-campo]').forEach(el=>{
+    const c = el.getAttribute('data-campo');
+    config[c] = el.value;
+  });
+  config.color1 = document.getElementById('cfg_color1_text').value;
+  config.color2 = document.getElementById('cfg_color2_text').value;
+}
+function aplicarAlFormulari(){
+  Object.keys(config).forEach(k=>{
+    const el = document.getElementById('cfg_'+k);
+    if(el && typeof config[k] !== 'object') el.value = config[k];
+  });
+  document.getElementById('cfg_color1_text').value = config.color1;
+  document.getElementById('cfg_color2_text').value = config.color2;
+  renderitzarSessions(); renderitzarTemes();
+}
+
+function anarAlPas(n){
+  recollirFormulari(); guardarConfig();
+  document.querySelectorAll('.pas').forEach(p=>p.classList.remove('active'));
+  document.getElementById('pas'+n).classList.add('active');
+  document.querySelectorAll('.progress-step').forEach(s=>{
+    const p = parseInt(s.getAttribute('data-pas'));
+    s.classList.remove('active','completed');
+    if(p<n) s.classList.add('completed'); else if(p===n) s.classList.add('active');
+  });
+  pasActual = n;
+  if(n===4) renderitzarResum();
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+function seguentPas(){ if(pasActual<4) anarAlPas(pasActual+1); }
+function pasAnterior(){ if(pasActual>1) anarAlPas(pasActual-1); }
+
+// Navegació amb tecles de fletxa
+document.addEventListener('keydown', function(e){
+  // Ignorar si estem dins d'un camp de text, textarea o select
+  const tag = (document.activeElement && document.activeElement.tagName) || '';
+  if(tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT') return;
+  if(e.ctrlKey || e.metaKey || e.altKey) return;
+
+  if(e.key === 'ArrowRight'){ 
+    e.preventDefault();
+    if(pasActual < 4) anarAlPas(pasActual + 1);
+  } else if(e.key === 'ArrowLeft'){
+    e.preventDefault();
+    if(pasActual > 1) anarAlPas(pasActual - 1);
+  }
+});
+
+function pasAnterior(){ if(pasActual>1) anarAlPas(pasActual-1); }
+
+function afegirSessio(){ config.sessions.push({data:'', titol:''}); renderitzarSessions(); guardarConfig(); }
+function eliminarSessio(i){ config.sessions.splice(i,1); renderitzarSessions(); guardarConfig(); }
+function actualitzarSessio(i, camp, val){ config.sessions[i][camp] = val; guardarConfig(); }
+function renderitzarSessions(){
+  const c = document.getElementById('sessionsContainer');
+  if(!c) return;
+  if(!config.sessions.length){
+    c.innerHTML = '<p style="color:#999;font-style:italic;padding:10px">'+t('no_sessions')+'</p>';
+    return;
+  }
+  c.innerHTML = config.sessions.map((s,i)=>{
+    const titol = (s.titol||'').replace(/"/g,'&quot;');
+    return '<div class="sessio-item">'
+      +'<input type="date" value="'+(s.data||'')+'" onchange="actualitzarSessio('+i+',\'data\',this.value)">'
+      +'<input type="text" value="'+titol+'" placeholder="'+t('ph_data_sessio')+'" onchange="actualitzarSessio('+i+',\'titol\',this.value)">'
+      +'<button class="btn-remove" onclick="eliminarSessio('+i+')">×</button>'
+      +'</div>';
+  }).join('');
+}
+
+function importarCSV(e){
+  const f = e.target.files[0]; if(!f) return;
+  const r = new FileReader();
+  r.onload = ev => {
+    try{
+      const lines = ev.target.result.split(/\r?\n/).filter(l=>l.trim());
+      let start = 0;
+      if(lines[0] && /data|date|titol|title|fecha/i.test(lines[0])) start = 1;
+      let n = 0;
+      for(let i=start;i<lines.length;i++){
+        const p = lines[i].split(',').map(x=>x.trim().replace(/^"|"$/g,''));
+        if(p.length>=2 && p[0] && p[1]){
+          let d = p[0];
+          if(/^\d{1,2}\/\d{1,2}\/\d{4}$/.test(d)){
+            const parts = d.split('/');
+            d = parts[2]+'-'+parts[1].padStart(2,'0')+'-'+parts[0].padStart(2,'0');
+          }
+          config.sessions.push({data:d, titol:p[1]}); n++;
+        }
+      }
+      renderitzarSessions(); guardarConfig();
+      toast(n+' '+t('toast_csv'), 'success');
+    }catch(err){ toast(t('toast_error'), 'error'); }
+  };
+  r.readAsText(f); e.target.value = '';
+}
+function descarregarExempleCSV(){
+  const ex = 'data,titol\n2026-10-09,Sessió 1\n2026-10-16,Sessió 2\n2026-10-23,Sessió 3';
+  const b = new Blob([ex], {type:'text/csv'});
+  const a = document.createElement('a'); a.href = URL.createObjectURL(b);
+  a.download = 'exemple_sessions.csv'; a.click();
+}
+
+function renderitzarTemes(){
+  const c = document.getElementById('temesColor'); if(!c) return;
+  c.innerHTML = temesColor.map((tm,i)=>{
+    const sel = (config.color1===tm.color1 && config.color2===tm.color2) ? ' selected' : '';
+    return '<div class="tema-color'+sel+'" onclick="aplicarTema('+i+')">'
+      +'<div class="tema-color-preview" style="background:linear-gradient(135deg,'+tm.color1+','+tm.color2+')"></div>'
+      +'<div>'+tm.nom+'</div></div>';
+  }).join('');
+}
+function aplicarTema(i){
+  const tm = temesColor[i];
+  config.color1 = tm.color1; config.color2 = tm.color2;
+  document.getElementById('cfg_color1').value = tm.color1;
+  document.getElementById('cfg_color1_text').value = tm.color1;
+  document.getElementById('cfg_color2').value = tm.color2;
+  document.getElementById('cfg_color2_text').value = tm.color2;
+  renderitzarTemes(); guardarConfig();
+}
+
+function renderitzarResum(){
+  recollirFormulari();
+  const c = document.getElementById('resumContingut'); if(!c) return;
+  c.innerHTML =
+    '<div class="resum-item"><span class="resum-label">'+t('resum_assignatura')+'</span><span>'+esc(config.nomAssignatura||'—')+'</span></div>'
+   +'<div class="resum-item"><span class="resum-label">'+t('resum_professor')+'</span><span>'+esc(config.nomProfessor||'—')+'</span></div>'
+   +'<div class="resum-item"><span class="resum-label">'+t('resum_curs')+'</span><span>'+esc(config.cursAcademic||'—')+'</span></div>'
+   +'<div class="resum-item"><span class="resum-label">'+t('resum_sessions')+'</span><span>'+config.sessions.length+'</span></div>'
+   +'<div class="resum-item"><span class="resum-label">'+t('resum_nom_curt')+'</span><span>'+esc(config.nomCurt||'—')+'</span></div>';
+}
+
+function toast(msg, tipus){
+  tipus = tipus || 'info';
+  const el = document.createElement('div');
+  el.className = 'toast '+tipus; el.textContent = msg;
+  document.body.appendChild(el);
+  setTimeout(()=>{ el.style.opacity='0'; setTimeout(()=>el.remove(),300); }, 3000);
+}
+function esc(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function slug(s){ return String(s||'assignatura').toLowerCase().replace(/\s+/g,'_').replace(/[^a-z0-9_-]/g,'').slice(0,40); }
+function descarregar(nom, contingut){
+  const b = new Blob([contingut], {type:'text/html;charset=utf-8'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(b); a.download = nom;
+  document.body.appendChild(a); a.click();
+  setTimeout(()=>{ document.body.removeChild(a); URL.revokeObjectURL(a.href); }, 100);
+}
+function exportarConfig(){
+  recollirFormulari();
+  const b = new Blob([JSON.stringify(config,null,2)], {type:'application/json'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(b);
+  a.download = 'config_'+slug(config.nomCurt||config.nomAssignatura)+'.json';
+  a.click();
+  toast(t('toast_exportat'), 'success');
+}
+function importarConfig(e){
+  const f = e.target.files[0]; if(!f) return;
+  const r = new FileReader();
+  r.onload = ev => {
+    try{
+      config = Object.assign({}, config, JSON.parse(ev.target.result));
+      aplicarAlFormulari(); guardarConfig();
+      toast(t('toast_importat'), 'success');
+    }catch(err){ toast(t('toast_error'), 'error'); }
+  };
+  r.readAsText(f); e.target.value = '';
+}
+function netejarTot(){
+  if(!confirm(t('confirm_netejar'))) return;
+  localStorage.removeItem(STORAGE_KEY);
+  location.reload();
+}
+
+// ==========================================
+// VARS COMUNES
+// ==========================================
+function varsComunes(){
+  const nomCurt = slug(config.nomCurt || config.nomAssignatura);
+  return {
+    '{{NOM}}': config.nomAssignatura,
+    '{{NOM_CURT}}': nomCurt,
+    '{{CURS}}': config.cursAcademic,
+    '{{NIVELL}}': config.nivell,
+    '{{CARACTER}}': config.caracter,
+    '{{CODI}}': config.codi,
+    '{{PROF}}': config.nomProfessor,
+    '{{PROF_TITOL}}': config.titolProfessor,
+    '{{EMAIL}}': config.email,
+    '{{CENTRE}}': config.centre,
+    '{{ICONA}}': config.icona,
+    '{{C1}}': config.color1,
+    '{{C2}}': config.color2,
+    '{{HORARI}}': config.horari,
+    '{{SESSIONS_JSON}}': JSON.stringify(config.sessions.map((s,i)=>({date:s.data, topic:s.titol||('Sessió '+(i+1))})), null, 2)
+  };
+}
+function subst(tpl, vars){
+  let out = tpl;
+  Object.keys(vars).forEach(k => { out = out.split(k).join(vars[k]); });
+  return out;
+}
+function validar(){
+  if(!config.nomAssignatura || !config.nomProfessor){
+    toast(t('toast_sense_dades'), 'error');
+    return false;
+  }
+  return true;
+}
+
+// ==========================================
+// GENERAR
+// ==========================================
+function generarProgramacio(){
+  recollirFormulari();
+  if(!validar()) return;
+  try{
+    descarregar('programacio_'+slug(config.nomCurt||config.nomAssignatura)+'.html', construirProgramacio());
+    toast(t('toast_generat'), 'success');
+  }catch(e){ toast(t('toast_error')+': '+e.message, 'error'); }
+}
+function generarPlanificador(){
+  recollirFormulari();
+  if(!validar()) return;
+  try{
+    descarregar('planificador_'+slug(config.nomCurt||config.nomAssignatura)+'.html', construirPlanificador());
+    toast(t('toast_generat'), 'success');
+  }catch(e){ toast(t('toast_error')+': '+e.message, 'error'); }
+}
+function generarFitxa(){
+  recollirFormulari();
+  if(!validar()) return;
+  try{
+    descarregar('fitxa_alumne_'+slug(config.nomCurt||config.nomAssignatura)+'.html', construirFitxa());
+    toast(t('toast_generat'), 'success');
+  }catch(e){ toast(t('toast_error')+': '+e.message, 'error'); }
+}
+function generarTots(){
+  recollirFormulari();
+  if(!validar()) return;
+  try{
+    setTimeout(function(){ generarProgramacio(); }, 100);
+    setTimeout(function(){ generarPlanificador(); }, 700);
+    setTimeout(function(){ generarFitxa(); }, 1300);
+    toast(t('toast_3'), 'success');
+  }catch(e){ toast(t('toast_error'), 'error'); }
+}
+
+// ==========================================
+// PLANTILLA: PROGRAMACIÓ
+// ==========================================
+function construirProgramacio(){
+  const vars = varsComunes();
+  const key = slug(config.nomCurt||config.nomAssignatura) + '_prog_v3';
+  vars['{{KEY}}'] = key;
+
+  const tpl = `<!DOCTYPE html>
+<html lang="ca">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Programació · {{NOM}}</title>
+<style>
+  :root{--pri:{{C1}};--pri2:{{C2}};--oro:#b8912f;--crema:#faf8fc;--tinta:#2a2530;--gris:#6b6570;--bord:#e0d8ea;--card:#fff}
+  *{box-sizing:border-box}
+  body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--crema);color:var(--tinta);line-height:1.55}
+  h1,h2,h3{font-family:Georgia,"Times New Roman",serif}
+  .topbar{position:sticky;top:0;z-index:50;background:var(--pri);color:#fff;padding:.6rem 1rem;display:flex;gap:.8rem;align-items:center;flex-wrap:wrap;box-shadow:0 2px 10px rgba(0,0,0,.25)}
+  .brand{font-family:Georgia,serif;font-size:1.05rem;font-weight:bold}
+  .brand small{opacity:.85;font-weight:normal;display:block;font-size:.72rem}
+  .lang{display:flex;gap:.3rem;margin-left:auto}
+  .lang button{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.35);color:#fff;padding:.3rem .7rem;border-radius:20px;cursor:pointer;font-weight:600}
+  .lang button.on{background:#fff;color:var(--pri)}
+  .tools{display:flex;gap:.4rem;flex-wrap:wrap;width:100%}
+  .tools button{border:none;border-radius:8px;padding:.42rem .8rem;cursor:pointer;font-weight:600;font-size:.85rem;background:rgba(255,255,255,.92);color:var(--pri)}
+  .tools button.primary{background:var(--oro);color:#fff}
+  .tools button.danger{background:#f3d9de;color:#a52834}
+  .savestate{font-size:.8rem;opacity:.9;align-self:center}
+  .layout{display:grid;grid-template-columns:250px 1fr;gap:1.2rem;max-width:1250px;margin:1.2rem auto;padding:0 1rem}
+  nav{position:sticky;top:120px;align-self:start;background:var(--card);border:1px solid var(--bord);border-radius:12px;padding:.8rem;max-height:calc(100vh - 150px);overflow:auto}
+  .navtitle{display:block;padding:.3rem .5rem;color:var(--pri);font-size:.8rem;text-transform:uppercase;letter-spacing:.5px}
+  nav a{display:block;padding:.4rem .5rem;color:var(--tinta);text-decoration:none;border-radius:8px;font-size:.88rem}
+  nav a:hover{background:#f1ecf7}
+  nav a.on{background:var(--pri);color:#fff}
+  main{min-width:0}
+  section.card{background:var(--card);border:1px solid var(--bord);border-radius:14px;padding:1.4rem 1.6rem;margin-bottom:1.4rem;box-shadow:0 1px 4px rgba(0,0,0,.05)}
+  section.card>h2{margin:.1rem 0 .9rem;color:var(--pri);font-size:1.38rem;border-bottom:2px solid var(--bord);padding-bottom:.45rem}
+  section.card h3{color:var(--pri2);font-size:1.1rem;margin:1.3rem 0 .5rem}
+  .empty-guide{background:#fdf6e7;border-left:4px solid var(--oro);padding:.9rem 1.1rem;border-radius:0 8px 8px 0;font-size:.95rem;color:#6b5300;font-style:italic}
+  body.editing [contenteditable=true]{outline:1.5px dashed rgba(0,0,0,.2);outline-offset:2px;border-radius:4px;cursor:text;background:#fffdf5}
+  body.editing [contenteditable=true]:focus{outline:2px solid var(--pri);background:#fffdf2}
+  .edited-chip{background:#e7f0ea;color:#2e7d4f;font-size:.72rem;font-weight:700;padding:.15rem .6rem;border-radius:10px;margin-left:.6rem;font-family:system-ui}
+  #toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:var(--tinta);color:#fff;padding:.6rem 1.1rem;border-radius:10px;font-size:.9rem;opacity:0;pointer-events:none;transition:opacity .3s;z-index:99}
+  #toast.show{opacity:1}
+  @media(max-width:900px){.layout{grid-template-columns:1fr}nav{position:static;max-height:none}}
+  @media print{.topbar,nav,#toast,.tools{display:none!important}.layout{display:block;max-width:none;margin:0;padding:0}section.card{border:none;box-shadow:none;page-break-inside:avoid;padding:.5rem 0}body{background:#fff}.empty-guide{display:none}}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="brand">{{ICONA}} <span id="brandTitle"></span> <small id="brandSub"></small></div>
+  <div class="lang" id="langBox">
+    <button data-lang="ca">CA</button><button data-lang="es">ES</button><button data-lang="en">EN</button>
+  </div>
+  <div class="tools">
+    <button id="bEdit"></button>
+    <button id="bSave" class="primary"></button>
+    <button id="bExport"></button>
+    <button id="bImport"></button>
+    <button id="bReset" class="danger"></button>
+    <button id="bPrint"></button>
+    <span class="savestate" id="savestate"></span>
+  </div>
+</header>
+<div class="layout">
+  <nav id="nav"></nav>
+  <main id="main"></main>
+</div>
+<div id="toast"></div>
+<input type="file" id="fileImp" accept=".json" hidden>
+
+<SCRIPT_PLACEHOLDER>
+const KEY='{{KEY}}';
+const IDIOMA_DEFAULT='ca';
+
+const UI={
+ca:{brand:"{{NOM}} · Programació",brandSub:"{{NIVELL}} · {{CENTRE}} · {{CURS}} · {{PROF_TITOL}} {{PROF}}",
+ edit:"✏️ Edita",editing:"✅ Acaba",save:"💾 Desa",export:"⬇ Exporta",import:"⬆ Importa",
+ reset:"↺ Restaura",print:"🖨 Imprimeix",saved:"Desat",nochanges:"Sense canvis",edited:"editat",navTitle:"Índex",
+ resetMsg:"Restaurar el contingut original (perdràs les edicions)?",
+ guide:"Fes clic a ✏️ Edita per modificar aquesta secció. El contingut s'adapta a l'idioma que triïs a la barra superior.",
+ secs:["1. Dades identificatives","2. Competències i resultats d'aprenentatge","3. Enfocament de l'assignatura",
+ "4. Eix global i productes","5. Continguts i sessions","6. Cronograma","7. Metodologia","8. Avaluació",
+ "9. Bibliografia i recursos","10. Annexos i fitxes"]},
+es:{brand:"{{NOM}} · Programación",brandSub:"{{NIVELL}} · {{CENTRE}} · {{CURS}} · {{PROF_TITOL}} {{PROF}}",
+ edit:"✏️ Editar",editing:"✅ Terminar",save:"💾 Guardar",export:"⬇ Exportar",import:"⬆ Importar",
+ reset:"↺ Restaurar",print:"🖨 Imprimir",saved:"Guardado",nochanges:"Sin cambios",edited:"editado",navTitle:"Índice",
+ resetMsg:"¿Restaurar el contenido original (perderás las ediciones)?",
+ guide:"Haz clic en ✏️ Editar para modificar esta sección. El contenido se adapta al idioma que elijas en la barra superior.",
+ secs:["1. Datos identificativos","2. Competencias y resultados de aprendizaje","3. Enfoque de la asignatura",
+ "4. Eje global y productos","5. Contenidos y sesiones","6. Cronograma","7. Metodología","8. Evaluación",
+ "9. Bibliografía y recursos","10. Anexos y fichas"]},
+en:{brand:"{{NOM}} · Programme",brandSub:"{{NIVELL}} · {{CENTRE}} · {{CURS}} · {{PROF_TITOL}} {{PROF}}",
+ edit:"✏️ Edit",editing:"✅ Finish",save:"💾 Save",export:"⬇ Export",import:"⬆ Import",
+ reset:"↺ Reset",print:"🖨 Print",saved:"Saved",nochanges:"No changes",edited:"edited",navTitle:"Contents",
+ resetMsg:"Restore the original content (your edits will be lost)?",
+ guide:"Click ✏️ Edit to modify this section. Content adapts to the language chosen in the top bar.",
+ secs:["1. Identification data","2. Competences and learning outcomes","3. Course approach",
+ "4. Core project and products","5. Contents and sessions","6. Schedule","7. Methodology","8. Assessment",
+ "9. Bibliography and resources","10. Annexes and worksheets"]}
+};
+
+const SEC_IDS=['dades','ra','enfo','eix','temari','crono','metod','aval','biblio','annex'];
+
+let lang=localStorage.getItem(KEY+'_lang')||IDIOMA_DEFAULT;
+let overrides=JSON.parse(localStorage.getItem(KEY+'_overrides')||'{}');
+let editing=false;
+const $=function(s){return document.querySelector(s);};
+const U=function(){return UI[lang];};
+
+function getContent(id){
+  if(overrides[id]!==undefined) return overrides[id];
+  return '<div class="empty-guide">'+U().guide+'</div>';
+}
+function toast(msg){const el=$('#toast');el.textContent=msg;el.classList.add('show');clearTimeout(el._tm);el._tm=setTimeout(function(){el.classList.remove('show');},2400);}
+
+function render(){
+  const u=U();
+  document.documentElement.lang=lang;
+  $('#brandTitle').textContent=u.brand;
+  $('#brandSub').textContent=u.brandSub;
+  $('#bEdit').textContent=editing?u.editing:u.edit;
+  $('#bSave').textContent=u.save;
+  $('#bExport').textContent=u.export;
+  $('#bImport').textContent=u.import;
+  $('#bReset').textContent=u.reset;
+  $('#bPrint').textContent=u.print;
+  document.querySelectorAll('#langBox button').forEach(function(b){b.classList.toggle('on',b.dataset.lang===lang);});
+  $('#nav').innerHTML='<strong class="navtitle">'+u.navTitle+'</strong>'+
+    u.secs.map(function(t,i){return '<a href="#s-'+SEC_IDS[i]+'">'+t+'</a>';}).join('');
+  $('#main').innerHTML=u.secs.map(function(t,i){
+    const id=SEC_IDS[i];
+    const edited = overrides[id]!==undefined ? '<span class="edited-chip">'+u.edited+'</span>' : '';
+    return '<section class="card" id="s-'+id+'"><h2>'+t+edited+'</h2>'+
+      '<div class="secbody" data-id="'+id+'">'+getContent(id)+'</div></section>';
+  }).join('');
+  document.querySelectorAll('.secbody').forEach(function(el){el.setAttribute('contenteditable',editing?'true':'false');});
+  document.body.classList.toggle('editing',editing);
+}
+
+function save(){
+  if(!editing){toast(U().nochanges);return;}
+  let n=0;
+  document.querySelectorAll('.secbody').forEach(function(el){
+    const id=el.dataset.id;
+    const html=el.innerHTML.trim();
+    if(html.indexOf('class="empty-guide"')>-1 && html.length<400){ delete overrides[id]; }
+    else{ overrides[id]=html; n++; }
+  });
+  localStorage.setItem(KEY+'_overrides',JSON.stringify(overrides));
+  toast(U().saved+' ('+n+')');
+  $('#savestate').textContent=U().saved+' '+new Date().toLocaleTimeString();
+  render();
+}
+function resetAll(){
+  if(!confirm(U().resetMsg))return;
+  overrides={};
+  localStorage.removeItem(KEY+'_overrides');
+  render();
+}
+function exportJSON(){
+  const data=JSON.stringify({app:KEY,exported:new Date().toISOString(),overrides:overrides},null,2);
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(new Blob([data],{type:'application/json'}));
+  a.download='{{NOM_CURT}}-programacio-copia.json';
+  a.click();
+}
+function importJSON(f){
+  const r=new FileReader();
+  r.onload=function(e){
+    try{
+      const j=JSON.parse(e.target.result);
+      if(j.overrides){
+        overrides=j.overrides;
+        localStorage.setItem(KEY+'_overrides',JSON.stringify(overrides));
+        render(); toast(U().saved);
+      }
+    }catch(err){toast('Error');}
+  };
+  r.readAsText(f);
+}
+$('#langBox').addEventListener('click',function(e){
+  const b=e.target.closest('button'); if(!b) return;
+  lang=b.dataset.lang; localStorage.setItem(KEY+'_lang',lang); render();
+});
+$('#bEdit').onclick=function(){editing=!editing;render();};
+$('#bSave').onclick=save;
+$('#bReset').onclick=resetAll;
+$('#bExport').onclick=exportJSON;
+$('#bPrint').onclick=function(){window.print();};
+$('#bImport').onclick=function(){$('#fileImp').click();};
+$('#fileImp').onchange=function(e){if(e.target.files[0])importJSON(e.target.files[0]);e.target.value='';};
+
+render();
+</SCRIPT_PLACEHOLDER>
+</body>
+</html>`.split('<SCRIPT_PLACEHOLDER>').join('<' + 'script>').split('</SCRIPT_PLACEHOLDER>').join('<' + '/script>');
+
+  return subst(tpl, vars);
+}
+
+// ==========================================
+// PLANTILLA: PLANIFICADOR
+// ==========================================
+function construirPlanificador(){
+  const vars = varsComunes();
+  const key = slug(config.nomCurt||config.nomAssignatura) + '_plan_v3';
+  vars['{{KEY}}'] = key;
+
+  const tpl = `<!DOCTYPE html>
+<html lang="ca">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Planificador · {{NOM}}</title>
+<style>
+  :root{--pri:{{C1}};--pri2:{{C2}};--oro:#b8912f;--crema:#faf8fc;--tinta:#2a2530;--gris:#6b6570;--bord:#e0d8ea;--card:#fff;--verd:#2e7d4f;--blau:#1f5f8b;--taronja:#c05621;--vermell:#a52834;--grisc:#7a8288}
+  *{box-sizing:border-box}
+  body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--crema);color:var(--tinta);line-height:1.5}
+  .topbar{position:sticky;top:0;z-index:50;background:var(--pri);color:#fff;padding:.6rem 1rem;display:flex;gap:.7rem;align-items:center;flex-wrap:wrap;box-shadow:0 2px 10px rgba(0,0,0,.25)}
+  .brand{font-family:Georgia,serif;font-size:1rem;font-weight:bold}
+  .brand small{opacity:.85;font-weight:normal;display:block;font-size:.7rem}
+  .lang{display:flex;gap:.25rem}
+  .lang button{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.35);color:#fff;padding:.25rem .6rem;border-radius:20px;cursor:pointer;font-weight:600;font-size:.8rem}
+  .lang button.on{background:#fff;color:var(--pri)}
+  .tools{display:flex;gap:.35rem;flex-wrap:wrap;align-items:center}
+  .tools button,.tools a,.tools select{border:none;border-radius:8px;padding:.4rem .7rem;cursor:pointer;font-weight:600;font-size:.8rem;background:rgba(255,255,255,.92);color:var(--pri);text-decoration:none}
+  .tools .primary{background:var(--oro);color:#fff}
+  #savestate{font-size:.72rem;opacity:.9}
+  main{max-width:1100px;margin:1.2rem auto;padding:0 1rem}
+  .card{background:var(--card);border:1px solid #d8cdea;border-top:4px solid var(--pri);border-radius:14px;margin-bottom:1.35rem;box-shadow:0 2px 8px rgba(0,0,0,.10);overflow:hidden}
+  .card.nl{border-top-color:var(--grisc)}
+  .chead{display:flex;gap:.5rem;align-items:center;padding:.75rem .9rem;cursor:pointer;flex-wrap:wrap;background:#f7f3fc;border-bottom:1px solid #efe8f7}
+  .chead:hover{background:#f1e9f9}
+  .tw{background:none;border:none;font-size:1rem;cursor:pointer;color:var(--pri);width:1.4rem}
+  .cmeta{flex:1;min-width:220px;display:flex;align-items:center;gap:.5rem;flex-wrap:wrap}
+  .snum{display:inline-flex;align-items:center;justify-content:center;background:var(--pri);color:#fff;border-radius:50%;min-width:1.55rem;height:1.55rem;font-size:.72rem;font-weight:700;flex:none}
+  .cmeta b{color:var(--pri);background:#efe7f5;border-radius:10px;padding:.05rem .55rem;font-size:.82rem;white-space:nowrap}
+  .cmeta .topic{font-family:Georgia,serif;font-size:.98rem}
+  .badge{display:inline-block;font-size:.68rem;font-weight:700;padding:.08rem .5rem;border-radius:10px;vertical-align:middle}
+  .nlb{background:var(--grisc);color:#fff}
+  .ccounts{font-size:.72rem;color:var(--gris);background:#f4eefb;border-radius:10px;padding:.25rem .6rem}
+  .mini{background:none;border:none;cursor:pointer;opacity:.4;font-size:.82rem;padding:0 .15rem;line-height:1}
+  .mini:hover{opacity:1}
+  .del{background:none;border:none;cursor:pointer;opacity:.45;font-size:.9rem}
+  .del:hover{opacity:1}
+  .del.ses:hover{color:var(--vermell)}
+  .del.confirm{opacity:1;background:var(--vermell);color:#fff;border-radius:8px;padding:0 .45rem}
+  .sbody{padding:.4rem 1.1rem 1.2rem;border-top:1px dashed var(--bord)}
+  .grid2{display:grid;grid-template-columns:170px 1fr;gap:.8rem;margin:.8rem 0}
+  .fld span{display:block;font-size:.75rem;font-weight:700;color:var(--pri2);margin-bottom:.2rem}
+  input[type=text],input[type=email],input[type=date],textarea,select.st{width:100%;border:1px solid var(--bord);border-radius:8px;padding:.45rem .55rem;font:inherit;font-size:.88rem;background:#fffdf7}
+  textarea{resize:vertical}
+  input:focus,textarea:focus,select:focus{outline:2px solid var(--pri2)}
+  .sect{margin:.9rem 0;border:1px solid var(--bord);border-left:4px solid #ccc;border-radius:10px;padding:.7rem .8rem;background:#fdfbf8}
+  .se-obj{border-left-color:#8e6fb8}.se-obj h3{color:#8e6fb8}
+  .se-act{border-left-color:var(--blau)}.se-act h3{color:var(--blau)}
+  .se-res{border-left-color:var(--verd)}.se-res h3{color:var(--verd)}
+  .se-av{border-left-color:var(--taronja)}.se-av h3{color:var(--taronja)}
+  .se-comp{border-left-color:#b0567a}.se-comp h3{color:#b0567a}
+  .se-ev{border-left-color:var(--grisc)}.se-ev h3{color:var(--grisc)}
+  .secth{display:flex;gap:.6rem;align-items:center;flex-wrap:wrap;margin-bottom:.4rem}
+  .secth h3{margin:0;font-size:.92rem;color:var(--pri);flex:1;min-width:180px}
+  .add{background:var(--pri2);color:#fff;border:none;border-radius:8px;padding:.3rem .65rem;font-size:.78rem;font-weight:600;cursor:pointer}
+  .rows{display:flex;flex-direction:column;gap:.35rem}
+  .row{display:grid;grid-template-columns:1fr 130px auto 130px auto;gap:.4rem;align-items:start}
+  .row.mini-row{grid-template-columns:1fr auto auto}
+  .row textarea{min-height:48px}
+  .chk{display:inline-flex;align-items:center;gap:.3rem;font-size:.76rem;color:var(--gris);cursor:pointer;white-space:nowrap}
+  .lks{grid-column:1/-1;display:none;flex-wrap:wrap;gap:.3rem;margin-top:-.1rem}
+  .lks a{display:inline-block;background:#eaf3fb;color:var(--blau);border:1px solid #bcd7ea;border-radius:14px;padding:.08rem .55rem;font-size:.74rem;text-decoration:none}
+  .hint{font-size:.75rem;color:var(--gris);margin:.3rem 0}
+  .st-plan{border-left:3px solid var(--blau)}.st-done{border-left:3px solid var(--verd)}
+  .st-pause{border-left:3px solid var(--taronja)}.st-drop{border-left:3px solid var(--grisc);opacity:.55}
+  #toast{position:fixed;bottom:18px;left:50%;margin-left:-140px;width:280px;text-align:center;background:var(--tinta);color:#fff;padding:.6rem 1.1rem;border-radius:10px;font-size:.85rem;opacity:0;pointer-events:none;transition:opacity .3s;z-index:99}
+  #toast.show{opacity:1}
+  @media print{.topbar,#toast,.add,.del,.tw,.chk,.hint,.tools,.mini{display:none!important}.card{border:none;box-shadow:none;page-break-inside:avoid}.sbody{display:block!important}}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="brand">{{ICONA}} <span id="t1"></span><small id="t2"></small></div>
+  <div class="lang" id="langBox">
+    <button data-lang="ca">CA</button><button data-lang="es">ES</button><button data-lang="en">EN</button>
+  </div>
+  <div class="tools">
+    <a id="lnkStu" href="fitxa_alumne_{{NOM_CURT}}.html" target="_blank"></a>
+    <button id="bNew"></button>
+    <button id="bExpStu" class="primary"></button>
+    <button id="bExp"></button>
+    <button id="bImp"></button>
+    <button id="bPrint"></button>
+    <select id="flt"></select>
+    <span id="savestate"></span>
+  </div>
+</header>
+<main id="main"></main>
+<div id="toast"></div>
+<input type="file" id="fImp" accept=".json" style="display:none">
+
+<SCRIPT_PLACEHOLDER>
+const KEY='{{KEY}}';
+const SEED_SESSIONS={{SESSIONS_JSON}};
+
+const I18N={
+ca:{t1:"Planificador · {{NOM}}",t2:"{{PROF_TITOL}} {{PROF}} · {{CURS}}",
+openStu:"🎓 Fitxa alumne",bNew:"+ Sessió",bExpStu:"Exporta alumnat",bExp:"Exporta",bImp:"Importa",bPrint:"Imprimeix",
+saved:"Desat",fltAll:"Totes",stPlan:"Prevista",stDone:"Feta",stPause:"Pausa",stDrop:"Descartada",
+fDate:"Data",fTopic:"Tema",objTitle:"🎯 Objectius",actTitle:"▶ Activitats",resTitle:"🔗 Recursos",avTitle:"🎥 Mitjans",compTitle:"🏠 Treball complementari",evTitle:"✅ Evidències",
+visStudent:"Visible",addAct:"+ Activitat",addLine:"+ Línia",del:"Esborra",delSes:"Esborra (2 clics)",
+noLectiva:"No lectiu",noTopic:"(sense títol)",noActs:"Sense activitats.",noItems:"Sense elements.",
+phAct:"Descripció",phTime:"Horari",phObj:"Objectius...",phComp:"Treball fora d'aula...",phEv:"Evidències...",phRes:"Títol + https://...",phAv:"Vídeo, àudio...",
+cActs:"Act.",cVis:"vis.",cRes:"Rec.",cAv:"A/V",
+impOk:"Importat.",dlFail:"Descàrrega bloquejada.",
+studentNote:"Fitxer per a l'alumnat generat."},
+es:{t1:"Planificador · {{NOM}}",t2:"{{PROF_TITOL}} {{PROF}} · {{CURS}}",
+openStu:"🎓 Ficha alumno",bNew:"+ Sesión",bExpStu:"Exportar alumnado",bExp:"Exportar",bImp:"Importar",bPrint:"Imprimir",
+saved:"Guardado",fltAll:"Todas",stPlan:"Prevista",stDone:"Hecha",stPause:"Pausa",stDrop:"Descartada",
+fDate:"Fecha",fTopic:"Tema",objTitle:"🎯 Objetivos",actTitle:"▶ Actividades",resTitle:"🔗 Recursos",avTitle:"🎥 Medios",compTitle:"🏠 Trabajo complementario",evTitle:"✅ Evidencias",
+visStudent:"Visible",addAct:"+ Actividad",addLine:"+ Línea",del:"Borrar",delSes:"Borrar (2 clics)",
+noLectiva:"No lectivo",noTopic:"(sin título)",noActs:"Sin actividades.",noItems:"Sin elementos.",
+phAct:"Descripción",phTime:"Horario",phObj:"Objetivos...",phComp:"Trabajo fuera del aula...",phEv:"Evidencias...",phRes:"Título + https://...",phAv:"Vídeo, audio...",
+cActs:"Act.",cVis:"vis.",cRes:"Rec.",cAv:"A/V",
+impOk:"Importado.",dlFail:"Descarga bloqueada.",
+studentNote:"Archivo para el alumnado generado."},
+en:{t1:"Planner · {{NOM}}",t2:"{{PROF_TITOL}} {{PROF}} · {{CURS}}",
+openStu:"🎓 Student sheet",bNew:"+ Session",bExpStu:"Export students",bExp:"Export",bImp:"Import",bPrint:"Print",
+saved:"Saved",fltAll:"All",stPlan:"Planned",stDone:"Done",stPause:"Paused",stDrop:"Discarded",
+fDate:"Date",fTopic:"Topic",objTitle:"🎯 Objectives",actTitle:"▶ Activities",resTitle:"🔗 Resources",avTitle:"🎥 Media",compTitle:"🏠 Complementary",evTitle:"✅ Evidence",
+visStudent:"Visible",addAct:"+ Activity",addLine:"+ Line",del:"Delete",delSes:"Delete (2 clicks)",
+noLectiva:"Non-teaching",noTopic:"(untitled)",noActs:"No activities.",noItems:"No items.",
+phAct:"Description",phTime:"Time",phObj:"Objectives...",phComp:"Out-of-class work...",phEv:"Evidence...",phRes:"Title + https://...",phAv:"Video, audio...",
+cActs:"Act.",cVis:"vis.",cRes:"Res.",cAv:"A/V",
+impOk:"Imported.",dlFail:"Download blocked.",
+studentNote:"Student file generated."}
+};
+
+let lang=localStorage.getItem(KEY+'L')||'ca';
+let filter='all';
+let EXP={};
+let plan=null;
+let saveTimer=null;
+
+function $(id){return document.getElementById(id);}
+function t(k){return (I18N[lang]&&I18N[lang][k])?I18N[lang][k]:k;}
+function uid(){return 'x'+Math.random().toString(36).slice(2,9)+Date.now().toString(36).slice(-4);}
+function esc(s){s=(s==null)?'':String(s);return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function fmt(iso){if(!iso)return '-';var p=String(iso).split('-');if(p.length<3)return String(iso);return p[2]+'/'+p[1]+'/'+p[0];}
+
+function S(date,topic,obj,nl){return {id:uid(),date:date||'',topic:topic||'',noLectiva:!!nl,objVis:true,obj:obj||'',acts:[],res:[],av:[],compVis:true,comp:'',evVis:true,ev:''};}
+function seed(){
+  var out=[],i;
+  for(i=0;i<SEED_SESSIONS.length;i++){var s=SEED_SESSIONS[i];out.push(S(s.date,s.topic,'',false));}
+  if(!out.length)out.push(S('','','',false));
+  return {v:1,sessions:out,meta:{app:'planificador',key:KEY,lastSaved:null}};
+}
+function norm(x){
+  var i,a;
+  if(!x.acts)x.acts=[];
+  for(i=0;i<x.acts.length;i++){a=x.acts[i];a.id=a.id||uid();a.txt=a.txt||'';a.time=a.time||'';a.vis=(a.vis!==false);a.st=a.st||'plan';}
+  if(!x.res)x.res=[];for(i=0;i<x.res.length;i++){a=x.res[i];a.id=a.id||uid();a.txt=a.txt||'';a.vis=(a.vis!==false);}
+  if(!x.av)x.av=[];for(i=0;i<x.av.length;i++){a=x.av[i];a.id=a.id||uid();a.txt=a.txt||'';a.vis=(a.vis!==false);}
+  x.objVis=(x.objVis!==false);x.compVis=(x.compVis!==false);x.evVis=(x.evVis!==false);
+  if(x.obj==null)x.obj='';if(x.comp==null)x.comp='';if(x.ev==null)x.ev='';
+  return x;
+}
+function loadPlan(){
+  var d=null,i;
+  try{d=JSON.parse(localStorage.getItem(KEY));}catch(e){d=null;}
+  if(d&&d.sessions&&d.sessions.length){
+    for(i=0;i<d.sessions.length;i++)norm(d.sessions[i]);
+    if(!d.meta)d.meta={app:'planificador',key:KEY,lastSaved:null};
+    return d;
+  }
+  return seed();
+}
+function save(){
+  try{
+    if(!plan.meta)plan.meta={app:'planificador',key:KEY};
+    plan.meta.lastSaved=new Date().toISOString();
+    localStorage.setItem(KEY,JSON.stringify(plan));
+  }catch(e){}
+  var el=$('savestate');if(el)el.textContent=t('saved')+' - '+new Date().toLocaleTimeString()+' ('+plan.sessions.length+')';
+}
+function scheduleSave(){clearTimeout(saveTimer);saveTimer=setTimeout(save,500);}
+window.onbeforeunload=save;
+function toast(m){var x=$('toast');x.textContent=m;x.className='show';clearTimeout(x._t);x._t=setTimeout(function(){x.className='';},3000);}
+
+function counts(x){var c={at:x.acts.length,av:0,rt:x.res.length,vt:x.av.length};var i;for(i=0;i<x.acts.length;i++)if(x.acts[i].vis)c.av++;return c;}
+function countsHTML(c){return t('cActs')+' '+c.at+' / '+t('cVis')+' '+c.av+' | '+t('cRes')+' '+c.rt+' | '+t('cAv')+' '+c.vt;}
+function metaHTML(x,num){
+  var h='';if(num)h+='<span class="snum">'+num+'</span>';
+  h+='<b>'+fmt(x.date)+'</b><span class="topic">'+(esc(x.topic)||t('noTopic'))+'</span>';
+  if(x.noLectiva)h+='<span class="badge nlb">'+t('noLectiva')+'</span>';
+  return h;
+}
+
+function extreureUrls(txt){
+  var parts=String(txt||'').split(' ');
+  var out=[];
+  for(var i=0;i<parts.length;i++){
+    if(parts[i].indexOf('http://')===0 || parts[i].indexOf('https://')===0) out.push(parts[i]);
+  }
+  return out;
+}
+
+function updateLinks(row,txt){
+  if(!row)return;var box=row.querySelector('.lks');if(!box)return;
+  var urls=extreureUrls(txt);
+  if(!urls.length){box.style.display='none';box.innerHTML='';return;}
+  box.style.display='flex';
+  box.innerHTML=urls.map(function(u){return '<a href="'+esc(u)+'" target="_blank" rel="noopener">🔗 '+esc(u.slice(0,50))+'</a>';}).join('');
+}
+function refreshAllLinks(root){
+  if(!root)return;var rows=root.querySelectorAll('.row'),i;
+  for(i=0;i<rows.length;i++){var ta=rows[i].querySelector('textarea');updateLinks(rows[i],ta?ta.value:'');}
+}
+function actRow(a){
+  return '<div class="row act st-'+a.st+'" data-st="'+a.st+'">'
+   +'<textarea data-aid="'+a.id+'" data-k="txt" rows="2" placeholder="'+esc(t('phAct'))+'">'+esc(a.txt)+'</textarea>'
+   +'<input type="text" class="time" data-aid="'+a.id+'" data-k="time" value="'+esc(a.time)+'" placeholder="'+esc(t('phTime'))+'">'
+   +'<label class="chk"><input type="checkbox" data-aid="'+a.id+'" data-k="vis"'+(a.vis?' checked':'')+'> 👁</label>'
+   +'<select class="st" data-aid="'+a.id+'" data-k="st">'
+   +'<option value="plan"'+(a.st==='plan'?' selected':'')+'>'+esc(t('stPlan'))+'</option>'
+   +'<option value="done"'+(a.st==='done'?' selected':'')+'>'+esc(t('stDone'))+'</option>'
+   +'<option value="pause"'+(a.st==='pause'?' selected':'')+'>'+esc(t('stPause'))+'</option>'
+   +'<option value="drop"'+(a.st==='drop'?' selected':'')+'>'+esc(t('stDrop'))+'</option>'
+   +'</select>'
+   +'<button type="button" class="del" data-del-act="'+a.id+'"> ✕</button>'
+   +'<div class="lks"></div></div>';
+}
+function resRow(r){
+  return '<div class="row mini-row">'
+   +'<textarea data-rid="'+r.id+'" data-k="txt" rows="2" placeholder="'+esc(t('phRes'))+'">'+esc(r.txt)+'</textarea>'
+   +'<label class="chk"><input type="checkbox" data-rid="'+r.id+'" data-k="vis"'+(r.vis?' checked':'')+'> 👁</label>'
+   +'<button type="button" class="del" data-del-res="'+r.id+'"> ✕</button>'
+   +'<div class="lks"></div></div>';
+}
+function avRow(v){
+  return '<div class="row mini-row">'
+   +'<textarea data-vid="'+v.id+'" data-k="txt" rows="2" placeholder="'+esc(t('phAv'))+'">'+esc(v.txt)+'</textarea>'
+   +'<label class="chk"><input type="checkbox" data-vid="'+v.id+'" data-k="vis"'+(v.vis?' checked':'')+'> 👁</label>'
+   +'<button type="button" class="del" data-del-av="'+v.id+'"> ✕</button>'
+   +'<div class="lks"></div></div>';
+}
+function block(title,key,val,inner,cls){
+  return '<div class="sect '+(cls||'')+'"><div class="secth"><h3>'+title+'</h3>'
+   +'<label class="chk"><input type="checkbox" data-f="'+key+'"'+(val?' checked':'')+'>'+esc(t('visStudent'))+'</label></div>'
+   +inner+'</div>';
+}
+function cardHTML(x,num){
+  var c=counts(x),open=!!EXP[x.id],h;
+  h='<section class="card'+(x.noLectiva?' nl':'')+'" id="c-'+x.id+'" data-sid="'+x.id+'">'
+   +'<div class="chead" data-toggle="'+x.id+'">'
+   +'<button type="button" class="tw">'+(open?'▼':'▶')+'</button>'
+   +'<div class="cmeta">'+metaHTML(x,num)+'</div>'
+   +'<div class="ccounts" id="k-'+x.id+'">'+countsHTML(c)+'</div>'
+   +'<button type="button" class="mini" data-up="'+x.id+'">▲</button>'
+   +'<button type="button" class="mini" data-down="'+x.id+'">▼</button>'
+   +'<button type="button" class="del ses" data-del-ses="'+x.id+'">🗑</button>'
+   +'</div>';
+  if(open){
+    h+='<div class="sbody">'
+    +'<div class="grid2">'
+    +'<label class="fld"><span>'+t('fDate')+'</span><input type="date" data-f="date" value="'+esc(x.date)+'"></label>'
+    +'<label class="fld"><span>'+t('fTopic')+'</span><input type="text" data-f="topic" value="'+esc(x.topic)+'"></label>'
+    +'</div>'
+    +block(t('objTitle'),'objVis',x.objVis,'<textarea rows="4" data-f="obj" placeholder="'+esc(t('phObj'))+'">'+esc(x.obj)+'</textarea>','se-obj')
+    +'<div class="sect se-act"><div class="secth"><h3>'+t('actTitle')+'</h3><button type="button" class="add" data-add="acts">+ '+esc(t('addAct'))+'</button></div>'
+    +'<div class="rows">'+(x.acts.length?x.acts.map(actRow).join(''):'<p class="hint">'+t('noActs')+'</p>')+'</div></div>'
+    +'<div class="sect se-res"><div class="secth"><h3>'+t('resTitle')+'</h3><button type="button" class="add" data-add="res">+ '+esc(t('addLine'))+'</button></div>'
+    +'<div class="rows">'+(x.res.length?x.res.map(resRow).join(''):'<p class="hint">'+t('noItems')+'</p>')+'</div></div>'
+    +'<div class="sect se-av"><div class="secth"><h3>'+t('avTitle')+'</h3><button type="button" class="add" data-add="av">+ '+esc(t('addLine'))+'</button></div>'
+    +'<div class="rows">'+(x.av.length?x.av.map(avRow).join(''):'<p class="hint">'+t('noItems')+'</p>')+'</div></div>'
+    +block(t('compTitle'),'compVis',x.compVis,'<textarea rows="2" data-f="comp" placeholder="'+esc(t('phComp'))+'">'+esc(x.comp)+'</textarea>','se-comp')
+    +block(t('evTitle'),'evVis',x.evVis,'<textarea rows="2" data-f="ev" placeholder="'+esc(t('phEv'))+'">'+esc(x.ev)+'</textarea>','se-ev')
+    +'</div>';
+  }
+  h+='</section>';
+  return h;
+}
+function applyRowFilter(row){row.style.display=(filter==='all'||row.getAttribute('data-st')===filter)?'':'none';}
+function updateCounts(x){var k=$('k-'+x.id);if(k)k.innerHTML=countsHTML(counts(x));}
+
+function render(){
+  var y=window.pageYOffset,h='',i;
+  for(i=0;i<plan.sessions.length;i++)h+=cardHTML(plan.sessions[i],i+1);
+  $('main').innerHTML=h;
+  var rows=document.querySelectorAll('.row.act');
+  for(i=0;i<rows.length;i++)applyRowFilter(rows[i]);
+  refreshAllLinks($('main'));
+  try{window.scrollTo(0,y);}catch(e){}
+  applyStatic();
+}
+function applyStatic(){
+  $('t1').textContent=t('t1');$('t2').textContent=t('t2');
+  $('lnkStu').innerHTML=t('openStu');$('bNew').textContent=t('bNew');
+  $('bExpStu').textContent=t('bExpStu');$('bExp').textContent=t('bExp');$('bImp').textContent=t('bImp');$('bPrint').textContent=t('bPrint');
+  $('flt').innerHTML='<option value="all">'+esc(t('fltAll'))+'</option><option value="plan">'+esc(t('stPlan'))+'</option><option value="done">'+esc(t('stDone'))+'</option><option value="pause">'+esc(t('stPause'))+'</option><option value="drop">'+esc(t('stDrop'))+'</option>';
+  $('flt').value=filter;
+  var bs=document.querySelectorAll('#langBox button');
+  for(var i=0;i<bs.length;i++)bs[i].className=(bs[i].getAttribute('data-lang')===lang)?'on':'';
+}
+function ancestorWithSid(el){var n=el;while(n&&n!==document.body){if(n.getAttribute&&n.getAttribute('data-sid'))return n;n=n.parentNode;}return null;}
+function findSession(cardEl){var sid=cardEl.getAttribute('data-sid');for(var i=0;i<plan.sessions.length;i++)if(plan.sessions[i].id===sid)return plan.sessions[i];return null;}
+function removeById(arr,id){var out=[],i;for(i=0;i<arr.length;i++)if(arr[i].id!==id)out.push(arr[i]);return out;}
+function idxOf(id){var i;for(i=0;i<plan.sessions.length;i++)if(plan.sessions[i].id===id)return i;return -1;}
+function moveSession(id,dir){var i=idxOf(id);if(i<0)return;var j=i+dir;if(j<0||j>=plan.sessions.length)return;var tmp=plan.sessions[i];plan.sessions[i]=plan.sessions[j];plan.sessions[j]=tmp;render();scheduleSave();}
+
+function onEdit(e){
+  var el=e.target;if(!el.getAttribute)return;
+  var cardEl=ancestorWithSid(el);if(!cardEl)return;
+  var x=findSession(cardEl);if(!x)return;
+  var i,f=el.getAttribute('data-f');
+  if(f){
+    if(f==='date'||f==='topic'||f==='obj'||f==='comp'||f==='ev')x[f]=el.value;
+    if(f==='objVis'||f==='compVis'||f==='evVis')x[f]=el.checked;
+    if(f==='date'||f==='topic'){var m=cardEl.querySelector('.cmeta');if(m)m.innerHTML=metaHTML(x,idxOf(x.id)+1);}
+  }else{
+    var aid=el.getAttribute('data-aid'),rid=el.getAttribute('data-rid'),vid=el.getAttribute('data-vid'),k=el.getAttribute('data-k');
+    if(aid){var a=null;for(i=0;i<x.acts.length;i++)if(x.acts[i].id===aid)a=x.acts[i];
+      if(a){if(k==='txt'){a.txt=el.value;updateLinks(el.parentNode,el.value);}else if(k==='time')a.time=el.value;else if(k==='vis')a.vis=el.checked;else if(k==='st'){a.st=el.value;var row=el.parentNode;row.setAttribute('data-st',a.st);row.className='row act st-'+a.st;applyRowFilter(row);}}}
+    else if(rid){var r=null;for(i=0;i<x.res.length;i++)if(x.res[i].id===rid)r=x.res[i];if(r){if(k==='txt'){r.txt=el.value;updateLinks(el.parentNode,el.value);}else if(k==='vis')r.vis=el.checked;}}
+    else if(vid){var v=null;for(i=0;i<x.av.length;i++)if(x.av[i].id===vid)v=x.av[i];if(v){if(k==='txt'){v.txt=el.value;updateLinks(el.parentNode,el.value);}else if(k==='vis')v.vis=el.checked;}}
+  }
+  updateCounts(x);scheduleSave();
+}
+
+function onClick(e){
+  var el=e.target,node=el;
+  var toggleEl=null,addEl=null,upEl=null,downEl=null,delAct=null,delRes=null,delAv=null,delSes=null;
+  while(node&&node!==document.body){
+    if(node.getAttribute){
+      if(!delSes&&node.getAttribute('data-del-ses'))delSes=node;
+      if(!delAct&&node.getAttribute('data-del-act'))delAct=node;
+      if(!delRes&&node.getAttribute('data-del-res'))delRes=node;
+      if(!delAv&&node.getAttribute('data-del-av'))delAv=node;
+      if(!addEl&&node.getAttribute('data-add'))addEl=node;
+      if(!upEl&&node.getAttribute('data-up'))upEl=node;
+      if(!downEl&&node.getAttribute('data-down'))downEl=node;
+      if(!toggleEl&&node.getAttribute('data-toggle'))toggleEl=node;
+    }
+    node=node.parentNode;
+  }
+  if(delSes){
+    if(delSes.className.indexOf('confirm')<0){
+      delSes.className='del ses confirm';delSes.innerHTML='⚠';
+      if(delSes._to)clearTimeout(delSes._to);
+      delSes._to=setTimeout(function(){delSes.className='del ses';delSes.innerHTML='🗑';},3000);
+      return;
+    }
+    if(delSes._to)clearTimeout(delSes._to);
+    var id=delSes.getAttribute('data-del-ses'),out=[];
+    for(var i=0;i<plan.sessions.length;i++)if(plan.sessions[i].id!==id)out.push(plan.sessions[i]);
+    plan.sessions=out;render();scheduleSave();return;
+  }
+  if(delAct||delRes||delAv){
+    var cardEl=ancestorWithSid(el);if(!cardEl)return;
+    var x=findSession(cardEl);if(!x)return;
+    if(delAct)x.acts=removeById(x.acts,delAct.getAttribute('data-del-act'));
+    if(delRes)x.res=removeById(x.res,delRes.getAttribute('data-del-res'));
+    if(delAv)x.av=removeById(x.av,delAv.getAttribute('data-del-av'));
+    render();scheduleSave();return;
+  }
+  if(addEl){
+    var cardEl2=ancestorWithSid(el);if(!cardEl2)return;
+    var y=findSession(cardEl2);if(!y)return;
+    var k=addEl.getAttribute('data-add');
+    if(k==='acts')y.acts.push({id:uid(),txt:'',time:'',vis:true,st:'plan'});
+    if(k==='res')y.res.push({id:uid(),txt:'',vis:true});
+    if(k==='av')y.av.push({id:uid(),txt:'',vis:true});
+    render();scheduleSave();return;
+  }
+  if(upEl){moveSession(upEl.getAttribute('data-up'),-1);return;}
+  if(downEl){moveSession(downEl.getAttribute('data-down'),1);return;}
+  if(toggleEl){
+    var tid=toggleEl.getAttribute('data-toggle');
+    if(EXP[tid])delete EXP[tid];else EXP[tid]=true;
+    render();
+  }
+}
+
+function download(name,txt){
+  try{
+    var a=document.createElement('a');
+    var blob=new Blob([txt],{type:'application/json'});
+    a.href=URL.createObjectURL(blob);a.download=name;
+    document.body.appendChild(a);a.click();
+    setTimeout(function(){document.body.removeChild(a);},100);
+  }catch(e){toast(t('dlFail'));}
+}
+function dtStamp(){var d=new Date(),p=function(n){return (n<10?'0':'')+n;};return d.getFullYear()+'-'+p(d.getMonth()+1)+'-'+p(d.getDate())+'-'+p(d.getHours())+p(d.getMinutes());}
+
+$('main').addEventListener('input',onEdit);
+$('main').addEventListener('change',onEdit);
+$('main').addEventListener('click',onClick);
+
+$('langBox').addEventListener('click',function(e){
+  var b=e.target;while(b&&b.tagName!=='BUTTON')b=b.parentNode;
+  if(!b||!b.getAttribute('data-lang'))return;
+  lang=b.getAttribute('data-lang');localStorage.setItem(KEY+'L',lang);render();
+});
+
+$('flt').onchange=function(e){filter=e.target.value;var rows=document.querySelectorAll('.row.act');for(var i=0;i<rows.length;i++)applyRowFilter(rows[i]);};
+
+$('bNew').onclick=function(){
+  var s=S('','','');plan.sessions.push(s);EXP[s.id]=true;render();scheduleSave();
+  var el=$('c-'+s.id);if(el&&el.scrollIntoView)el.scrollIntoView();
+};
+$('bPrint').onclick=function(){
+  for(var i=0;i<plan.sessions.length;i++)EXP[plan.sessions[i].id]=true;
+  render();setTimeout(function(){window.print();},200);
+};
+$('bExp').onclick=function(){
+  if(!plan.meta)plan.meta={app:'planificador',key:KEY};
+  plan.meta.lastSaved=new Date().toISOString();
+  download('{{NOM_CURT}}-planificador-copia.json',JSON.stringify(plan));
+  toast('OK');scheduleSave();
+};
+$('bExpStu').onclick=function(){
+  var out={app:'fitxa_alumne',generated:new Date().toISOString(),sessions:[]};
+  var i,j;
+  for(i=0;i<plan.sessions.length;i++){
+    var x=plan.sessions[i];
+    var o={date:x.date,topic:x.topic,noLectiva:x.noLectiva,obj:'',acts:[],res:[],av:[],comp:'',ev:''};
+    if(x.objVis)o.obj=x.obj;
+    for(j=0;j<x.acts.length;j++){var a=x.acts[j];if(a.vis&&a.st!=='drop')o.acts.push({txt:a.txt,time:a.time});}
+    for(j=0;j<x.res.length;j++)if(x.res[j].vis)o.res.push({txt:x.res[j].txt});
+    for(j=0;j<x.av.length;j++)if(x.av[j].vis)o.av.push({txt:x.av[j].txt});
+    if(x.compVis)o.comp=x.comp;if(x.evVis)o.ev=x.ev;
+    out.sessions.push(o);
+  }
+  download('fitxa_alumne-{{NOM_CURT}}-dades.json',JSON.stringify(out));
+  toast(t('studentNote'));
+};
+$('bImp').onclick=function(){$('fImp').click();};
+$('fImp').onchange=function(e){
+  var f=e.target.files[0];if(!f)return;
+  var r=new FileReader();
+  r.onload=function(ev){
+    try{
+      var j=JSON.parse(ev.target.result);
+      if(j&&j.sessions){
+        plan={v:1,sessions:j.sessions,meta:j.meta||{app:'planificador',key:KEY}};
+        for(var i=0;i<plan.sessions.length;i++)norm(plan.sessions[i]);
+        render();save();toast(t('impOk'));
+      }else toast('❌');
+    }catch(x){toast('❌');}
+  };
+  r.readAsText(f);e.target.value='';
+};
+
+plan=loadPlan();render();save();
+</SCRIPT_PLACEHOLDER>
+</body>
+</html>`.split('<SCRIPT_PLACEHOLDER>').join('<' + 'script>').split('</SCRIPT_PLACEHOLDER>').join('<' + '/script>');
+
+  return subst(tpl, vars);
+}
+
+// ==========================================
+// PLANTILLA: FITXA ALUMNE
+// ==========================================
+function construirFitxa(){
+  const vars = varsComunes();
+  const key = slug(config.nomCurt||config.nomAssignatura) + '_fitxa_v3';
+  vars['{{KEY}}'] = key;
+
+  const tpl = `<!DOCTYPE html>
+<html lang="ca">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fitxa de l'alumne · {{NOM}}</title>
+<style>
+  :root{--pri:{{C1}};--pri2:{{C2}};--crema:#f4f8fa;--bord:#d8e2e7}
+  *{box-sizing:border-box}
+  body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--crema);color:#252a2e;line-height:1.55;font-size:16px}
+  .topbar{position:sticky;top:0;z-index:50;background:var(--pri);color:#fff;padding:.6rem 1rem;display:flex;gap:.5rem;align-items:center;flex-wrap:wrap;box-shadow:0 2px 8px rgba(0,0,0,.25)}
+  .brand{font-family:Georgia,serif;font-weight:bold;font-size:1.05rem}
+  .brand small{display:block;font-weight:normal;font-size:.75rem;opacity:.9}
+  .lang{display:flex;gap:.25rem}
+  .lang button,.tools button{background:var(--pri2);border:1px solid rgba(255,255,255,.3);color:#fff;padding:.42rem .8rem;border-radius:8px;cursor:pointer;font-weight:700;font-size:.9rem;font-family:inherit}
+  .lang button.on{background:#fff;color:var(--pri)}
+  .tools{display:flex;gap:.3rem;flex-wrap:wrap;align-items:center}
+  .tools button.warn{background:#c86a78}
+  #savestate{font-size:.8rem;opacity:.95}
+  main{max-width:920px;margin:1.2rem auto;padding:0 1rem}
+  .card{background:#fff;border:1px solid var(--bord);border-radius:14px;padding:1.15rem 1.35rem;margin-bottom:1rem;box-shadow:0 1px 4px rgba(0,0,0,.05)}
+  .card h2{margin:0 0 .6rem;color:var(--pri);font-size:1.25rem;font-family:Georgia,serif}
+  h3{font-size:.86rem;text-transform:uppercase;letter-spacing:.4px;color:var(--pri2);margin:1.15rem 0 .4rem;border-bottom:1px solid var(--bord);padding-bottom:.22rem}
+  .fld{display:block;margin:.55rem 0}
+  .fld span{display:block;font-size:.78rem;font-weight:700;color:var(--pri);margin-bottom:.18rem}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:.6rem}
+  input[type=text],input[type=email],input[type=date],textarea,select{width:100%;border:1px solid #c4d3da;border-radius:8px;padding:.5rem .55rem;font:inherit;font-size:.95rem;background:#fbfdfe}
+  textarea{resize:vertical;min-height:48px}
+  .selrow{display:flex;gap:.6rem;align-items:flex-end;flex-wrap:wrap}
+  .selrow .fld{flex:1;min-width:260px;margin:0}
+  .info{background:#f2f7fa;border-left:4px solid var(--pri2);padding:.6rem .85rem;border-radius:0 8px 8px 0;margin:.5rem 0;font-size:.93rem}
+  .info p{margin:.3rem 0;white-space:pre-wrap}
+  .info ul{margin:.3rem 0;padding-left:1.2rem}
+  .actbox{border:1px solid var(--bord);border-radius:10px;padding:.65rem .75rem;margin:.5rem 0;background:#fdfefe}
+  .actbox .top{display:flex;gap:.55rem;align-items:center;flex-wrap:wrap}
+  .actbox .top .tm{font-variant-numeric:tabular-nums;color:var(--pri2);font-size:.85rem;min-width:105px;font-weight:700}
+  .actbox .top .tx{flex:1;min-width:200px;font-size:.95rem}
+  .actbox.st-done{border-left:5px solid #2e7d4f}
+  .actbox.st-pend{border-left:5px solid #b8912f}
+  .actbox.st-nof{border-left:5px solid #6b6570}
+  .stats{display:flex;gap:.5rem;flex-wrap:wrap}
+  .stat{background:#f2f7fa;border:1px solid var(--bord);border-radius:10px;padding:.45rem .75rem;font-size:.88rem}
+  .stat b{color:var(--pri)}
+  .btn{border:none;border-radius:8px;padding:.5rem .9rem;font-weight:700;font-size:.9rem;cursor:pointer;background:var(--pri);color:#fff;font-family:inherit}
+  #logbox{max-height:270px;overflow:auto;font:12.5px/1.65 monospace;background:#fafbfd;border:1px solid var(--bord);border-radius:8px;padding:.55rem .75rem}
+  #logbox div{border-bottom:1px dashed #eef1f4;padding:.12rem 0}
+  .hint{background:#fdf6e7;border-left:4px solid #b8912f;padding:.8rem 1rem;border-radius:0 8px 8px 0;font-size:.95rem}
+  #toast{position:fixed;bottom:18px;left:50%;margin-left:-140px;width:280px;text-align:center;background:#252a2e;color:#fff;padding:.65rem 1rem;border-radius:10px;font-size:.9rem;opacity:0;pointer-events:none;transition:opacity .3s;z-index:99}
+  #toast.show{opacity:1}
+  @media print{.topbar,#toast,.btn,.selrow,#logbox{display:none!important}body{background:#fff}.card{border:none;box-shadow:none}}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="brand">👤 <span id="t1"></span><small id="t2"></small></div>
+  <div class="lang" id="langBox">
+    <button data-lang="ca">CA</button><button data-lang="es">ES</button><button data-lang="en">EN</button>
+  </div>
+  <div class="tools">
+    <button id="bSave"></button>
+    <button id="bPrint"></button>
+    <button id="bSend"></button>
+    <button id="bImpP"></button>
+    <button id="bBak"></button>
+    <button id="bReset" class="warn"></button>
+    <span id="savestate"></span>
+  </div>
+</header>
+<main id="main"></main>
+<div id="toast"></div>
+<input type="file" id="fImp" accept=".json" style="display:none">
+
+<SCRIPT_PLACEHOLDER>
+const KP='{{KEY}}_prog', KM='{{KEY}}_me';
+
+const I18N={
+ca:{t1:"Fitxa de l'alumne",t2:"{{NOM}} · {{CURS}}",
+ bSave:"Guardar",bPrint:"Imprimir PDF",bSend:"Enviar",bImpP:"Importar programa",bBak:"Còpia",bReset:"Reiniciar",
+ sData:"1. Dades personals",sName:"Nom",sMail:"Email",sStart:"Data inici",sTeach:"Email professor/a",sCourse:"Curs",
+ sSel:"2. Sessió",sSelLbl:"Tria la sessió",pick:"Tria...",nonTeach:"no lectiu",
+ sInfo:"Informació de la sessió",sObj:"Objectius",sRes:"Recursos",sAv:"Mitjans",sEv:"Evidències",
+ sActs:"3. Activitats presencials",sComp:"4. Treball fora d'aula",sGen:"5. Observacions",sCtrl:"6. Control",sLog:"7. Log",
+ stEmpty:"(sense estat)",stDone:"Feta",stPend:"Pendent",stNof:"No feta",
+ ctFull:"Complerta",ctPartial:"Parcial",ctPend:"Pendent",ctNof:"No feta",
+ phGen:"Observacions generals...",
+ noComp:"Sense treball fora d'aula assignat.",noActs:"Sense activitats.",
+ noProg:"Encara no tens programa. Demana fitxa_alumne-{{NOM_CURT}}-dades.json al professorat i prem Importar programa.",
+ saved:"Desat",impOk:"Importat.",manSaved:"Desat.",reseted:"Reiniciada.",
+ sendHow:"Fitxer generat.",sendNone:"Sense dades.",
+ statsAll:"Resum del curs",pres:"Presencials",done:"Fetes",pend:"Pendents",nof:"No fetes",total:"Total"},
+es:{t1:"Ficha del alumnado",t2:"{{NOM}} · {{CURS}}",
+ bSave:"Guardar",bPrint:"Imprimir PDF",bSend:"Enviar",bImpP:"Importar programa",bBak:"Copia",bReset:"Reiniciar",
+ sData:"1. Datos personales",sName:"Nombre",sMail:"Email",sStart:"Fecha inicio",sTeach:"Email profesor/a",sCourse:"Curso",
+ sSel:"2. Sesión",sSelLbl:"Elige sesión",pick:"Elige...",nonTeach:"no lectivo",
+ sInfo:"Info de la sesión",sObj:"Objetivos",sRes:"Recursos",sAv:"Medios",sEv:"Evidencias",
+ sActs:"3. Actividades presenciales",sComp:"4. Trabajo fuera de aula",sGen:"5. Observaciones",sCtrl:"6. Control",sLog:"7. Log",
+ stEmpty:"(sin estado)",stDone:"Hecha",stPend:"Pendiente",stNof:"No hecha",
+ ctFull:"Completa",ctPartial:"Parcial",ctPend:"Pendiente",ctNof:"No hecha",
+ phGen:"Observaciones generales...",
+ noComp:"Sin trabajo fuera de aula.",noActs:"Sin actividades.",
+ noProg:"Aún no tienes programa. Pide fitxa_alumne-{{NOM_CURT}}-dades.json al profesorado y pulsa Importar programa.",
+ saved:"Guardado",impOk:"Importado.",manSaved:"Guardado.",reseted:"Reiniciada.",
+ sendHow:"Archivo generado.",sendNone:"Sin datos.",
+ statsAll:"Resumen del curso",pres:"Presenciales",done:"Hechas",pend:"Pendientes",nof:"No hechas",total:"Total"},
+en:{t1:"Student sheet",t2:"{{NOM}} · {{CURS}}",
+ bSave:"Save",bPrint:"Print PDF",bSend:"Send",bImpP:"Import programme",bBak:"Backup",bReset:"Reset",
+ sData:"1. Personal data",sName:"Name",sMail:"Email",sStart:"Start date",sTeach:"Teacher email",sCourse:"Year",
+ sSel:"2. Session",sSelLbl:"Choose session",pick:"Choose...",nonTeach:"non-teaching",
+ sInfo:"Session info",sObj:"Objectives",sRes:"Resources",sAv:"Media",sEv:"Evidence",
+ sActs:"3. In-class activities",sComp:"4. Out-of-class work",sGen:"5. Observations",sCtrl:"6. Control",sLog:"7. Log",
+ stEmpty:"(no status)",stDone:"Done",stPend:"Pending",stNof:"Not done",
+ ctFull:"Complete",ctPartial:"Partial",ctPend:"Pending",ctNof:"Not done",
+ phGen:"General observations...",
+ noComp:"No out-of-class work.",noActs:"No activities.",
+ noProg:"No programme yet. Ask for fitxa_alumne-{{NOM_CURT}}-dades.json and press Import programme.",
+ saved:"Saved",impOk:"Imported.",manSaved:"Saved.",reseted:"Reset.",
+ sendHow:"File generated.",sendNone:"No data.",
+ statsAll:"Course summary",pres:"In-class",done:"Done",pend:"Pending",nof:"Not done",total:"Total"}
+};
+
+let lang=localStorage.getItem('fa_lang')||'ca';
+let prog=null,me=null;
+try{prog=JSON.parse(localStorage.getItem(KP));}catch(e){prog=null;}
+try{me=JSON.parse(localStorage.getItem(KM));}catch(e){me=null;}
+if(!me||typeof me!=='object')me={};
+if(!me.profile)me.profile={name:'',email:'',start:'',teacher:'{{EMAIL}}',course:'{{CURS}}'};
+if(!me.done)me.done={};
+if(!me.compStatus)me.compStatus={};
+if(!me.actNotes)me.actNotes={};
+if(!me.compNotes)me.compNotes={};
+if(!me.genNotes)me.genNotes={};
+if(!me.log)me.log=[];
+if(!me.lastSes)me.lastSes='';
+var saveTimer=null;
+
+function $(id){return document.getElementById(id);}
+function t(k){return (I18N[lang]&&I18N[lang][k])?I18N[lang][k]:k;}
+function esc(s){s=(s==null)?'':String(s);return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function linkify(s){
+  var safe=esc(s);
+  var parts=safe.split(' ');
+  var out=[];
+  for(var i=0;i<parts.length;i++){
+    var w=parts[i];
+    if(w.indexOf('http://')===0 || w.indexOf('https://')===0){
+      out.push('<a href="'+w+'" target="_blank" rel="noopener">'+w+'</a>');
+    }else{
+      out.push(w);
+    }
+  }
+  return out.join(' ');
+}
+function nowISO(){return new Date().toISOString();}
+function clock(){var d=new Date(),p=function(n){return (n<10?'0':'')+n;};return p(d.getDate())+'/'+p(d.getMonth()+1)+' '+p(d.getHours())+':'+p(d.getMinutes());}
+function dtStamp(){var d=new Date(),p=function(n){return (n<10?'0':'')+n;};return d.getFullYear()+'-'+p(d.getMonth()+1)+'-'+p(d.getDate())+'-'+p(d.getHours())+p(d.getMinutes());}
+function fmtD(iso){if(!iso)return '-';var p=String(iso).split('-');if(p.length<3)return String(iso);return p[2]+'/'+p[1]+'/'+p[0];}
+
+function log(a,d){me.log.push({ts:nowISO(),a:a,d:d||''});if(me.log.length>300)me.log=me.log.slice(me.log.length-300);}
+function save(silent){
+  try{localStorage.setItem(KM,JSON.stringify(me));}catch(e){}
+  if(prog)try{localStorage.setItem(KP,JSON.stringify(prog));}catch(e){}
+  var el=$('savestate');if(el)el.textContent=t('saved')+' '+clock();
+}
+function scheduleSave(){clearTimeout(saveTimer);saveTimer=setTimeout(function(){save(true);},500);}
+window.onbeforeunload=function(){save(true);};
+function toast(m){var x=$('toast');x.textContent=m;x.className='show';clearTimeout(x._t);x._t=setTimeout(function(){x.className='';},3200);}
+
+function sorted(){if(!prog||!prog.sessions)return [];var ss=prog.sessions.slice(0);ss.sort(function(a,b){return (a.date||'9999')<(b.date||'9999')?-1:1;});return ss;}
+function findSes(date){var ss=sorted(),i;for(i=0;i<ss.length;i++)if((ss[i].date||'')===date)return ss[i];return null;}
+function actKey(date,txt,i){if(txt&&txt.split(' ').join(''))return date+'|'+txt;return date+'|@|'+i;}
+function compLines(s){
+  if(!s.comp)return [];
+  var SEP=String.fromCharCode(10);
+  var raw=s.comp.split(SEP),out=[],i,l;
+  for(i=0;i<raw.length;i++){
+    l=raw[i].trim();
+    if(l.charAt(0)==='-'||l.charAt(0)==='*'||l.charAt(0)==='•')l=l.substring(1).trim();
+    if(l)out.push(l);
+  }
+  return out;
+}
+
+function applyBar(){
+  $('t1').textContent=t('t1');$('t2').textContent=t('t2');
+  $('bSave').textContent=t('bSave');$('bPrint').textContent=t('bPrint');
+  $('bSend').textContent=t('bSend');$('bImpP').textContent=t('bImpP');
+  $('bBak').textContent=t('bBak');$('bReset').textContent=t('bReset');
+  var bs=document.querySelectorAll('#langBox button'),i;
+  for(i=0;i<bs.length;i++)bs[i].className=(bs[i].getAttribute('data-lang')===lang)?'on':'';
+}
+function profileHTML(){
+  var p=me.profile;
+  return '<section class="card"><h2>'+t('sData')+'</h2><div class="grid2">'
+   +'<label class="fld"><span>'+t('sName')+'</span><input type="text" id="pName" value="'+esc(p.name)+'"></label>'
+   +'<label class="fld"><span>'+t('sMail')+'</span><input type="email" id="pMail" value="'+esc(p.email)+'"></label>'
+   +'<label class="fld"><span>'+t('sStart')+'</span><input type="date" id="pStart" value="'+esc(p.start)+'"></label>'
+   +'<label class="fld"><span>'+t('sTeach')+'</span><input type="email" id="pTeach" value="'+esc(p.teacher)+'"></label>'
+   +'<label class="fld"><span>'+t('sCourse')+'</span><input type="text" id="pCourse" value="'+esc(p.course)+'"></label>'
+   +'</div></section>';
+}
+function selectorHTML(){
+  var ss=sorted(),h='',i,s;
+  h+='<section class="card"><h2>'+t('sSel')+'</h2><div class="selrow"><label class="fld"><span>'+t('sSelLbl')+'</span>';
+  h+='<select id="selSes"><option value="">'+t('pick')+'</option>';
+  for(i=0;i<ss.length;i++){s=ss[i];
+    h+='<option value="'+esc(s.date||'')+'"'+((me.lastSes===(s.date||''))?' selected':'')+'>'
+     +fmtD(s.date)+' - '+esc(s.topic||'')+(s.noLectiva?' ('+t('nonTeach')+')':'')+'</option>';}
+  h+='</select></label></div></section>';
+  return h;
+}
+function infoHTML(s){
+  var h='',i;
+  if(s.obj){h+='<h3>'+t('sObj')+'</h3><div class="info"><p>'+esc(s.obj)+'</p></div>';}
+  if(s.res&&s.res.length){h+='<h3>'+t('sRes')+'</h3><div class="info"><ul>';for(i=0;i<s.res.length;i++)h+='<li>'+linkify(s.res[i].txt)+'</li>';h+='</ul></div>';}
+  if(s.av&&s.av.length){h+='<h3>'+t('sAv')+'</h3><div class="info"><ul>';for(i=0;i<s.av.length;i++)h+='<li>'+linkify(s.av[i].txt)+'</li>';h+='</ul></div>';}
+  if(s.ev){h+='<h3>'+t('sEv')+'</h3><div class="info"><p>'+esc(s.ev)+'</p></div>';}
+  return h;
+}
+function actHTML(s){
+  var h='',i,a,k,st,cls,stSel;
+  if(!s.acts||!s.acts.length)return '<p class="hint">'+t('noActs')+'</p>';
+  for(i=0;i<s.acts.length;i++){a=s.acts[i];k=actKey(s.date,a.txt,i);st=me.done[k]||'';cls=st?('st-'+st):'';
+    stSel='<select data-ak="'+esc(k)+'">'
+     +'<option value=""'+(st===''?' selected':'')+'>'+t('stEmpty')+'</option>'
+     +'<option value="done"'+(st==='done'?' selected':'')+'>'+t('stDone')+'</option>'
+     +'<option value="pend"'+(st==='pend'?' selected':'')+'>'+t('stPend')+'</option>'
+     +'<option value="nof"'+(st==='nof'?' selected':'')+'>'+t('stNof')+'</option></select>';
+    h+='<div class="actbox '+cls+'"><div class="top">'
+     +'<span class="tm">'+esc(a.time||'')+'</span><span class="tx">'+esc(a.txt)+'</span>'+stSel
+     +'</div><textarea data-an="'+esc(k)+'" placeholder="'+esc(t('phGen'))+'">'+esc(me.actNotes[k]||'')+'</textarea></div>';}
+  return h;
+}
+function compHTML(s){
+  var lines=compLines(s),h='',i,l,k,st,cls,stSel;
+  if(!lines.length)return '<p class="hint">'+t('noComp')+'</p>';
+  for(i=0;i<lines.length;i++){l=lines[i];k=(s.date||'')+'|c|'+i;st=me.compStatus[k]||'';cls=st?('st-'+st):'';
+    stSel='<select data-ck="'+esc(k)+'">'
+     +'<option value=""'+(st===''?' selected':'')+'>'+t('stEmpty')+'</option>'
+     +'<option value="full"'+(st==='full'?' selected':'')+'>'+t('ctFull')+'</option>'
+     +'<option value="partial"'+(st==='partial'?' selected':'')+'>'+t('ctPartial')+'</option>'
+     +'<option value="pend"'+(st==='pend'?' selected':'')+'>'+t('ctPend')+'</option>'
+     +'<option value="nof"'+(st==='nof'?' selected':'')+'>'+t('ctNof')+'</option></select>';
+    h+='<div class="actbox '+cls+'"><div class="top"><span class="tx">'+esc(l)+'</span>'+stSel+'</div>'
+     +'<textarea data-cn="'+esc(k)+'" placeholder="'+esc(t('phGen'))+'">'+esc(me.compNotes[k]||'')+'</textarea></div>';}
+  return h;
+}
+function sessStats(s){
+  var i,done=0,pend=0,nof=0,n=(s.acts?s.acts.length:0),k,st;
+  for(i=0;i<n;i++){k=actKey(s.date,s.acts[i].txt,i);st=me.done[k]||'';
+    if(st==='done')done++;else if(st==='pend')pend++;else if(st==='nof')nof++;}
+  return '<div class="stats">'
+   +'<span class="stat">'+t('pres')+': <b>'+n+'</b></span>'
+   +'<span class="stat">'+t('done')+': <b>'+done+'</b></span>'
+   +'<span class="stat">'+t('pend')+': <b>'+pend+'</b></span>'
+   +'<span class="stat">'+t('nof')+': <b>'+nof+'</b></span></div>';
+}
+function globalStats(){
+  var ss=sorted(),tot=0,dn=0,i,j,s,k,st;
+  for(i=0;i<ss.length;i++){s=ss[i];
+    for(j=0;j<(s.acts||[]).length;j++){tot++;k=actKey(s.date,s.acts[j].txt,j);st=me.done[k]||'';if(st==='done')dn++;}}
+  var pc=tot?Math.round(dn*100/tot):0;
+  return '<div class="stats"><span class="stat">'+t('total')+': <b>'+tot+'</b></span>'
+   +'<span class="stat">'+t('done')+': <b>'+dn+'</b></span>'
+   +'<span class="stat"><b>'+pc+'%</b></span></div>';
+}
+function sessPanelHTML(s){
+  return '<h3>'+t('sInfo')+'</h3>'+infoHTML(s)
+   +'<h3>'+t('sActs')+'</h3>'+actHTML(s)
+   +'<h3>'+t('sComp')+'</h3>'+compHTML(s)
+   +'<h3>'+t('sGen')+'</h3><textarea data-gn="'+esc(s.date||'')+'" rows="3" placeholder="'+esc(t('phGen'))+'">'+esc(me.genNotes[s.date]||'')+'</textarea>'
+   +'<h3>'+t('sCtrl')+'</h3>'+sessStats(s)
+   +'<div style="margin-top:.5rem"><button type="button" class="btn" onclick="window.print()">'+t('bPrint')+'</button></div>';
+}
+function logHTML(){
+  var h='<section class="card"><h2>'+t('sLog')+'</h2><div id="logbox">',i,e,dsc,d,p=function(n){return (n<10?'0':'')+n;};
+  for(i=me.log.length-1;i>=0;i--){e=me.log[i];
+    dsc=(I18N[lang]&&I18N[lang][e.a])?I18N[lang][e.a]:e.a;
+    d=new Date(e.ts);
+    h+='<div><span style="color:#6b6570">'+p(d.getDate())+'/'+p(d.getMonth()+1)+' '+p(d.getHours())+':'+p(d.getMinutes())+'</span> - '+esc(dsc)+(e.d?(' - '+esc(e.d)):'')+'</div>';}
+  h+='</div></section>';
+  return h;
+}
+function render(){
+  applyBar();
+  var ss=sorted(),s=findSes(me.lastSes),h='';
+  h+=profileHTML();
+  h+=selectorHTML();
+  if(prog&&ss.length){
+    if(s){h+='<section class="card"><h2>'+fmtD(s.date)+' <small>'+esc(s.topic||'')+'</small>'+(s.noLectiva?'<span>'+t('nonTeach')+'</span>':'')+'</h2>'+sessPanelHTML(s)+'</section>';}
+    h+='<section class="card"><h2>'+t('statsAll')+'</h2>'+globalStats()+'</section>';
+  }else if(!prog){
+    h+='<div class="hint">'+t('noProg')+'</div>';
+  }
+  h+=logHTML();
+  $('main').innerHTML=h;
+}
+
+$('main').addEventListener('input',function(e){
+  var el=e.target;
+  if(el.id==='pName'||el.id==='pMail'||el.id==='pStart'||el.id==='pTeach'||el.id==='pCourse'){
+    var map={pName:'name',pMail:'email',pStart:'start',pTeach:'teacher',pCourse:'course'};
+    me.profile[map[el.id]]=el.value;scheduleSave();return;
+  }
+  var an=el.getAttribute?el.getAttribute('data-an'):null;
+  if(an!==null){me.actNotes[an]=el.value;scheduleSave();return;}
+  var cn=el.getAttribute?el.getAttribute('data-cn'):null;
+  if(cn!==null){me.compNotes[cn]=el.value;scheduleSave();return;}
+  var gn=el.getAttribute?el.getAttribute('data-gn'):null;
+  if(gn!==null){me.genNotes[gn]=el.value;scheduleSave();return;}
+});
+$('main').addEventListener('change',function(e){
+  var el=e.target,old;
+  if(el.id==='pName'||el.id==='pMail'||el.id==='pStart'||el.id==='pTeach'||el.id==='pCourse'){save();return;}
+  if(el.id==='selSes'){me.lastSes=el.value||'';save(true);render();return;}
+  var ak=el.getAttribute?el.getAttribute('data-ak'):null;
+  if(ak!==null){old=me.done[ak]||'';me.done[ak]=el.value;save();render();return;}
+  var ck=el.getAttribute?el.getAttribute('data-ck'):null;
+  if(ck!==null){old=me.compStatus[ck]||'';me.compStatus[ck]=el.value;save();render();return;}
+});
+
+function mergeProgram(inc){
+  var existing={},i,j,nNew=0,nUpd=0;
+  if(!prog)prog={sessions:[]};
+  for(i=0;i<prog.sessions.length;i++)existing[prog.sessions[i].date||'']=i;
+  for(i=0;i<inc.sessions.length;i++){
+    var s=inc.sessions[i],key=s.date||'';
+    s.noLectiva=!!s.noLectiva;
+    if(!s.acts)s.acts=[];if(!s.res)s.res=[];if(!s.av)s.av=[];
+    if(existing[key]!==undefined){prog.sessions[existing[key]]=s;nUpd++;}
+    else{prog.sessions.push(s);nNew++;}
+  }
+  prog.sessions.sort(function(a,b){return (a.date||'9999')<(b.date||'9999')?-1:1;});
+  return nNew+' noves / '+nUpd+' actualitzades';
+}
+function handleFile(f){
+  var r=new FileReader();
+  r.onload=function(ev){
+    try{
+      var j=JSON.parse(ev.target.result);
+      if(j&&j.app==='fitxa_alumne'&&j.sessions){
+        var res=mergeProgram(j);save(true);render();toast(t('impOk')+' ('+res+')');
+      }else if(j&&j.app==='fitxa_alumne-backup'&&j.me){
+        prog=j.prog||null;me=j.me;
+        if(!me.profile)me.profile={name:'',email:'',start:'',teacher:'{{EMAIL}}',course:'{{CURS}}'};
+        if(!me.done)me.done={};if(!me.compStatus)me.compStatus={};
+        if(!me.actNotes)me.actNotes={};if(!me.compNotes)me.compNotes={};
+        if(!me.genNotes)me.genNotes={};if(!me.log)me.log=[];
+        save(true);render();toast(t('impOk'));
+      }else{toast('❌');}
+    }catch(x){toast('❌');}
+  };
+  r.readAsText(f);
+}
+$('fImp').onchange=function(e){var f=e.target.files[0];if(f)handleFile(f);e.target.value='';};
+
+function download(name,txt){
+  try{
+    var a=document.createElement('a');
+    var blob=new Blob([txt],{type:'application/json'});
+    a.href=URL.createObjectURL(blob);a.download=name;
+    document.body.appendChild(a);a.click();
+    setTimeout(function(){document.body.removeChild(a);},100);
+    return true;
+  }catch(e){return false;}
+}
+function safeName(s){return String(s||'alumne').replace(/[^a-zA-Z0-9_-]+/g,'-').slice(0,40);}
+
+$('langBox').addEventListener('click',function(e){
+  var b=e.target;while(b&&b.tagName!=='BUTTON')b=b.parentNode;
+  if(!b||!b.getAttribute('data-lang'))return;
+  lang=b.getAttribute('data-lang');localStorage.setItem('fa_lang',lang);
+  save(true);render();
+});
+$('bSave').onclick=function(){save();toast(t('manSaved'));};
+$('bPrint').onclick=function(){save(true);window.print();};
+$('bBak').onclick=function(){
+  var data=JSON.stringify({app:'fitxa_alumne-backup',prog:prog,me:me});
+  download('fitxa_alumne-seguretat-'+dtStamp()+'.json',data);
+  setTimeout(function(){download('fitxa_alumne-copia.json',data);},600);
+  toast('OK');
+};
+$('bReset').onclick=function(){
+  if(!confirm('?'))return;
+  me={profile:me.profile,done:{},compStatus:{},actNotes:{},compNotes:{},genNotes:{},log:[],lastSes:''};
+  log('Reset');save();render();toast(t('reseted'));
+};
+$('bSend').onclick=function(){
+  var ss=sorted(),out=[],i,j,s,had=false;
+  for(i=0;i<ss.length;i++){s=ss[i];
+    var o={date:s.date,topic:s.topic,acts:[],comp:[],genNote:me.genNotes[s.date]||''},k,st;
+    for(j=0;j<(s.acts||[]).length;j++){k=actKey(s.date,s.acts[j].txt,j);st=me.done[k]||'';
+      if(st||me.actNotes[k])had=true;
+      o.acts.push({txt:s.acts[j].txt,time:s.acts[j].time,status:st,note:me.actNotes[k]||''});}
+    var lines=compLines(s);
+    for(j=0;j<lines.length;j++){k=(s.date||'')+'|c|'+j;st=me.compStatus[k]||'';
+      if(st||me.compNotes[k])had=true;
+      o.comp.push({txt:lines[j],status:st,note:me.compNotes[k]||''});}
+    out.push(o);}
+  if(!had){toast(t('sendNone'));return;}
+  var pack={app:'fitxa_alumne-entrega',student:me.profile,exported:nowISO(),sessions:out};
+  var fn='fitxa-'+safeName(me.profile.name)+'-'+safeName(me.profile.course)+'.json';
+  download(fn,JSON.stringify(pack,null,1));
+  save(true);toast(t('sendHow'));
+};
+$('bImpP').onclick=function(){$('fImp').click();};
+
+save(true);render();
+</SCRIPT_PLACEHOLDER>
+</body>
+</html>`.split('<SCRIPT_PLACEHOLDER>').join('<' + 'script>').split('</SCRIPT_PLACEHOLDER>').join('<' + '/script>');
+
+  return subst(tpl, vars);
+}
+
+// ==========================================
+// INICIALITZACIÓ
+// ==========================================
+document.addEventListener('DOMContentLoaded', function(){
+  carregarConfig();
+  aplicarAlFormulari();
+  const lang = localStorage.getItem('gen_idioma') || 'ca';
+  document.getElementById('selectorIdioma').value = lang;
+  aplicarIdioma(lang);
+});
+</script>
+</body>
+</html>

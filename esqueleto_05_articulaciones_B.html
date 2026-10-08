@@ -1,0 +1,933 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fisiología Articular - 10 Casos Prácticos</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, sans-serif; }
+  body {
+    background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+    min-height: 100vh;
+    padding: 20px;
+  }
+  .container {
+    max-width: 1000px;
+    margin: 0 auto;
+    background: #fff;
+    border-radius: 20px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    overflow: hidden;
+  }
+  header {
+    background: linear-gradient(90deg, #134e5e, #71b280);
+    color: white;
+    padding: 35px;
+    text-align: center;
+  }
+  header h1 { font-size: 2.1em; margin-bottom: 10px; }
+  header p { opacity: 0.95; font-size: 1.1em; }
+  
+  .intro {
+    padding: 30px;
+    background: #f8f9fa;
+    border-bottom: 3px solid #dee2e6;
+  }
+  
+  .intro h2 {
+    color: #134e5e;
+    margin-bottom: 15px;
+    font-size: 1.5em;
+  }
+  
+  .intro p {
+    line-height: 1.7;
+    margin-bottom: 10px;
+    color: #333;
+  }
+  
+  .case {
+    margin: 25px 30px;
+    padding: 25px;
+    background: white;
+    border: 2px solid #dee2e6;
+    border-radius: 15px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+  }
+  
+  .case-header {
+    background: linear-gradient(90deg, #134e5e, #71b280);
+    color: white;
+    padding: 12px 20px;
+    margin: -25px -25px 20px -25px;
+    border-radius: 13px 13px 0 0;
+    font-size: 1.2em;
+    font-weight: 600;
+  }
+  
+  .case-topic {
+    display: inline-block;
+    background: rgba(255,255,255,0.2);
+    padding: 4px 12px;
+    border-radius: 15px;
+    font-size: 0.85em;
+    margin-left: 10px;
+    font-weight: normal;
+  }
+  
+  .case-description {
+    background: #fff3cd;
+    border-left: 4px solid #ffc107;
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 0 8px 8px 0;
+    line-height: 1.6;
+  }
+  
+  .options {
+    margin: 20px 0;
+  }
+  
+  .option {
+    background: #f8f9fa;
+    border: 2px solid #dee2e6;
+    padding: 15px;
+    margin: 10px 0;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+  
+  .option:hover {
+    background: #e8f5e9;
+    border-color: #134e5e;
+    transform: translateX(5px);
+  }
+  
+  .option.selected {
+    background: #b2dfdb;
+    border-color: #00695c;
+    border-width: 3px;
+  }
+  
+  .option.correct {
+    background: #c8e6c9;
+    border-color: #4caf50;
+  }
+  
+  .option.incorrect {
+    background: #ffcdd2;
+    border-color: #f44336;
+  }
+  
+  .btn-check {
+    background: linear-gradient(90deg, #134e5e, #71b280);
+    color: white;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 25px;
+    font-size: 1em;
+    font-weight: 600;
+    cursor: pointer;
+    margin: 15px 5px;
+    transition: all 0.3s;
+  }
+  
+  .btn-check:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(19,78,94,0.4);
+  }
+  
+  .btn-check:disabled {
+    background: #bdc3c7;
+    cursor: not-allowed;
+    transform: none;
+  }
+  
+  .explanation-box {
+    display: none;
+    margin-top: 20px;
+    padding: 20px;
+    border-radius: 10px;
+    animation: slideDown 0.3s ease;
+  }
+  
+  @keyframes slideDown {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  
+  .explanation-box.show {
+    display: block;
+  }
+  
+  .explanation-box.correct {
+    background: #e8f5e9;
+    border: 2px solid #4caf50;
+  }
+  
+  .explanation-box.incorrect {
+    background: #ffebee;
+    border: 2px solid #f44336;
+  }
+  
+  .explanation-box h4 {
+    margin-bottom: 10px;
+    font-size: 1.1em;
+  }
+  
+  .explanation-box.correct h4 {
+    color: #2e7d32;
+  }
+  
+  .explanation-box.incorrect h4 {
+    color: #c62828;
+  }
+  
+  .explanation-content {
+    line-height: 1.7;
+    color: #333;
+  }
+  
+  .explanation-content strong {
+    color: #134e5e;
+  }
+  
+  .key-concept {
+    background: #fff9c4;
+    padding: 10px 15px;
+    border-radius: 5px;
+    margin-top: 15px;
+    font-size: 0.95em;
+    border-left: 4px solid #fbc02d;
+  }
+  
+  .progress-bar {
+    background: #f8f9fa;
+    padding: 20px 30px;
+    border-top: 3px solid #dee2e6;
+    text-align: center;
+  }
+  
+  .progress-text {
+    font-size: 1.1em;
+    color: #134e5e;
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+  
+  .progress-fill {
+    background: linear-gradient(90deg, #11998e, #38ef7d);
+    height: 10px;
+    border-radius: 5px;
+    transition: width 0.5s;
+  }
+  
+  @media (max-width: 768px) {
+    header h1 { font-size: 1.6em; }
+    .case { margin: 15px; padding: 20px; }
+    .case-header { margin: -20px -20px 15px -20px; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <h1>🦴 Fisiología Articular</h1>
+    <p>10 Casos Prácticos: Cartílago, Propiocepción y Biomecánica</p>
+  </header>
+  
+  <div class="intro">
+    <h2>📚 Introducción</h2>
+    <p>Las articulaciones son estructuras complejas que permiten el movimiento del cuerpo. Lejos de ser simples "bisagras", son órganos dinámicos con funciones fisiológicas sofisticadas:</p>
+    <ul style="margin-left: 25px; line-height: 1.8;">
+      <li><strong>Nutrición por difusión:</strong> El cartílago articular no tiene vasos sanguíneos y depende del movimiento para nutrirse</li>
+      <li><strong>Lubricación inteligente:</strong> El líquido sinovial cambia su viscosidad según el movimiento</li>
+      <li><strong>Propiocepción:</strong> Los mecanorreceptores articulares informan al cerebro de la posición de cada articulación</li>
+      <li><strong>Biomecánica en 3D:</strong> Los movimientos ocurren en planos específicos (sagital, frontal, transversal)</li>
+    </ul>
+    <p style="margin-top: 15px;"><strong>Instrucciones:</strong> Lee cada caso, selecciona la respuesta correcta y pulsa "Verificar". Abre el cajón para ver la explicación fisiológica detallada.</p>
+  </div>
+
+  <!-- CASO 1 -->
+  <div class="case" id="case1">
+    <div class="case-header">
+      Caso 1: La Bailarina Inmovilizada
+      <span class="case-topic">Cartílago y movimiento</span>
+    </div>
+    <div class="case-description">
+      <p><strong>Situación:</strong> Lucía, bailarina de 20 años, sufre una fractura de tobillo y lleva 6 semanas con la pierna inmovilizada en una bota ortopédica. Al quitarle la bota, nota la rodilla y el tobillo "rígidos". La resonancia muestra que el cartílago articular de la rodilla inmovilizada se ha <strong>afinado un 10%</strong> respecto a la pierna sana.</p>
+      <p><strong>Pregunta:</strong> ¿Por qué se ha afinado el cartílago si no ha habido ningún golpe ni lesión directa en él?</p>
+    </div>
+    
+    <div class="options">
+      <div class="option" data-value="A">
+        <strong>A)</strong> Porque el cartílago se "evapora" con el tiempo
+      </div>
+      <div class="option" data-value="B">
+        <strong>B)</strong> Porque el cartílago articular se nutre por difusión del líquido sinovial, y este proceso requiere el movimiento (ciclo compresión-descompresión). Sin movimiento, el cartílago no recibe nutrientes ni elimina desechos → las células (condrocitos) mueren por apoptosis y la matriz se degrada
+      </div>
+      <div class="option" data-value="C">
+        <strong>C)</strong> Porque los músculos han "comido" el cartílago al estar débiles
+      </div>
+    </div>
+    
+    <button class="btn-check" onclick="checkAnswer(1, 'B')">Verificar Respuesta</button>
+    
+    <div class="explanation-box" id="explanation1">
+      <h4>✅ Respuesta Correcta: B</h4>
+      <div class="explanation-content">
+        <p><strong>Explicación fisiológica:</strong></p>
+        <p>El cartílago articular es un tejido <strong>avascular, aneural y alinfático</strong> (sin vasos sanguíneos, nervios ni linfáticos). Esto significa que NO recibe nutrientes directamente de la sangre.</p>
+        <p><strong>Mecanismo de nutrición por difusión:</strong></p>
+        <ul style="margin-left: 20px; margin-top: 10px;">
+          <li><strong>En reposo:</strong> El cartílago absorbe líquido sinovial rico en nutrientes (glucosa, oxígeno, aminoácidos) como una esponja seca que se moja.</li>
+          <li><strong>Durante la carga (al caminar/bailar):</strong> La compresión "exprime" el cartílago, expulsando líquido con desechos metabólicos (CO₂, ácido láctico).</li>
+          <li><strong>Al quitar la carga:</strong> El cartílago vuelve a absorber líquido fresco con nutrientes nuevos.</li>
+          <li><strong>El ciclo:</strong> Este "bombeo" mecánico es ESENCIAL. Sin movimiento, no hay recambio de líquido → los condrocitos se "asfixian" y mueren.</li>
+        </ul>
+        <p><strong>Consecuencias de la inmovilización:</strong></p>
+        <ul style="margin-left: 20px; margin-top: 10px;">
+          <li>Disminución de la síntesis de proteoglicanos (agrecán)</li>
+          <li>Pérdida de agua del cartílago (de 80% a 70%)</li>
+          <li>Apoptosis de condrocitos (muerte celular programada)</li>
+          <li>Afinamiento del cartílago (hasta 10-15% en 6 semanas)</li>
+        </ul>
+        <div class="key-concept">
+          <strong>💡 Concepto clave:</strong> El cartílago articular "come cuando se mueve". Por eso la movilización precoz tras una lesión es fundamental. El reposo absoluto es veneno para el cartílago.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CASO 2 -->
+  <div class="case" id="case2">
+    <div class="case-header">
+      Caso 2: El Misterio del "Crujido" Matutino
+      <span class="case-topic">Líquido sinovial</span>
+    </div>
+    <div class="case-description">
+      <p><strong>Situación:</strong> Javier, de 45 años, nota que por las mañanas sus articulaciones "crujen" y están rígidas. Después de 10-15 minutos de movimiento, la rigidez desaparece y las articulaciones se sienten "suaves".</p>
+      <p><strong>Pregunta:</strong> ¿Qué cambio fisiológico en el líquido sinovial explica esta mejoría con el movimiento?</p>
+    </div>
+    
+    <div class="options">
+      <div class="option" data-value="A">
+        <strong>A)</strong> El movimiento calienta el líquido sinovial y lo evapora, dejando las articulaciones más secas
+      </div>
+      <div class="option" data-value="B">
+        <strong>B)</strong> Durante el reposo nocturno, el líquido sinovial se vuelve más viscoso (gel) por la alta concentración de ácido hialurónico. Al moverse, la tincubación (fuerza de cizallamiento) reduce temporalmente su viscosidad, mejorando la lubricación. Este fenómeno se llama <strong>tixotropía</strong>
+      </div>
+      <div class="option" data-value="C">
+        <strong>C)</strong> El movimiento produce más líquido sinovial de la nada
+      </div>
+    </div>
+    
+    <button class="btn-check" onclick="checkAnswer(2, 'B')">Verificar Respuesta</button>
+    
+    <div class="explanation-box" id="explanation2">
+      <h4>✅ Respuesta Correcta: B</h4>
+      <div class="explanation-content">
+        <p><strong>Explicación fisiológica:</strong></p>
+        <p>El líquido sinovial es un fluido <strong>no newtoniano</strong> con propiedades únicas:</p>
+        <p><strong>Propiedades reológicas:</strong></p>
+        <ul style="margin-left: 20px; margin-top: 10px;">
+          <li><strong>En reposo:</strong> El ácido hialurónico (AH) forma una red de polímeros entrelazados que hace el líquido muy viscoso (como un gel espeso). Esto protege la articulación cuando está quieta.</li>
+          <li><strong>Durante el movimiento:</strong> Las fuerzas de cizallamiento "desenredan" temporalmente los polímeros de AH, reduciendo la viscosidad (como cuando agitas un ketchup y se vuelve líquido).</li>
+          <li><strong>Este fenómeno se llama tixotropía:</strong> Cambio reversible de viscosidad según la fuerza aplicada.</li>
+        </ul>
+        <p><strong>Consecuencias:</strong></p>
+        <ul style="margin-left: 20px; margin-top: 10px;">
+          <li>Por la mañana: alta viscosidad → articulaciones rígidas, crujidos</li>
+          <li>Tras 10-15 min de movimiento: viscosidad reducida → lubricación óptima, movimiento suave</li>
+          <li>La lubricina (PRG4) también se redistribuye con el movimiento, formando una capa protectora sobre el cartílago</li>
+        </ul>
+        <div class="key-concept">
+          <strong>💡 Concepto clave:</strong> El líquido sinovial es "inteligente": espeso en reposo (protege), fluido en movimiento (lubrica). Por eso el calentamiento es tan importante: prepara la "maquinaria" articular.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CASO 3 -->
+  <div class="case" id="case3">
+    <div class="case-header">
+      Caso 3: El Esguince que No Se Cura
+      <span class="case-topic">Propiocepción</span>
+    </div>
+    <div class="case-description">
+      <p><strong>Situación:</strong> Marta se torció el tobillo hace 3 meses. El ligamento ya está curado (confirmado por ecografía), pero sigue teniendo sensación de "inestabilidad" y se vuelve a torcer con frecuencia, incluso en terrenos llanos.</p>
+      <p><strong>Pregunta:</strong> Si el ligamento está curado, ¿por qué sigue sintiendo inestabilidad?</p>
+    </div>
+    
+    <div class="options">
+      <div class="option" data-value="A">
+        <strong>A)</strong> Porque los ligamentos nunca se curan del todo
+      </div>
+      <div class="option" data-value="B">
+        <strong>B)</strong> Porque durante el esguince se dañaron los mecanorreceptores propioceptivos del ligamento (corpúsculos de Pacini, Ruffini, órganos tendinosos de Golgi). El cerebro perdió información sobre la posición del tobillo → déficits en el control neuromuscular → inestabilidad funcional
+      </div>
+      <div class="option" data-value="C">
+        <strong>C)</strong> Porque es psicológico, no fisiológico
+      </div>
+    </div>
+    
+    <button class="btn-check" onclick="checkAnswer(3, 'B')">Verificar Respuesta</button>
+    
+    <div class="explanation-box" id="explanation3">
+      <h4>✅ Respuesta Correcta: B</h4>
+      <div class="explanation-content">
+        <p><strong>Explicación fisiológica:</strong></p>
+        <p>Los ligamentos no son solo "cuerdas pasivas" que estabilizan. Contienen <strong>mecanorreceptores especializados</strong> que informan al cerebro:</p>
+        <p><strong>Tipos de mecanorreceptores articulares:</strong></p>
+        <ul style="margin-left: 20px; margin-top: 10px;">
+          <li><strong>Corpúsculos de Pacini:</strong> Detectan aceleración y cambios rápidos de posición (vibración)</li>
+          <li><strong>Corpúsculos de Ruffini:</strong> Detectan estiramiento sostenido y posición estática</li>
+          <li><strong>Corpúsculos de Golgi-Mazzoni:</strong> Detectan presión profunda</li>
+          <li><strong>Terminaciones libres:</strong> Detectan dolor y cambios químicos</li>
+        </ul>
+        <p><strong>El arco reflejo artroquinético:</strong></p>
+        <ul style="margin-left: 20px; margin-top: 10px;">
+          <li>Los mecanorreceptores envían señales → médula espinal → músculos alrededor de la articulación</li>
+          <li>Este reflejo ajusta la tensión muscular en milisegundos para proteger la articulación</li>
+          <li>Tras un esguince, hasta el 40% de estos receptores pueden dañarse permanentemente</li>
+        </ul>
+        <p><strong>Consecuencia:</strong> Aunque el ligamento se cure estructuralmente, el cerebro "pierde el mapa" de la articulación. Sin información precisa, los músculos no pueden reaccionar a tiempo → inestabilidad funcional.</p>
+        <div class="key-concept">
+          <strong>💡 Concepto clave:</strong> Tras un esguince, la rehabilitación propioceptiva (ejercicios sobre superficies inestables, ojos cerrados) es ESENCIAL. Sin ella, el riesgo de recidiva es 3-5 veces mayor.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CASO 4 -->
+  <div class="case" id="case4">
+    <div class="case-header">
+      Caso 4: El Menisco Roto
+      <span class="case-topic">Partes de la articulación</span>
+    </div>
+    <div class="case-description">
+      <p><strong>Situación:</strong> David, futbolista de 28 años, sufre una rotura del menisco interno de la rodilla. La resonancia muestra que la rotura está en la zona central ("zona blanca"). El cirujano le dice que es probable que no cure sola y haya que extirpar esa parte.</p>
+      <p><strong>Pregunta:</strong> ¿Por qué la zona central del menisco no puede curarse sola?</p>
+    </div>
+    
+    <div class="options">
+      <div class="option" data-value="A">
+        <strong>A)</strong> Porque el menisco no tiene células
+      </div>
+      <div class="option" data-value="B">
+        <strong>B)</strong> Porque el menisco tiene 3 zonas con diferente vascularización: la zona periférica ("roja") tiene sangre y puede curar; la zona central ("blanca") es avascular y depende de la difusión del líquido sinovial, por lo que no puede formar un coágulo estable ni iniciar la reparación
+      </div>
+      <div class="option" data-value="C">
+        <strong>C)</strong> Porque los meniscos son de cartílago y no tienen capacidad de curación
+      </div>
+    </div>
+    
+    <button class="btn-check" onclick="checkAnswer(4, 'B')">Verificar Respuesta</button>
+    
+    <div class="explanation-box" id="explanation4">
+      <h4>✅ Respuesta Correcta: B</h4>
+      <div class="explanation-content">
+        <p><strong>Explicación fisiológica:</strong></p>
+        <p>El menisco es una estructura fibrocartilaginosa con <strong>vascularización diferencial</strong>:</p>
+        <p><strong>Las 3 zonas del menisco:</strong></p>
+        <ul style="margin-left: 20px; margin-top: 10px;">
+          <li><strong>Zona roja-roja (periférica, 10-30%):</strong> Irrigada por la arteria genicular. Tiene capacidad de curación. Las roturas aquí pueden suturarse con buen pronóstico.</li>
+          <li><strong>Zona rojo-blanca (media, 20-30%):</strong> Vascularización limitada. Curación variable.</li>
+          <li><strong>Zona blanca-blanca (central, 40-50%):</strong> Avascular. Se nutre por difusión del líquido sinovial. NO puede curar porque no llega sangre (y con ella, células, factores de crecimiento, oxígeno).</li>
+        </ul>
+        <p><strong>Implicaciones clínicas:</strong></p>
+        <ul style="margin-left: 20px; margin-top: 10px;">
+          <li>Roturas en zona blanca → meniscectomía parcial (extirpar la parte dañada)</li>
+          <li>Roturas en zona roja → sutura meniscal (intentar reparar)</li>
+          <li>Tras meniscectomía: aumenta la presión sobre el cartílago articular (el menisco distribuye el 50% de la carga) → mayor riesgo de artrosis a largo plazo</li>
+        </ul>
+        <div class="key-concept">
+          <strong>💡 Concepto clave:</strong> El menisco es como una "almohadilla con zonas": la parte de fuera tiene sangre y cura; la de dentro, no. Por eso la localización de la rotura determina el tratamiento.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CASO 5 -->
+  <div class="case" id="case5">
+    <div class="case-header">
+      Caso 5: El Sauté en los 3 Planos
+      <span class="case-topic">Planos del movimiento</span>
+    </div>
+    <div class="case-description">
+      <p><strong>Situación:</strong> Una profesora de danza analiza un <em>sauté</em> (salto vertical con piernas juntas) de una alumna. Observa que:</p>
+      <ul style="margin-left: 25px; margin-top: 10px;">
+        <li>Al subir y bajar: las rodillas se flexionan y extienden</li>
+        <li>La alumna tiende a meter las rodillas hacia dentro (valgo)</li>
+        <li>Al aterrizar, el tronco rota ligeramente hacia un lado</li>
+      </ul>
+      <p><strong>Pregunta:</strong> ¿En qué planos del espacio ocurren estos 3 movimientos?</p>
+    </div>
+    
+    <div class="options">
+      <div class="option" data-value="A">
+        <strong>A)</strong> Los tres ocurren en el mismo plano
+      </div>
+      <div class="option" data-value="B">
+        <strong>B)</strong> Flexión-extensión: plano sagital (divide el cuerpo en izquierda/derecha); Valgo de rodilla (aducción): plano frontal (divide en delante/detrás); Rotación del tronco: plano transversal (divide en arriba/abajo)
+      </div>
+      <div class="option" data-value="C">
+        <strong>C)</strong> Flexión: plano frontal; Valgo: plano transversal; Rotación: plano sagital
+      </div>
+    </div>
+    
+    <button class="btn-check" onclick="checkAnswer(5, 'B')">Verificar Respuesta</button>
+    
+    <div class="explanation-box" id="explanation5">
+      <h4>✅ Respuesta Correcta: B</h4>
+      <div class="explanation-content">
+        <p><strong>Explicación fisiológica:</strong></p>
+        <p>El cuerpo humano se mueve en <strong>3 planos cardinales</strong>, cada uno con un eje de rotación perpendicular:</p>
+        <p><strong>Los 3 planos:</strong></p>
+        <ul style="margin-left: 20px; margin-top: 10px;">
+          <li><strong>Plano sagital (lateral):</strong> Divide el cuerpo en mitad izquierda y derecha. Eje: transversal (mediolateral).
+            <ul style="margin-left: 15px; margin-top: 5px;">
+              <li>Movimientos: flexión-extensión</li>
+              <li>Ejemplo en el sauté: flexión de rodillas al preparar el salto, extensión al impulsarse</li>
+            </ul>
+          </li>
+          <li><strong>Plano frontal (coronal):</strong> Divide el cuerpo en parte anterior y posterior. Eje: anteroposterior.
+            <ul style="margin-left: 15px; margin-top: 5px;">
+              <li>Movimientos: abducción-aducción, inclinación lateral, eversión-inversión</li>
+              <li>Ejemplo en el sauté: valgo de rodilla (aducción de la cadera + rodilla hacia dentro)</li>
+            </ul>
+          </li>
+          <li><strong>Plano transversal (horizontal):</strong> Divide el cuerpo en parte superior e inferior. Eje: vertical (longitudinal).
+            <ul style="margin-left: 15px; margin-top: 5px;">
+              <li>Movimientos: rotación interna-externa, pronación-supinación</li>
+              <li>Ejemplo en el sauté: rotación del tronco al aterrizar</li>
+            </ul>
+          </li>
+        </ul>
+        <p><strong>Importancia para la técnica:</strong></p>
+        <ul style="margin-left: 20px; margin-top: 10px;">
+          <li>Un sauté "perfecto" debería ocurrir solo en el plano sagital</li>
+          <li>El valgo (plano frontal) y la rotación (plano transversal) son compensaciones que aumentan el riesgo de lesión (especialmente del LCA)</li>
+        </ul>
+        <div class="key-concept">
+          <strong>💡 Concepto clave:</strong> Todo movimiento humano es una combinación de los 3 planos. Analizar en qué plano ocurre un movimiento ayuda a identificar compensaciones y prevenir lesiones.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CASO 6 -->
+  <div class="case" id="case6">
+    <div class="case-header">
+      Caso 6: La Artrosis del Bailarín
+      <span class="case-topic">Cartílago y carga</span>
+    </div>
+    <div class="case-description">
+      <p><strong>Situación:</strong> Rosa, bailarina de ballet de 55 años, tiene artrosis en ambas caderas. Su hermana gemela, que nunca bailó, tiene las caderas sanas. Rosa se pregunta: "¿Bailar toda mi vida me ha causado la artrosis?"</p>
+      <p><strong>Pregunta:</strong> ¿Cuál es la explicación fisiológica más probable?</p>
+    </div>
+    
+    <div class="options">
+      <div class="option" data-value="A">
+        <strong>A)</strong> Bailar siempre causa artrosis, el cartílago se "gasta" como una suela de zapato
+      </div>
+      <div class="option" data-value="B">
+        <strong>B)</strong> La artrosis no es solo "desgaste". Es un proceso biológico activo donde el equilibrio entre síntesis y degradación de matriz se rompe. En bailarines de élite, las microlesiones repetidas del cartílago (por cargas extremas y años de impacto) pueden superar la capacidad de reparación de los condrocitos, desencadenando una cascada inflamatoria que degrada el cartílago
+      </div>
+      <div class="option" data-value="C">
+        <strong>C)</strong> Es solo genética, el baile no tiene nada que ver
+      </div>
+    </div>
+    
+    <button class="btn-check" onclick="checkAnswer(6, 'B')">Verificar Respuesta</button>
+    
+    <div class="explanation-box" id="explanation6">
+      <h4>✅ Respuesta Correcta: B</h4>
+      <div class="explanation-content">
+        <p><strong>Explicación fisiológica:</strong></p>
+        <p>La artrosis NO es simplemente "desgaste mecánico". Es una enfermedad articular compleja con componentes biológicos activos:</p>
+        <p><strong>Fisiopatología de la artrosis:</strong></p>
+        <ul style="margin-left: 20px; margin-top: 10px;">
+          <li><strong>Daño inicial:</strong> Microtraumatismos repetidos (años de ballet = miles de horas de carga extrema en las caderas)</li>
+          <li><strong>Respuesta de los condrocitos:</strong> Inicialmente aumentan la síntesis de matriz (intento de reparación). Pero con el tiempo, se "agotan" y cambian su fenotipo.</li>
+          <li><strong>Cascada inflamatoria:</strong> Los condrocitos dañados liberan citoquinas proinflamatorias (IL-1β, TNF-α) y enzimas degradantes (metaloproteinasas - MMPs, agrecanasas - ADAMTS)</li>
+          <li><strong>Degradación de la matriz:</strong> Se destruye el colágeno tipo II y los proteoglicanos (agrecán)</li>
+          <li><strong>Cambios óseos:</strong> El hueso subcondral se esclerosa (se hace más duro), aparecen osteofitos (picos óseos)</li>
+          <li><strong>Sinovitis:</strong> La membrana sinovial se inflama, produciendo más líquido pero de peor calidad</li>
+        </ul>
+        <p><strong>¿Por qué Rosa sí y su hermana no?</strong></p>
+        <ul style="margin-left: 20px; margin-top: 10px;">
+          <li>Factores mecánicos: ballet = cargas extremas en las caderas (extensiones, rotaciones)</li>
+          <li>Factores genéticos: ambas tienen la misma genética, pero el ambiente (baile de élite) "activó" la enfermedad en Rosa</li>
+          <li>La paradoja: el ejercicio moderado PROTEGE el cartílago; el ejercicio extremo y repetitivo puede dañarlo</li>
+        </ul>
+        <div class="key-concept">
+          <strong>💡 Concepto clave:</strong> La artrosis es una enfermedad, no solo "desgaste". El baile de élite es un factor de riesgo, pero no una condena. La clave es el equilibrio: carga adecuada + recuperación + técnica correcta.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CASO 7 -->
+  <div class="case" id="case7">
+    <div class="case-header">
+      Caso 7: La Hiperlaxa que No Puede Estabilizar
+      <span class="case-topic">Tipos de articulaciones</span>
+    </div>
+    <div class="case-description">
+      <p><strong>Situación:</strong> Elena, bailarina de 19 años, es "hiperlaxa": puede poner las manos en el suelo sin doblar las rodillas, hiperextender los codos más de 10°, y hacer el spagat completo fácilmente. Pero tiene dolor crónico en rodillas y hombros, y frecuentes "subluxaciones" (la articulación se sale parcialmente).</p>
+      <p><strong>Pregunta:</strong> ¿Qué tipo de articulación tiene y qué problema fisiológico explica sus síntomas?</p>
+    </div>
+    
+    <div class="options">
+      <div class="option" data-value="A">
+        <strong>A)</strong> Tiene articulaciones fibrosas (sinartrosis) que son demasiado flexibles
+      </div>
+      <div class="option" data-value="B">
+        <strong>B)</strong> Tiene articulaciones sinoviales (diartrosis) con ligamentos demasiado laxos por alteración del colágeno (posible síndrome de Ehlers-Danlos hipermóvil). Los ligamentos no pueden estabilizar la articulación → los músculos deben trabajar en exceso → fatiga y dolor. La propiocepción también puede estar alterada
+      </div>
+      <div class="option" data-value="C">
+        <strong>C)</strong> Tiene articulaciones cartilaginosas (anfiartrosis) en todas partes
+      </div>
+    </div>
+    
+    <button class="btn-check" onclick="checkAnswer(7, 'B')">Verificar Respuesta</button>
+    
+    <div class="explanation-box" id="explanation7">
+      <h4>✅ Respuesta Correcta: B</h4>
+      <div class="explanation-content">
+        <p><strong>Explicación fisiológica:</strong></p>
+        <p>Las articulaciones sinoviales (diartrosis) son las más móviles del cuerpo. Su estabilidad depende de:</p>
+        <p><strong>Estabilizadores pasivos (no contráctiles):</strong></p>
+        <ul style="margin-left: 20px; margin-top: 10px;">
+          <li><strong>Ligamentos:</strong> Limitan el rango de movimiento</li>
+          <li><strong>Cápsula articular:</strong> Envuelve la articulación</li>
+          <li><strong>Forma de las superficies óseas:</strong> Encaje mecánico</li>
+          <li><strong>Presión negativa intraarticular:</strong> "Succión" que mantiene las superficies en contacto</li>
+        </ul>
+        <p><strong>Estabilizadores activos (contráctiles):</strong></p>
+        <ul style="margin-left: 20px; margin-top: 10px;">
+          <li><strong>Músculos:</strong> Proporcionan estabilidad dinámica</li>
+          <li><strong>Tendones:</strong> Transmiten la fuerza muscular</li>
+        </ul>
+        <p><strong>En la hiperlaxitud:</strong></p>
+        <ul style="margin-left: 20px; margin-top: 10px;">
+          <li>Los ligamentos tienen colágeno alterado (defecto en la estructura del colágeno tipo III o en los enlaces cruzados)</li>
+          <li>Son "demasiado elásticos" → no limitan el movimiento → la articulación es inestable</li>
+          <li>Los músculos deben trabajar en exceso para compensar → fatiga, dolor, contracturas</li>
+          <li>Los mecanorreceptores de los ligamentos pueden estar alterados → propiocepción deficiente</li>
+          <li>Riesgo de subluxaciones y luxaciones</li>
+        </ul>
+        <p><strong>Tipos de articulaciones (recordatorio):</strong></p>
+        <ul style="margin-left: 20px; margin-top: 10px;">
+          <li><strong>Sinartrosis (fibrosas):</strong> Sin movimiento (ej: suturas del cráneo)</li>
+          <li><strong>Anfiartrosis (cartilaginosas):</strong> Movimiento limitado (ej: sínfisis del pubis, discos intervertebrales)</li>
+          <li><strong>Diartrosis (sinoviales):</strong> Libre movimiento (ej: rodilla, hombro, cadera) ← las de Elena</li>
+        </ul>
+        <div class="key-concept">
+          <strong>💡 Concepto clave:</strong> La hiperlaxitud no es una ventaja en danza. Es un factor de riesgo. Estas bailarinas necesitan FORTALECER músculos (estabilizadores activos) porque los pasivos (ligamentos) no funcionan bien.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CASO 8 -->
+  <div class="case" id="case8">
+    <div class="case-header">
+      Caso 8: La Lubricina, la Molécula Escondida
+      <span class="case-topic">Líquido sinovial</span>
+    </div>
+    <div class="case-description">
+      <p><strong>Situación:</strong> Un investigador estudia ratones modificados genéticamente que no producen <strong>lubricina</strong> (PRG4). Los ratones desarrollan artrosis precoz a los 2 meses de vida, a pesar de que el ácido hialurónico y el líquido sinovial son normales.</p>
+      <p><strong>Pregunta:</strong> ¿Qué función específica tiene la lubricina que explica esta artrosis precoz?</p>
+    </div>
+    
+    <div class="options">
+      <div class="option" data-value="A">
+        <strong>A)</strong> La lubricina es un tipo de ácido hialurónico
+      </div>
+      <div class="option" data-value="B">
+        <strong>B)</strong> La lubricina es una glucoproteína que forma una capa protectora sobre el cartílago, reduciendo el coeficiente de fricción a valores ultra-bajos (0.001-0.01, similar al hielo sobre hielo). Sin ella, el cartílago sufre fricción directa → daño mecánico → artrosis
+      </div>
+      <div class="option" data-value="C">
+        <strong>C)</strong> La lubricina nutre el cartílago
+      </div>
+    </div>
+    
+    <button class="btn-check" onclick="checkAnswer(8, 'B')">Verificar Respuesta</button>
+    
+    <div class="explanation-box" id="explanation8">
+      <h4>✅ Respuesta Correcta: B</h4>
+      <div class="explanation-content">
+        <p><strong>Explicación fisiológica:</strong></p>
+        <p>La lubricación articular es un sistema complejo con múltiples mecanismos:</p>
+        <p><strong>Mecanismos de lubricación:</strong></p>
+        <ul style="margin-left: 20px; margin-top: 10px;">
+          <li><strong>Lubricación límite:</strong> Moléculas adsorbidas a la superficie del cartílago forman una capa protectora. La lubricina (PRG4) es la principal molécula de este sistema.</li>
+          <li><strong>Lubricación por fluido:</strong> El líquido sinovial forma una película que separa las superficies. El ácido hialurónico es clave aquí.</li>
+          <li><strong>Lubricación mixta:</strong> Combinación de ambos mecanismos.</li>
+        </ul>
+        <p><strong>La lubricina (PRG4):</strong></p>
+        <ul style="margin-left: 20px; margin-top: 10px;">
+          <li>Glucoproteína producida por los condrocitos superficiales y las células sinoviales</li>
+          <li>Se adhiere a la superficie del cartílago mediante sus extremos</li>
+          <li>La parte central (ricamente glucosilada) repele otras moléculas → efecto "antiadherente"</li>
+          <li>Reduce el coeficiente de fricción a 0.001-0.01 (similar al hielo sobre hielo, 10-100 veces menor que el caucho sobre asfalto)</li>
+          <li>También tiene función antiinflamatoria y protege contra la adhesión de células inflamatorias</li>
+        </ul>
+        <p><strong>Implicaciones clínicas:</strong></p>
+        <ul style="margin-left: 20px; margin-top: 10px;">
+          <li>Mutaciones en el gen PRG4 → síndrome de Weverling (artropatía por deficiencia de lubricina)</li>
+          <li>En artrosis, los niveles de lubricina pueden estar alterados</li>
+          <li>Investigación actual: inyecciones de lubricina como tratamiento para la artrosis</li>
+        </ul>
+        <div class="key-concept">
+          <strong>💡 Concepto clave:</strong> La lubricina es el "teflón" biológico de las articulaciones. Sin ella, el cartílago se raya como una sartén antiadherente sin recubrimiento. El ácido hialurónico lubrica el fluido; la lubricina, la superficie.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CASO 9 -->
+  <div class="case" id="case9">
+    <div class="case-header">
+      Caso 9: El Entrenamiento Propioceptivo
+      <span class="case-topic">Propiocepción</span>
+    </div>
+    <div class="case-description">
+      <p><strong>Situación:</strong> Un fisioterapeuta trabaja con un bailarín que se recuperó de una rotura del ligamento cruzado anterior (LCA). Además de fortalecer los músculos, le hace ejercicios sobre una tabla de equilibrio, con los ojos cerrados, y lanzando una pelota mientras está sobre una pata.</p>
+      <p><strong>Pregunta:</strong> ¿Qué sistema fisiológico está entrenando específicamente con estos ejercicios?</p>
+    </div>
+    
+    <div class="options">
+      <div class="option" data-value="A">
+        <strong>A)</strong> Solo está entrenando la fuerza muscular
+      </div>
+      <div class="option" data-value="B">
+        <strong>B)</strong> Está entrenando el sistema propioceptivo: mejora la capacidad de los mecanorreceptores (articulares, musculares, cutáneos) para detectar la posición articular, y la capacidad del SNC para procesar esa información y generar respuestas motoras rápidas y precisas. Esto se llama "reaprendizaje neuromuscular"
+      </div>
+      <div class="option" data-value="C">
+        <strong>C)</strong> Está entrenando la flexibilidad
+      </div>
+    </div>
+    
+    <button class="btn-check" onclick="checkAnswer(9, 'B')">Verificar Respuesta</button>
+    
+    <div class="explanation-box" id="explanation9">
+      <h4>✅ Respuesta Correcta: B</h4>
+      <div class="explanation-content">
+        <p><strong>Explicación fisiológica:</strong></p>
+        <p>La propiocepción es el "sexto sentido": la capacidad de感知 la posición y el movimiento del cuerpo sin usar la vista.</p>
+        <p><strong>Receptores propioceptivos:</strong></p>
+        <ul style="margin-left: 20px; margin-top: 10px;">
+          <li><strong>Articulares:</strong> Mecanorreceptores en cápsula y ligamentos (Pacini, Ruffini, Golgi)</li>
+          <li><strong>Musculares:</strong> Husos musculares (detectan longitud y velocidad de cambio)</li>
+          <li><strong>Tendinosos:</strong> Órganos tendinosos de Golgi (detectan tensión)</li>
+          <li><strong>Cutáneos:</strong> Receptores en la piel (presión, tacto)</li>
+          <li><strong>Vestibulares:</strong> Oído interno (equilibrio y orientación de la cabeza)</li>
+        </ul>
+        <p><strong>Vías propioceptivas:</strong></p>
+        <ul style="margin-left: 20px; margin-top: 10px;">
+          <li><strong>Inconsciente:</strong> Vía espinocerebelosa → cerebelo → ajuste postural automático</li>
+          <li><strong>Consciente:</strong> Vía columnas dorsales → corteza somatosensorial → percepción de la posición</li>
+        </ul>
+        <p><strong>Principios del entrenamiento propioceptivo:</strong></p>
+        <ul style="margin-left: 20px; margin-top: 10px;">
+          <li><strong>Progresión:</strong> De estable a inestable, de ojos abiertos a cerrados, de estático a dinámico</li>
+          <li><strong>Especificidad:</strong> Los ejercicios deben imitar las demandas de la danza</li>
+          <li><strong>Neuroplasticidad:</strong> El cerebro puede "reaprender" a interpretar las señales propioceptivas tras una lesión</li>
+          <li><strong>Reflejos:</strong> Se mejoran los reflejos espinales y los ajustes postulares automáticos</li>
+        </ul>
+        <div class="key-concept">
+          <strong>💡 Concepto clave:</strong> Tras una lesión articular, no basta con fortalecer músculos. Hay que "reconectar" el sistema nervioso con la articulación. Sin entrenamiento propioceptivo, el riesgo de recidiva es altísimo.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CASO 10 -->
+  <div class="case" id="case10">
+    <div class="case-header">
+      Caso 10: La Diferencia entre Articulaciones
+      <span class="case-topic">Tipos de articulaciones</span>
+    </div>
+    <div class="case-description">
+      <p><strong>Situación:</strong> Un estudiante de anatomía compara tres articulaciones:</p>
+      <ul style="margin-left: 25px; margin-top: 10px;">
+        <li><strong>A:</strong> Suturas del cráneo</li>
+        <li><strong>B:</strong> Sínfisis del pubis</li>
+        <li><strong>C:</strong> Rodilla</li>
+      </ul>
+      <p><strong>Pregunta:</strong> ¿Qué tipo de articulación es cada una y qué características fisiológicas las diferencian?</p>
+    </div>
+    
+    <div class="options">
+      <div class="option" data-value="A">
+        <strong>A)</strong> Las tres son iguales, solo cambia el nombre
+      </div>
+      <div class="option" data-value="B">
+        <strong>B)</strong> A = sinartrosis (fibrosa, sin movimiento, tejido conectivo denso); B = anfiartrosis (cartilaginosa, movimiento limitado, fibrocartílago); C = diartrosis (sinovial, libre movimiento, cavidad articular con líquido sinovial, cartílago hialino)
+      </div>
+      <div class="option" data-value="C">
+        <strong>C)</strong> A = diartrosis; B = sinartrosis; C = anfiartrosis
+      </div>
+    </div>
+    
+    <button class="btn-check" onclick="checkAnswer(10, 'B')">Verificar Respuesta</button>
+    
+    <div class="explanation-box" id="explanation10">
+      <h4>✅ Respuesta Correcta: B</h4>
+      <div class="explanation-content">
+        <p><strong>Explicación fisiológica:</strong></p>
+        <p>Las articulaciones se clasifican según su <strong>estructura</strong> (tipo de tejido) y su <strong>función</strong> (grado de movimiento):</p>
+        
+        <p><strong>A) Suturas del cráneo - SINARTROSIS (fibrosa):</strong></p>
+        <ul style="margin-left: 20px; margin-top: 10px;">
+          <li><strong>Tejido:</strong> Tejido conectivo denso irregular</li>
+          <li><strong>Movimiento:</strong> Ninguno (0°)</li>
+          <li><strong>Función:</strong> Protección del encéfalo</li>
+          <li><strong>Evolución:</strong> Se osifican con la edad (sinostosis)</li>
+          <li><strong>Ejemplos:</strong> Suturas coronal, sagital, lambdoidea</li>
+        </ul>
+        
+        <p><strong>B) Sínfisis del pubis - ANFIARTROSIS (cartilaginosa):</strong></p>
+        <ul style="margin-left: 20px; margin-top: 10px;">
+          <li><strong>Tejido:</strong> Fibrocartílago (disco interpubiano)</li>
+          <li><strong>Movimiento:</strong> Limitado (2-3° de rotación, 1-2 mm de traslación)</li>
+          <li><strong>Función:</strong> Absorción de impacto, estabilidad de la pelvis</li>
+          <li><strong>Cambio fisiológico:</strong> Se vuelve más laxa durante el parto (relaxina)</li>
+          <li><strong>Ejemplos:</strong> Sínfisis del pubis, discos intervertebrales, manubrio esternal</li>
+        </ul>
+        
+        <p><strong>C) Rodilla - DIARTROSIS (sinovial):</strong></p>
+        <ul style="margin-left: 20px; margin-top: 10px;">
+          <li><strong>Tejido:</strong> Cartílago hialino + cápsula + ligamentos + líquido sinovial</li>
+          <li><strong>Movimiento:</strong> Libre (flexión-extensión, rotaciones menores)</li>
+          <li><strong>Estructuras especiales:</strong> Meniscos, bolsas sinoviales, grasa de Hoffa</li>
+          <li><strong>Función:</strong> Movimiento con mínima fricción</li>
+          <li><strong>Ejemplos:</strong> Rodilla, hombro, cadera, tobillo, codo, muñeca</li>
+        </ul>
+        
+        <p><strong>Resumen comparativo:</strong></p>
+        <table style="width: 100%; margin-top: 15px; border-collapse: collapse;">
+          <tr style="background: #134e5e; color: white;">
+            <th style="padding: 10px; border: 1px solid #ddd;">Característica</th>
+            <th style="padding: 10px; border: 1px solid #ddd;">Sinartrosis</th>
+            <th style="padding: 10px; border: 1px solid #ddd;">Anfiartrosis</th>
+            <th style="padding: 10px; border: 1px solid #ddd;">Diartrosis</th>
+          </tr>
+          <tr>
+            <td style="padding: 10px; border: 1px solid #ddd;"><strong>Movimiento</strong></td>
+            <td style="padding: 10px; border: 1px solid #ddd;">Ninguno</td>
+            <td style="padding: 10px; border: 1px solid #ddd;">Limitado</td>
+            <td style="padding: 10px; border: 1px solid #ddd;">Libre</td>
+          </tr>
+          <tr style="background: #f8f9fa;">
+            <td style="padding: 10px; border: 1px solid #ddd;"><strong>Cavidad</strong></td>
+            <td style="padding: 10px; border: 1px solid #ddd;">No</td>
+            <td style="padding: 10px; border: 1px solid #ddd;">No</td>
+            <td style="padding: 10px; border: 1px solid #ddd;">Sí</td>
+          </tr>
+          <tr>
+            <td style="padding: 10px; border: 1px solid #ddd;"><strong>Líquido sinovial</strong></td>
+            <td style="padding: 10px; border: 1px solid #ddd;">No</td>
+            <td style="padding: 10px; border: 1px solid #ddd;">No</td>
+            <td style="padding: 10px; border: 1px solid #ddd;">Sí</td>
+          </tr>
+          <tr style="background: #f8f9fa;">
+            <td style="padding: 10px; border: 1px solid #ddd;"><strong>Ejemplo</strong></td>
+            <td style="padding: 10px; border: 1px solid #ddd;">Suturas</td>
+            <td style="padding: 10px; border: 1px solid #ddd;">Sínfisis pubis</td>
+            <td style="padding: 10px; border: 1px solid #ddd;">Rodilla</td>
+          </tr>
+        </table>
+        
+        <div class="key-concept">
+          <strong>💡 Concepto clave:</strong> La clasificación articular refleja el compromiso entre estabilidad y movilidad. Las sinartrosis priorizan la protección; las diartrosis, el movimiento. Las anfiartrosis son un punto intermedio.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="progress-bar">
+    <div class="progress-text">Progreso: <span id="progress">0</span>/10 casos completados</div>
+    <div class="progress-fill" id="progressBar" style="width: 0%"></div>
+  </div>
+</div>
+
+<script>
+let completedCases = 0;
+const totalCases = 10;
+
+function checkAnswer(caseNum, correctAnswer) {
+  const caseElement = document.getElementById(`case${caseNum}`);
+  const options = caseElement.querySelectorAll('.option');
+  const btn = caseElement.querySelector('.btn-check');
+  const explanation = document.getElementById(`explanation${caseNum}`);
+  
+  btn.disabled = true;
+  
+  let selectedValue = null;
+  options.forEach(option => {
+    if (option.classList.contains('selected')) {
+      selectedValue = option.getAttribute('data-value');
+    }
+    option.style.pointerEvents = 'none';
+    option.style.opacity = '0.7';
+  });
+  
+  if (!selectedValue) {
+    alert('Por favor, selecciona una respuesta primero');
+    btn.disabled = false;
+    options.forEach(option => {
+      option.style.pointerEvents = 'auto';
+      option.style.opacity = '1';
+    });
+    return;
+  }
+  
+  options.forEach(option => {
+    if (option.getAttribute('data-value') === correctAnswer) {
+      option.classList.add('correct');
+      option.style.opacity = '1';
+    } else if (option.getAttribute('data-value') === selectedValue && selectedValue !== correctAnswer) {
+      option.classList.add('incorrect');
+      option.style.opacity = '1';
+    }
+  });
+  
+  if (selectedValue === correctAnswer) {
+    explanation.classList.add('correct', 'show');
+    completedCases++;
+  } else {
+    explanation.classList.add('incorrect', 'show');
+  }
+  
+  updateProgress();
+}
+
+document.querySelectorAll('.option').forEach(option => {
+  option.addEventListener('click', function() {
+    const parent = this.parentElement;
+    parent.querySelectorAll('.option').forEach(opt => {
+      opt.classList.remove('selected');
+    });
+    this.classList.add('selected');
+  });
+});
+
+function updateProgress() {
+  const progress = (completedCases / totalCases) * 100;
+  document.getElementById('progressBar').style.width = progress + '%';
+  document.getElementById('progress').textContent = completedCases;
+  
+  if (completedCases === totalCases) {
+    setTimeout(() => {
+      alert('🎉 ¡Felicidades! Has completado todos los casos prácticos sobre fisiología articular. Ahora comprendes la complejidad de estas estructuras dinámicas.');
+    }, 500);
+  }
+}
+</script>
+</body>
+</html>

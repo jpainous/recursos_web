@@ -1,0 +1,1888 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Activitat T1.2 · De la cèl·lula al cos</title>
+<style>
+  :root{
+    --navy:#0b1f3a; --navy-2:#132f55;
+    --gold:#c9a227; --gold-2:#e6c65c;
+    --bg:#f7f4ee; --white:#ffffff;
+    --text:#1a1a1a; --muted:#6b6b6b;
+    --ok:#2e7d32; --ok-bg:#e8f3ec;
+    --err:#c62828; --err-bg:#fdecea;
+    --pi:#1b8a3a; --pi-bg:#e6f6ea; --pi-border:#8fd3a3;
+    --bloc-a:#c62828; --bloc-a-bg:#fdecea;
+    --bloc-b:#2e7d32; --bloc-b-bg:#e8f3ec;
+    --bloc-c:#1565c0; --bloc-c-bg:#e3f0fb;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    font-family: Georgia, "Times New Roman", serif;
+    background:var(--bg);
+    color:var(--text);
+    font-size:22px;
+    line-height:1.65;
+    padding:1.2rem;
+  }
+  .wrap{max-width:960px;margin:0 auto}
+
+  /* ---------- CAPÇALERA ---------- */
+  .menu{
+    background:linear-gradient(135deg,var(--navy),var(--navy-2));
+    color:#fff;border-radius:16px;padding:1rem 1.2rem;
+    box-shadow:0 8px 22px rgba(11,31,58,.18);margin-bottom:1rem;
+  }
+  .menu h1{margin:0 0 .25rem;font-size:1.7rem;color:#fff}
+  .menu .sub{margin:0 0 .8rem;color:#dbe6f5;font-size:1.05rem}
+  .menu-row{display:flex;flex-wrap:wrap;gap:.5rem;align-items:center;justify-content:space-between}
+  .menu-row .progres{font-size:1.05rem;color:var(--gold-2);font-weight:700}
+  .menu-row .controls{display:flex;gap:.5rem;flex-wrap:wrap;align-items:center}
+  .menu-row button{
+    background:var(--gold);color:var(--navy);border:0;
+    padding:.6rem 1.15rem;border-radius:999px;
+    font-family:inherit;font-weight:700;font-size:.95rem;cursor:pointer;
+  }
+  .menu-row button:hover{background:var(--gold-2)}
+  .menu-row button.ghost{background:transparent;color:#fff;border:1px solid rgba(230,198,92,.6)}
+  .menu-row button.ghost:hover{background:rgba(230,198,92,.15)}
+  .menu-row button.actiu{
+    background:var(--pi);color:#fff;border-color:var(--pi);
+    box-shadow:0 0 0 3px rgba(27,138,58,.25);
+  }
+  #btn-adaptat{
+    font-size:1.15rem;padding:.5rem .75rem;line-height:1;
+    display:none;
+  }
+  #btn-adaptat.actiu{
+    display:inline-flex;
+    background:var(--pi);color:#fff;border-color:var(--pi);
+  }
+  .lang-switch{display:flex;gap:.35rem;margin-top:.7rem}
+  .lang-switch button{
+    background:rgba(255,255,255,.08);color:#fff;
+    border:1px solid rgba(230,198,92,.5);
+    padding:.35rem .85rem;border-radius:999px;
+    font-family:inherit;font-size:.9rem;cursor:pointer;
+  }
+  .lang-switch button.active{background:var(--gold);color:var(--navy);font-weight:700}
+
+  /* ---------- ÍNDEX ---------- */
+  .index{
+    background:#fff;border-radius:16px;
+    box-shadow:0 6px 18px rgba(11,31,58,.08);
+    margin-bottom:1rem;overflow:hidden;
+  }
+  .index-header{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:1rem 1.2rem;cursor:pointer;
+    background:#fbf8f1;border:0;width:100%;
+    font-family:inherit;font-size:1.1rem;font-weight:700;
+    color:var(--navy);text-align:left;
+  }
+  .index-header:hover{background:#f5efdf}
+  .index-header .arrow{transition:transform .25s;font-size:1.1rem;color:var(--gold)}
+  .index-header.open .arrow{transform:rotate(90deg)}
+  .index-body{
+    max-height:0;overflow:hidden;
+    transition:max-height .4s ease;
+    padding:0 1.2rem;
+  }
+  .index-body.open{max-height:3000px;padding:.4rem 1.2rem 1.2rem}
+  .index-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:.8rem}
+  @media (max-width:640px){.index-grid{grid-template-columns:1fr}}
+  .bloc-wrap{display:flex;flex-direction:column}
+
+  .bloc-btn{
+    text-align:left;background:#fff;border:2px solid #e0dccf;border-radius:12px;
+    padding:.8rem .9rem;cursor:pointer;font-family:inherit;font-size:1rem;
+    color:var(--navy);transition:all .15s;
+    display:flex;flex-direction:column;gap:.25rem;
+  }
+  .bloc-btn:hover{transform:translateY(-1px)}
+  .bloc-btn.active{box-shadow:0 0 0 3px rgba(201,162,39,.35)}
+  .bloc-btn .bloc-titol{font-weight:700;font-size:1.05rem}
+  .bloc-btn .bloc-meta{font-size:.85rem;color:#666}
+  .bloc-btn .bloc-meta .pi{color:var(--pi);font-weight:700}
+  .bloc-btn .barra{height:8px;background:#eee;border-radius:999px;overflow:hidden;margin-top:.3rem}
+  .bloc-btn .barra span{display:block;height:100%;width:0%;transition:width .3s}
+  .bloc-btn[data-bloc="A"]{border-left:7px solid var(--bloc-a);background:linear-gradient(90deg,#fff,var(--bloc-a-bg))}
+  .bloc-btn[data-bloc="B"]{border-left:7px solid var(--bloc-b);background:linear-gradient(90deg,#fff,var(--bloc-b-bg))}
+  .bloc-btn[data-bloc="C"]{border-left:7px solid var(--bloc-c);background:linear-gradient(90deg,#fff,var(--bloc-c-bg))}
+  .bloc-btn[data-bloc="A"] .barra span{background:var(--bloc-a)}
+  .bloc-btn[data-bloc="B"] .barra span{background:var(--bloc-b)}
+  .bloc-btn[data-bloc="C"] .barra span{background:var(--bloc-c)}
+
+  /* ---------- BOTÓ OBJECTIU ---------- */
+  .objectiu-toggle{
+    display:block;width:100%;margin-top:.7rem;background:#fff;
+    border:1px dashed var(--gold);color:var(--navy);
+    padding:.6rem 1rem;border-radius:10px;font-family:inherit;
+    font-size:.98rem;font-weight:700;cursor:pointer;text-align:left;
+  }
+  .objectiu-toggle:hover{background:#fff8e1}
+  .objectiu-panel{
+    display:none;margin-top:.7rem;background:#fffdf5;
+    border-left:5px solid var(--gold);border-radius:10px;
+    padding:1rem 1.1rem;font-size:.98rem;color:#333;
+  }
+  .objectiu-panel.open{display:block}
+  .objectiu-panel h4{
+    margin:.9rem 0 .35rem;color:var(--navy);font-size:.95rem;
+    text-transform:uppercase;letter-spacing:.05em;
+  }
+  .objectiu-panel h4:first-child{margin-top:0}
+  .objectiu-panel p{margin:.2rem 0 .6rem}
+  .objectiu-panel ul{margin:.2rem 0 .6rem;padding-left:1.3rem}
+  .objectiu-panel li{margin:.2rem 0}
+  .objectiu-panel .vocab{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.3rem}
+  .objectiu-panel .vocab span{
+    background:var(--navy);color:#fff;border-radius:999px;
+    padding:.25rem .75rem;font-size:.88rem;
+  }
+  .objectiu-panel .objectiu-pi{
+    background:var(--pi-bg);border-left:5px solid var(--pi);
+    border-radius:8px;padding:.7rem .9rem;margin-top:.7rem;
+  }
+  .objectiu-panel .objectiu-pi h4{color:var(--pi);margin-top:0}
+  .objectiu-toggle-card{
+    margin-top:1rem;background:#fbf8f1;
+    font-size:1rem;padding:.7rem 1.1rem;
+  }
+
+  /* ---------- TARGETA ---------- */
+  .card{
+    background:#fff;border-radius:18px;
+    padding:1.6rem 1.5rem 1.8rem;
+    box-shadow:0 10px 26px rgba(11,31,58,.10);
+    border-top:8px solid var(--gold);
+    transition:border-color .25s;
+    position:relative;
+  }
+  .card[data-bloc="A"]{border-top-color:var(--bloc-a)}
+  .card[data-bloc="B"]{border-top-color:var(--bloc-b)}
+  .card[data-bloc="C"]{border-top-color:var(--bloc-c)}
+  .card.pi{box-shadow:0 0 0 3px var(--pi-border), 0 10px 26px rgba(11,31,58,.10)}
+
+  .bloc-tag{
+    display:inline-block;font-size:.85rem;font-weight:700;
+    padding:.25rem .7rem;border-radius:999px;margin-bottom:.6rem;
+    color:#fff;letter-spacing:.04em;
+  }
+  .bloc-tag[data-bloc="A"]{background:var(--bloc-a)}
+  .bloc-tag[data-bloc="B"]{background:var(--bloc-b)}
+  .bloc-tag[data-bloc="C"]{background:var(--bloc-c)}
+
+  .pi-badge{
+    display:none;float:right;align-items:center;justify-content:center;
+    background:var(--pi-bg);color:var(--pi);border:1px solid var(--pi-border);
+    border-radius:999px;padding:.25rem .65rem;font-size:1rem;font-weight:700;
+    min-width:36px;
+  }
+  .card.pi-obligatoria .pi-badge{display:inline-flex}
+
+  .icon{font-size:3.4rem;text-align:center;margin-bottom:.3rem}
+  .situacio{
+    font-size:1.35rem;color:var(--navy);font-weight:700;
+    text-align:center;margin:.2rem 0 .7rem;
+  }
+  .pregunta{font-size:1.2rem;color:#333;text-align:center;margin:0 0 1.3rem}
+  .pregunta strong{color:var(--navy)}
+
+  .opcions{display:flex;gap:.8rem;justify-content:center;flex-wrap:wrap}
+  .opcions button{
+    flex:1 1 280px;padding:1.15rem 1rem;border-radius:14px;
+    border:2px solid var(--navy);background:#fff;font-family:inherit;
+    font-size:1.1rem;font-weight:700;color:var(--navy);cursor:pointer;
+    transition:all .15s;line-height:1.35;
+  }
+  .opcions button span{
+    display:block;font-size:.95rem;font-weight:400;
+    color:#555;margin-top:.3rem;
+  }
+  .opcions button:hover:not(:disabled){background:var(--navy);color:#fff}
+  .opcions button:hover:not(:disabled) span{color:#dbe6f5}
+  .opcions button:disabled{cursor:default;opacity:.9}
+
+  .feedback{
+    margin-top:1.3rem;padding:1.1rem 1.2rem;border-radius:12px;
+    font-size:1.1rem;display:none;
+  }
+  .feedback.ok{background:var(--ok-bg);color:#1b5e20;border-left:6px solid var(--ok);display:block}
+  .feedback.err{background:var(--err-bg);color:#8a1c1c;border-left:6px solid var(--err);display:block}
+  .feedback strong{display:block;margin-bottom:.25rem}
+
+  .info-toggle{
+    display:block;margin:1.3rem auto 0;background:#fff;
+    border:1px solid var(--gold);color:var(--navy);
+    padding:.6rem 1.2rem;border-radius:999px;font-family:inherit;
+    font-size:1rem;font-weight:700;cursor:pointer;
+  }
+  .info-toggle:hover{background:#fff8e1}
+  .info-panel{
+    display:none;margin-top:.9rem;background:#fffdf5;
+    border-left:5px solid var(--gold);border-radius:10px;
+    padding:1rem 1.2rem;font-size:1.05rem;color:#333;
+  }
+  .info-panel.open{display:block}
+  .info-panel h3{margin:0 0 .4rem;color:var(--navy);font-size:1.1rem}
+  .info-panel p{margin:.2rem 0 .6rem}
+  .info-panel .exemple{
+    background:#fff;border-radius:8px;padding:.7rem .9rem;
+    font-size:1rem;border:1px dashed var(--gold);
+  }
+  .info-panel a{
+    color:var(--navy);font-weight:700;text-decoration:none;
+    border-bottom:1px solid var(--gold);
+  }
+  .info-panel a:hover{color:var(--gold)}
+
+  .nav-next{
+    text-align:center;margin-top:1.3rem;
+    display:flex;gap:.6rem;justify-content:center;flex-wrap:wrap;
+  }
+  .nav-next button{
+    background:var(--gold);color:var(--navy);border:0;
+    padding:.8rem 1.5rem;border-radius:999px;
+    font-family:inherit;font-weight:700;font-size:1.05rem;cursor:pointer;
+  }
+  .nav-next button:hover{background:var(--gold-2)}
+  .nav-next button.ghost{background:#fff;color:var(--navy);border:1px solid var(--gold)}
+
+  .resum{text-align:center;padding:1rem 0}
+  .resum .icon{font-size:3.8rem}
+  .resum .missatge{
+    font-size:1.4rem;color:var(--navy);font-weight:700;margin:.5rem 0 .7rem;
+  }
+  .resum p{color:#555;font-size:1.05rem;margin:.2rem 0 1rem}
+
+  @media (max-width:640px){
+    body{font-size:19px;padding:.9rem}
+    .menu h1{font-size:1.35rem}
+    .opcions button{flex:1 1 100%}
+    .situacio{font-size:1.2rem}
+  }
+
+  @media print{
+    body{background:#fff;font-size:12pt}
+    .menu{
+      background:#fff;color:#0b1f3a;border:0;box-shadow:none;
+      border-bottom:3px solid var(--gold);border-radius:0;
+    }
+    .menu h1,.menu .sub,.menu .progres{color:#0b1f3a}
+    .menu-row button,.lang-switch{display:none}
+    .index{display:none}
+    .card{box-shadow:none;border:1px solid #ddd;page-break-inside:avoid}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="menu">
+    <h1 id="ui-titol">Activitat T1.2 · De la cèl·lula al cos</h1>
+    <p class="sub" id="ui-sub">Cinquanta preguntes sobre els nivells d'organització i els teixits.</p>
+    <div class="menu-row">
+      <span class="progres" id="ui-progres">Progrés: 0 / 50</span>
+      <div class="controls">
+        <button id="btn-adaptat" class="actiu" aria-label="Verd">🌿</button>
+        <button id="btn-continuar" class="ghost" data-i18n="continuar">Continuar</button>
+        <button id="btn-repas" class="ghost" data-i18n="repas">🔁 Mode repàs</button>
+        <button id="btn-imprimir" class="ghost" data-i18n="imprimir">🖨 Imprimir</button>
+        <button id="btn-exportar" class="ghost" data-i18n="exportar">Exportar progrés</button>
+        <button id="btn-reset" data-i18n="reset">Començar de nou</button>
+      </div>
+    </div>
+    <div class="lang-switch" role="group" aria-label="Idioma">
+      <button data-lang="ca" class="active" type="button">CA</button>
+      <button data-lang="es" type="button">ES</button>
+      <button data-lang="en" type="button">EN</button>
+    </div>
+  </div>
+
+  <div class="index">
+    <button class="index-header" id="index-header" type="button">
+      <span id="ui-index-titol">Índex de blocs d'estudi</span>
+      <span class="arrow">▶</span>
+    </button>
+    <div class="index-body" id="index-body">
+      <div class="index-grid" id="index-grid"></div>
+    </div>
+  </div>
+
+  <div class="card" id="card" data-bloc="A">
+    <span class="pi-badge" id="pi-badge">🌿</span>
+    <div class="bloc-tag" id="bloc-tag" data-bloc="A">Bloc A</div>
+    <div class="icon" id="icon">🔬</div>
+    <div class="situacio" id="situacio">…</div>
+    <p class="pregunta" id="pregunta">…</p>
+
+    <div class="opcions" id="opcions">
+      <button data-resp="correcte">
+        <span data-i18n="op-correcte-titol">Correcte</span>
+        <span data-i18n="op-correcte-desc">Aquesta és la resposta adequada.</span>
+      </button>
+      <button data-resp="incorrecte">
+        <span data-i18n="op-incorrecte-titol">Incorrecte</span>
+        <span data-i18n="op-incorrecte-desc">Aquesta no és la resposta adequada.</span>
+      </button>
+    </div>
+
+    <div class="feedback" id="feedback"></div>
+
+    <button class="info-toggle" id="btn-info" data-i18n="mes-info">＋ Més informació</button>
+    <div class="info-panel" id="info-panel">
+      <h3 id="info-titol">…</h3>
+      <p id="info-text">…</p>
+      <div class="exemple" id="info-exemple">…</div>
+      <p style="margin-top:.7rem">
+        <a id="info-link" href="#" target="_blank" rel="noopener noreferrer" data-i18n="recurs">→ Veure el recurs del tema</a>
+      </p>
+    </div>
+
+    <button class="objectiu-toggle objectiu-toggle-card" id="btn-objectiu-card" type="button">🎯 Objectiu del bloc</button>
+    <div class="objectiu-panel" id="objectiu-card"></div>
+
+    <div class="nav-next">
+      <button id="prev" class="ghost" data-i18n="anterior">← Anterior</button>
+      <button id="next" data-i18n="seguent">Següent →</button>
+    </div>
+  </div>
+
+</div>
+
+<!-- El JavaScript va al Missatge 2 -->
+ <script>
+/* ============================================================
+   T1.2 · De la cèl·lula al cos
+   ============================================================ */
+
+/* ------------------------------------------------------------
+   BASE
+   ------------------------------------------------------------ */
+const BASE_URL = "https://jpainous.github.io/dansa_tema03/";
+const STORAGE_KEY = "t1_activitat02_progres_v3";
+
+/* ------------------------------------------------------------
+   UI · Traduccions de la interfície
+   ------------------------------------------------------------ */
+const UI = {
+  ca: {
+    titol:"Activitat T1.2 · De la cèl·lula al cos",
+    sub:"Cinquanta preguntes sobre els nivells d'organització i els teixits.",
+    progresGlobal:(f,t)=>`Progrés: ${f} / ${t}`,
+    progresAdaptat:(f,t)=>`🌿 ${f} / ${t}`,
+    reset:"Començar de nou",
+    continuar:"Continuar",
+    repas:"🔁 Mode repàs",
+    repasActiu:"🔁 Repàs actiu",
+    repasBuit:"No hi ha preguntes fallades. Bona feina!",
+    repasInfo:(n)=>`Mode repàs: ${n} preguntes per repassar`,
+    exportar:"Exportar progrés",
+    imprimir:"🖨 Imprimir",
+    "index-titol":"Índex de blocs d'estudi",
+    "op-correcte-titol":"Correcte",
+    "op-correcte-desc":"Aquesta és la resposta adequada.",
+    "op-incorrecte-titol":"Incorrecte",
+    "op-incorrecte-desc":"Aquesta no és la resposta adequada.",
+    "mes-info":"＋ Més informació",
+    "menys-info":"－ Tancar informació",
+    recurs:"→ Veure el recurs del tema",
+    seguent:"Següent →",
+    anterior:"← Anterior",
+    correcte:"✔ Correcte",
+    incorrecte:"✘ No exactament",
+    resumGlobal:(e,t)=>`Has encertat ${e} de ${t} en total.`,
+    resumSub:"El teu progrés s'ha desat automàticament.",
+    tornar:"Tornar a començar",
+    confirmReset:"Segur que vols esborrar tot el progrés?",
+    exportat:"Progrés exportat correctament.",
+    objectiu:"🎯 Objectiu del bloc",
+    tancarObjectiu:"✕ Tancar objectiu",
+    queAprens:"Què aprendràs",
+    preguntesClau:"Preguntes clau",
+    perQue:"Per què és important per a la dansa",
+    vocabulari:"Vocabulari clau",
+    objectiuGeneral:"Objectiu general",
+    objectiuAdaptat:"Objectiu adaptat",
+    imprimirTitol:"Full de resultats · Activitat T1.2",
+    imprimirAlumne:"Alumne/a:",
+    imprimirData:"Data:",
+    imprimirResum:"Resum",
+    imprimirTotal:"Total preguntes",
+    imprimirFetes:"Respostes fetes",
+    imprimirEncerts:"Encerts",
+    imprimirPct:"Percentatge",
+    imprimirPerBloc:"Resultats per bloc",
+    imprimirBloc:"Bloc",
+    imprimirDetall:"Detall de preguntes",
+    imprimirNum:"Núm.",
+    imprimirSituacio:"Situació",
+    imprimirResposta:"Resposta",
+    imprimirCorrecta:"Correcta",
+    imprimirEncert:"Encert",
+    imprimirSi:"Sí",
+    imprimirNo:"No",
+    imprimirPendent:"Pendent"
+  },
+  es: {
+    titol:"Actividad T1.2 · De la célula al cuerpo",
+    sub:"Cincuenta preguntas sobre los niveles de organización y los tejidos.",
+    progresGlobal:(f,t)=>`Progreso: ${f} / ${t}`,
+    progresAdaptat:(f,t)=>`🌿 ${f} / ${t}`,
+    reset:"Empezar de nuevo",
+    continuar:"Continuar",
+    repas:"🔁 Modo repaso",
+    repasActiu:"🔁 Repaso activo",
+    repasBuit:"No hay preguntas falladas. ¡Buen trabajo!",
+    repasInfo:(n)=>`Modo repaso: ${n} preguntas por repasar`,
+    exportar:"Exportar progreso",
+    imprimir:"🖨 Imprimir",
+    "index-titol":"Índice de bloques de estudio",
+    "op-correcte-titol":"Correcto",
+    "op-correcte-desc":"Esta es la respuesta adecuada.",
+    "op-incorrecte-titol":"Incorrecto",
+    "op-incorrecte-desc":"Esta no es la respuesta adecuada.",
+    "mes-info":"＋ Más información",
+    "menys-info":"－ Cerrar información",
+    recurs:"→ Ver el recurso del tema",
+    seguent:"Siguiente →",
+    anterior:"← Anterior",
+    correcte:"✔ Correcto",
+    incorrecte:"✘ No exactamente",
+    resumGlobal:(e,t)=>`Has acertado ${e} de ${t} en total.`,
+    resumSub:"Tu progreso se ha guardado automáticamente.",
+    tornar:"Volver a empezar",
+    confirmReset:"¿Seguro que quieres borrar todo el progreso?",
+    exportat:"Progreso exportado correctamente.",
+    objectiu:"🎯 Objetivo del bloque",
+    tancarObjectiu:"✕ Cerrar objetivo",
+    queAprens:"Qué aprenderás",
+    preguntesClau:"Preguntas clave",
+    perQue:"Por qué es importante para la danza",
+    vocabulari:"Vocabulario clave",
+    objectiuGeneral:"Objetivo general",
+    objectiuAdaptat:"Objetivo adaptado",
+    imprimirTitol:"Hoja de resultados · Actividad T1.2",
+    imprimirAlumne:"Alumno/a:",
+    imprimirData:"Fecha:",
+    imprimirResum:"Resumen",
+    imprimirTotal:"Total preguntas",
+    imprimirFetes:"Respuestas hechas",
+    imprimirEncerts:"Aciertos",
+    imprimirPct:"Porcentaje",
+    imprimirPerBloc:"Resultados por bloque",
+    imprimirBloc:"Bloque",
+    imprimirDetall:"Detalle de preguntas",
+    imprimirNum:"N.º",
+    imprimirSituacio:"Situación",
+    imprimirResposta:"Respuesta",
+    imprimirCorrecta:"Correcta",
+    imprimirEncert:"Acierto",
+    imprimirSi:"Sí",
+    imprimirNo:"No",
+    imprimirPendent:"Pendiente"
+  },
+  en: {
+    titol:"Activity T1.2 · From cell to body",
+    sub:"Fifty questions on levels of organisation and tissues.",
+    progresGlobal:(f,t)=>`Progress: ${f} / ${t}`,
+    progresAdaptat:(f,t)=>`🌿 ${f} / ${t}`,
+    reset:"Start over",
+    continuar:"Continue",
+    repas:"🔁 Review mode",
+    repasActiu:"🔁 Review active",
+    repasBuit:"No failed questions. Good job!",
+    repasInfo:(n)=>`Review mode: ${n} questions to review`,
+    exportar:"Export progress",
+    imprimir:"🖨 Print",
+    "index-titol":"Study block index",
+    "op-correcte-titol":"Correct",
+    "op-correcte-desc":"This is the right answer.",
+    "op-incorrecte-titol":"Incorrect",
+    "op-incorrecte-desc":"This is not the right answer.",
+    "mes-info":"＋ More information",
+    "menys-info":"－ Close information",
+    recurs:"→ View the topic resource",
+    seguent:"Next →",
+    anterior:"← Previous",
+    correcte:"✔ Correct",
+    incorrecte:"✘ Not exactly",
+    resumGlobal:(e,t)=>`You got ${e} out of ${t} overall.`,
+    resumSub:"Your progress has been saved automatically.",
+    tornar:"Start over",
+    confirmReset:"Are you sure you want to erase all progress?",
+    exportat:"Progress exported successfully.",
+    objectiu:"🎯 Block objective",
+    tancarObjectiu:"✕ Close objective",
+    queAprens:"What you will learn",
+    preguntesClau:"Key questions",
+    perQue:"Why it matters for dance",
+    vocabulari:"Key vocabulary",
+    objectiuGeneral:"General objective",
+    objectiuAdaptat:"Adapted objective",
+    imprimirTitol:"Results sheet · Activity T1.2",
+    imprimirAlumne:"Student:",
+    imprimirData:"Date:",
+    imprimirResum:"Summary",
+    imprimirTotal:"Total questions",
+    imprimirFetes:"Questions answered",
+    imprimirEncerts:"Correct",
+    imprimirPct:"Percentage",
+    imprimirPerBloc:"Results by block",
+    imprimirBloc:"Block",
+    imprimirDetall:"Question detail",
+    imprimirNum:"No.",
+    imprimirSituacio:"Situation",
+    imprimirResposta:"Answer",
+    imprimirCorrecta:"Correct",
+    imprimirEncert:"Correct?",
+    imprimirSi:"Yes",
+    imprimirNo:"No",
+    imprimirPendent:"Pending"
+  }
+};
+
+/* ------------------------------------------------------------
+   BLOCS
+   ------------------------------------------------------------ */
+const BLOCS = {
+  ca:[
+    { id:"A", titol:"Els 5 nivells d'organització" },
+    { id:"B", titol:"Els 4 teixits fonamentals" },
+    { id:"C", titol:"Exemples a la dansa" }
+  ],
+  es:[
+    { id:"A", titol:"Los 5 niveles de organización" },
+    { id:"B", titol:"Los 4 tejidos fundamentales" },
+    { id:"C", titol:"Ejemplos en la danza" }
+  ],
+  en:[
+    { id:"A", titol:"The 5 levels of organisation" },
+    { id:"B", titol:"The 4 fundamental tissues" },
+    { id:"C", titol:"Examples in dance" }
+  ]
+};
+
+/* ------------------------------------------------------------
+   OBJECTIUS
+   ------------------------------------------------------------ */
+const OBJECTIUS = {
+  A: {
+    general: {
+      que:{ ca:"Conèixer els 5 nivells d'organització del cos humà i saber situar-hi qualsevol estructura.", es:"Conocer los 5 niveles de organización del cuerpo humano y saber situar cualquier estructura.", en:"Know the 5 levels of organisation of the human body and be able to place any structure." },
+      clau:{
+        ca:["L'ordre: cèl·lula → teixit → òrgan → sistema → organisme.","Què és cada nivell i quins exemples el representen.","Com s'aplica aquest ordre a estructures del cos (bíceps, cor)."],
+        es:["El orden: célula → tejido → órgano → sistema → organismo.","Qué es cada nivel y qué ejemplos lo representan.","Cómo se aplica este orden a estructuras del cuerpo (bíceps, corazón)."],
+        en:["The order: cell → tissue → organ → system → organism.","What each level is and which examples represent it.","How this order applies to body structures (biceps, heart)."]
+      },
+      importancia:{
+        ca:"Aquest ordre és el mapa de tot el curs: sempre podràs situar qualsevol concepte en un dels 5 nivells.",
+        es:"Este orden es el mapa de todo el curso: siempre podrás situar cualquier concepto en uno de los 5 niveles.",
+        en:"This order is the map of the whole course: you will always be able to place any concept in one of the 5 levels."
+      }
+    },
+    adaptat: {
+      que:{ ca:"Reconèixer exemples de cada nivell i ordenar-los.", es:"Reconocer ejemplos de cada nivel y ordenarlos.", en:"Recognise examples of each level and order them." },
+      clau:{
+        ca:["Identificar si una estructura és cèl·lula, teixit, òrgan, sistema o organisme.","Posar exemples quotidians.","Ordenar-los correctament."],
+        es:["Identificar si una estructura es célula, tejido, órgano, sistema u organismo.","Poner ejemplos cotidianos.","Ordenarlos correctamente."],
+        en:["Identify whether a structure is a cell, tissue, organ, system or organism.","Give everyday examples.","Order them correctly."]
+      },
+      importancia:{
+        ca:"Amb aquestes preguntes aprens a ubicar qualsevol concepte del curs.",
+        es:"Con estas preguntas aprendes a ubicar cualquier concepto del curso.",
+        en:"With these questions you learn to place any concept in the course."
+      }
+    },
+    vocabulari:{
+      ca:["Cèl·lula","Teixit","Òrgan","Sistema","Aparell","Organisme"],
+      es:["Célula","Tejido","Órgano","Sistema","Aparato","Organismo"],
+      en:["Cell","Tissue","Organ","System","Apparatus","Organism"]
+    }
+  },
+  B: {
+    general: {
+      que:{ ca:"Reconèixer els 4 teixits fonamentals i la funció de cadascun.", es:"Reconocer los 4 tejidos fundamentales y la función de cada uno.", en:"Recognise the 4 fundamental tissues and the function of each." },
+      clau:{
+        ca:["Epitelial: protecció i glàndules.","Connectiu: suport i unions.","Muscular i nerviós: moviment i control."],
+        es:["Epitelial: protección y glándulas.","Conectivo: soporte y uniones.","Muscular y nervioso: movimiento y control."],
+        en:["Epithelial: protection and glands.","Connective: support and unions.","Muscular and nervous: movement and control."]
+      },
+      importancia:{
+        ca:"Els 4 teixits són els maons del cos. La dansa posa a prova sobretot el connectiu, el muscular i el nerviós.",
+        es:"Los 4 tejidos son los ladrillos del cuerpo. La danza pone a prueba sobre todo el conectivo, el muscular y el nervioso.",
+        en:"The 4 tissues are the body's bricks. Dance especially tests connective, muscle and nervous tissue."
+      }
+    },
+    adaptat: {
+      que:{ ca:"Associar cada teixit amb un exemple del cos.", es:"Asociar cada tejido con un ejemplo del cuerpo.", en:"Match each tissue with a body example." },
+      clau:{
+        ca:["Epitelial ↔ pell.","Connectiu ↔ tendó.","Muscular ↔ bíceps.","Nerviós ↔ motoneurona."],
+        es:["Epitelial ↔ piel.","Conectivo ↔ tendón.","Muscular ↔ bíceps.","Nervioso ↔ motoneurona."],
+        en:["Epithelial ↔ skin.","Connective ↔ tendon.","Muscular ↔ biceps.","Nervous ↔ motor neuron."]
+      },
+      importancia:{
+        ca:"Amb exemples concrets et quedarà molt més clar.",
+        es:"Con ejemplos concretos te quedará mucho más claro.",
+        en:"Concrete examples will make it much clearer."
+      }
+    },
+    vocabulari:{
+      ca:["Epitelial","Connectiu","Muscular","Nerviós","Tendó","Cartílag","Os","Sang"],
+      es:["Epitelial","Conectivo","Muscular","Nervioso","Tendón","Cartílago","Hueso","Sangre"],
+      en:["Epithelial","Connective","Muscular","Nervous","Tendon","Cartilage","Bone","Blood"]
+    }
+  },
+  C: {
+    general: {
+      que:{ ca:"Aplicar els nivells i els teixits a estructures i moviments de dansa.", es:"Aplicar los niveles y los tejidos a estructuras y movimientos de danza.", en:"Apply levels and tissues to dance structures and movements." },
+      clau:{
+        ca:["Exemple del bíceps.","Exemple del cor.","Metàfora de la dansa."],
+        es:["Ejemplo del bíceps.","Ejemplo del corazón.","Metáfora de la danza."],
+        en:["Biceps example.","Heart example.","Dance metaphor."]
+      },
+      importancia:{
+        ca:"Aplicar-ho a estructures que veus cada dia fa que el concepte deixi de ser abstracte.",
+        es:"Aplicarlo a estructuras que ves cada día hace que el concepto deje de ser abstracto.",
+        en:"Applying it to structures you see every day makes the concept less abstract."
+      }
+    },
+    adaptat: {
+      que:{ ca:"Reconèixer els nivells en estructures quotidianes.", es:"Reconocer los niveles en estructuras cotidianas.", en:"Recognise levels in everyday structures." },
+      clau:{
+        ca:["Bíceps: fibra → teixit → òrgan → sistema → cos.","Cor: cardiomiòcit → teixit → òrgan → aparell → cos.","Cada exemple amb el seu color."],
+        es:["Bíceps: fibra → tejido → órgano → sistema → cuerpo.","Corazón: cardiomiocito → tejido → órgano → aparato → cuerpo.","Cada ejemplo con su color."],
+        en:["Biceps: fibre → tissue → organ → system → body.","Heart: cardiomyocyte → tissue → organ → apparatus → body.","Each example with its colour."]
+      },
+      importancia:{
+        ca:"Reconèixer-ho en el teu propi cos t'ajuda a recordar-ho millor.",
+        es:"Reconocerlo en tu propio cuerpo te ayuda a recordarlo mejor.",
+        en:"Recognising it in your own body helps you remember it better."
+      }
+    },
+    vocabulari:{
+      ca:["Fibra muscular","Cardiomiòcit","Bíceps","Cor","Sistema muscular","Aparell cardiovascular"],
+      es:["Fibra muscular","Cardiomiocito","Bíceps","Corazón","Sistema muscular","Aparato cardiovascular"],
+      en:["Muscle fibre","Cardiomyocyte","Biceps","Heart","Muscular system","Cardiovascular apparatus"]
+    }
+  }
+};
+
+/* ------------------------------------------------------------
+   PREGUNTES (50) · A (16) · B (17) · C (17)
+   18 marcades amb pi:true  →  6 + 6 + 6
+   ------------------------------------------------------------ */
+const PREGUNTES = [
+  /* ===================== BLOC A · ELS 5 NIVELLS (16) ===================== */
+  {
+    bloc:"A", pi:true, icon:"🧬", correcte:"correcte", recurs:"trabajo_musculos.html",
+    situacio:{ ca:"L'ordre és: cèl·lula → teixit → òrgan → sistema → organisme.", es:"El orden es: célula → tejido → órgano → sistema → organismo.", en:"The order is: cell → tissue → organ → system → organism." },
+    pregunta:{ ca:"És correcte aquest ordre?", es:"¿Es correcto este orden?", en:"Is this order correct?" },
+    explica:{ ca:"Sí. Cada nivell afegeix complexitat.", es:"Sí. Cada nivel añade complejidad.", en:"Yes. Each level adds complexity." },
+    info:{
+      titol:{ ca:"Els 5 nivells", es:"Los 5 niveles", en:"The 5 levels" },
+      text:{ ca:"Cèl·lula és la unitat; teixit, conjunt de cèl·lules; òrgan, conjunt de teixits; sistema, conjunt d'òrgans; organisme, el tot.", es:"Célula es la unidad; tejido, conjunto de células; órgano, conjunto de tejidos; sistema, conjunto de órganos; organismo, el todo.", en:"Cell is the unit; tissue, a set of cells; organ, a set of tissues; system, a set of organs; organism, the whole." },
+      exemple:{ ca:"Aquesta jerarquia és la columna vertebral de tota la fisiologia.", es:"Esta jerarquía es la columna vertebral de toda la fisiología.", en:"This hierarchy is the backbone of all physiology." }
+    }
+  },
+  {
+    bloc:"A", pi:true, icon:"🔬", correcte:"correcte", recurs:"trabajo_musculos.html",
+    situacio:{ ca:"La fibra muscular és la cèl·lula del múscul.", es:"La fibra muscular es la célula del músculo.", en:"The muscle fibre is the muscle cell." },
+    pregunta:{ ca:"A quin nivell pertany la fibra muscular?", es:"¿A qué nivel pertenece la fibra muscular?", en:"Which level does the muscle fibre belong to?" },
+    explica:{ ca:"Al <strong>nivell cel·lular</strong>.", es:"Al <strong>nivel celular</strong>.", en:"To the <strong>cellular level</strong>." },
+    info:{
+      titol:{ ca:"Nivell cel·lular", es:"Nivel celular", en:"Cellular level" },
+      text:{ ca:"El cos humà té uns 100 bilions de cèl·lules.", es:"El cuerpo humano tiene unos 100 billones de células.", en:"The human body has about 100 trillion cells." },
+      exemple:{ ca:"La fibra muscular és la cèl·lula especialitzada en la contracció.", es:"La fibra muscular es la célula especializada en la contracción.", en:"The muscle fibre is the cell specialised for contraction." }
+    }
+  },
+  {
+    bloc:"A", pi:true, icon:"🧩", correcte:"correcte", recurs:"trabajo_musculos.html",
+    situacio:{ ca:"El teixit muscular esquelètic està format per fibres.", es:"El tejido muscular esquelético está formado por fibras.", en:"Skeletal muscle tissue is made of fibres." },
+    pregunta:{ ca:"A quin nivell pertany el teixit muscular?", es:"¿A qué nivel pertenece el tejido muscular?", en:"Which level does muscle tissue belong to?" },
+    explica:{ ca:"Al <strong>nivell tissular</strong>.", es:"Al <strong>nivel tisular</strong>.", en:"To the <strong>tissue level</strong>." },
+    info:{
+      titol:{ ca:"Nivell tissular", es:"Nivel tisular", en:"Tissue level" },
+      text:{ ca:"Un teixit és un conjunt de cèl·lules amb origen comú.", es:"Un tejido es un conjunto de células con origen común.", en:"A tissue is a set of cells with a common origin." },
+      exemple:{ ca:"El teixit muscular esquelètic és el conjunt de fibres que formen el múscul.", es:"El tejido muscular esquelético es el conjunto de fibras que forman el músculo.", en:"Skeletal muscle tissue is the set of fibres that form the muscle." }
+    }
+  },
+  {
+    bloc:"A", pi:true, icon:"🫀", correcte:"correcte", recurs:"trabajo_musculos.html",
+    situacio:{ ca:"El cor està format per diversos teixits.", es:"El corazón está formado por varios tejidos.", en:"The heart is made of several tissues." },
+    pregunta:{ ca:"A quin nivell pertany el cor?", es:"¿A qué nivel pertenece el corazón?", en:"Which level does the heart belong to?" },
+    explica:{ ca:"Al <strong>nivell orgànic</strong>.", es:"Al <strong>nivel orgánico</strong>.", en:"To the <strong>organ level</strong>." },
+    info:{
+      titol:{ ca:"Nivell orgànic", es:"Nivel orgánico", en:"Organ level" },
+      text:{ ca:"Un òrgan és l'associació de diversos teixits que fan una funció.", es:"Un órgano es la asociación de varios tejidos que realizan una función.", en:"An organ is the association of several tissues performing a function." },
+      exemple:{ ca:"El cor és l'òrgan que bombeja la sang.", es:"El corazón es el órgano que bombea la sangre.", en:"The heart is the organ that pumps blood." }
+    }
+  },
+  {
+    bloc:"A", pi:true, icon:"🦴", correcte:"correcte", recurs:"trabajo_musculos.html",
+    situacio:{ ca:"El sistema muscular està format per músculs, ossos i articulacions.", es:"El sistema muscular está formado por músculos, huesos y articulaciones.", en:"The muscular system is made of muscles, bones and joints." },
+    pregunta:{ ca:"A quin nivell pertany el sistema muscular?", es:"¿A qué nivel pertenece el sistema muscular?", en:"Which level does the muscular system belong to?" },
+    explica:{ ca:"Al <strong>nivell de sistema</strong>.", es:"Al <strong>nivel de sistema</strong>.", en:"To the <strong>system level</strong>." },
+    info:{
+      titol:{ ca:"Nivell de sistema", es:"Nivel de sistema", en:"System level" },
+      text:{ ca:"Un sistema és un conjunt d'òrgans homogenis.", es:"Un sistema es un conjunto de órganos homogéneos.", en:"A system is a set of homogeneous organs." },
+      exemple:{ ca:"El sistema muscular inclou bíceps, quàdriceps, abdomen…", es:"El sistema muscular incluye bíceps, cuádriceps, abdomen…", en:"The muscular system includes biceps, quadriceps, abdomen…" }
+    }
+  },
+  {
+    bloc:"A", pi:true, icon:"🧍", correcte:"correcte", recurs:"trabajo_musculos.html",
+    situacio:{ ca:"El cos humà integra tots els sistemes i aparells.", es:"El cuerpo humano integra todos los sistemas y aparatos.", en:"The human body integrates all systems and apparatuses." },
+    pregunta:{ ca:"A quin nivell pertany el cos humà?", es:"¿A qué nivel pertenece el cuerpo humano?", en:"Which level does the human body belong to?" },
+    explica:{ ca:"Al <strong>nivell d'organisme</strong>.", es:"Al <strong>nivel de organismo</strong>.", en:"To the <strong>organism level</strong>." },
+    info:{
+      titol:{ ca:"Nivell d'organisme", es:"Nivel de organismo", en:"Organism level" },
+      text:{ ca:"L'organisme és la unitat suprema integrada per a l'homeòstasi.", es:"El organismo es la unidad suprema integrada para la homeostasis.", en:"The organism is the supreme unit integrated for homeostasis." },
+      exemple:{ ca:"La ballarina en moviment és un organisme en acció.", es:"La bailarina en movimiento es un organismo en acción.", en:"The dancer in movement is an organism in action." }
+    }
+  },
+  {
+    bloc:"A", pi:false, icon:"🔗", correcte:"correcte", recurs:"trabajo_musculos.html",
+    situacio:{ ca:"L'ordre jeràrquic del cos és cèl·lula → teixit → òrgan → sistema → organisme.", es:"El orden jerárquico del cuerpo es célula → tejido → órgano → sistema → organismo.", en:"The hierarchical order of the body is cell → tissue → organ → system → organism." },
+    pregunta:{ ca:"Cada nivell conté l'anterior?", es:"¿Cada nivel contiene al anterior?", en:"Does each level contain the previous one?" },
+    explica:{ ca:"Sí. El teixit conté cèl·lules; l'òrgan, teixits; el sistema, òrgans; l'organisme, sistemes.", es:"Sí. El tejido contiene células; el órgano, tejidos; el sistema, órganos; el organismo, sistemas.", en:"Yes. Tissue contains cells; organ, tissues; system, organs; organism, systems." },
+    info:{
+      titol:{ ca:"Contenció", es:"Contención", en:"Containment" },
+      text:{ ca:"Cada nivell és un conjunt del nivell anterior.", es:"Cada nivel es un conjunto del nivel anterior.", en:"Each level is a set of the previous one." },
+      exemple:{ ca:"El bíceps (òrgan) conté fibres (cèl·lules).", es:"El bíceps (órgano) contiene fibras (células).", en:"The biceps (organ) contains fibres (cells)." }
+    }
+  },
+  {
+    bloc:"A", pi:false, icon:"🩸", correcte:"correcte", recurs:"trabajo_musculos.html",
+    situacio:{ ca:"La sang és líquida però es considera un teixit.", es:"La sangre es líquida pero se considera un tejido.", en:"Blood is liquid but is considered a tissue." },
+    pregunta:{ ca:"A quin nivell pertany la sang?", es:"¿A qué nivel pertenece la sangre?", en:"Which level does blood belong to?" },
+    explica:{ ca:"Al <strong>tissular</strong>: és teixit connectiu líquid.", es:"Al <strong>tisular</strong>: es tejido conectivo líquido.", en:"To the <strong>tissue</strong> level: it is liquid connective tissue." },
+    info:{
+      titol:{ ca:"Sang", es:"Sangre", en:"Blood" },
+      text:{ ca:"La sang és teixit connectiu líquid.", es:"La sangre es tejido conectivo líquido.", en:"Blood is liquid connective tissue." },
+      exemple:{ ca:"Transporta nutrients i oxigen a tot el cos.", es:"Transporta nutrientes y oxígeno a todo el cuerpo.", en:"It carries nutrients and oxygen throughout the body." }
+    }
+  },
+  {
+    bloc:"A", pi:false, icon:"💪", correcte:"correcte", recurs:"trabajo_musculos.html",
+    situacio:{ ca:"El bíceps és un múscul.", es:"El bíceps es un músculo.", en:"The biceps is a muscle." },
+    pregunta:{ ca:"A quin nivell pertany el bíceps?", es:"¿A qué nivel pertenece el bíceps?", en:"Which level does the biceps belong to?" },
+    explica:{ ca:"Al <strong>nivell orgànic</strong>.", es:"Al <strong>nivel orgánico</strong>.", en:"To the <strong>organ</strong> level." },
+    info:{
+      titol:{ ca:"Bíceps", es:"Bíceps", en:"Biceps" },
+      text:{ ca:"És un òrgan format per teixit muscular, connectiu, nerviós i epitelial.", es:"Es un órgano formado por tejido muscular, conectivo, nervioso y epitelial.", en:"It is an organ made of muscular, connective, nervous and epithelial tissue." },
+      exemple:{ ca:"El bíceps fa la flexió del braç.", es:"El bíceps hace la flexión del brazo.", en:"The biceps flexes the arm." }
+    }
+  },
+  {
+    bloc:"A", pi:false, icon:"🫁", correcte:"correcte", recurs:"trabajo_musculos.html",
+    situacio:{ ca:"L'aparell respiratori està format per òrgans heterogenis.", es:"El aparato respiratorio está formado por órganos heterogéneos.", en:"The respiratory apparatus is made of heterogeneous organs." },
+    pregunta:{ ca:"L'aparell respiratori és un sistema o un aparell?", es:"¿El aparato respiratorio es un sistema o un aparato?", en:"Is the respiratory apparatus a system or an apparatus?" },
+    explica:{ ca:"És un <strong>aparell</strong>, perquè combina òrgans heterogenis.", es:"Es un <strong>aparato</strong>, porque combina órganos heterogéneos.", en:"It is an <strong>apparatus</strong>, because it combines heterogeneous organs." },
+    info:{
+      titol:{ ca:"Sistema vs aparell", es:"Sistema vs aparato", en:"System vs apparatus" },
+      text:{ ca:"Sistema: òrgans homogenis. Aparell: òrgans heterogenis.", es:"Sistema: órganos homogéneos. Aparato: órganos heterogéneos.", en:"System: homogeneous organs. Apparatus: heterogeneous organs." },
+      exemple:{ ca:"El sistema muscular és homogeni; l'aparell digestiu, heterogeni.", es:"El sistema muscular es homogéneo; el aparato digestivo, heterogéneo.", en:"The muscular system is homogeneous; the digestive apparatus is heterogeneous." }
+    }
+  },
+  {
+    bloc:"A", pi:false, icon:"🔬", correcte:"correcte", recurs:"trabajo_musculos.html",
+    situacio:{ ca:"Els cardiomiòcits són cèl·lules del cor.", es:"Los cardiomiocitos son células del corazón.", en:"Cardiomyocytes are heart cells." },
+    pregunta:{ ca:"A quin nivell pertanyen?", es:"¿A qué nivel pertenecen?", en:"Which level do they belong to?" },
+    explica:{ ca:"Al <strong>cel·lular</strong>.", es:"Al <strong>celular</strong>.", en:"To the <strong>cellular</strong> level." },
+    info:{
+      titol:{ ca:"Cardiomiòcit", es:"Cardiomiocito", en:"Cardiomyocyte" },
+      text:{ ca:"És la cèl·lula del múscul cardíac.", es:"Es la célula del músculo cardíaco.", en:"It is the cardiac muscle cell." },
+      exemple:{ ca:"És la cèl·lula que fa bategar el cor.", es:"Es la célula que hace latir el corazón.", en:"It is the cell that makes the heart beat." }
+    }
+  },
+  {
+    bloc:"A", pi:false, icon:"📊", correcte:"correcte", recurs:"trabajo_musculos.html",
+    situacio:{ ca:"El cos humà té 100 bilions de cèl·lules.", es:"El cuerpo humano tiene 100 billones de células.", en:"The human body has 100 trillion cells." },
+    pregunta:{ ca:"El cos humà és un organisme?", es:"¿El cuerpo humano es un organismo?", en:"Is the human body an organism?" },
+    explica:{ ca:"Sí. És la unitat suprema que integra tots els sistemes.", es:"Sí. Es la unidad suprema que integra todos los sistemas.", en:"Yes. It is the supreme unit integrating all systems." },
+    info:{
+      titol:{ ca:"Organisme", es:"Organismo", en:"Organism" },
+      text:{ ca:"L'organisme és el nivell més alt d'organització.", es:"El organismo es el nivel más alto de organización.", en:"The organism is the highest level of organisation." },
+      exemple:{ ca:"La ballarina és un organisme en acció.", es:"La bailarina es un organismo en acción.", en:"The dancer is an organism in action." }
+    }
+  },
+  {
+    bloc:"A", pi:false, icon:"🎭", correcte:"correcte", recurs:"metaforas_8.html",
+    situacio:{ ca:"Metàfora: «La cèl·lula és el pas bàsic; el teixit, la frase coreogràfica».", es:"Metáfora: «La célula es el paso básico; el tejido, la frase coreográfica».", en:"Metaphor: “The cell is the basic step; tissue, the choreographic phrase.”" },
+    pregunta:{ ca:"Què representaria l'òrgan?", es:"¿Qué representaría el órgano?", en:"What would the organ represent?" },
+    explica:{ ca:"La <strong>variació del ballarí</strong>.", es:"La <strong>variación del bailarín</strong>.", en:"The <strong>dancer's variation</strong>." },
+    info:{
+      titol:{ ca:"Metàfora", es:"Metáfora", en:"Metaphor" },
+      text:{ ca:"Cèl·lula = pas. Teixit = frase. Òrgan = variació. Sistema = obra.", es:"Célula = paso. Tejido = frase. Órgano = variación. Sistema = obra.", en:"Cell = step. Tissue = phrase. Organ = variation. System = work." },
+      exemple:{ ca:"Cada nivell té el seu equivalent a la dansa.", es:"Cada nivel tiene su equivalente en la danza.", en:"Each level has its equivalent in dance." }
+    }
+  },
+  {
+    bloc:"A", pi:false, icon:"🔢", correcte:"correcte", recurs:"trabajo_musculos.html",
+    situacio:{ ca:"Els 5 nivells són cèl·lula, teixit, òrgan, sistema i organisme.", es:"Los 5 niveles son célula, tejido, órgano, sistema y organismo.", en:"The 5 levels are cell, tissue, organ, system and organism." },
+    pregunta:{ ca:"Quin és el nivell més petit?", es:"¿Cuál es el nivel más pequeño?", en:"Which is the smallest level?" },
+    explica:{ ca:"La <strong>cèl·lula</strong>.", es:"La <strong>célula</strong>.", en:"The <strong>cell</strong>." },
+    info:{
+      titol:{ ca:"El més petit", es:"El más pequeño", en:"The smallest" },
+      text:{ ca:"La cèl·lula és la unitat bàsica de la vida.", es:"La célula es la unidad básica de la vida.", en:"The cell is the basic unit of life." },
+      exemple:{ ca:"La fibra muscular és una cèl·lula.", es:"La fibra muscular es una célula.", en:"The muscle fibre is a cell." }
+    }
+  },
+  {
+    bloc:"A", pi:false, icon:"⬆️", correcte:"correcte", recurs:"trabajo_musculos.html",
+    situacio:{ ca:"Els 5 nivells són cèl·lula, teixit, òrgan, sistema i organisme.", es:"Los 5 niveles son célula, tejido, órgano, sistema y organismo.", en:"The 5 levels are cell, tissue, organ, system and organism." },
+    pregunta:{ ca:"Quin és el nivell més gran?", es:"¿Cuál es el nivel más grande?", en:"Which is the largest level?" },
+    explica:{ ca:"L'<strong>organisme</strong>.", es:"El <strong>organismo</strong>.", en:"The <strong>organism</strong>." },
+    info:{
+      titol:{ ca:"El més gran", es:"El más grande", en:"The largest" },
+      text:{ ca:"L'organisme integra tots els altres nivells.", es:"El organismo integra todos los otros niveles.", en:"The organism integrates all other levels." },
+      exemple:{ ca:"El cos de la ballarina és un organisme.", es:"El cuerpo de la bailarina es un organismo.", en:"The dancer's body is an organism." }
+    }
+  },
+  {
+    bloc:"A", pi:false, icon:"🩹", correcte:"correcte", recurs:"trabajo_musculos.html",
+    situacio:{ ca:"La pell és un òrgan format per teixit epitelial, connectiu, nerviós i muscular.", es:"La piel es un órgano formado por tejido epitelial, conectivo, nervioso y muscular.", en:"Skin is an organ made of epithelial, connective, nervous and muscular tissue." },
+    pregunta:{ ca:"La pell és un òrgan?", es:"¿La piel es un órgano?", en:"Is skin an organ?" },
+    explica:{ ca:"Sí. És l'òrgan més gran del cos.", es:"Sí. Es el órgano más grande del cuerpo.", en:"Yes. It is the body's largest organ." },
+    info:{
+      titol:{ ca:"La pell", es:"La piel", en:"Skin" },
+      text:{ ca:"La pell és un òrgan format per diversos teixits.", es:"La piel es un órgano formado por varios tejidos.", en:"Skin is an organ made of several tissues." },
+      exemple:{ ca:"Protegeix el cos i regula la temperatura.", es:"Protegeix el cos i regula la temperatura.", en:"It protects the body and regulates temperature." }
+    }
+  },
+
+  /* ===================== BLOC B · ELS 4 TEIXITS (17) ===================== */
+  {
+    bloc:"B", pi:true, icon:"🛡️", correcte:"correcte", recurs:"trabajo_musculos.html",
+    situacio:{ ca:"El teixit que revesteix les superfícies i forma glàndules.", es:"El tejido que reviste las superficies y forma glándulas.", en:"The tissue that lines surfaces and forms glands." },
+    pregunta:{ ca:"Quin teixit és?", es:"¿Qué tejido es?", en:"Which tissue is it?" },
+    explica:{ ca:"El <strong>teixit epitelial</strong>.", es:"El <strong>tejido epitelial</strong>.", en:"<strong>Epithelial tissue</strong>." },
+    info:{
+      titol:{ ca:"Teixit epitelial", es:"Tejido epitelial", en:"Epithelial tissue" },
+      text:{ ca:"Cobreix superfícies i forma glàndules.", es:"Cubre superficies y forma glándulas.", en:"It covers surfaces and forms glands." },
+      exemple:{ ca:"La pell i les glàndules sudorípares són teixit epitelial.", es:"La piel y las glándulas sudoríparas son tejido epitelial.", en:"Skin and sweat glands are epithelial tissue." }
+    }
+  },
+  {
+    bloc:"B", pi:true, icon:"🧱", correcte:"correcte", recurs:"esqueleto_04_tendones.html",
+    situacio:{ ca:"El teixit que dona suport i uneix estructures.", es:"El tejido que da soporte y une estructuras.", en:"The tissue that supports and joins structures." },
+    pregunta:{ ca:"Quin teixit és?", es:"¿Qué tejido es?", en:"Which tissue is it?" },
+    explica:{ ca:"El <strong>teixit connectiu</strong>.", es:"El <strong>tejido conectivo</strong>.", en:"<strong>Connective tissue</strong>." },
+    info:{
+      titol:{ ca:"Teixit connectiu", es:"Tejido conectivo", en:"Connective tissue" },
+      text:{ ca:"Inclou tendons, lligaments, cartílags, ossos i sang.", es:"Incluye tendones, ligamentos, cartílagos, huesos y sangre.", en:"It includes tendons, ligaments, cartilage, bones and blood." },
+      exemple:{ ca:"El tendó d'Aquil·les és teixit connectiu.", es:"El tendón de Aquiles es tejido conectivo.", en:"The Achilles tendon is connective tissue." }
+    }
+  },
+  {
+    bloc:"B", pi:true, icon:"💪", correcte:"correcte", recurs:"contraccion_muscular.html",
+    situacio:{ ca:"El teixit format per cèl·lules contràctils.", es:"El tejido formado por células contráctiles.", en:"The tissue made of contractile cells." },
+    pregunta:{ ca:"Quin teixit és?", es:"¿Qué tejido es?", en:"Which tissue is it?" },
+    explica:{ ca:"El <strong>teixit muscular</strong>.", es:"El <strong>tejido muscular</strong>.", en:"<strong>Muscle tissue</strong>." },
+    info:{
+      titol:{ ca:"Teixit muscular", es:"Tejido muscular", en:"Muscle tissue" },
+      text:{ ca:"Tres tipus: esquelètic, cardíac i llis.", es:"Tres tipos: esquelético, cardíaco y liso.", en:"Three types: skeletal, cardiac and smooth." },
+      exemple:{ ca:"El bíceps és teixit muscular esquelètic.", es:"El bíceps es tejido muscular esquelético.", en:"The biceps is skeletal muscle tissue." }
+    }
+  },
+  {
+    bloc:"B", pi:true, icon:"🧠", correcte:"correcte", recurs:"unidad_motora.html",
+    situacio:{ ca:"El teixit que genera i transmet impulsos bioelèctrics.", es:"El tejido que genera y transmite impulsos bioeléctricos.", en:"The tissue that generates and transmits bioelectrical impulses." },
+    pregunta:{ ca:"Quin teixit és?", es:"¿Qué tejido es?", en:"Which tissue is it?" },
+    explica:{ ca:"El <strong>teixit nerviós</strong>.", es:"El <strong>tejido nervioso</strong>.", en:"<strong>Nervous tissue</strong>." },
+    info:{
+      titol:{ ca:"Teixit nerviós", es:"Tejido nervioso", en:"Nervous tissue" },
+      text:{ ca:"Format per neurones i cèl·lules glials.", es:"Formado por neuronas y células gliales.", en:"Made of neurons and glial cells." },
+      exemple:{ ca:"La motoneurona és teixit nerviós.", es:"La motoneurona es tejido nervioso.", en:"The motor neuron is nervous tissue." }
+    }
+  },
+  {
+    bloc:"B", pi:true, icon:"🩸", correcte:"correcte", recurs:"esqueleto_00_A.html",
+    situacio:{ ca:"La sang és líquida però es considera un teixit.", es:"La sangre es líquida pero se considera un tejido.", en:"Blood is liquid but is considered a tissue." },
+    pregunta:{ ca:"A quin tipus de teixit pertany la sang?", es:"¿A qué tipo de tejido pertenece la sangre?", en:"Which type of tissue does blood belong to?" },
+    explica:{ ca:"Al <strong>connectiu</strong> líquid.", es:"Al <strong>conectivo</strong> líquido.", en:"To liquid <strong>connective</strong> tissue." },
+    info:{
+      titol:{ ca:"La sang", es:"La sangre", en:"Blood" },
+      text:{ ca:"És teixit connectiu líquid.", es:"Es tejido conectivo líquido.", en:"It is liquid connective tissue." },
+      exemple:{ ca:"Transporta oxigen i nutrients.", es:"Transporta oxígeno y nutrientes.", en:"It transports oxygen and nutrients." }
+    }
+  },
+  {
+    bloc:"B", pi:true, icon:"🧩", correcte:"correcte", recurs:"trabajo_musculos.html",
+    situacio:{ ca:"El cos humà té quatre tipus bàsics de teixit.", es:"El cuerpo humano tiene cuatro tipos básicos de tejido.", en:"The human body has four basic tissue types." },
+    pregunta:{ ca:"Quants en són fonamentals?", es:"¿Cuántos son fundamentales?", en:"How many are fundamental?" },
+    explica:{ ca:"<strong>Quatre</strong>: epitelial, connectiu, muscular i nerviós.", es:"<strong>Cuatro</strong>: epitelial, conectivo, muscular y nervioso.", en:"<strong>Four</strong>: epithelial, connective, muscular and nervous." },
+    info:{
+      titol:{ ca:"Els 4 teixits", es:"Los 4 tejidos", en:"The 4 tissues" },
+      text:{ ca:"Tots els òrgans estan formats per combinacions d'aquests 4.", es:"Todos los órganos están formados por combinaciones de estos 4.", en:"All organs are made of combinations of these 4." },
+      exemple:{ ca:"El cor combina muscular, connectiu, nerviós i epitelial.", es:"El corazón combina muscular, conectivo, nervioso y epitelial.", en:"The heart combines muscular, connective, nervous and epithelial tissue." }
+    }
+  },
+  {
+    bloc:"B", pi:false, icon:"🦴", correcte:"correcte", recurs:"esqueleto_00_A.html",
+    situacio:{ ca:"Els ossos són teixit connectiu especialitzat.", es:"Los huesos son tejido conectivo especializado.", en:"Bones are specialised connective tissue." },
+    pregunta:{ ca:"Els ossos són teixit connectiu?", es:"¿Los huesos son tejido conectivo?", en:"Are bones connective tissue?" },
+    explica:{ ca:"Sí. És connectiu mineralitzat.", es:"Sí. Es conectivo mineralizado.", en:"Yes. It is mineralised connective tissue." },
+    info:{
+      titol:{ ca:"Os", es:"Hueso", en:"Bone" },
+      text:{ ca:"Conté col·lagen, minerals i cèl·lules òssies.", es:"Contiene colágeno, minerales y células óseas.", en:"It contains collagen, minerals and bone cells." },
+      exemple:{ ca:"El fèmur és un os llarg.", es:"El fémur es un hueso largo.", en:"The femur is a long bone." }
+    }
+  },
+  {
+    bloc:"B", pi:false, icon:"🩹", correcte:"correcte", recurs:"esqueleto_04_tendones.html",
+    situacio:{ ca:"Els tendons uneixen múscul i os.", es:"Los tendones unen músculo y hueso.", en:"Tendons join muscle to bone." },
+    pregunta:{ ca:"Els tendons són teixit connectiu?", es:"¿Los tendones son tejido conectivo?", en:"Are tendons connective tissue?" },
+    explica:{ ca:"Sí. Són teixit connectiu resistent.", es:"Sí. Son tejido conectivo resistente.", en:"Yes. They are strong connective tissue." },
+    info:{
+      titol:{ ca:"Tendons", es:"Tendones", en:"Tendons" },
+      text:{ ca:"Uneixen múscul i os i emmagatzemen energia elàstica.", es:"Unen músculo y hueso y almacenan energía elástica.", en:"They join muscle to bone and store elastic energy." },
+      exemple:{ ca:"El tendó d'Aquil·les és al turmell.", es:"El tendó de Aquiles está en el tobillo.", en:"The Achilles tendon is at the ankle." }
+    }
+  },
+  {
+    bloc:"B", pi:false, icon:"🦵", correcte:"correcte", recurs:"esqueleto_05_articulaciones_A.html",
+    situacio:{ ca:"El cartílag cobreix les superfícies articulars.", es:"El cartílago cubre las superficies articulares.", en:"Cartilage covers joint surfaces." },
+    pregunta:{ ca:"El cartílag és teixit connectiu?", es:"¿El cartílago es tejido conectivo?", en:"Is cartilage connective tissue?" },
+    explica:{ ca:"Sí. És teixit connectiu especialitzat.", es:"Sí. Es tejido conectivo especializado.", en:"Yes. It is specialised connective tissue." },
+    info:{
+      titol:{ ca:"Cartílag", es:"Cartílago", en:"Cartilage" },
+      text:{ ca:"Cobreix les articulacions i les protegeix.", es:"Cubre las articulaciones y las protege.", en:"It covers joints and protects them." },
+      exemple:{ ca:"Sense cartílag, els ossos es fregarien.", es:"Sin cartílago, los huesos se frotarían.", en:"Without cartilage, bones would rub together." }
+    }
+  },
+  {
+    bloc:"B", pi:false, icon:"🩸", correcte:"correcte", recurs:"esqueleto_00_A.html",
+    situacio:{ ca:"La sang transporta nutrients i oxigen.", es:"La sangre transporta nutrientes y oxígeno.", en:"Blood transports nutrients and oxygen." },
+    pregunta:{ ca:"La sang connecta totes les parts del cos?", es:"¿La sangre conecta todas las partes del cuerpo?", en:"Does blood connect all parts of the body?" },
+    explica:{ ca:"Sí. Per això és teixit connectiu.", es:"Sí. Por eso es tejido conectivo.", en:"Yes. That is why it is connective tissue." },
+    info:{
+      titol:{ ca:"Funció de la sang", es:"Función de la sangre", en:"Blood function" },
+      text:{ ca:"Transporta nutrients, oxigen, hormones i defenses.", es:"Transporta nutrientes, oxígeno, hormonas y defensas.", en:"It carries nutrients, oxygen, hormones and defences." },
+      exemple:{ ca:"Quan fas exercici, la sang porta més O₂ als músculs.", es:"Cuando haces ejercicio, la sangre lleva más O₂ a los músculos.", en:"When you exercise, blood carries more O₂ to the muscles." }
+    }
+  },
+  {
+    bloc:"B", pi:false, icon:"👁️", correcte:"correcte", recurs:"trabajo_musculos.html",
+    situacio:{ ca:"Els ulls estan formats per teixit nerviós, connectiu i epitelial.", es:"Los ojos están formados por tejido nervioso, conectivo y epitelial.", en:"Eyes are made of nervous, connective and epithelial tissue." },
+    pregunta:{ ca:"Un òrgan pot estar format per més d'un teixit?", es:"¿Un órgano puede estar formado por más de un tejido?", en:"Can an organ be made of more than one tissue?" },
+    explica:{ ca:"Sí. La majoria d'òrgans combinen diversos teixits.", es:"Sí. La mayoría de órganos combinan varios tejidos.", en:"Yes. Most organs combine several tissues." },
+    info:{
+      titol:{ ca:"Combinació de teixits", es:"Combinación de tejidos", en:"Tissue combination" },
+      text:{ ca:"Els òrgans són combinacions de teixits.", es:"Los órganos son combinaciones de tejidos.", en:"Organs are combinations of tissues." },
+      exemple:{ ca:"El cor té muscular, connectiu, nerviós i epitelial.", es:"El corazón tiene muscular, conectivo, nervioso y epitelial.", en:"The heart has muscular, connective, nervous and epithelial." }
+    }
+  },
+  {
+    bloc:"B", pi:false, icon:"🔬", correcte:"correcte", recurs:"trabajo_musculos.html",
+    situacio:{ ca:"El teixit epitelial forma les glàndules.", es:"El tejido epitelial forma las glándulas.", en:"Epithelial tissue forms glands." },
+    pregunta:{ ca:"Les glàndules són teixit epitelial?", es:"¿Las glándulas son tejido epitelial?", en:"Are glands epithelial tissue?" },
+    explica:{ ca:"Sí. Les glàndules secretores són teixit epitelial especialitzat.", es:"Sí. Las glándulas secretoras son tejido epitelial especializado.", en:"Yes. Secretory glands are specialised epithelial tissue." },
+    info:{
+      titol:{ ca:"Glàndules", es:"Glándulas", en:"Glands" },
+      text:{ ca:"Produeixen substàncies com la suor o les hormones.", es:"Producen sustancias como el sudor o las hormonas.", en:"They produce substances such as sweat or hormones." },
+      exemple:{ ca:"Les glàndules sudorípares són teixit epitelial.", es:"Las glándulas sudoríparas son tejido epitelial.", en:"Sweat glands are epithelial tissue." }
+    }
+  },
+  {
+    bloc:"B", pi:false, icon:"💪", correcte:"correcte", recurs:"contraccion_muscular.html",
+    situacio:{ ca:"Hi ha tres tipus de múscul: esquelètic, cardíac i llis.", es:"Hay tres tipos de músculo: esquelético, cardíaco y liso.", en:"There are three muscle types: skeletal, cardiac and smooth." },
+    pregunta:{ ca:"El múscul cardíac és voluntari o involuntari?", es:"¿El músculo cardíaco es voluntario o involuntario?", en:"Is cardiac muscle voluntary or involuntary?" },
+    explica:{ ca:"<strong>Involuntari</strong>: no el controlem conscientment.", es:"<strong>Involuntario</strong>: no lo controlamos conscientemente.", en:"<strong>Involuntary</strong>: we do not control it consciously." },
+    info:{
+      titol:{ ca:"Múscul cardíac", es:"Músculo cardíaco", en:"Cardiac muscle" },
+      text:{ ca:"Forma el cor i es contreu sol.", es:"Forma el corazón y se contrae solo.", en:"It forms the heart and contracts on its own." },
+      exemple:{ ca:"El cor batega sense que hi pensem.", es:"El corazón late sin que pensemos en él.", en:"The heart beats without us thinking about it." }
+    }
+  },
+  {
+    bloc:"B", pi:false, icon:"🧠", correcte:"correcte", recurs:"unidad_motora.html",
+    situacio:{ ca:"El teixit nerviós està format per neurones i cèl·lules glials.", es:"El tejido nervioso está formado por neuronas y células gliales.", en:"Nervous tissue is made of neurons and glial cells." },
+    pregunta:{ ca:"Les neurones són les que transmeten l'impuls?", es:"¿Las neuronas son las que transmiten el impulso?", en:"Are neurons the ones transmitting the impulse?" },
+    explica:{ ca:"Sí. Les neurones generen i transmeten l'impuls elèctric.", es:"Sí. Las neuronas generan y transmiten el impulso eléctrico.", en:"Yes. Neurons generate and transmit the electrical impulse." },
+    info:{
+      titol:{ ca:"Neurones", es:"Neuronas", en:"Neurons" },
+      text:{ ca:"Són les cèl·lules del teixit nerviós.", es:"Son las células del tejido nervioso.", en:"They are the cells of nervous tissue." },
+      exemple:{ ca:"La motoneurona activa el múscul.", es:"La motoneurona activa el músculo.", en:"The motor neuron activates the muscle." }
+    }
+  },
+  {
+    bloc:"B", pi:false, icon:"🩹", correcte:"incorrecte", recurs:"trabajo_musculos.html",
+    situacio:{ ca:"La pell conté teixit epitelial i connectiu.", es:"La piel contiene tejido epitelial y conectivo.", en:"Skin contains epithelial and connective tissue." },
+    pregunta:{ ca:"La pell és un teixit?", es:"¿La piel es un tejido?", en:"Is skin a tissue?" },
+    explica:{ ca:"No: la pell és un <strong>òrgan</strong>, format per diversos teixits.", es:"No: la piel es un <strong>órgano</strong>, formado por varios tejidos.", en:"No: skin is an <strong>organ</strong>, made of several tissues." },
+    info:{
+      titol:{ ca:"Pell", es:"Piel", en:"Skin" },
+      text:{ ca:"La pell és un òrgan, no un teixit.", es:"La piel es un órgano, no un tejido.", en:"Skin is an organ, not a tissue." },
+      exemple:{ ca:"Conté epitelial, connectiu i nerviós.", es:"Contiene epitelial, conectivo y nervioso.", en:"It contains epithelial, connective and nervous." }
+    }
+  },
+  {
+    bloc:"B", pi:false, icon:"🧱", correcte:"correcte", recurs:"esqueleto_04_tendones.html",
+    situacio:{ ca:"Els lligaments uneixen os amb os.", es:"Los ligamentos unen hueso con hueso.", en:"Ligaments join bone to bone." },
+    pregunta:{ ca:"Els lligaments són teixit connectiu?", es:"¿Los ligamentos son tejido conectivo?", en:"Are ligaments connective tissue?" },
+    explica:{ ca:"Sí. Són teixit connectiu resistent.", es:"Sí. Son tejido conectivo resistente.", en:"Yes. They are strong connective tissue." },
+    info:{
+      titol:{ ca:"Lligaments", es:"Ligamentos", en:"Ligaments" },
+      text:{ ca:"Uneixen os amb os i donen estabilitat.", es:"Unen hueso con hueso y dan estabilidad.", en:"They join bone to bone and provide stability." },
+      exemple:{ ca:"Els lligaments del genoll el mantenen estable.", es:"Los ligamentos de la rodilla lo mantienen estable.", en:"Knee ligaments keep it stable." }
+    }
+  },
+  {
+    bloc:"B", pi:false, icon:"🩸", correcte:"correcte", recurs:"esqueleto_00_A.html",
+    situacio:{ ca:"La sang és líquida però té cèl·lules.", es:"La sangre es líquida pero tiene células.", en:"Blood is liquid but has cells." },
+    pregunta:{ ca:"La sang té cèl·lules?", es:"¿La sangre tiene células?", en:"Does blood have cells?" },
+    explica:{ ca:"Sí: glòbuls vermells, blancs i plaquetes.", es:"Sí: glóbulos rojos, blancos y plaquetas.", en:"Yes: red cells, white cells and platelets." },
+    info:{
+      titol:{ ca:"Cèl·lules de la sang", es:"Células de la sangre", en:"Blood cells" },
+      text:{ ca:"Glòbuls vermells, blancs i plaquetes.", es:"Glóbulos rojos, blancos y plaquetas.", en:"Red cells, white cells and platelets." },
+      exemple:{ ca:"Els glòbuls vermells porten O₂.", es:"Los glóbulos rojos llevan O₂.", en:"Red cells carry O₂." }
+    }
+  },
+  {
+    bloc:"B", pi:false, icon:"🧩", correcte:"incorrecte", recurs:"trabajo_musculos.html",
+    situacio:{ ca:"Els 4 teixits formen tots els òrgans del cos.", es:"Los 4 tejidos forman todos los órganos del cuerpo.", en:"The 4 tissues form all body organs." },
+    pregunta:{ ca:"Hi ha exactament 4 tipus de teixit al cos?", es:"¿Hay exactamente 4 tipos de tejido en el cuerpo?", en:"Are there exactly 4 tissue types in the body?" },
+    explica:{ ca:"Hi ha subtipus, però 4 són els fonamentals.", es:"Hay subtipos, pero 4 son los fundamentales.", en:"There are subtypes, but 4 are the fundamental ones." },
+    info:{
+      titol:{ ca:"Subtipus", es:"Subtipos", en:"Subtypes" },
+      text:{ ca:"El connectiu té subtipus: os, cartílag, tendó, sang…", es:"El conectivo tiene subtipos: hueso, cartílago, tendón, sangre…", en:"Connective has subtypes: bone, cartilage, tendon, blood…" },
+      exemple:{ ca:"Tots els subtipus són connectiu.", es:"Todos los subtipos son conectivo.", en:"All subtypes are connective." }
+    }
+  },
+
+  /* ===================== BLOC C · EXEMPLES A LA DANSA (17) ===================== */
+  {
+    bloc:"C", pi:true, icon:"💪", correcte:"correcte", recurs:"trabajo_musculos.html",
+    situacio:{ ca:"En un plié, el quàdriceps es contreu.", es:"En un plié, el cuádriceps se contrae.", en:"In a plié, the quadriceps contracts." },
+    pregunta:{ ca:"Quin és l'ordre correcte dins del quàdriceps?", es:"¿Cuál es el orden correcto dentro del cuádriceps?", en:"What is the correct order within the quadriceps?" },
+    explica:{ ca:"Fibra → teixit muscular → quàdriceps (òrgan) → sistema muscular → cos.", es:"Fibra → tejido muscular → cuádriceps (órgano) → sistema muscular → cuerpo.", en:"Fibre → muscle tissue → quadriceps (organ) → muscular system → body." },
+    info:{
+      titol:{ ca:"Exemple del quàdriceps", es:"Ejemplo del cuádriceps", en:"Quadriceps example" },
+      text:{ ca:"El quàdriceps és un òrgan format per teixit muscular esquelètic, connectiu, nerviós i epitelial.", es:"El cuádriceps es un órgano formado por tejido muscular esquelético, conectivo, nervioso y epitelial.", en:"The quadriceps is an organ made of skeletal muscle, connective, nervous and epithelial tissue." },
+      exemple:{ ca:"Cada cop que fas un plié, el quàdriceps treballa com un òrgan coordinat.", es:"Cada vez que haces un plié, el cuádriceps trabaja como un órgano coordinado.", en:"Every time you do a plié, the quadriceps works as a coordinated organ." }
+    }
+  },
+  {
+    bloc:"C", pi:true, icon:"🫀", correcte:"correcte", recurs:"trabajo_musculos.html",
+    situacio:{ ca:"El cor bombeja sang durant l'exercici.", es:"El corazón bombea sangre durante el ejercicio.", en:"The heart pumps blood during exercise." },
+    pregunta:{ ca:"Quin és l'ordre correcte dins del cor?", es:"¿Cuál es el orden correcto dentro del corazón?", en:"What is the correct order within the heart?" },
+    explica:{ ca:"Cardiomiòcit → teixit muscular cardíac → cor → aparell cardiovascular → cos.", es:"Cardiomiocito → tejido muscular cardíaco → corazón → aparato cardiovascular → cuerpo.", en:"Cardiomyocyte → cardiac muscle tissue → heart → cardiovascular apparatus → body." },
+    info:{
+      titol:{ ca:"Exemple del cor", es:"Ejemplo del corazón", en:"Heart example" },
+      text:{ ca:"El cor és un òrgan format per teixit muscular cardíac, connectiu, nerviós i epitelial.", es:"El corazón es un órgano formado por tejido muscular cardíaco, conectivo, nervioso y epitelial.", en:"The heart is an organ made of cardiac muscle, connective, nervous and epithelial tissue." },
+      exemple:{ ca:"En un assaig intens, el cor accelera per aportar més O₂.", es:"En un ensayo intenso, el corazón se acelera para aportar más O₂.", en:"In an intense rehearsal, the heart speeds up to supply more O₂." }
+    }
+  },
+  {
+    bloc:"C", pi:true, icon:"🎭", correcte:"correcte", recurs:"metaforas_8.html",
+    situacio:{ ca:"Metàfora: «La cèl·lula és el pas; el teixit, la frase».", es:"Metáfora: «La célula es el paso; el tejido, la frase».", en:"Metaphor: “The cell is the step; tissue, the phrase.”" },
+    pregunta:{ ca:"Què representaria l'òrgan?", es:"¿Qué representaría el órgano?", en:"What would the organ represent?" },
+    explica:{ ca:"La <strong>variació del ballarí</strong>.", es:"La <strong>variación del bailarín</strong>.", en:"The <strong>dancer's variation</strong>." },
+    info:{
+      titol:{ ca:"Metàfora", es:"Metáfora", en:"Metaphor" },
+      text:{ ca:"Cèl·lula = pas; teixit = frase; òrgan = variació; sistema = obra.", es:"Célula = paso; tejido = frase; órgano = variación; sistema = obra.", en:"Cell = step; tissue = phrase; organ = variation; system = work." },
+      exemple:{ ca:"Cada nivell equival a una part de l'obra.", es:"Cada nivel equivale a una parte de la obra.", en:"Each level equals a part of the work." }
+    }
+  },
+  {
+    bloc:"C", pi:true, icon:"🦵", correcte:"correcte", recurs:"esqueleto_04_tendones.html",
+    situacio:{ ca:"En un salt, el tendó d'Aquil·les emmagatzema energia.", es:"En un salto, el tendón de Aquiles almacena energía.", en:"In a jump, the Achilles tendon stores energy." },
+    pregunta:{ ca:"El tendó és teixit...", es:"El tendón es tejido...", en:"The tendon is ... tissue" },
+    explica:{ ca:"<strong>Connectiu</strong>.", es:"<strong>Conectivo</strong>.", en:"<strong>Connective</strong>." },
+    info:{
+      titol:{ ca:"Tendons", es:"Tendones", en:"Tendons" },
+      text:{ ca:"Uneixen múscul i os i emmagatzemen energia.", es:"Unen músculo y hueso y almacenan energía.", en:"They join muscle to bone and store energy." },
+      exemple:{ ca:"Al demi-plié previ al salt, el tendó es carrega com una molla.", es:"En el demi-plié previo al salto, el tendón se carga como un muelle.", en:"In the demi-plié before a jump, the tendon loads like a spring." }
+    }
+  },
+  {
+    bloc:"C", pi:true, icon:"🦴", correcte:"correcte", recurs:"esqueleto_00_A.html",
+    situacio:{ ca:"Els ossos donen suport i protegeixen.", es:"Los huesos dan soporte y protegen.", en:"Bones support and protect." },
+    pregunta:{ ca:"Els ossos són sobretot de teixit...", es:"Los huesos son sobre todo de tejido...", en:"Bones are mostly ... tissue" },
+    explica:{ ca:"<strong>Connectiu</strong> mineralitzat.", es:"<strong>Conectivo</strong> mineralizado.", en:"Mineralised <strong>connective</strong>." },
+    info:{
+      titol:{ ca:"Os", es:"Hueso", en:"Bone" },
+      text:{ ca:"L'os és teixit connectiu especialitzat.", es:"El hueso es tejido conectivo especializado.", en:"Bone is specialised connective tissue." },
+      exemple:{ ca:"Els ossos del peu suporten impactes a cada salt.", es:"Los huesos del pie soportan impactos en cada salto.", en:"Foot bones take impacts at every jump." }
+    }
+  },
+  {
+    bloc:"C", pi:true, icon:"🧠", correcte:"correcte", recurs:"unidad_motora.html",
+    situacio:{ ca:"Quan la ballarina decideix aixecar el braç, el cervell envia una ordre.", es:"Cuando la bailarina decide levantar el brazo, el cerebro envía una orden.", en:"When the dancer decides to raise her arm, the brain sends an order." },
+    pregunta:{ ca:"Quin teixit transporta aquesta ordre?", es:"¿Qué tejido transporta esta orden?", en:"Which tissue carries this order?" },
+    explica:{ ca:"El <strong>nerviós</strong>.", es:"El <strong>nervioso</strong>.", en:"<strong>Nervous</strong>." },
+    info:{
+      titol:{ ca:"Teixit nerviós", es:"Tejido nervioso", en:"Nervous tissue" },
+      text:{ ca:"Connecta el cervell amb els músculs.", es:"Conecta el cerebro con los músculos.", en:"It connects the brain with the muscles." },
+      exemple:{ ca:"La motoneurona transmet l'ordre al bíceps.", es:"La motoneurona transmite la orden al bíceps.", en:"The motor neuron transmits the order to the biceps." }
+    }
+  },
+  {
+    bloc:"C", pi:false, icon:"🩸", correcte:"correcte", recurs:"trabajo_musculos.html",
+    situacio:{ ca:"La sang transporta O₂ als músculs durant la dansa.", es:"La sangre transporta O₂ a los músculos durante la danza.", en:"Blood carries O₂ to muscles during dance." },
+    pregunta:{ ca:"Quin tipus de teixit és la sang?", es:"¿Qué tipo de tejido es la sangre?", en:"What tissue type is blood?" },
+    explica:{ ca:"<strong>Connectiu</strong> líquid.", es:"<strong>Conectivo</strong> líquido.", en:"Liquid <strong>connective</strong>." },
+    info:{
+      titol:{ ca:"La sang", es:"La sangre", en:"Blood" },
+      text:{ ca:"És teixit connectiu líquid.", es:"Es tejido conectivo líquido.", en:"It is liquid connective tissue." },
+      exemple:{ ca:"Transporta O₂ i nutrients a tot el cos.", es:"Transporta O₂ y nutrientes a todo el cuerpo.", en:"It carries O₂ and nutrients to the whole body." }
+    }
+  },
+  {
+    bloc:"C", pi:false, icon:"🦵", correcte:"correcte", recurs:"esqueleto_05_articulaciones_A.html",
+    situacio:{ ca:"El cartílag del genoll es desgasta amb l'ús intensiu.", es:"El cartílago de la rodilla se desgasta con el uso intensivo.", en:"Knee cartilage wears down with intensive use." },
+    pregunta:{ ca:"El cartílag és teixit connectiu?", es:"¿El cartílago es tejido conectivo?", en:"Is cartilage connective tissue?" },
+    explica:{ ca:"Sí. És connectiu especialitzat.", es:"Sí. Es conectivo especializado.", en:"Yes. It is specialised connective." },
+    info:{
+      titol:{ ca:"Cartílag", es:"Cartílago", en:"Cartilage" },
+      text:{ ca:"Protegeix les articulacions.", es:"Protegeix les articulacions.", en:"It protects joints." },
+      exemple:{ ca:"El cartílag del genoll amorteix els impactes.", es:"El cartílago de la rodilla amortigua los impactos.", en:"Knee cartilage cushions impacts." }
+    }
+  },
+  {
+    bloc:"C", pi:false, icon:"🎭", correcte:"correcte", recurs:"metaforas_8.html",
+    situacio:{ ca:"«Cèl·lula = pas; teixit = frase; òrgan = variació; sistema = obra».", es:"«Célula = paso; tejido = frase; órgano = variación; sistema = obra».", en:"“Cell = step; tissue = phrase; organ = variation; system = work.”" },
+    pregunta:{ ca:"Quin nivell correspon a l'obra de ballet?", es:"¿Qué nivel corresponde a la obra de ballet?", en:"Which level corresponds to the ballet work?" },
+    explica:{ ca:"El <strong>sistema</strong>.", es:"El <strong>sistema</strong>.", en:"The <strong>system</strong>." },
+    info:{
+      titol:{ ca:"Metàfora", es:"Metáfora", en:"Metaphor" },
+      text:{ ca:"Cada nivell equival a una part de l'obra de dansa.", es:"Cada nivel equivale a una parte de la obra de danza.", en:"Each level equals a part of the dance work." },
+      exemple:{ ca:"El sistema muscular = l'obra sencera.", es:"El sistema muscular = la obra entera.", en:"The muscular system = the whole work." }
+    }
+  },
+  {
+    bloc:"C", pi:false, icon:"💪", correcte:"correcte", recurs:"trabajo_musculos.html",
+    situacio:{ ca:"El quàdriceps és un òrgan format per diversos teixits.", es:"El cuádriceps es un órgano formado por varios tejidos.", en:"The quadriceps is an organ made of several tissues." },
+    pregunta:{ ca:"El quàdriceps conté teixit connectiu?", es:"¿El cuádriceps contiene tejido conectivo?", en:"Does the quadriceps contain connective tissue?" },
+    explica:{ ca:"Sí: els tendons que l'uneixen als ossos.", es:"Sí: los tendones que lo unen a los huesos.", en:"Yes: the tendons that join it to the bones." },
+    info:{
+      titol:{ ca:"Composició del quàdriceps", es:"Composición del cuádriceps", en:"Quadriceps composition" },
+      text:{ ca:"Conté muscular, connectiu, nerviós i epitelial.", es:"Contiene muscular, conectivo, nervioso y epitelial.", en:"It contains muscular, connective, nervous and epithelial." },
+      exemple:{ ca:"Els tendons uneixen el múscul amb el fèmur.", es:"Los tendones unen el músculo con el fémur.", en:"Tendons join the muscle to the femur." }
+    }
+  },
+  {
+    bloc:"C", pi:false, icon:"🫁", correcte:"correcte", recurs:"trabajo_musculos.html",
+    situacio:{ ca:"Durant un assaig llarg, els pulmons treballen més.", es:"Durante un ensayo largo, los pulmones trabajan más.", en:"During a long rehearsal, the lungs work harder." },
+    pregunta:{ ca:"Els pulmons són un òrgan?", es:"¿Los pulmones son un órgano?", en:"Are the lungs an organ?" },
+    explica:{ ca:"Sí. Estan formats per teixit epitelial, connectiu i muscular.", es:"Sí. Están formados por tejido epitelial, conectivo y muscular.", en:"Yes. They are made of epithelial, connective and muscular tissue." },
+    info:{
+      titol:{ ca:"Pulmons", es:"Pulmones", en:"Lungs" },
+      text:{ ca:"Són òrgans de l'aparell respiratori.", es:"Son órganos del aparato respiratorio.", en:"They are organs of the respiratory apparatus." },
+      exemple:{ ca:"En un solo intens, els pulmons treballen al màxim.", es:"En un solo intenso, los pulmones trabajan al máximo.", en:"In an intense solo, the lungs work at maximum." }
+    }
+  },
+  {
+    bloc:"C", pi:false, icon:"🧠", correcte:"correcte", recurs:"unidad_motora.html",
+    situacio:{ ca:"El cervell coordina el moviment durant la dansa.", es:"El cerebro coordina el movimiento durante la danza.", en:"The brain coordinates movement during dance." },
+    pregunta:{ ca:"El cervell és un òrgan?", es:"¿El cerebro es un órgano?", en:"Is the brain an organ?" },
+    explica:{ ca:"Sí. És un òrgan format principalment per teixit nerviós.", es:"Sí. Es un órgano formado principalmente por tejido nervioso.", en:"Yes. It is an organ made mainly of nervous tissue." },
+    info:{
+      titol:{ ca:"Cervell", es:"Cerebro", en:"Brain" },
+      text:{ ca:"Conté teixit nerviós, connectiu i epitelial.", es:"Contiene tejido nervioso, conectivo y epitelial.", en:"It contains nervous, connective and epithelial tissue." },
+      exemple:{ ca:"Coordina cada moviment de la ballarina.", es:"Coordina cada movimiento de la bailarina.", en:"It coordinates every dancer's movement." }
+    }
+  },
+  {
+    bloc:"C", pi:false, icon:"🦴", correcte:"correcte", recurs:"esqueleto_00_A.html",
+    situacio:{ ca:"Els ossos del peu suporten el pes del cos.", es:"Los huesos del pie soportan el peso del cuerpo.", en:"Foot bones support the body's weight." },
+    pregunta:{ ca:"Els ossos són un òrgan o un sistema?", es:"¿Los huesos son un órgano o un sistema?", en:"Are bones an organ or a system?" },
+    explica:{ ca:"Cada os és un òrgan; el conjunt forma el sistema esquelètic.", es:"Cada hueso es un órgano; el conjunto forma el sistema esquelético.", en:"Each bone is an organ; together they form the skeletal system." },
+    info:{
+      titol:{ ca:"Ossos", es:"Huesos", en:"Bones" },
+      text:{ ca:"Cada os és un òrgan; tots junts són el sistema esquelètic.", es:"Cada hueso es un órgano; todos juntos son el sistema esquelético.", en:"Each bone is an organ; together they are the skeletal system." },
+      exemple:{ ca:"El peu té 26 ossos que suporten el pes.", es:"El pie tiene 26 huesos que soportan el peso.", en:"The foot has 26 bones supporting the weight." }
+    }
+  },
+  {
+    bloc:"C", pi:false, icon:"🩸", correcte:"incorrecte", recurs:"esqueleto_00_A.html",
+    situacio:{ ca:"La sang arriba a tots els teixits del cos.", es:"La sangre llega a todos los tejidos del cuerpo.", en:"Blood reaches all body tissues." },
+    pregunta:{ ca:"La sang és un òrgan?", es:"¿La sangre es un órgano?", en:"Is blood an organ?" },
+    explica:{ ca:"No. És un <strong>teixit</strong> connectiu líquid.", es:"No. Es un <strong>tejido</strong> conectivo líquido.", en:"No. It is a liquid <strong>connective tissue</strong>." },
+    info:{
+      titol:{ ca:"Sang", es:"Sangre", en:"Blood" },
+      text:{ ca:"La sang és teixit, no òrgan.", es:"La sangre es tejido, no órgano.", en:"Blood is tissue, not an organ." },
+      exemple:{ ca:"Circula per tot el cos a través dels vasos.", es:"Circula por todo el cuerpo a través de los vasos.", en:"It circulates throughout the body via vessels." }
+    }
+  },
+  {
+    bloc:"C", pi:false, icon:"🦵", correcte:"incorrecte", recurs:"esqueleto_04_tendones.html",
+    situacio:{ ca:"El tendó d'Aquil·les uneix el bessó amb el taló.", es:"El tendón de Aquiles une el gemelo con el talón.", en:"The Achilles tendon joins the calf to the heel." },
+    pregunta:{ ca:"El tendó és un òrgan?", es:"¿El tendón es un órgano?", en:"Is the tendon an organ?" },
+    explica:{ ca:"No. És teixit connectiu.", es:"No. Es tejido conectivo.", en:"No. It is connective tissue." },
+    info:{
+      titol:{ ca:"Tendó", es:"Tendón", en:"Tendon" },
+      text:{ ca:"El tendó és teixit connectiu.", es:"El tendón es tejido conectivo.", en:"The tendon is connective tissue." },
+      exemple:{ ca:"Uneix el múscul amb l'os.", es:"Une el músculo con el hueso.", en:"It joins muscle to bone." }
+    }
+  },
+  {
+    bloc:"C", pi:false, icon:"🎭", correcte:"correcte", recurs:"metaforas_8.html",
+    situacio:{ ca:"La metàfora diu que la cèl·lula és el pas bàsic.", es:"La metáfora dice que la célula es el paso básico.", en:"The metaphor says the cell is the basic step." },
+    pregunta:{ ca:"La metàfora ajuda a recordar els nivells?", es:"¿La metáfora ayuda a recordar los niveles?", en:"Does the metaphor help remember the levels?" },
+    explica:{ ca:"Sí. Relaciona cada nivell amb una part de l'obra de dansa.", es:"Sí. Relaciona cada nivel con una parte de la obra de danza.", en:"Yes. It links each level with a part of the dance work." },
+    info:{
+      titol:{ ca:"Metàfora útil", es:"Metáfora útil", en:"Useful metaphor" },
+      text:{ ca:"Relacionar amb la dansa fa més fàcil recordar-ho.", es:"Relacionar con la danza hace más fácil recordarlo.", en:"Linking with dance makes it easier to remember." },
+      exemple:{ ca:"Cèl·lula = pas; teixit = frase.", es:"Célula = paso; tejido = frase.", en:"Cell = step; tissue = phrase." }
+    }
+  },
+  {
+    bloc:"C", pi:false, icon:"🩹", correcte:"correcte", recurs:"trabajo_musculos.html",
+    situacio:{ ca:"La pell és l'òrgan més gran del cos.", es:"La piel es el órgano más grande del cuerpo.", en:"Skin is the body's largest organ." },
+    pregunta:{ ca:"La pell és un òrgan?", es:"¿La piel es un órgano?", en:"Is skin an organ?" },
+    explica:{ ca:"Sí. Conté teixit epitelial, connectiu, nerviós i muscular.", es:"Sí. Contiene tejido epitelial, conectivo, nervioso y muscular.", en:"Yes. It contains epithelial, connective, nervous and muscular tissue." },
+    info:{
+      titol:{ ca:"Pell", es:"Piel", en:"Skin" },
+      text:{ ca:"La pell és el nostre òrgan més gran.", es:"La piel es nuestro órgano más grande.", en:"Skin is our largest organ." },
+      exemple:{ ca:"Protegeix el cos i regula la temperatura.", es:"Protegeix el cos i regula la temperatura.", en:"It protects the body and regulates temperature." }
+    }
+  }
+];
+
+/* ------------------------------------------------------------
+   ESTAT
+   ------------------------------------------------------------ */
+let currentLang = "ca";
+let idx = 0;
+let respost = false;
+let modeAdaptat = false;
+let modeRepas = false;
+let estat = carregarEstat();
+
+/* ------------------------------------------------------------
+   REFERÈNCIES
+   ------------------------------------------------------------ */
+const elProgres    = document.getElementById("ui-progres");
+const elIcon       = document.getElementById("icon");
+const elSituacio   = document.getElementById("situacio");
+const elPregunta   = document.getElementById("pregunta");
+const elOpcions    = document.getElementById("opcions");
+const elFeedback   = document.getElementById("feedback");
+const elNext       = document.getElementById("next");
+const elPrev       = document.getElementById("prev");
+const elInfoPanel  = document.getElementById("info-panel");
+const elInfoTitol  = document.getElementById("info-titol");
+const elInfoText   = document.getElementById("info-text");
+const elInfoEx     = document.getElementById("info-exemple");
+const elInfoLink   = document.getElementById("info-link");
+const elBtnInfo    = document.getElementById("btn-info");
+const elIndexGrid  = document.getElementById("index-grid");
+const elCard       = document.getElementById("card");
+const elBlocTag    = document.getElementById("bloc-tag");
+const elIndexBody  = document.getElementById("index-body");
+const elIndexHead  = document.getElementById("index-header");
+const elObjCard    = document.getElementById("objectiu-card");
+const elBtnObjCard = document.getElementById("btn-objectiu-card");
+const elBtnRepas   = document.getElementById("btn-repas");
+const elBtnAdaptat = document.getElementById("btn-adaptat");
+
+/* ------------------------------------------------------------
+   DESAMENT
+   ------------------------------------------------------------ */
+function carregarEstat(){
+  try{
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if(!raw) return { idxActual:0, respostes:{}, blocActual:null, modeAdaptat:false };
+    const p = JSON.parse(raw);
+    return {
+      idxActual: p.idxActual || 0,
+      respostes: p.respostes || {},
+      blocActual: p.blocActual || null,
+      modeAdaptat: !!p.modeAdaptat
+    };
+  }catch(e){
+    return { idxActual:0, respostes:{}, blocActual:null, modeAdaptat:false };
+  }
+}
+function desarEstat(){
+  try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(estat)); }catch(e){}
+}
+
+/* ------------------------------------------------------------
+   FILTRES
+   ------------------------------------------------------------ */
+function getIndexosVisibles(){
+  let visibles = PREGUNTES.map((_,i)=>i);
+  if(modeRepas){
+    visibles = visibles.filter(i => {
+      const resp = estat.respostes[i];
+      return resp === undefined || resp !== PREGUNTES[i].correcte;
+    });
+  }
+  return visibles;
+}
+function totalMarcades(){ return PREGUNTES.filter(p => p.pi).length; }
+
+/* ------------------------------------------------------------
+   BOTONS D'ESTAT
+   ------------------------------------------------------------ */
+function actualitzarBotoRepas(){
+  const t = UI[currentLang];
+  elBtnRepas.textContent = modeRepas ? t.repasActiu : t.repas;
+  elBtnRepas.classList.toggle("actiu", modeRepas);
+  elBtnRepas.classList.toggle("ghost", !modeRepas);
+}
+function actualitzarBotoAdaptat(){
+  // El botó verd NOMÉS es mostra quan està actiu
+  if(modeAdaptat){
+    elBtnAdaptat.classList.add("actiu");
+    elBtnAdaptat.style.display = "inline-flex";
+  } else {
+    elBtnAdaptat.classList.remove("actiu");
+    elBtnAdaptat.style.display = "none";
+  }
+}
+
+/* ------------------------------------------------------------
+   OBJECTIUS
+   ------------------------------------------------------------ */
+function htmlObjectiu(blocId){
+  const obj = OBJECTIUS[blocId];
+  const lang = currentLang;
+  const t = UI[lang];
+  const g = obj.general;
+  const a = obj.adaptat;
+  return `
+    <h4>${t.objectiuGeneral}</h4>
+    <p>${g.que[lang]}</p>
+    <ul>${g.clau[lang].map(c => `<li>${c}</li>`).join("")}</ul>
+    <p>${g.importancia[lang]}</p>
+    <div class="objectiu-pi">
+      <h4>${t.objectiuAdaptat}</h4>
+      <p>${a.que[lang]}</p>
+      <ul>${a.clau[lang].map(c => `<li>${c}</li>`).join("")}</ul>
+      <p>${a.importancia[lang]}</p>
+    </div>
+    <h4>${t.vocabulari}</h4>
+    <div class="vocab">${obj.vocabulari[lang].map(v => `<span>${v}</span>`).join("")}</div>
+  `;
+}
+function toggleObjectiu(blocId, contenidor){
+  const existent = contenidor.querySelector(".objectiu-panel");
+  if(existent){
+    existent.classList.toggle("open");
+    return;
+  }
+  const panel = document.createElement("div");
+  panel.className = "objectiu-panel open";
+  panel.innerHTML = htmlObjectiu(blocId);
+  contenidor.appendChild(panel);
+}
+
+/* ------------------------------------------------------------
+   INDEX DE BLOCS
+   ------------------------------------------------------------ */
+function renderIndex(){
+  elIndexGrid.innerHTML = "";
+  const blocs = BLOCS[currentLang];
+  blocs.forEach(b => {
+    const items = PREGUNTES.map((p,i)=>({...p, idxGlobal:i})).filter(p => p.bloc === b.id);
+    const marcades = items.filter(p => p.pi);
+    const fetes = items.filter(p => estat.respostes[p.idxGlobal] !== undefined).length;
+    const fetesMarc = marcades.filter(p => estat.respostes[p.idxGlobal] !== undefined).length;
+    const total = items.length;
+    const totalMarc = marcades.length;
+    const pct = total ? (fetes/total)*100 : 0;
+
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "bloc-btn" + (estat.blocActual === b.id ? " active" : "");
+    btn.dataset.bloc = b.id;
+    btn.innerHTML = `
+      <span class="bloc-titol">Bloc ${b.id} · ${b.titol}</span>
+      <span class="bloc-meta">${fetes} / ${total} · <span class="pi">${fetesMarc} / ${totalMarc} 🌿</span></span>
+      <span class="barra"><span style="width:${pct}%"></span></span>
+    `;
+    btn.addEventListener("click", () => {
+      const primeraNoFeta = items.find(p => estat.respostes[p.idxGlobal] === undefined) || items[0];
+      estat.blocActual = b.id;
+      idx = primeraNoFeta.idxGlobal;
+      desarEstat();
+      render();
+      renderIndex();
+      elIndexBody.classList.remove("open");
+      elIndexHead.classList.remove("open");
+    });
+
+    const wrap = document.createElement("div");
+    wrap.className = "bloc-wrap";
+    wrap.appendChild(btn);
+
+    const btnObj = document.createElement("button");
+    btnObj.type = "button";
+    btnObj.className = "objectiu-toggle";
+    btnObj.textContent = UI[currentLang].objectiu;
+    btnObj.addEventListener("click", (e) => {
+      e.stopPropagation();
+      toggleObjectiu(b.id, wrap);
+    });
+    wrap.appendChild(btnObj);
+
+    elIndexGrid.appendChild(wrap);
+  });
+}
+
+/* ------------------------------------------------------------
+   APLICAR IDIOMA
+   ------------------------------------------------------------ */
+function aplicarUI(){
+  const t = UI[currentLang];
+  document.documentElement.lang = currentLang;
+  document.getElementById("ui-titol").textContent = t.titol;
+  document.getElementById("ui-sub").textContent = t.sub;
+  document.getElementById("btn-reset").textContent = t.reset;
+  document.getElementById("btn-continuar").textContent = t.continuar;
+  document.getElementById("btn-exportar").textContent = t.exportar;
+  document.getElementById("btn-imprimir").textContent = t.imprimir;
+  document.getElementById("ui-index-titol").textContent = t["index-titol"];
+  document.querySelectorAll("[data-i18n]").forEach(el => {
+    const key = el.dataset.i18n;
+    if(t[key]) el.textContent = t[key];
+  });
+  elNext.textContent = t.seguent;
+  elPrev.textContent = t.anterior;
+  elBtnObjCard.textContent = elObjCard.classList.contains("open") ? t.tancarObjectiu : t.objectiu;
+  document.querySelectorAll(".lang-switch button").forEach(b => {
+    b.classList.toggle("active", b.dataset.lang === currentLang);
+  });
+  actualitzarBotoRepas();
+  actualitzarBotoAdaptat();
+}
+
+/* ------------------------------------------------------------
+   PROGRÉS
+   ------------------------------------------------------------ */
+function actualitzarProgresGlobal(){
+  const t = UI[currentLang];
+  if(modeRepas){
+    const visibles = getIndexosVisibles();
+    elProgres.textContent = t.repasInfo(visibles.length);
+    return;
+  }
+  if(modeAdaptat){
+    const fetes = PREGUNTES.filter((p,i) => p.pi && estat.respostes[i] !== undefined).length;
+    elProgres.textContent = t.progresAdaptat(fetes, totalMarcades());
+  } else {
+    const fetes = Object.keys(estat.respostes).length;
+    elProgres.textContent = t.progresGlobal(fetes, PREGUNTES.length);
+  }
+}
+
+/* ------------------------------------------------------------
+   RENDER PREGUNTA
+   ------------------------------------------------------------ */
+function render(){
+  const visibles = getIndexosVisibles();
+  const t = UI[currentLang];
+  const lang = currentLang;
+
+  if(visibles.length === 0){
+    elCard.dataset.bloc = "A";
+    elCard.classList.remove("pi-obligatoria","pi");
+    elCard.innerHTML = `
+      <div class="resum">
+        <div class="icon">✅</div>
+        <div class="missatge">${t.repasBuit}</div>
+        <div class="nav-next">
+          <button id="sortir-repas">${t.repas}</button>
+        </div>
+      </div>
+    `;
+    document.getElementById("sortir-repas").addEventListener("click", () => {
+      modeRepas = false;
+      actualitzarBotoRepas();
+      render();
+      renderIndex();
+    });
+    actualitzarProgresGlobal();
+    return;
+  }
+
+  if(!visibles.includes(idx)){
+    idx = visibles[0];
+  }
+
+  respost = false;
+  const p = PREGUNTES[idx];
+  const pi = !!p.pi;
+
+  estat.idxActual = idx;
+  estat.blocActual = p.bloc;
+  desarEstat();
+
+  elCard.dataset.bloc = p.bloc;
+  elCard.classList.toggle("pi-obligatoria", pi);
+  elCard.classList.toggle("pi", pi && modeAdaptat);
+  elBlocTag.dataset.bloc = p.bloc;
+  const blocInfo = BLOCS[lang].find(b => b.id === p.bloc);
+  elBlocTag.textContent = `Bloc ${p.bloc} · ${blocInfo.titol}`;
+
+  elIcon.textContent = p.icon;
+  elSituacio.textContent = p.situacio[lang];
+  elPregunta.innerHTML = p.pregunta[lang];
+
+  elFeedback.className = "feedback";
+  elFeedback.innerHTML = "";
+  elNext.style.display = "inline-block";
+  elPrev.style.display = "inline-block";
+
+  elInfoPanel.classList.remove("open");
+  elBtnInfo.textContent = t["mes-info"];
+  elInfoTitol.textContent = p.info.titol[lang];
+  elInfoText.textContent = p.info.text[lang];
+  elInfoEx.textContent = p.info.exemple[lang];
+  elInfoLink.href = BASE_URL + p.recurs;
+
+  elObjCard.innerHTML = htmlObjectiu(p.bloc);
+  elObjCard.classList.remove("open");
+  elBtnObjCard.textContent = t.objectiu;
+
+  elOpcions.style.display = "flex";
+  elOpcions.querySelectorAll("button").forEach(b => {
+    b.disabled = false;
+    b.style.background = "#fff";
+    b.style.color = "#0b1f3a";
+    b.style.borderColor = "#0b1f3a";
+  });
+
+  if(estat.respostes[idx] !== undefined){
+    mostrarResposta(estat.respostes[idx]);
+  }
+
+  actualitzarProgresGlobal();
+}
+
+/* ------------------------------------------------------------
+   MOSTRAR RESPOSTA
+   ------------------------------------------------------------ */
+function mostrarResposta(resp){
+  respost = true;
+  const p = PREGUNTES[idx];
+  const t = UI[currentLang];
+  const correcte = resp === p.correcte;
+  if(correcte){
+    elFeedback.className = "feedback ok";
+    elFeedback.innerHTML = `<strong>${t.correcte}</strong>${p.explica[currentLang]}`;
+  } else {
+    elFeedback.className = "feedback err";
+    elFeedback.innerHTML = `<strong>${t.incorrecte}</strong>${p.explica[currentLang]}`;
+  }
+  elOpcions.querySelectorAll("button").forEach(x => {
+    x.disabled = true;
+    if(x.dataset.resp === p.correcte){
+      x.style.background = "#e8f3ec";
+      x.style.borderColor = "#2e7d32";
+    } else if(x.dataset.resp === resp){
+      x.style.background = "#fdecea";
+      x.style.borderColor = "#c62828";
+    }
+  });
+}
+
+/* ------------------------------------------------------------
+   RESPOSTA
+   ------------------------------------------------------------ */
+elOpcions.querySelectorAll("button").forEach(b => {
+  b.addEventListener("click", () => {
+    if(respost) return;
+    estat.respostes[idx] = b.dataset.resp;
+    desarEstat();
+    mostrarResposta(b.dataset.resp);
+    renderIndex();
+    actualitzarProgresGlobal();
+  });
+});
+
+/* ------------------------------------------------------------
+   INFORMACIÓ / OBJECTIU
+   ------------------------------------------------------------ */
+elBtnInfo.addEventListener("click", () => {
+  const t = UI[currentLang];
+  const obert = elInfoPanel.classList.toggle("open");
+  elBtnInfo.textContent = obert ? t["menys-info"] : t["mes-info"];
+});
+elBtnObjCard.addEventListener("click", () => {
+  const t = UI[currentLang];
+  const obert = elObjCard.classList.toggle("open");
+  elBtnObjCard.textContent = obert ? t.tancarObjectiu : t.objectiu;
+});
+
+/* ------------------------------------------------------------
+   NAVEGACIÓ
+   ------------------------------------------------------------ */
+elNext.addEventListener("click", () => {
+  const visibles = getIndexosVisibles();
+  const pos = visibles.indexOf(idx);
+  if(pos < visibles.length - 1){
+    idx = visibles[pos+1];
+    render();
+    renderIndex();
+  } else {
+    mostrarResum();
+  }
+});
+elPrev.addEventListener("click", () => {
+  const visibles = getIndexosVisibles();
+  const pos = visibles.indexOf(idx);
+  if(pos > 0){
+    idx = visibles[pos-1];
+    render();
+    renderIndex();
+  }
+});
+
+/* ------------------------------------------------------------
+   RESUM
+   ------------------------------------------------------------ */
+function mostrarResum(){
+  const t = UI[currentLang];
+  let encerts = 0, encertsMarc = 0;
+  PREGUNTES.forEach((p,i) => {
+    if(estat.respostes[i] === p.correcte){
+      encerts++;
+      if(p.pi) encertsMarc++;
+    }
+  });
+  elCard.classList.remove("pi-obligatoria","pi");
+  elCard.innerHTML = `
+    <div class="resum">
+      <div class="icon">🎯</div>
+      <div class="missatge">${t.resumGlobal(encerts, PREGUNTES.length)}</div>
+      <p>${t.resumSub}</p>
+      <p><strong>🌿 Objectiu:</strong> ${encertsMarc} / ${totalMarcades()}</p>
+      <div class="nav-next">
+        <button id="tornar">${t.tornar}</button>
+      </div>
+    </div>
+  `;
+  document.getElementById("tornar").addEventListener("click", () => {
+    if(confirm(t.confirmReset)){
+      localStorage.removeItem(STORAGE_KEY);
+      location.reload();
+    }
+  });
+}
+
+/* ------------------------------------------------------------
+   BOTONS CAPÇALERA
+   ------------------------------------------------------------ */
+document.getElementById("btn-reset").addEventListener("click", () => {
+  if(confirm(UI[currentLang].confirmReset)){
+    localStorage.removeItem(STORAGE_KEY);
+    location.reload();
+  }
+});
+document.getElementById("btn-continuar").addEventListener("click", () => {
+  idx = estat.idxActual || 0;
+  render();
+  renderIndex();
+});
+
+/* ------------------------------------------------------------
+   MODE REPÀS
+   ------------------------------------------------------------ */
+elBtnRepas.addEventListener("click", () => {
+  const t = UI[currentLang];
+  if(!modeRepas){
+    const pendents = getIndexosVisibles();
+    if(pendents.length === 0){
+      alert(t.repasBuit);
+      return;
+    }
+    modeRepas = true;
+    idx = pendents[0];
+  } else {
+    modeRepas = false;
+  }
+  actualitzarBotoRepas();
+  render();
+  renderIndex();
+});
+
+/* ------------------------------------------------------------
+   MODE ADAPTAT (botó verd)
+   ------------------------------------------------------------ */
+elBtnAdaptat.addEventListener("click", () => {
+  modeAdaptat = !modeAdaptat;
+  estat.modeAdaptat = modeAdaptat;
+  desarEstat();
+  actualitzarBotoAdaptat();
+  render();
+  renderIndex();
+});
+
+/* ------------------------------------------------------------
+   EXPORTAR
+   ------------------------------------------------------------ */
+document.getElementById("btn-exportar").addEventListener("click", () => {
+  const t = UI[currentLang];
+  let encerts=0, encertsMarc=0, fetes=0, fetesMarc=0;
+  const detall = PREGUNTES.map((p,i) => {
+    const resp = estat.respostes[i];
+    const ok = resp === p.correcte;
+    if(resp !== undefined){ fetes++; if(p.pi) fetesMarc++; }
+    if(ok){ encerts++; if(p.pi) encertsMarc++; }
+    return {
+      num:i+1, bloc:p.bloc, pi:p.pi,
+      situacio:p.situacio.ca, correcte:p.correcte,
+      resposta: resp||null,
+      encert: resp===undefined ? null : ok
+    };
+  });
+
+  const data = {
+    activitat:"T1.2 · De la cèl·lula al cos",
+    data_exportacio:new Date().toISOString(),
+    idioma_actual:currentLang,
+    mode_adaptat:modeAdaptat,
+    total_preguntes:PREGUNTES.length,
+    total_marcades_objectiu:totalMarcades(),
+    respostes_fetes:fetes,
+    respostes_marcades_fetes:fetesMarc,
+    encerts:encerts,
+    encerts_marcades:encertsMarc,
+    detall
+  };
+  const blob = new Blob([JSON.stringify(data,null,2)],{type:"application/json"});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = `t1_activitat02_progres_${new Date().toISOString().slice(0,10)}.json`;
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  alert(t.exportat);
+});
+
+/* ------------------------------------------------------------
+   IMPRIMIR
+   ------------------------------------------------------------ */
+document.getElementById("btn-imprimir").addEventListener("click", () => {
+  const t = UI[currentLang], lang = currentLang;
+  let encerts=0, fetes=0, encertsMarc=0, fetesMarc=0;
+  const perBloc = {};
+  BLOCS[lang].forEach(b => perBloc[b.id] = { encerts:0, total:0, fetes:0, piTotal:0, piEncerts:0 });
+
+  PREGUNTES.forEach((p,i) => {
+    perBloc[p.bloc].total++;
+    if(p.pi) perBloc[p.bloc].piTotal++;
+    const resp = estat.respostes[i];
+    if(resp !== undefined){
+      fetes++;
+      if(p.pi) fetesMarc++;
+      perBloc[p.bloc].fetes++;
+      if(resp === p.correcte){
+        encerts++;
+        if(p.pi){ encertsMarc++; perBloc[p.bloc].piEncerts++; }
+        perBloc[p.bloc].encerts++;
+      }
+    }
+  });
+
+  const pct = PREGUNTES.length ? Math.round((encerts/PREGUNTES.length)*100) : 0;
+  const pctMarc = totalMarcades() ? Math.round((encertsMarc/totalMarcades())*100) : 0;
+
+  const filesBloc = BLOCS[lang].map(b => {
+    const d = perBloc[b.id];
+    return `<tr><td>${b.id} · ${b.titol}</td><td>${d.encerts} / ${d.total}</td><td>${d.piEncerts} / ${d.piTotal}</td></tr>`;
+  }).join("");
+
+  const filesDetall = PREGUNTES.map((p,i) => {
+    const resp = estat.respostes[i];
+    const correcte = resp === p.correcte;
+    const est = resp===undefined ? t.imprimirPendent : (correcte ? t.imprimirSi : t.imprimirNo);
+    const color = resp===undefined ? "#999" : (correcte ? "#2e7d32" : "#c62828");
+    return `<tr>
+      <td>${i+1}</td>
+      <td>${p.bloc}</td>
+      <td>${p.pi ? "🌿" : "—"}</td>
+      <td>${p.situacio[lang]}</td>
+      <td>${resp||"—"}</td>
+      <td>${p.correcte}</td>
+      <td style="color:${color};font-weight:700">${est}</td>
+    </tr>`;
+  }).join("");
+
+  const html = `<!DOCTYPE html><html lang="${lang}"><head><meta charset="UTF-8">
+    <title>${t.imprimirTitol}</title>
+    <style>
+      body{font-family:Georgia,serif;color:#1a1a1a;padding:1.5rem;font-size:12pt}
+      h1{color:#0b1f3a;font-size:18pt;margin:0 0 .3rem}
+      h2{color:#0b1f3a;font-size:14pt;margin:1.2rem 0 .4rem;border-bottom:2px solid #c9a227;padding-bottom:.2rem}
+      .meta{display:flex;gap:2rem;margin-bottom:1rem;font-size:11pt}
+      .meta span{display:inline-block;border-bottom:1px solid #999;min-width:180px}
+      table{width:100%;border-collapse:collapse;margin:.6rem 0;font-size:10.5pt}
+      th,td{border:1px solid #ccc;padding:.35rem .5rem;text-align:left;vertical-align:top}
+      th{background:#f0f4fa;color:#0b1f3a}
+      .resum-grid{display:grid;grid-template-columns:1fr 1fr;gap:.4rem 1.5rem;font-size:11pt}
+      .resum-grid div{padding:.3rem 0}
+      @media print{body{padding:0}}
+    </style></head><body>
+    <h1>${t.imprimirTitol}</h1>
+    <div class="meta">
+      <div>${t.imprimirAlumne} <span></span></div>
+      <div>${t.imprimirData} <span>${new Date().toLocaleDateString()}</span></div>
+    </div>
+    <h2>${t.imprimirResum}</h2>
+    <div class="resum-grid">
+      <div><strong>${t.imprimirTotal}:</strong> ${PREGUNTES.length}</div>
+      <div><strong>${t.imprimirFetes}:</strong> ${fetes}</div>
+      <div><strong>${t.imprimirEncerts}:</strong> ${encerts}</div>
+      <div><strong>${t.imprimirPct}:</strong> ${pct} %</div>
+      <div><strong>🌿 fetes:</strong> ${fetesMarc} / ${totalMarcades()}</div>
+      <div><strong>🌿 encerts:</strong> ${encertsMarc} / ${totalMarcades()} (${pctMarc} %)</div>
+    </div>
+    <h2>${t.imprimirPerBloc}</h2>
+    <table><thead><tr><th>${t.imprimirBloc}</th><th>${t.imprimirEncerts}</th><th>🌿</th></tr></thead><tbody>${filesBloc}</tbody></table>
+    <h2>${t.imprimirDetall}</h2>
+    <table><thead><tr>
+      <th>${t.imprimirNum}</th><th>${t.imprimirBloc}</th><th>🌿</th>
+      <th>${t.imprimirSituacio}</th><th>${t.imprimirResposta}</th>
+      <th>${t.imprimirCorrecta}</th><th>${t.imprimirEncert}</th>
+    </tr></thead><tbody>${filesDetall}</tbody></table>
+    </body></html>`;
+
+  const win = window.open("", "_blank");
+  win.document.write(html);
+  win.document.close();
+  win.focus();
+  setTimeout(() => win.print(), 300);
+});
+
+/* ------------------------------------------------------------
+   ÍNDEX PLEGABLE
+   ------------------------------------------------------------ */
+elIndexHead.addEventListener("click", () => {
+  const obert = elIndexBody.classList.toggle("open");
+  elIndexHead.classList.toggle("open", obert);
+});
+
+/* ------------------------------------------------------------
+   IDIOMA
+   ------------------------------------------------------------ */
+document.querySelectorAll(".lang-switch button").forEach(b => {
+  b.addEventListener("click", () => {
+    currentLang = b.dataset.lang;
+    aplicarUI();
+    render();
+    renderIndex();
+  });
+});
+
+/* ------------------------------------------------------------
+   INICI
+   ------------------------------------------------------------ */
+aplicarUI();
+modeAdaptat = !!estat.modeAdaptat;
+actualitzarBotoAdaptat();
+actualitzarBotoRepas();
+idx = estat.idxActual || 0;
+render();
+renderIndex();
+</script>
+</body>
+</html>

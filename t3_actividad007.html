@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Mapa Conceptual del Tema 3</title>
+<style>
+  body { font-family: 'Segoe UI', sans-serif; background: #0f172a; color: #e2e8f0; margin: 0; padding: 20px; }
+  h1 { text-align: center; color: #f472b6; }
+  .container { max-width: 1200px; margin: auto; }
+  .canvas-wrap { background: #1e293b; padding: 20px; border-radius: 12px; position: relative; }
+  #lienzo { background: #0b1220; border-radius: 8px; cursor: crosshair; display: block; width: 100%; height: 500px; }
+  .instrucciones { background: #334155; padding: 15px; border-radius: 8px; margin-bottom: 15px; border-left: 4px solid #f472b6; }
+  .controles { margin-top: 15px; display: flex; gap: 10px; flex-wrap: wrap; }
+  button { background: #f472b6; color: #0f172a; border: none; padding: 10px 18px; border-radius: 6px; cursor: pointer; font-weight: bold; }
+  button:hover { background: #ec4899; }
+  .resultado { margin-top: 15px; padding: 15px; background: #1e293b; border-radius: 8px; min-height: 50px; }
+  .modal { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%,-50%); background: #1e293b; padding: 25px; border-radius: 12px; border: 2px solid #f472b6; z-index: 100; min-width: 300px; }
+  .modal input { width: 100%; padding: 10px; background: #0f172a; border: 1px solid #475569; border-radius: 6px; color: #e2e8f0; margin: 10px 0; }
+  .overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 99; }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>🧠 Mapa Conceptual del Tema 3</h1>
+  <div class="instrucciones">
+    <b>Instrucciones:</b> Haz clic en un nodo (origen), luego en otro (destino) para crear una conexión. Escribe la relación (ej: "produce", "activa", "inhibe"). El sistema evaluará tu red.
+  </div>
+  <div class="canvas-wrap">
+    <canvas id="lienzo"></canvas>
+  </div>
+  <div class="controles">
+    <button onclick="validar()">✔ Validar mapa</button>
+    <button onclick="limpiar()">🗑️ Limpiar todo</button>
+    <button onclick="ayuda()">💡 Ver solución sugerida</button>
+  </div>
+  <div class="resultado" id="res">Crea al menos 5 conexiones para validar.</div>
+</div>
+
+<div class="overlay" id="overlay"></div>
+<div class="modal" id="modal">
+  <h3 style="margin-top:0; color:#f472b6;">Describe la relación</h3>
+  <p id="modalText"></p>
+  <input type="text" id="relInput" placeholder="Ej: se une a, desplaza, genera...">
+  <button onclick="guardarRel()">Guardar</button>
+  <button onclick="cerrarModal()" style="background:#64748b;">Cancelar</button>
+</div>
+
+<script>
+const canvas = document.getElementById('lienzo');
+const ctx = canvas.getContext('2d');
+
+function resize() {
+  canvas.width = canvas.offsetWidth;
+  canvas.height = 500;
+}
+resize();
+window.addEventListener('resize', () => { resize(); draw(); });
+
+const nodos = [
+  {id:'ca', x:0.1, y:0.2, label:'Ca²⁺', color:'#fbbf24'},
+  {id:'trop', x:0.25, y:0.4, label:'Troponina', color:'#a78bfa'},
+  {id:'mio', x:0.4, y:0.2, label:'Tropomiosina', color:'#94a3b8'},
+  {id:'act', x:0.55, y:0.4, label:'Actina', color:'#f472b6'},
+  {id:'mio2', x:0.7, y:0.2, label:'Miosina', color:'#64748b'},
+  {id:'atp', x:0.85, y:0.4, label:'ATP', color:'#38bdf8'},
+  {id:'sar', x:0.5, y:0.75, label:'Sarcómero', color:'#22d3ee'},
+  {id:'fuerza', x:0.8, y:0.75, label:'Fuerza', color:'#34d399'}
+];
+
+let conexiones = [];
+let origen = null;
+let modalData = null;
+
+function getPos(n) {
+  return { x: n.x * canvas.width, y: n.y * canvas.height };
+}
+
+function draw() {
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  
+  // Conexiones
+  conexiones.forEach(c => {
+    const a = getPos(nodos.find(n=>n.id===c.a));
+    const b = getPos(nodos.find(n=>n.id===c.b));
+    ctx.strokeStyle = '#f472b6';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(a.x, a.y);
+    ctx.lineTo(b.x, b.y);
+    ctx.stroke();
+    // Flecha
+    const ang = Math.atan2(b.y-a.y, b.x-a.x);
+    ctx.beginPath();
+    ctx.moveTo(b.x, b.y);
+    ctx.lineTo(b.x-10*Math.cos(ang-0.3), b.y-10*Math.sin(ang-0.3));
+    ctx.lineTo(b.x-10*Math.cos(ang+0.3), b.y-10*Math.sin(ang+0.3));
+    ctx.closePath();
+    ctx.fillStyle = '#f472b6';
+    ctx.fill();
+    // Etiqueta
+    const mx = (a.x+b.x)/2, my = (a.y+b.y)/2;
+    ctx.fillStyle = '#0f172a';
+    ctx.fillRect(mx-50, my-10, 100, 20);
+    ctx.fillStyle = '#fbbf24';
+    ctx.font = '12px sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText(c.rel, mx, my+4);
+  });
+  
+  // Nodos
+  nodos.forEach(n => {
+    const p = getPos(n);
+    ctx.fillStyle = n.color;
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, 35, 0, Math.PI*2);
+    ctx.fill();
+    ctx.strokeStyle = '#fff';
+    ctx.lineWidth = 2;
+    ctx.stroke();
+    ctx.fillStyle = '#0f172a';
+    ctx.font = 'bold 13px sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText(n.label, p.x, p.y+4);
+  });
+}
+
+canvas.addEventListener('click', e => {
+  const rect = canvas.getBoundingClientRect();
+  const x = e.clientX - rect.left;
+  const y = e.clientY - rect.top;
+  
+  let clicado = null;
+  nodos.forEach(n => {
+    const p = getPos(n);
+    if (Math.hypot(x-p.x, y-p.y) < 35) clicado = n;
+  });
+  
+  if (!clicado) return;
+  
+  if (!origen) {
+    origen = clicado;
+  } else {
+    if (origen.id !== clicado.id) {
+      modalData = {a: origen.id, b: clicado.id};
+      document.getElementById('modalText').innerHTML = 
+        `De <b style="color:${origen.color}">${origen.label}</b> a <b style="color:${clicado.color}">${clicado.label}</b>`;
+      document.getElementById('modal').style.display = 'block';
+      document.getElementById('overlay').style.display = 'block';
+      document.getElementById('relInput').focus();
+    }
+    origen = null;
+  }
+});
+
+function guardarRel() {
+  const rel = document.getElementById('relInput').value.trim();
+  if (rel) {
+    conexiones.push({...modalData, rel});
+    draw();
+  }
+  cerrarModal();
+}
+
+function cerrarModal() {
+  document.getElementById('modal').style.display = 'none';
+  document.getElementById('overlay').style.display = 'none';
+  document.getElementById('relInput').value = '';
+}
+
+function limpiar() {
+  conexiones = [];
+  draw();
+  document.getElementById('res').innerHTML = 'Mapa limpiado. Crea al menos 5 conexiones.';
+}
+
+function ayuda() {
+  document.getElementById('res').innerHTML = `
+    <b>💡 Conexiones clave sugeridas:</b><br>
+    • Ca²⁺ → <i>se une a</i> → Troponina<br>
+    • Troponina → <i>desplaza</i> → Tropomiosina<br>
+    • Actina → <i>se une a</i> → Miosina (puentes cruzados)<br>
+    • ATP → <i>desacopla</i> → Miosina<br>
+    • Sarcómero → <i>genera</i> → Fuerza
+  `;
+}
+
+function validar() {
+  if (conexiones.length < 5) {
+    document.getElementById('res').innerHTML = '⚠️ Necesitas al menos 5 conexiones.';
+    return;
+  }
+  // Validación simple: contar conexiones con palabras clave
+  const claves = ['une','desplaza','expone','desacopla','genera','produce','forma','activa'];
+  let buenas = conexiones.filter(c => claves.some(k => c.rel.toLowerCase().includes(k))).length;
+  document.getElementById('res').innerHTML = 
+    buenas >= 3 ? `🎉 <b>¡Excelente!</b> Has identificado ${buenas} relaciones clave correctamente. Tu mapa conceptual refleja bien el mecanismo contráctil.` :
+    `Has hecho ${conexiones.length} conexiones, pero solo ${buenas} usan verbos fisiológicos clave (une, desplaza, desacopla, genera...). Revisa los verbos.`;
+}
+
+draw();
+</script>
+</body>
+</html>

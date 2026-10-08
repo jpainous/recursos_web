@@ -1,0 +1,970 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>El Esqueleto en la Danza (Parte 3) - Diferencias y Prevención</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, sans-serif; }
+  body {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    padding: 20px;
+  }
+  .container {
+    max-width: 1100px;
+    margin: 0 auto;
+    background: #fff;
+    border-radius: 20px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    overflow: hidden;
+  }
+  header {
+    background: linear-gradient(90deg, #1e3c72, #2a5298);
+    color: white;
+    padding: 35px;
+    text-align: center;
+  }
+  header h1 { font-size: 2.1em; margin-bottom: 10px; }
+  header p { opacity: 0.95; font-size: 1.1em; }
+  header .subtitle { font-size: 0.95em; opacity: 0.85; margin-top: 8px; font-style: italic; }
+  
+  .nav-tabs {
+    display: flex;
+    background: #f8f9fa;
+    flex-wrap: wrap;
+    border-bottom: 3px solid #dee2e6;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .nav-tabs button {
+    flex: 1;
+    min-width: 140px;
+    padding: 14px 10px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 0.9em;
+    font-weight: 600;
+    color: #666;
+    transition: all 0.3s;
+    border-bottom: 4px solid transparent;
+  }
+  .nav-tabs button:hover { background: #e9ecef; color: #2a5298; }
+  .nav-tabs button.active {
+    color: #2a5298;
+    border-bottom-color: #2a5298;
+    background: white;
+  }
+  
+  .slide { display: none; padding: 30px; min-height: 600px; }
+  .slide.active { display: block; animation: fadeIn 0.5s; }
+  @keyframes fadeIn { from {opacity:0; transform:translateY(20px);} to {opacity:1; transform:translateY(0);} }
+  
+  .slide h2 {
+    color: #1e3c72;
+    margin-bottom: 20px;
+    font-size: 1.7em;
+    border-bottom: 3px solid #2a5298;
+    padding-bottom: 10px;
+  }
+  
+  .reminder-box {
+    background: linear-gradient(135deg, #fff9c4 0%, #fff59d 100%);
+    border-left: 5px solid #fbc02d;
+    padding: 18px;
+    margin: 20px 0;
+    border-radius: 10px;
+  }
+  
+  .reminder-box h4 {
+    color: #f57f17;
+    margin-bottom: 10px;
+    font-size: 1.1em;
+  }
+  
+  .intro-box {
+    background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+    border-left: 5px solid #1976d2;
+    padding: 22px;
+    margin: 20px 0;
+    border-radius: 10px;
+    line-height: 1.7;
+  }
+  
+  .intro-box h3 {
+    color: #1565c0;
+    margin-bottom: 12px;
+    font-size: 1.25em;
+  }
+  
+  .concept-card {
+    background: white;
+    border: 3px solid #2a5298;
+    border-radius: 15px;
+    padding: 25px;
+    margin: 20px 0;
+    box-shadow: 0 5px 20px rgba(42,82,152,0.15);
+  }
+  
+  .concept-card h3 {
+    color: #2a5298;
+    font-size: 1.35em;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .how-it-works {
+    background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
+    padding: 20px;
+    border-radius: 10px;
+    margin: 15px 0;
+    border-left: 5px solid #f57c00;
+  }
+  
+  .how-it-works h4 {
+    color: #e65100;
+    margin-bottom: 12px;
+    font-size: 1.15em;
+  }
+  
+  .how-it-works ul {
+    margin-left: 25px;
+    line-height: 1.8;
+  }
+  
+  .dance-box {
+    background: linear-gradient(135deg, #fff5e6 0%, #ffe8cc 100%);
+    padding: 20px;
+    border-radius: 10px;
+    margin: 15px 0;
+    border: 2px dashed #f39c12;
+  }
+  
+  .dance-box h4 {
+    color: #e67e22;
+    margin-bottom: 12px;
+    font-size: 1.15em;
+  }
+  
+  .dance-box ul {
+    margin-left: 25px;
+    line-height: 1.8;
+  }
+  
+  .practical-activity {
+    background: linear-gradient(135deg, #e8f8f5 0%, #d5f5e3 100%);
+    padding: 22px;
+    border-radius: 15px;
+    margin: 20px 0;
+    border: 2px solid #1abc9c;
+  }
+  
+  .practical-activity h4 {
+    color: #16a085;
+    font-size: 1.2em;
+    margin-bottom: 12px;
+  }
+  
+  .activity-steps {
+    margin-left: 25px;
+    line-height: 1.9;
+  }
+  
+  .activity-steps li {
+    margin-bottom: 8px;
+  }
+  
+  .activity-steps strong {
+    color: #16a085;
+  }
+  
+  .diagram-container {
+    background: white;
+    border: 2px solid #dee2e6;
+    border-radius: 10px;
+    padding: 20px;
+    margin: 20px 0;
+    text-align: center;
+  }
+  
+  .diagram-container svg {
+    max-width: 100%;
+    height: auto;
+  }
+  
+  .diagram-container h4 {
+    color: #2a5298;
+    margin-bottom: 15px;
+    font-size: 1.1em;
+  }
+  
+  .tip-box {
+    background: linear-gradient(135deg, #f3e5f5 0%, #e1bee7 100%);
+    padding: 16px;
+    border-radius: 10px;
+    margin: 15px 0;
+    border-left: 5px solid #9b59b6;
+  }
+  
+  .tip-box h4 {
+    color: #8e44ad;
+    margin-bottom: 8px;
+    font-size: 1.05em;
+  }
+  
+  .warning-box {
+    background: linear-gradient(135deg, #ffebee 0%, #ffcdd2 100%);
+    padding: 18px;
+    border-radius: 10px;
+    margin: 15px 0;
+    border-left: 5px solid #e53935;
+  }
+  
+  .warning-box h4 {
+    color: #c62828;
+    margin-bottom: 10px;
+    font-size: 1.1em;
+  }
+  
+  .highlight {
+    background: linear-gradient(120deg, #ffeaa7 0%, #ffeaa7 100%);
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-weight: 600;
+  }
+  
+  .emoji { font-size: 1.2em; margin-right: 6px; }
+  
+  .btn {
+    background: linear-gradient(90deg, #2a5298, #1e3c72);
+    color: white;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 25px;
+    font-size: 1em;
+    font-weight: 600;
+    cursor: pointer;
+    margin: 10px 5px;
+    transition: all 0.3s;
+    box-shadow: 0 4px 12px rgba(42,82,152,0.3);
+  }
+  
+  .btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(42,82,152,0.4);
+  }
+  
+  .quiz-container {
+    background: white;
+    border: 2px solid #e4e8ec;
+    border-radius: 15px;
+    padding: 25px;
+    margin: 20px 0;
+  }
+  
+  .quiz-container h3 {
+    color: #2a5298;
+    margin-bottom: 18px;
+    font-size: 1.25em;
+  }
+  
+  .question-box {
+    background: #f8f9fa;
+    border-left: 5px solid #2a5298;
+    padding: 16px;
+    margin-bottom: 16px;
+    border-radius: 8px;
+  }
+  
+  .question-box p {
+    font-weight: 600;
+    margin-bottom: 12px;
+    font-size: 1em;
+    color: #2c3e50;
+  }
+  
+  .options {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .options label {
+    background: white;
+    border: 2px solid #dee2e6;
+    padding: 12px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    font-size: 0.93em;
+  }
+  
+  .options label:hover {
+    border-color: #2a5298;
+    background: #e3f2fd;
+  }
+  
+  .options input { margin-right: 12px; }
+  
+  .options label.correct {
+    background: #d4edda;
+    border-color: #28a745;
+    color: #155724;
+  }
+  
+  .options label.incorrect {
+    background: #f8d7da;
+    border-color: #dc3545;
+    color: #721c24;
+  }
+  
+  .feedback {
+    margin-top: 18px;
+    padding: 18px;
+    border-radius: 10px;
+    display: none;
+    font-weight: 600;
+    line-height: 1.6;
+  }
+  
+  .feedback.show { display: block; animation: fadeIn 0.3s; }
+  .feedback.success { background: #d4edda; color: #155724; border: 2px solid #28a745; }
+  .feedback.error { background: #f8d7da; color: #721c24; border: 2px solid #dc3545; }
+  
+  .comparison-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  }
+  
+  .comparison-table th {
+    background: linear-gradient(90deg, #2a5298, #1e3c72);
+    color: white;
+    padding: 14px;
+    text-align: left;
+    font-size: 0.95em;
+  }
+  
+  .comparison-table td {
+    padding: 12px;
+    border-bottom: 1px solid #dee2e6;
+    vertical-align: top;
+  }
+  
+  .comparison-table tr:nth-child(even) { background: #f8f9fa; }
+  
+  @media (max-width: 768px) {
+    header h1 { font-size: 1.6em; }
+    .slide { padding: 20px; }
+    .concept-card { padding: 18px; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <h1>🦴 El Esqueleto en la Danza</h1>
+    <p>Parte 3: Diferencias individuales, salud y prevención</p>
+    <div class="subtitle">Cada cuerpo es único: cómo cuidarlo y prevenir lesiones</div>
+  </header>
+
+  <div class="nav-tabs">
+    <button class="active" onclick="showSlide(0, this)"> Diferencias</button>
+    <button onclick="showSlide(1, this)">⚠️ Tríada y RED-S</button>
+    <button onclick="showSlide(2, this)">️ Prevención</button>
+    <button onclick="showSlide(3, this)">🎯 Quiz</button>
+  </div>
+
+  <!-- SLIDE 1: DIFERENCIAS INDIVIDUALES -->
+  <div class="slide active">
+    <h2>⚧ Cada cuerpo es diferente</h2>
+    
+    <div class="reminder-box">
+      <h4>💡 Recordatorio</h4>
+      <p>En las Partes 1 y 2 vimos que el hueso es un tejido vivo que se adapta, guarda calcio y fabrica sangre. Pero <strong>no todos los cuerpos responden igual</strong>. Vamos a descubrir por qué y qué significa esto para tu entrenamiento.</p>
+    </div>
+    
+    <div class="intro-box">
+      <h3>🎯 ¿Por qué no todos los bailarines son iguales?</h3>
+      <p>Seguro que has notado que algunos compañeros hacen ciertos movimientos con más facilidad que otros. No es solo cuestión de esfuerzo: <strong>la genética, las hormonas y el tipo de cuerpo</strong> influyen mucho.</p>
+      <p style="margin-top: 12px;">Esto no significa que unos sean "mejores" que otros. Significa que <span class="highlight">cada cuerpo tiene sus ventajas</span> y hay que aprender a trabajar con lo que tienes.</p>
+    </div>
+    
+    <div class="concept-card">
+      <h3><span class="emoji">🧬</span> Diferencias entre hombres y mujeres</h3>
+      <div class="how-it-works">
+        <h4>🔬 ¿Qué cambia a nivel fisiológico?</h4>
+        <ul>
+          <li><strong>Hormonas:</strong> Los hombres tienen más testosterona (ayuda a crear músculo y hueso denso). Las mujeres tienen más estrógenos (dan más flexibilidad pero pueden debilitar el hueso si bajan mucho).</li>
+          <li><strong>Densidad ósea:</strong> En general, los hombres tienen huesos más densos y gruesos. Las mujeres tienen huesos más ligeros.</li>
+          <li><strong>Flexibilidad:</strong> Las mujeres suelen ser más flexibles (los estrógenos relajan los ligamentos). Esto es una ventaja para algunos movimientos, pero también un riesgo de lesiones.</li>
+          <li><strong>Centro de gravedad:</strong> Las mujeres lo tienen más bajo (caderas más anchas), los hombres más alto (hombros más anchos). Esto afecta al equilibrio y los giros.</li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="diagram-container">
+      <h4>📊 Comparación fisiológica (promedios)</h4>
+      <svg viewBox="0 0 700 280">
+        <!-- Hombre -->
+        <g transform="translate(50, 30)">
+          <rect x="0" y="0" width="280" height="230" fill="#e3f2fd" stroke="#1976d2" stroke-width="2" rx="10"/>
+          <text x="140" y="30" text-anchor="middle" font-size="14" font-weight="bold" fill="#1565c0">HOMBRES</text>
+          
+          <text x="140" y="60" text-anchor="middle" font-size="11" fill="#333">💪 Más masa muscular</text>
+          <text x="140" y="85" text-anchor="middle" font-size="11" fill="#333">🦴 Huesos más densos</text>
+          <text x="140" y="110" text-anchor="middle" font-size="11" fill="#333">📏 Centro de gravedad alto</text>
+          <text x="140" y="135" text-anchor="middle" font-size="11" fill="#333">🎯 Más fuerza explosiva</text>
+          <text x="140" y="160" text-anchor="middle" font-size="11" fill="#333">🤸 Menos flexibilidad</text>
+          
+          <text x="140" y="200" text-anchor="middle" font-size="10" fill="#1565c0" font-weight="bold">Ventajas:</text>
+          <text x="140" y="218" text-anchor="middle" font-size="9" fill="#7f8c8d">Saltos, fuerza, giros rápidos</text>
+        </g>
+        
+        <!-- Mujer -->
+        <g transform="translate(370, 30)">
+          <rect x="0" y="0" width="280" height="230" fill="#fce4ec" stroke="#c2185b" stroke-width="2" rx="10"/>
+          <text x="140" y="30" text-anchor="middle" font-size="14" font-weight="bold" fill="#c2185b">MUJERES</text>
+          
+          <text x="140" y="60" text-anchor="middle" font-size="11" fill="#333"> Huesos más ligeros</text>
+          <text x="140" y="85" text-anchor="middle" font-size="11" fill="#333">🤸 Más flexibilidad</text>
+          <text x="140" y="110" text-anchor="middle" font-size="11" fill="#333">📏 Centro de gravedad bajo</text>
+          <text x="140" y="135" text-anchor="middle" font-size="11" fill="#333">️ Mejor equilibrio</text>
+          <text x="140" y="160" text-anchor="middle" font-size="11" fill="#333">💪 Más resistencia</text>
+          
+          <text x="140" y="200" text-anchor="middle" font-size="10" fill="#c2185b" font-weight="bold">Ventajas:</text>
+          <text x="140" y="218" text-anchor="middle" font-size="9" fill="#7f8c8d">Flexibilidad, equilibrio, líneas</text>
+        </g>
+      </svg>
+    </div>
+    
+    <div class="dance-box">
+      <h4><span class="emoji">💃</span> ¿Cómo afecta esto a la danza?</h4>
+      <ul>
+        <li><strong>Hombres:</strong> Suelen tener más facilidad para saltos altos y giros rápidos (más fuerza explosiva). Pero les cuesta más la flexibilidad (necesitan más estiramientos).</li>
+        <li><strong>Mujeres:</strong> Suelen tener más facilidad para extensiones, equilibrios y líneas estéticas (más flexibilidad). Pero deben trabajar más la fuerza para proteger articulaciones.</li>
+        <li><strong>¡Importante!</strong> Estas son tendencias generales. Cada persona es única. Hay mujeres muy fuertes y hombres muy flexibles.</li>
+      </ul>
+    </div>
+    
+    <div class="concept-card">
+      <h3><span class="emoji">🧪</span> Hiperlaxitud: ¿ventaja o riesgo?</h3>
+      <div class="how-it-works">
+        <h4>🔍 ¿Qué es la hiperlaxitud?</h4>
+        <p>Algunas personas tienen los <strong>ligamentos más "elásticos"</strong> de lo normal. Esto se llama hiperlaxitud. Afecta a un 10-15% de la población (más común en mujeres).</p>
+        <ul>
+          <li><strong>Ventaja en danza:</strong> Mayor rango de movimiento, extensiones más amplias, posiciones más "estéticas".</li>
+          <li><strong>Riesgo:</strong> Las articulaciones son menos estables → más riesgo de esguinces, luxaciones y lesiones.</li>
+        </ul>
+      </div>
+      
+      <div class="tip-box">
+        <h4>✨ Si eres hiperlaxo/a</h4>
+        <p>No te conformes con "llegar lejos" en los estiramientos. <strong>Necesitas fortalecer los músculos alrededor de las articulaciones</strong> para compensar la falta de estabilidad de los ligamentos. La coactivación (que vimos en el tema de músculos) es especialmente importante para ti.</p>
+      </div>
+    </div>
+    
+    <div class="practical-activity">
+      <h4><span class="emoji">🎭</span> Actividad: "Conoce tu cuerpo"</h4>
+      <p><strong>Objetivo:</strong> Identificar tus propias características</p>
+      <ol class="activity-steps">
+        <li><strong>Test de hiperlaxitud (Beighton simplificado):</strong>
+          <ul>
+            <li>¿Puedes doblar el pulgar hasta tocar el antebrazo?</li>
+            <li>¿Puedes doblar los dedos de la mano hacia atrás más de 90°?</li>
+            <li>¿Puedes hiperextender los codos o las rodillas?</li>
+            <li>Si respondes "sí" a varias, puedes ser hiperlaxo/a.</li>
+          </ul>
+        </li>
+        <li><strong>Reflexiona:</strong>
+          <ul>
+            <li>¿Qué movimientos te resultan fáciles? ¿Cuáles te cuestan?</li>
+            <li>¿Tienes más facilidad para la fuerza o para la flexibilidad?</li>
+            <li>No hay respuestas correctas o incorrectas. Es información para entrenar mejor.</li>
+          </ul>
+        </li>
+        <li><strong>Plan personalizado:</strong>
+          <ul>
+            <li>Si eres muy flexible: enfócate en fortalecer (pesas, coactivación).</li>
+            <li>Si eres muy fuerte: enfócate en estirar y ganar rango.</li>
+            <li>Si eres equilibrado/a: ¡mantén el equilibrio!</li>
+          </ul>
+        </li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- SLIDE 2: TRÍADA Y RED-S -->
+  <div class="slide">
+    <h2>⚠️ La Tríada de la Mujer Atleta y RED-S</h2>
+    
+    <div class="reminder-box">
+      <h4>💡 Recordatorio</h4>
+      <p>Hemos visto que el hueso necesita calcio, vitamina D, descanso y... <strong>energía</strong>. Si un bailarín no come lo suficiente para el esfuerzo que hace, el cuerpo "apaga" funciones importantes. Esto es especialmente grave en mujeres, pero puede afectar a cualquiera.</p>
+    </div>
+    
+    <div class="intro-box">
+      <h3>🎯 ¿Qué es la Tríada de la Mujer Atleta?</h3>
+      <p>Es un problema que afecta a muchas bailarinas (y deportistas en general). Son <strong>3 problemas conectados</strong>:</p>
+    </div>
+    
+    <div class="concept-card">
+      <h3><span class="emoji">⚠️</span> Los 3 problemas de la Tríada</h3>
+      <div class="how-it-works">
+        <h4> Cómo se conectan</h4>
+        <ol style="margin-left: 25px; line-height: 1.8;">
+          <li><strong>Baja energía disponible:</strong> No comes suficiente para el esfuerzo que haces. Puede ser por dietas restrictivas, trastornos alimentarios o simplemente no saber cuánto necesitas.</li>
+          <li><strong>Amenorrea (pérdida de la menstruación):</strong> El cuerpo "apaga" el sistema reproductivo porque no tiene energía suficiente. Es una señal de alarma.</li>
+          <li><strong>Osteoporosis precoz:</strong> Sin estrógenos (que bajan cuando no hay menstruación), los huesos se debilitan. A los 20 años puedes tener huesos como los de una persona de 60.</li>
+        </ol>
+      </div>
+      
+      <div class="warning-box">
+        <h4>🚨 ¿Por qué es tan grave?</h4>
+        <ul>
+          <li><strong>Fracturas por estrés:</strong> Huesos débiles + mucho impacto = fracturas pequeñas que no se curan bien.</li>
+          <li><strong>Daño irreversible:</strong> Si no se trata a tiempo, la pérdida de densidad ósea no se recupera del todo.</li>
+          <li><strong>Problemas de fertilidad:</strong> La amenorrea prolongada puede afectar a la capacidad de tener hijos en el futuro.</li>
+          <li><strong>Rendimiento bajo:</strong> Sin energía, no puedes bailar bien, aunque te esfuerces.</li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="diagram-container">
+      <h4>🔄 El círculo vicioso de la Tríada</h4>
+      <svg viewBox="0 0 700 320">
+        <!-- Título -->
+        <text x="350" y="25" text-anchor="middle" font-size="15" font-weight="bold" fill="#c62828">Círculo vicioso de la Tríada</text>
+        
+        <!-- Paso 1 -->
+        <g transform="translate(50, 50)">
+          <rect x="0" y="0" width="200" height="80" fill="#ffebee" stroke="#e53935" stroke-width="2" rx="10"/>
+          <text x="100" y="30" text-anchor="middle" font-size="12" font-weight="bold" fill="#c62828">1. NO COMES SUFICIENTE</text>
+          <text x="100" y="55" text-anchor="middle" font-size="10" fill="#7f8c8d">Baja energía disponible</text>
+          <text x="100" y="70" text-anchor="middle" font-size="9" fill="#e53935" font-weight="bold">⚠️ Peligro</text>
+        </g>
+        
+        <!-- Flecha -->
+        <line x1="260" y1="90" x2="320" y2="90" stroke="#e53935" stroke-width="3" marker-end="url(#arrowRed)"/>
+        
+        <!-- Paso 2 -->
+        <g transform="translate(330, 50)">
+          <rect x="0" y="0" width="200" height="80" fill="#fff3e0" stroke="#f57c00" stroke-width="2" rx="10"/>
+          <text x="100" y="30" text-anchor="middle" font-size="12" font-weight="bold" fill="#e65100">2. PIERDES LA MENSTRUACIÓN</text>
+          <text x="100" y="55" text-anchor="middle" font-size="10" fill="#7f8c8d">Amenorrea</text>
+          <text x="100" y="70" text-anchor="middle" font-size="9" fill="#f57c00" font-weight="bold">🚨 Señal de alarma</text>
+        </g>
+        
+        <!-- Flecha -->
+        <line x1="540" y1="90" x2="600" y2="90" stroke="#e53935" stroke-width="3" marker-end="url(#arrowRed)"/>
+        
+        <!-- Paso 3 -->
+        <g transform="translate(610, 50)">
+          <rect x="0" y="0" width="90" height="80" fill="#ffebee" stroke="#e53935" stroke-width="2" rx="10"/>
+          <text x="45" y="30" text-anchor="middle" font-size="11" font-weight="bold" fill="#c62828">3. HUESOS</text>
+          <text x="45" y="45" text-anchor="middle" font-size="11" font-weight="bold" fill="#c62828">DÉBILES</text>
+          <text x="45" y="65" text-anchor="middle" font-size="9" fill="#e53935" font-weight="bold">💔 Riesgo</text>
+        </g>
+        
+        <!-- Flecha vuelta -->
+        <path d="M 655 130 Q 655 200 350 200 Q 150 200 150 130" stroke="#e53935" stroke-width="3" fill="none" stroke-dasharray="5,3" marker-end="url(#arrowRed)"/>
+        <text x="350" y="230" text-anchor="middle" font-size="11" fill="#c62828" font-weight="bold">El círculo continúa y empeora</text>
+        
+        <!-- Consecuencias -->
+        <g transform="translate(150, 250)">
+          <rect x="0" y="0" width="400" height="60" fill="#f8f9fa" stroke="#dee2e6" stroke-width="2" rx="10"/>
+          <text x="200" y="25" text-anchor="middle" font-size="11" font-weight="bold" fill="#2a5298">Consecuencias:</text>
+          <text x="200" y="45" text-anchor="middle" font-size="10" fill="#7f8c8d">Fracturas, bajo rendimiento, problemas de salud a largo plazo</text>
+        </g>
+        
+        <defs>
+          <marker id="arrowRed" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+            <polygon points="0 0, 10 3, 0 6" fill="#e53935"/>
+          </marker>
+        </defs>
+      </svg>
+    </div>
+    
+    <div class="concept-card">
+      <h3><span class="emoji">🔄</span> RED-S: La versión actualizada</h3>
+      <div class="how-it-works">
+        <h4>¿Qué es RED-S?</h4>
+        <p>La Tríada se ha ampliado a un concepto más amplio llamado <strong>RED-S</strong> (Déficit Relativo de Energía en el Deporte). Afecta a <strong>hombres y mujeres</strong>, no solo a mujeres.</p>
+        <ul>
+          <li><strong>Causa:</strong> No comer suficiente para el gasto energético del entrenamiento.</li>
+          <li><strong>Consecuencias:</strong> Además de los 3 problemas de la Tríada, puede causar:
+            <ul>
+              <li>Bajo rendimiento deportivo</li>
+              <li>Lesiones frecuentes</li>
+              <li>Problemas cardiovasculares</li>
+              <li>Problemas psicológicos (ansiedad, depresión)</li>
+              <li>Sistema inmune debilitado (te enfermas más)</li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="dance-box">
+      <h4><span class="emoji">💃</span> Señales de alerta en bailarines</h4>
+      <ul>
+        <li><strong>En mujeres:</strong> Pérdida de la menstruación (3 meses o más sin regla).</li>
+        <li><strong>En todos:</strong> Fatiga constante, lesiones que no se curan, bajo rendimiento, cambios de humor, obsesión con la comida o el peso.</li>
+        <li><strong>Comportamientos de riesgo:</strong> Dietas muy restrictivas, entrenar lesionado/a, pesarse constantemente, evitar comer con otros.</li>
+      </ul>
+    </div>
+    
+    <div class="practical-activity">
+      <h4><span class="emoji"></span> Actividad: "Reflexión sobre la energía"</h4>
+      <p><strong>Objetivo:</strong> Tomar conciencia de la importancia de comer suficiente</p>
+      <ol class="activity-steps">
+        <li><strong>Caso práctico:</strong> Imagina a una bailarina que entrena 4 horas al día pero solo come una ensalada pequeña al día porque "quiere estar delgada".
+          <ul>
+            <li>¿Qué le pasará a sus huesos? (Se debilitarán)</li>
+            <li>¿Qué le pasará a su menstruación? (Puede desaparecer)</li>
+            <li>¿Podrá bailar bien? (No, le faltará energía)</li>
+          </ul>
+        </li>
+        <li><strong>Reflexión personal:</strong>
+          <ul>
+            <li>¿Comes suficiente para el esfuerzo que haces?</li>
+            <li>¿Alguna vez has entrenado con hambre? ¿Cómo te fue?</li>
+            <li>¿Conoces a alguien que haya tenido problemas por no comer bien?</li>
+          </ul>
+        </li>
+        <li><strong>Compromiso:</strong> Escribe 3 cosas que harás para asegurar que tu cuerpo tiene la energía que necesita:
+          <ul>
+            <li>Ejemplo: "Comeré algo antes de entrenar", "No me saltaré comidas", "Hablaré con un nutricionista si tengo dudas".</li>
+          </ul>
+        </li>
+      </ol>
+    </div>
+    
+    <div class="warning-box">
+      <h4>🚨 Mensaje importante</h4>
+      <p>Si tú o alguien que conoces tiene síntomas de la Tríada o RED-S, <strong>hablad con un adulto de confianza, un médico o un nutricionista</strong>. No es algo que se pueda resolver solo/a. Pedir ayuda es de valientes, no de débiles.</p>
+    </div>
+  </div>
+
+  <!-- SLIDE 3: PREVENCIÓN -->
+  <div class="slide">
+    <h2>️ Prevención de lesiones óseas</h2>
+    
+    <div class="reminder-box">
+      <h4>💡 Recordatorio</h4>
+      <p>Hemos visto que el hueso se adapta al esfuerzo (Ley de Wolff), pero también que puede debilitarse si no come bien o descansa. Ahora vamos a aprender <strong>cómo prevenir lesiones</strong> y qué hacer si algo duele.</p>
+    </div>
+    
+    <div class="intro-box">
+      <h3>🎯 ¿Qué son las fracturas por estrés?</h3>
+      <p>Son <strong>pequeñas grietas en el hueso</strong> que aparecen cuando el hueso recibe más impacto del que puede reparar. No son fracturas completas (no se rompe del todo), pero duelen y pueden empeorar si no se tratan.</p>
+      <p style="margin-top: 12px;">Son muy comunes en bailarines porque saltan mucho. Pero <span class="highlight">se pueden prevenir</span>.</p>
+    </div>
+    
+    <div class="concept-card">
+      <h3><span class="emoji">🔍</span> ¿Cómo se producen?</h3>
+      <div class="how-it-works">
+        <h4>⚖️ El equilibrio entre daño y reparación</h4>
+        <ul>
+          <li><strong>Cada vez que saltas:</strong> Se producen microdaños en el hueso (pequeñas grietas).</li>
+          <li><strong>Cuando descansas:</strong> Los "constructores" (osteoblastos) reparan esos microdaños.</li>
+          <li><strong>Si hay equilibrio:</strong> El hueso se mantiene fuerte (o incluso se fortalece).</li>
+          <li><strong>Si hay desequilibrio:</strong> Más daño del que se puede reparar → fractura por estrés.</li>
+        </ul>
+      </div>
+      
+      <div class="diagram-container" style="margin-top: 20px;">
+        <h4>📊 Equilibrio daño-reparación</h4>
+        <svg viewBox="0 0 700 200">
+          <!-- Equilibrio -->
+          <g transform="translate(50, 30)">
+            <rect x="0" y="0" width="200" height="150" fill="#e8f5e9" stroke="#388e3c" stroke-width="2" rx="10"/>
+            <text x="100" y="30" text-anchor="middle" font-size="12" font-weight="bold" fill="#2e7d32">EQUILIBRIO</text>
+            <text x="100" y="55" text-anchor="middle" font-size="10" fill="#7f8c8d">Daño = Reparación</text>
+            <text x="100" y="80" text-anchor="middle" font-size="11" fill="#388e3c" font-weight="bold">✅ Hueso fuerte</text>
+            <text x="100" y="105" text-anchor="middle" font-size="9" fill="#7f8c8d">Entreno + Descanso</text>
+            <text x="100" y="125" text-anchor="middle" font-size="9" fill="#7f8c8d">+ Buena alimentación</text>
+          </g>
+          
+          <!-- Desequilibrio -->
+          <g transform="translate(450, 30)">
+            <rect x="0" y="0" width="200" height="150" fill="#ffebee" stroke="#e53935" stroke-width="2" rx="10"/>
+            <text x="100" y="30" text-anchor="middle" font-size="12" font-weight="bold" fill="#c62828">DESEQUILIBRIO</text>
+            <text x="100" y="55" text-anchor="middle" font-size="10" fill="#7f8c8d">Daño > Reparación</text>
+            <text x="100" y="80" text-anchor="middle" font-size="11" fill="#e53935" font-weight="bold">❌ Fractura por estrés</text>
+            <text x="100" y="105" text-anchor="middle" font-size="9" fill="#7f8c8d">Mucho entreno + Poco descanso</text>
+            <text x="100" y="125" text-anchor="middle" font-size="9" fill="#7f8c8d">+ Mala alimentación</text>
+          </g>
+        </svg>
+      </div>
+    </div>
+    
+    <div class="dance-box">
+      <h4><span class="emoji">💃</span> Zonas de riesgo en bailarines</h4>
+      <ul>
+        <li><strong>Pie (metatarsianos):</strong> Por los relevés y saltos. Duele en la parte delantera del pie.</li>
+        <li><strong>Tibia (espinilla):</strong> Por el impacto al aterrizar. Duele en la parte frontal de la pierna.</li>
+        <li><strong>Columna (pars interarticularis):</strong> Por las extensiones de espalda (cambrés). Duele en la zona lumbar.</li>
+        <li><strong>Cadera (cuello del fémur):</strong> Menos común, pero grave. Duele en la ingle.</li>
+      </ul>
+    </div>
+    
+    <div class="concept-card">
+      <h3><span class="emoji">🛡️</span> Cómo prevenir lesiones</h3>
+      <div class="how-it-works">
+        <h4>✅ Las 5 claves de la prevención</h4>
+        <ol style="margin-left: 25px; line-height: 1.8;">
+          <li><strong>Carga progresiva:</strong> Aumenta el entrenamiento poco a poco. No pases de 0 a 4 horas de un día para otro.</li>
+          <li><strong>Descanso adecuado:</strong> Duerme 8-9 horas. Los huesos se reparan de noche.</li>
+          <li><strong>Alimentación:</strong> Suficiente calcio, vitamina D, hierro y calorías para el esfuerzo que haces.</li>
+          <li><strong>Técnica correcta:</strong> Un mal aterrizaje multiplica el impacto. Aprende a caer bien.</li>
+          <li><strong>Escucha a tu cuerpo:</strong> Si algo duele de forma persistente, para y consulta. No es "debilidad" parar, es inteligencia.</li>
+        </ol>
+      </div>
+    </div>
+    
+    <div class="tip-box">
+      <h4>✨ Señales de alerta: ¿cuándo parar?</h4>
+      <ul style="margin-left: 25px; line-height: 1.7;">
+        <li><strong>Dolor que no se va:</strong> Si duele más de 2 semanas, aunque descanses.</li>
+        <li><strong>Dolor que empeora:</strong> Si cada vez duele más al hacer el mismo movimiento.</li>
+        <li><strong>Dolor en reposo:</strong> Si duele incluso cuando no estás bailando.</li>
+        <li><strong>Hinchazón:</strong> Si la zona se hincha o se pone roja.</li>
+        <li><strong>Cambio en la forma de bailar:</strong> Si cojeas o cambias la técnica para evitar el dolor.</li>
+      </ul>
+    </div>
+    
+    <div class="practical-activity">
+      <h4><span class="emoji">🎭</span> Actividad: "Mi plan de prevención"</h4>
+      <p><strong>Objetivo:</strong> Crear un plan personal para cuidar tus huesos</p>
+      <ol class="activity-steps">
+        <li><strong>Evalúa tu situación actual:</strong>
+          <ul>
+            <li>¿Cuántas horas entrenas a la semana?</li>
+            <li>¿Duermes lo suficiente?</li>
+            <li>¿Comes bien (calcio, hierro, calorías)?</li>
+            <li>¿Tienes algún dolor persistente?</li>
+          </ul>
+        </li>
+        <li><strong>Identifica riesgos:</strong>
+          <ul>
+            <li>¿Has aumentado mucho el entrenamiento recientemente?</li>
+            <li>¿Has tenido lesiones antes?</li>
+            <li>¿Estás en época de exámenes o estrés (que puede afectar a la alimentación)?</li>
+          </ul>
+        </li>
+        <li><strong>Crea tu plan:</strong> Elige 3 acciones concretas para las próximas 2 semanas:
+          <ul>
+            <li>Ejemplo: "Voy a dormir 8 horas", "Voy a comer yogur cada día", "Voy a descansar 1 día completo a la semana".</li>
+          </ul>
+        </li>
+        <li><strong>Compártelo:</strong> Habla con tu profesor/a o un compañero/a sobre tu plan. Tener a alguien que te apoye ayuda a cumplirlo.</li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- SLIDE 4: QUIZ -->
+  <div class="slide">
+    <h2>🎯 Quiz: Comprueba lo aprendido</h2>
+    
+    <div class="quiz-container">
+      <h3>Preguntas sobre diferencias, salud y prevención</h3>
+      <div id="quizContainer"></div>
+      <button class="btn" onclick="checkQuiz()">Comprobar respuestas</button>
+      <button class="btn" style="background: #6c757d;" onclick="resetQuiz()">Reiniciar</button>
+      <div class="feedback" id="fbQuiz"></div>
+    </div>
+    
+    <div class="practical-activity">
+      <h4><span class="emoji">🎭</span> Actividad final: "Mi compromiso con mi cuerpo"</h4>
+      <p><strong>Objetivo:</strong> Integrar todo lo aprendido en las 3 partes</p>
+      <ol class="activity-steps">
+        <li><strong>Resume:</strong> Escribe en 5 frases lo más importante que has aprendido sobre el esqueleto en la danza:
+          <ul>
+            <li>Ejemplo: "El hueso es un tejido vivo que se adapta al entrenamiento."</li>
+            <li>"Necesito calcio para que los músculos funcionen y los huesos sean fuertes."</li>
+            <li>"Cada cuerpo es diferente y tengo que entrenar según el mío."</li>
+            <li>"Si no como bien, puedo tener problemas serios (Tríada/RED-S)."</li>
+            <li>"Debo escuchar a mi cuerpo y prevenir lesiones."</li>
+          </ul>
+        </li>
+        <li><strong>Compromiso a largo plazo:</strong> Escribe 3 cosas que vas a hacer de forma constante (no solo 2 semanas):
+          <ul>
+            <li>Ejemplo: "Siempre voy a calentar bien antes de bailar.", "Voy a comer algo con calcio cada día.", "Si algo me duele mucho, voy a parar y consultar."</li>
+          </ul>
+        </li>
+        <li><strong>Comparte:</strong> Si te sientes cómodo/a, comparte tu compromiso con la clase. Aprender de los demás también ayuda.</li>
+      </ol>
+    </div>
+    
+    <div class="tip-box" style="margin-top: 20px;">
+      <h4>🎓 Resumen de las 3 partes</h4>
+      <ul style="margin-left: 25px; line-height: 1.8;">
+        <li><strong>Parte 1:</strong> El hueso es un órgano vivo que se adapta (Ley de Wolff) y funciona como palanca.</li>
+        <li><strong>Parte 2:</strong> El hueso guarda calcio (para los músculos) y fabrica sangre (para el oxígeno).</li>
+        <li><strong>Parte 3:</strong> Cada cuerpo es diferente, hay que cuidar la energía (Tríada/RED-S) y prevenir lesiones.</li>
+      </ul>
+      <p style="margin-top: 15px; text-align: center; font-size: 1.1em; color: #2a5298; font-weight: 600;">¡Ahora sabes cómo cuidar tu esqueleto para bailar mejor y más tiempo! 🦴💃</p>
+    </div>
+  </div>
+</div>
+
+<script>
+function showSlide(i, btn) {
+  document.querySelectorAll('.slide').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-tabs button').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.slide')[i].classList.add('active');
+  btn.classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+const quizData = [
+  {
+    q: "¿Por qué las mujeres suelen ser más flexibles que los hombres?",
+    opts: [
+      "Porque entrenan más",
+      "Porque los estrógenos relajan los ligamentos",
+      "Porque tienen los huesos más blandos",
+      "Porque pesan menos"
+    ],
+    correct: 1
+  },
+  {
+    q: "¿Qué es la hiperlaxitud?",
+    opts: [
+      "Tener los huesos muy duros",
+      "Tener los ligamentos más elásticos de lo normal",
+      "Tener muchos músculos",
+      "Ser muy fuerte"
+    ],
+    correct: 1
+  },
+  {
+    q: "¿Cuáles son los 3 problemas de la Tríada de la Mujer Atleta?",
+    opts: [
+      "No comer, no dormir, no entrenar",
+      "Baja energía, pérdida de menstruación, huesos débiles",
+      "Lesiones, fatiga, aburrimiento",
+      "Poco calcio, poco hierro, poca agua"
+    ],
+    correct: 1
+  },
+  {
+    q: "¿Qué es RED-S?",
+    opts: [
+      "Un tipo de lesión ósea",
+      "Déficit de energía en el deporte (versión ampliada de la Tríada)",
+      "Un ejercicio de estiramiento",
+      "Una vitamina importante"
+    ],
+    correct: 1
+  },
+  {
+    q: "¿Qué son las fracturas por estrés?",
+    opts: [
+      "Fracturas completas del hueso",
+      "Pequeñas grietas por exceso de impacto sin suficiente reparación",
+      "Lesiones musculares",
+      "Esguinces de ligamentos"
+    ],
+    correct: 1
+  },
+  {
+    q: "¿Cuál es la mejor forma de prevenir lesiones óseas?",
+    opts: [
+      "Entrenar mucho sin descansar",
+      "Equilibrio entre entrenamiento, descanso y buena alimentación",
+      "No bailar nunca",
+      "Solo estirar mucho"
+    ],
+    correct: 1
+  },
+  {
+    q: "Si eres hiperlaxo/a, ¿qué debes hacer?",
+    opts: [
+      "Estirar aún más para ser más flexible",
+      "Fortalecer los músculos alrededor de las articulaciones",
+      "No hacer ejercicio",
+      "Ignorarlo, no es importante"
+    ],
+    correct: 1
+  },
+  {
+    q: "¿Cuándo debes parar de entrenar y consultar?",
+    opts: [
+      "Solo si te rompes un hueso",
+      "Si tienes dolor persistente que no se va en 2 semanas",
+      "Nunca, hay que aguantar",
+      "Solo si te lo dice el profesor"
+    ],
+    correct: 1
+  }
+];
+
+function renderQuiz() {
+  const cont = document.getElementById('quizContainer');
+  cont.innerHTML = '';
+  quizData.forEach((item, qi) => {
+    let html = `<div class="question-box"><p>${qi+1}. ${item.q}</p><div class="options">`;
+    item.opts.forEach((opt, oi) => {
+      html += `<label><input type="radio" name="q${qi}" value="${oi}"> ${opt}</label>`;
+    });
+    html += `</div></div>`;
+    cont.innerHTML += html;
+  });
+}
+renderQuiz();
+
+function checkQuiz() {
+  let score = 0;
+  quizData.forEach((item, qi) => {
+    const sel = document.querySelector(`input[name="q${qi}"]:checked`);
+    const labels = document.querySelectorAll(`input[name="q${qi}"]`);
+    labels.forEach(l => l.parentElement.classList.remove('correct','incorrect'));
+    if (sel) {
+      const val = parseInt(sel.value);
+      if (val === item.correct) {
+        sel.parentElement.classList.add('correct');
+        score++;
+      } else {
+        sel.parentElement.classList.add('incorrect');
+        labels[item.correct].parentElement.classList.add('correct');
+      }
+    } else {
+      labels[item.correct].parentElement.classList.add('correct');
+    }
+  });
+  const fb = document.getElementById('fbQuiz');
+  fb.classList.add('show');
+  if (score === quizData.length) {
+    fb.className = 'feedback show success';
+    fb.innerHTML = `🏆 ¡Excelente! ${score}/${quizData.length}. Entiendes muy bien cómo cuidar tu esqueleto para bailar mejor.`;
+  } else if (score >= 6) {
+    fb.className = 'feedback show';
+    fb.style.background = '#fff3cd';
+    fb.style.color = '#856404';
+    fb.style.border = '2px solid #ffc107';
+    fb.innerHTML = `👍 Bien: ${score}/${quizData.length}. Repasa los conceptos fallados.`;
+  } else {
+    fb.className = 'feedback show error';
+    fb.innerHTML = `📚 ${score}/${quizData.length}. Vuelve a leer los apartados y reinténtalo.`;
+  }
+}
+
+function resetQuiz() {
+  document.querySelectorAll('#quizContainer input').forEach(i => { i.checked = false; i.parentElement.classList.remove('correct','incorrect'); });
+  document.getElementById('fbQuiz').classList.remove('show');
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Reto de Propriocepción</title>
+<style>
+  body { font-family: 'Segoe UI', sans-serif; background: #0f172a; color: #e2e8f0; margin: 0; padding: 20px; }
+  h1 { text-align: center; color: #8b5cf6; }
+  .container { max-width: 900px; margin: auto; }
+  .escenario { background: #1e293b; padding: 25px; border-radius: 12px; margin-bottom: 20px; }
+  .escenario h3 { color: #8b5cf6; margin-top: 0; }
+  .pregunta { background: #0f172a; padding: 15px; border-radius: 8px; margin: 15px 0; border-left: 4px solid #8b5cf6; }
+  .opciones { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; margin-top: 10px; }
+  .opcion { background: #334155; padding: 12px; border-radius: 8px; cursor: pointer; border: 2px solid transparent; transition: all 0.2s; text-align: center; }
+  .opcion:hover { border-color: #8b5cf6; transform: translateY(-2px); }
+  .opcion.correcta { background: #14532d; border-color: #34d399; }
+  .opcion.incorrecta { background: #7f1d1d; border-color: #ef4444; }
+  .feedback { margin-top: 15px; padding: 12px; background: #334155; border-radius: 6px; min-height: 60px; }
+  button { background: #8b5cf6; color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-weight: bold; }
+  .progreso { text-align: center; color: #94a3b8; margin-bottom: 15px; }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>🎯 Reto de Propriocepción y Planos</h1>
+  <div class="progreso" id="progreso">Escenario 1 de 5</div>
+  
+  <div id="contenido"></div>
+  
+  <div style="text-align:center; margin-top:20px;">
+    <button onclick="siguiente()" id="btnSig" style="display:none;">Siguiente escenario →</button>
+    <button onclick="reiniciar()">🔄 Reiniciar</button>
+  </div>
+</div>
+
+<script>
+const escenarios = [
+  {
+    situacion: 'Un gimnasta aterriza de un salto y su rodilla se flexiona bruscamente más de lo esperado.',
+    receptor: {correcta: 'Huso muscular', explicacion: 'El huso muscular detecta el cambio brusco de longitud y activa el reflejo miotático para contraer el músculo y proteger la articulación.'},
+    plano: {correcta: 'Sagital', explicacion: 'La flexión-extensión de rodilla ocurre en el plano sagital (eje transversal).'}
+  },
+  {
+    situacion: 'Un halterófilo levanta un peso extremo y el tendón del bíceps soporta una tensión peligrosa.',
+    receptor: {correcta: 'Órgano Tendinoso de Golgi', explicacion: 'El OTG detecta la tensión excesiva en el tendón y provoca la relajación refleja del músculo (autógena) para evitar su rotura.'},
+    plano: {correcta: 'Sagital', explicacion: 'La flexión de codo (levantar peso) ocurre en el plano sagital.'}
+  },
+  {
+    situacion: 'Un bailarín gira sobre sí mismo (pirueta) y debe mantener el equilibrio.',
+    receptor: {correcta: 'Receptores articulares', explicacion: 'Los receptores en cápsula y ligamentos informan de la posición exacta de las articulaciones durante la rotación.'},
+    plano: {correcta: 'Transversal', explicacion: 'Las rotaciones (interna/externa) ocurren en el plano transversal (eje longitudinal).'}
+  },
+  {
+    situacion: 'Un futbolista hace una finta abriendo la pierna hacia el lado.',
+    receptor: {correcta: 'Huso muscular', explicacion: 'El huso detecta la longitud y velocidad del estiramiento durante el movimiento lateral.'},
+    plano: {correcta: 'Coronal/Frontal', explicacion: 'La abducción-aducción ocurre en el plano coronal/frontal (eje anteroposterior).'}
+  },
+  {
+    situacion: 'Un anciano cierra los ojos y pierde el equilibrio al estar de pie.',
+    receptor: {correcta: 'Receptores articulares', explicacion: 'Sin la visión, el sistema depende de los receptores articulares y vestibulares para mantener la postura.'},
+    plano: {correcta: 'Transversal', explicacion: 'Los ajustes posturales para mantener el equilibrio implican rotaciones en el plano transversal.'}
+  }
+];
+
+let actual = 0;
+let respondido = false;
+
+function mostrar() {
+  const e = escenarios[actual];
+  document.getElementById('progreso').textContent = `Escenario ${actual+1} de ${escenarios.length}`;
+  document.getElementById('btnSig').style.display = actual < escenarios.length-1 ? 'inline-block' : 'none';
+  respondido = false;
+  
+  document.getElementById('contenido').innerHTML = `
+    <div class="escenario">
+      <h3>Situación ${actual+1}</h3>
+      <div class="pregunta">${e.situacion}</div>
+      
+      <b>¿Qué receptor proprioceptivo se activa principalmente?</b>
+      <div class="opciones" id="opReceptor">
+        <div class="opcion" onclick="responder('receptor','Huso muscular')">Huso muscular</div>
+        <div class="opcion" onclick="responder('receptor','Órgano Tendinoso de Golgi')">Órgano Tendinoso de Golgi</div>
+        <div class="opcion" onclick="responder('receptor','Receptores articulares')">Receptores articulares</div>
+      </div>
+      
+      <div class="pregunta" style="margin-top:20px;">
+        <b>¿En qué plano de movimiento se produce la acción?</b>
+        <div class="opciones" id="opPlano">
+          <div class="opcion" onclick="responder('plano','Sagital')">Sagital</div>
+          <div class="opcion" onclick="responder('plano','Coronal/Frontal')">Coronal/Frontal</div>
+          <div class="opcion" onclick="responder('plano','Transversal')">Transversal</div>
+        </div>
+      </div>
+      
+      <div class="feedback" id="feedback">Selecciona una opción en cada pregunta.</div>
+    </div>
+  `;
+}
+
+let respuestas = {receptor: null, plano: null};
+
+function responder(tipo, valor) {
+  if (respondido && respuestas[tipo] !== null) return;
+  respuestas[tipo] = valor;
+  
+  const e = escenarios[actual];
+  const opciones = document.querySelectorAll(`#op${tipo.charAt(0).toUpperCase()+tipo.slice(1)} .opcion`);
+  opciones.forEach(op => {
+    if (op.textContent === valor) {
+      op.classList.add(valor === e[tipo].correcta ? 'correcta' : 'incorrecta');
+    }
+  });
+  
+  if (respuestas.receptor && respuestas.plano) {
+    respondido = true;
+    const bien = (respuestas.receptor === e.receptor.correcta ? 1 : 0) + (respuestas.plano === e.plano.correcta ? 1 : 0);
+    document.getElementById('feedback').innerHTML = `
+      <b>${bien === 2 ? '🎉 ¡Perfecto!' : bien === 1 ? '⚠️ Parcial' : '❌ Revisa'}</b><br>
+      <b>Receptor:</b> ${e.receptor.explicacion}<br>
+      <b>Plano:</b> ${e.plano.explicacion}
+    `;
+    respuestas = {receptor: null, plano: null};
+  }
+}
+
+function siguiente() {
+  if (actual < escenarios.length-1) {
+    actual++;
+    mostrar();
+  }
+}
+
+function reiniciar() {
+  actual = 0;
+  mostrar();
+}
+
+mostrar();
+</script>
+</body>
+</html>

@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Casos Prácticos – Sistema Musculoesquelético (Fisiología de la Danza)</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Tahoma,sans-serif}
+body{background:linear-gradient(135deg,#0f0c29,#302b63,#24243e);min-height:100vh;padding:20px;color:#333}
+.container{max-width:960px;margin:0 auto;background:#fff;border-radius:20px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.4)}
+header{background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;padding:40px;text-align:center}
+header h1{font-size:2em;margin-bottom:8px}
+header p{opacity:.9;font-size:1.05em}
+
+/* PERSONAL DATA */
+.personal{background:#f8f9ff;padding:30px 40px;border-bottom:2px solid #e8e8ff}
+.personal h2{color:#667eea;margin-bottom:15px;font-size:1.3em}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:15px}
+.form-grid label{font-weight:600;color:#555;font-size:.95em}
+.form-grid input{width:100%;padding:10px 14px;border:2px solid #ddd;border-radius:8px;font-size:1em;transition:.3s}
+.form-grid input:focus{border-color:#667eea;outline:none}
+.time-display{background:#e8e8ff;padding:10px 14px;border-radius:8px;font-size:1em;color:#333;font-weight:500}
+
+/* NAV */
+.nav{background:#302b63;padding:15px 20px;display:flex;flex-wrap:wrap;gap:8px;justify-content:center;position:sticky;top:0;z-index:100}
+.nav button{background:rgba(255,255,255,.15);color:#fff;border:none;padding:8px 14px;border-radius:20px;cursor:pointer;font-size:.85em;transition:.3s}
+.nav button:hover,.nav button.active{background:#667eea;transform:scale(1.05)}
+
+/* BLOCKS */
+.block{padding:30px 40px;border-bottom:3px solid #eee;display:none}
+.block.visible{display:block}
+.block h2{color:#764ba2;font-size:1.5em;margin-bottom:5px;border-left:5px solid #667eea;padding-left:15px}
+.block .block-ref{color:#999;font-size:.85em;margin-bottom:20px;padding-left:20px}
+
+/* CASE */
+.case{background:#fafbff;border:1px solid #e0e0f0;border-radius:14px;padding:22px;margin-bottom:22px;transition:.3s}
+.case:hover{box-shadow:0 4px 15px rgba(102,126,234,.15)}
+.case-num{display:inline-block;background:#667eea;color:#fff;padding:3px 12px;border-radius:12px;font-size:.8em;font-weight:700;margin-bottom:8px}
+.case-topic{display:inline-block;background:#f3e5f5;color:#7b1fa2;padding:3px 12px;border-radius:12px;font-size:.8em;margin-left:6px;margin-bottom:8px}
+.case h3{color:#333;font-size:1.1em;margin-bottom:10px;line-height:1.5}
+.options{margin:12px 0}
+.opt{display:block;background:#fff;padding:12px 16px;margin:6px 0;border-radius:10px;cursor:pointer;border:2px solid #e0e0e0;transition:.3s;line-height:1.4}
+.opt:hover{border-color:#667eea;transform:translateX(4px)}
+.opt.selected{border-color:#667eea;background:#eef0ff}
+.opt.correct{border-color:#2e7d32;background:#e8f5e9;color:#1b5e20}
+.opt.incorrect{border-color:#c62828;background:#ffebee;color:#b71c1c}
+.opt.disabled{pointer-events:none;opacity:.85}
+.opt.show-correct{border-color:#2e7d32;background:#e8f5e9}
+
+.reason-area{width:100%;padding:10px;border:2px solid #ddd;border-radius:8px;margin-top:10px;font-size:.95em;resize:vertical;min-height:60px;font-family:inherit}
+.reason-area:focus{border-color:#667eea;outline:none}
+.reason-area::placeholder{color:#aaa}
+
+.btn-validate{background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;border:none;padding:10px 24px;border-radius:10px;cursor:pointer;font-size:.95em;font-weight:600;margin-top:10px;transition:.3s}
+.btn-validate:hover{transform:scale(1.03);box-shadow:0 4px 12px rgba(102,126,234,.4)}
+.btn-validate:disabled{opacity:.5;cursor:not-allowed;transform:none}
+
+.feedback{margin-top:12px;padding:14px;border-radius:10px;display:none;line-height:1.6;font-size:.95em}
+.feedback.show{display:block}
+.feedback.ok{background:#e8f5e9;border-left:4px solid #2e7d32;color:#1b5e20}
+.feedback.bad{background:#ffebee;border-left:4px solid #c62828;color:#b71c1c}
+
+/* PROGRESS */
+.progress-bar{background:#e0e0e0;height:8px;border-radius:4px;margin:20px 40px;overflow:hidden}
+.progress-fill{height:100%;background:linear-gradient(90deg,#667eea,#764ba2);width:0%;transition:width .5s;border-radius:4px}
+.progress-text{text-align:center;color:#667eea;font-weight:600;margin-bottom:10px;font-size:.95em}
+
+/* SEND */
+.send-section{background:#f8f9ff;padding:30px 40px;text-align:center}
+.send-section h2{color:#667eea;margin-bottom:15px}
+.btn-send{background:linear-gradient(135deg,#11998e,#38ef7d);color:#fff;border:none;padding:14px 40px;border-radius:12px;cursor:pointer;font-size:1.1em;font-weight:700;transition:.3s;margin:8px}
+.btn-send:hover{transform:scale(1.05);box-shadow:0 6px 20px rgba(17,153,142,.4)}
+.btn-copy{background:linear-gradient(135deg,#ff6b6b,#ee5a6f);color:#fff;border:none;padding:14px 40px;border-radius:12px;cursor:pointer;font-size:1.1em;font-weight:700;transition:.3s;margin:8px}
+.btn-copy:hover{transform:scale(1.05)}
+.btn-end{background:#302b63;color:#fff;border:none;padding:10px 30px;border-radius:10px;cursor:pointer;font-size:1em;margin:8px}
+.toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:#333;color:#fff;padding:14px 28px;border-radius:10px;display:none;z-index:999;font-weight:600}
+
+footer{background:#302b63;color:#fff;text-align:center;padding:20px;font-size:.85em}
+
+@media(max-width:600px){
+  .form-grid{grid-template-columns:1fr}
+  .block{padding:20px}
+  header{padding:25px}
+  .nav button{font-size:.75em;padding:6px 10px}
+}
+</style>
+</head>
+<body>
+<div class="container">
+
+<header>
+  <h1>🩰 Casos Prácticos</h1>
+  <p>Sistema Musculoesquelético – Fisiología aplicada a la Danza</p>
+  <p style="font-size:.85em;margin-top:8px;opacity:.8">80 casos · 8 bloques temáticos · Curso 2026-2027</p>
+</header>
+
+<!-- PERSONAL DATA -->
+<div class="personal">
+  <h2>📋 Datos del alumno/a</h2>
+  <div class="form-grid">
+    <div><label>Nombre completo</label><input type="text" id="studentName" placeholder="Ej: María López García"></div>
+    <div><label>Email</label><input type="email" id="studentEmail" placeholder="Ej: maria@escuela.com"></div>
+    <div><label>Fecha de realización</label><input type="date" id="fillDate"></div>
+    <div><label>Hora de inicio</label><div class="time-display" id="startTime"></div></div>
+    <div><label>Hora de finalización</label><div class="time-display" id="endTime">Pendiente</div></div>
+    <div><label>Profesora</label><input type="email" id="profEmail" value="celia.painous@escuela.com" placeholder="Email profesora"></div>
+  </div>
+</div>
+
+<div class="progress-text" id="progressText">Progreso: 0 / 80 casos respondidos</div>
+<div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+
+<!-- NAV -->
+<div class="nav" id="navBar"></div>
+
+<!-- BLOCKS CONTAINER -->
+<div id="blocksContainer"></div>
+
+<!-- SEND -->
+<div class="send-section">
+  <h2>📤 Enviar resultados</h2>
+  <p style="margin-bottom:15px;color:#666">Finaliza el test y envía tus respuestas a la profesora.</p>
+  <button class="btn-end" onclick="endTest()">⏹ Finalizar test (registrar hora)</button><br>
+  <button class="btn-send" onclick="sendEmail()">📧 Enviar por email</button>
+  <button class="btn-copy" onclick="copyResults()">📋 Copiar resultados</button>
+</div>
+
+<footer>🩰 Fisiología aplicada a la Danza · Dra. Cèlia Painous · Curso 2026-2027</footer>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ===================== DATA =====================
+const BLOCKS = [
+  {
+    id:"b1", title:"Bloque 1: Homeostasis y Regulación",
+    ref:"Presentación I · Diapositivas 2-7",
+    cases:[
+      {q:"Durante un ensayo intenso de 2 horas, una bailarina nota que suda mucho, tiene la cara roja y respira agitadamente. ¿Qué está ocurriendo desde el punto de vista homeostático?",
+       opts:["Su cuerpo ha perdido la capacidad de regular la temperatura","Su cuerpo está activando respuestas para restaurar el equilibrio del medio interno roto por el ejercicio","La homeostasis solo funciona en reposo, así que su cuerpo está descontrolado","El líquido intracelular se ha convertido en extracelular"],
+       correct:1,
+       exp:"La actividad física rompe el equilibrio homeostático (aumenta temperatura, CO₂, gasto de glucosa). El cuerpo activa respuestas como la sudoración (enfriar), la vasodilatación (cara roja, disipar calor) y la hiperventilación (eliminar CO₂ y captar O₂) para restaurar las condiciones del medio interno (LEC). Esto es exactamente lo que describe la diapositiva 'Homeostasis en el movimiento'."},
+
+      {q:"Una estudiante de danza se pesa y calcula que el 60% de su peso corporal es agua. ¿Dónde se encuentra la mayor parte de esa agua?",
+       opts:["En el líquido extracelular (LEC)","En la sangre","En el líquido intracelular (LIC), dentro de las células","En el líquido sinovial de las articulaciones"],
+       correct:2,
+       exp:"El agua corporal total (60% del peso) se distribuye: 60-65% en el líquido intracelular (LIC, dentro de las células) y 35-40% en el líquido extracelular (LEC, fuera de las células). La mayor parte está dentro de las células."},
+
+      {q:"Antes de una actuación, una bailarina siente que su corazón late rápido y tiene las manos frías. ¿Qué sistemas de regulación están actuando?",
+       opts:["Solo el sistema endocrino","Solo el sistema nervioso","El sistema nervioso (respuesta rápida) y el sistema endocrino (adrenalina)","El sistema muscular directamente"],
+       correct:2,
+       exp:"El sistema nervioso genera respuestas rápidas (taquicardia inmediata) y el sistema endocrino libera hormonas como la adrenalina que mantienen el estado de alerta. Ambos sistemas trabajan juntos como centros de control e integración corporal."},
+
+      {q:"El pH sanguíneo normal es 7,35-7,45. Si durante un ejercicio muy intenso el pH baja a 7,2, ¿qué significa?",
+       opts:["El medio interno está estable, es normal durante el baile","El medio interno se ha acidificado y el cuerpo debe activar mecanismos para restaurar el pH","El cuerpo ha entrado en retroalimentación positiva","La glucosa ha subido demasiado"],
+       correct:1,
+       exp:"Un pH de 7,2 está por debajo del rango normal (7,35-7,45), lo que indica acidificación del medio interno (LEC). La homeostasis implica que el cuerpo debe activar mecanismos (como aumentar la ventilación para eliminar CO₂) para restaurar el pH a su rango normal."},
+
+      {q:"¿Qué es el medio interno al que se refiere la homeostasis?",
+       opts:["El interior de las células (LIC)","El líquido extracelular (LEC) que baña las células","El aire dentro de los pulmones","El líquido dentro de las articulaciones"],
+       correct:1,
+       exp:"La homeostasis se define como el mantenimiento dinámico del medio interno, que es el líquido extracelular (LEC). Es el entorno inmediato que baña las células y cuyas condiciones (pH, temperatura, glucosa, etc.) deben mantenerse dentro de rangos estrechos."},
+
+      {q:"Una bailarina bebe 2 litros de agua antes de un ensayo largo. ¿Por qué es importante para la homeostasis?",
+       opts:["Porque el agua se convierte directamente en energía muscular","Porque ayuda a mantener el volumen y la composición del LEC, facilitando la termorregulación y el transporte de nutrientes","Porque el agua solo sirve para lubricar las articulaciones","Porque el agua aumenta la masa muscular"],
+       correct:1,
+       exp:"El agua es el componente principal del LEC. Mantener una hidratación adecuada asegura que el volumen sanguíneo sea suficiente para transportar nutrientes y oxígeno, eliminar desechos y regular la temperatura mediante la sudoración. Todo ello es esencial para la homeostasis durante el ejercicio."},
+
+      {q:"En la retroalimentación positiva, la respuesta del cuerpo…",
+       opts:["Reduce el estímulo para volver al punto de ajuste","Amplifica el estímulo alejando la variable del punto de ajuste hasta completar un proceso","Mantiene la variable exactamente igual","Solo actúa en el sistema nervioso"],
+       correct:1,
+       exp:"La retroalimentación positiva amplifica el estímulo inicial, alejando la variable del punto de ajuste. No busca restaurar el equilibrio, sino llevar un proceso hasta su finalización (como las contracciones del parto, que se intensifican hasta el nacimiento)."},
+
+      {q:"Una bailarina termina un ensayo y se tumba 15 minutos en el suelo. Su respiración y pulso van bajando gradualmente. ¿Qué proceso está ocurriendo?",
+       opts:["Su cuerpo está entrando en hipotermia","El período de reposo está restaurando las condiciones homeostáticas del medio interno","Ha perdido la capacidad homeostática","El sistema endocrino se ha desconectado"],
+       correct:1,
+       exp:"Tras el ejercicio, el medio interno (LEC) está alterado (temperatura alta, pH bajo, glucosa baja, etc.). El reposo permite que los sistemas de regulación restauren las condiciones homeostáticas: la respiración baja porque ya no necesita eliminar tanto CO₂, el pulso baja porque los músculos ya no demandan tanto oxígeno."},
+
+      {q:"¿Cuál de estas variables NO se mencionó como valor homeostático regulado por el cuerpo?",
+       opts:["pH sanguíneo (7,35-7,45)","Temperatura corporal (36-37,5 °C)","Longitud del sarcómero","Presión arterial (120/80 mmHg)"],
+       correct:2,
+       exp:"Los valores homeostáticos mencionados son pH, glucosa, temperatura y presión arterial. La longitud del sarcómero cambia durante la contracción muscular y no es una variable homeostática del medio interno."},
+
+      {q:"Si una bailarina no come antes de un ensayo largo y su glucosa baja a 60 mg/dL (por debajo del rango normal de 75-110), ¿qué tipo de regulación actuará?",
+       opts:["Retroalimentación positiva para que baje más","El sistema nervioso y endocrino activarán respuestas para elevar la glucosa (retroalimentación negativa)","No pasará nada, la glucosa no es importante","El cuerpo dejará de mover los músculos"],
+       correct:1,
+       exp:"Cuando una variable se desvía del rango normal, los sistemas de regulación (nervioso y endocrino) activan respuestas de retroalimentación negativa para restaurarla. En este caso, se liberarán hormonas como el glucagón para elevar la glucosa sanguínea."}
+    ]
+  },
+  {
+    id:"b2", title:"Bloque 2: Fibra Muscular y Sarcómero",
+    ref:"Presentación I · Diapositivas 8-11 + Presentación II · Secciones 1-2",
+    cases:[
+      {q:"Una bailarina se pregunta por qué sus músculos pueden contraerse voluntariamente pero su corazón late sin que ella lo piense. ¿Qué diferencia hay?",
+       opts:["No hay diferencia, todos los músculos son iguales","El músculo esquelético es voluntario y el cardíaco es involuntario; son tipos distintos de tejido muscular","El corazón tiene huesos dentro que lo mueven","El músculo esquelético no necesita energía"],
+       correct:1,
+       exp:"Existen tres tipos de tejido muscular: liso (involuntario, en órganos), cardíaco (involuntario, en el corazón) y esquelético (voluntario, unido a huesos). El músculo esquelético es el que la bailarina controla conscientemente para bailar."},
+
+      {q:"¿Qué es una fibra muscular?",
+       opts:["Un tipo de hueso alargado","La unidad estructural básica del músculo esquelético: una célula alargada, cilíndrica y multinucleada","Un tendón muy fino","Una articulación especial"],
+       correct:1,
+       exp:"La fibra muscular es la unidad estructural básica del músculo esquelético. Es una célula especial: alargada, cilíndrica y con múltiples núcleos, lo que le permite ser muy grande y generar fuerza."},
+
+      {q:"Al observar una miofibrilla al microscopio, se ven bandas claras y oscuras alternadas. ¿Qué representa la Banda A?",
+       opts:["La zona donde solo hay actina","La longitud de los filamentos de miosina (gruesos)","El espacio entre dos sarcómeros","La línea Z"],
+       correct:1,
+       exp:"La Banda A corresponde a la longitud de los filamentos gruesos de miosina. Es la banda oscura y permanece constante durante la contracción porque la longitud de la miosina no cambia."},
+
+      {q:"Durante una contracción muscular, ¿qué ocurre con la Banda I del sarcómero?",
+       opts:["Se ensancha","Permanece igual","Se estrecha porque las líneas Z se acercan","Desaparece completamente siempre"],
+       correct:2,
+       exp:"La Banda I (zona de solo actina, banda clara) se estrecha durante la contracción porque los filamentos de actina se deslizan hacia el centro del sarcómero, acercando las líneas Z entre sí."},
+
+      {q:"¿Qué es el sarcómero?",
+       opts:["Un tipo de hueso del pie","La unidad funcional y contráctil básica del músculo, comprendida entre dos líneas Z","Un nervio que controla el músculo","Una articulación del tobillo"],
+       correct:1,
+       exp:"El sarcómero es la unidad funcional y contráctil básica del músculo esquelético. Se define como la porción de miofibrilla comprendida entre dos líneas Z consecutivas. Es lo que se acorta durante la contracción."},
+
+      {q:"Si el bíceps braquial contiene unos 100.000 sarcómeros alineados en serie, ¿qué implica esto para su función?",
+       opts:["Que es un músculo muy débil","Que cada sarcómero se acorta un poco, y la suma de todos los acortamientos produce un acortamiento total significativo del músculo","Que solo funciona un sarcómero a la vez","Que no puede contraerse"],
+       correct:1,
+       exp:"Los sarcómeros están alineados en serie (uno detrás de otro). Cada uno se acorta una pequeña cantidad durante la contracción, pero la suma de 100.000 pequeños acortamientos produce un acortamiento total considerable del músculo, permitiendo movimientos amplios."},
+
+      {q:"¿Cuáles son los dos tipos de miofilamentos que componen el sarcómero?",
+       opts:["Colágeno y elastina","Miosina (gruesos) y actina (delgados)","Calcio y sodio","Tendón y ligamento"],
+       correct:1,
+       exp:"El sarcómero contiene dos tipos de miofilamentos: los filamentos gruesos de miosina y los filamentos delgados de actina. La interacción entre ambos (deslizamiento) es lo que produce la contracción muscular."},
+
+      {q:"En la cadena biomecánica, ¿qué papel juega el tendón?",
+       opts:["Genera la contracción muscular","Es tejido conectivo que une el músculo al hueso y transmite la fuerza muscular","Protege las articulaciones del frío","Produce líquido sinovial"],
+       correct:1,
+       exp:"El tendón es tejido conectivo que une el músculo al hueso. Su función es transmitir la fuerza generada por la contracción muscular al hueso, permitiendo que se produzca el movimiento articular."},
+
+      {q:"Cuando una bailarina hace un port de bras, ¿qué funciones del músculo esquelético están actuando?",
+       opts:["Solo la locomoción","Movimiento voluntario, control postural y estabilización","Solo la termorregulación","Solo la circulación"],
+       correct:1,
+       exp:"El músculo esquelético tiene múltiples funciones: movimiento voluntario (mover los brazos), mantenimiento de la postura (mantener el tronco erguido), locomoción, circulación (bomba muscular venosa) y termorregulación (generar calor). En un port de bras se combinan movimiento voluntario y control postural."},
+
+      {q:"¿Qué ocurre a nivel del sarcómero cuando una bailarina mantiene un arabesque estático?",
+       opts:["Los sarcómeros se relajan completamente","Los sarcómeros generan tensión manteniendo su longitud (las líneas Z no se acercan ni se alejan)","Los sarcómeros se alargan","Las bandas A desaparecen"],
+       correct:1,
+       exp:"En una contracción isométrica (como mantener un arabesque), los sarcómeros generan tensión pero no cambian significativamente su longitud. Las líneas Z mantienen su posición, las bandas A e I permanecen iguales, pero hay tensión activa por la interacción actina-miosina."}
+    ]
+  },
+  {
+    id:"b3", title:"Bloque 3: Unidad Motora y Excitación-Construcción",
+    ref:"Presentación I · Diapositivas 12-13",
+    cases:[
+      {q:"¿De dónde parte la orden para que un músculo se contraiga?",
+       opts:["Del hueso","De las motoneuronas del asta anterior de la médula espinal","Del líquido sinovial","Del cartílago articular"],
+       correct:1,
+       exp:"La orden motora se origina en las motoneuronas situadas en el asta anterior de la médula espinal. Desde allí, el impulso viaja por el axón hasta llegar a las fibras musculares."},
+
+      {q:"¿Qué es una unidad motora?",
+       opts:["Todo el músculo completo","Una motoneurona junto con el conjunto de fibras musculares que inerva","Un sarcómero individual","La unión entre dos huesos"],
+       correct:1,
+       exp:"Una unidad motora está formada por una única motoneurona y todas las fibras musculares que esa neurona controla. Cuando la motoneurona se activa, todas sus fibras se contraen simultáneamente."},
+
+      {q:"Una bailarina necesita mover los dedos del pie con gran precisión para apuntar bien el pie en puntas. ¿Qué tipo de unidades motoras predominan en esos músculos?",
+       opts:["Unidades motoras grandes (muchas fibras por neurona)","Unidades motoras pequeñas (pocas fibras por neurona)","No hay unidades motoras en los pies","Solo unidades isométricas"],
+       correct:1,
+       exp:"Los músculos que requieren precisión (como los que mueven los dedos del pie) tienen unidades motoras pequeñas: cada motoneurona controla pocas fibras (3-10), lo que permite un control fino y preciso del movimiento."},
+
+      {q:"Cuando una bailarina hace un grand jeté, necesita mucha fuerza en los cuádriceps. ¿Cómo consigue el cuerpo generar más fuerza?",
+       opts:["Contrayendo solo las unidades motoras pequeñas","Reclutando más unidades motoras y aumentando la frecuencia de impulsos nerviosos","Estirando los músculos primero","Reduciendo el calcio"],
+       correct:1,
+       exp:"El cuerpo gradúa la fuerza de dos formas: reclutando más unidades motoras (principio del tamaño de Henneman: primero las pequeñas, luego las grandes) y aumentando la frecuencia de los impulsos nerviosos para que cada unidad se contraiga con más fuerza (tetanización)."},
+
+      {q:"¿Qué ocurre en la unión neuromuscular cuando llega el impulso nervioso?",
+       opts:["Se libera calcio directamente al hueso","Se libera acetilcolina que transmite la señal eléctrica a la fibra muscular","El músculo se relaja inmediatamente","El tendón se estira"],
+       correct:1,
+       exp:"Cuando el potencial de acción llega a la terminal sináptica de la motoneurona, se libera el neurotransmisor acetilcolina (ACh) a la hendidura sináptica. La ACh se une a receptores de la fibra muscular, generando un nuevo potencial de acción que se propaga por la membrana muscular."},
+
+      {q:"¿Qué papel juegan los túbulos T en la contracción muscular?",
+       opts:["Producen ATP","Transmiten la señal eléctrica desde la superficie de la fibra muscular hasta el interior, provocando la liberación de Ca²⁺","Conectan el músculo al hueso","Almacenan glucosa"],
+       correct:1,
+       exp:"Los túbulos T son invaginaciones de la membrana de la fibra muscular que penetran al interior. Su función es transmitir el potencial de acción desde la superficie hasta las profundidades de la fibra, donde provocan la liberación de Ca²⁺ desde los depósitos internos (retículo sarcoplásmico)."},
+
+      {q:"¿De dónde se libera el calcio (Ca²⁺) que inicia la contracción muscular?",
+       opts:["Del hueso directamente","De los depósitos internos de la fibra muscular (retículo sarcoplásmico)","Del líquido sinovial","Del tendón"],
+       correct:1,
+       exp:"El Ca²⁺ se almacena en el retículo sarcoplásmico, un depósito interno dentro de la fibra muscular. Cuando la señal eléctrica llega por los túbulos T, se abren canales de calcio y este se libera al citoplasma, donde inicia la interacción actina-miosina."},
+
+      {q:"Si una motoneurona se activa, ¿qué fibras se contraen?",
+       opts:["Solo una fibra muscular","Todas las fibras del músculo completo","Todas las fibras de su unidad motora (principio de 'todo o nada')","Ninguna, necesita dos neuronas"],
+       correct:2,
+       exp:"Cuando una motoneurona se activa, TODAS las fibras musculares de su unidad motora se contraen simultáneamente. Esto se conoce como el principio de 'todo o nada' de la unidad motora: o se activan todas las fibras de esa unidad, o ninguna."},
+
+      {q:"¿Por qué los músculos grandes como los gemelos tienen unidades motoras con muchas fibras (1000-2000)?",
+       opts:["Porque necesitan mucha precisión","Porque necesitan generar mucha fuerza y no requieren un control tan fino","Porque son músculos involuntarios","Porque tienen menos sarcómeros"],
+       correct:1,
+       exp:"Los músculos que generan gran fuerza (como gemelos, cuádriceps, glúteos) tienen unidades motoras grandes: cada motoneurona controla muchas fibras (1000-2000). Esto permite generar mucha fuerza con cada impulso, aunque con menor precisión que las unidades pequeñas."},
+
+      {q:"Durante un adagio lento, una bailarina activa progresivamente más fuerza en la pierna de apoyo. ¿Qué está ocurriendo a nivel de unidades motoras?",
+       opts:["Se desactivan unidades motoras","Se van reclutando progresivamente más unidades motoras, empezando por las pequeñas","Solo trabaja una unidad motora todo el tiempo","Las unidades motoras cambian de tamaño"],
+       correct:1,
+       exp:"Según el principio del tamaño de Henneman, las unidades motoras se reclutan en orden de tamaño: primero las pequeñas (poca fuerza, mucha precisión, resistentes a la fatiga) y progresivamente las más grandes (más fuerza, menos resistentes). En un adagio, la bailarina va reclutando más unidades a medida que necesita más fuerza."}
+    ]
+  },
+  {
+    id:"b4", title:"Bloque 4: Mecanismo de Contracción y Ciclo de la Miosina",
+    ref:"Presentación I · Diapositiva 14 + Presentación II · Sección 3",
+    cases:[
+      {q:"¿Cuál es el orden correcto de los 6 pasos de la contracción muscular?",
+       opts:["Deslizamiento → Ca²⁺ → Orden nerviosa → Fuerza → Actina-miosina → Acortamiento","Orden nerviosa → Liberación de Ca²⁺ → Unión actina-miosina → Deslizamiento → Acortamiento del sarcómero → Generación de fuerza","Ca²⁺ → Fuerza → Orden → Deslizamiento → Unión → Acortamiento","Unión actina-miosina → Orden → Ca²⁺ → Fuerza → Deslizamiento → Acortamiento"],
+       correct:1,
+       exp:"La secuencia correcta es: 1) Orden nerviosa → 2) Liberación de Ca²⁺ → 3) Unión actina-miosina → 4) Deslizamiento de filamentos → 5) Acortamiento del sarcómero → 6) Generación de fuerza. Cada paso depende del anterior."},
+
+      {q:"¿Qué papel esencial juega el ATP en el ciclo de la miosina?",
+       opts:["El ATP es el calcio que inicia la contracción","El ATP es necesario para desacoplar (soltar) la miosina de la actina e iniciar un nuevo ciclo","El ATP solo sirve para calentar el músculo","El ATP no participa en la contracción"],
+       correct:1,
+       exp:"El ATP es imprescindible para desacoplar la cabeza de miosina de la actina después del golpe de fuerza. Sin ATP, la miosina queda unida a la actina permanentemente (esto es lo que ocurre en el rigor mortis). Una vez desacoplada, el ATP se hidroliza para 'recargar' la cabeza de miosina y permitir un nuevo ciclo."},
+
+      {q:"Cuando decimos que 'actina y miosina se deslizan unas sobre otras', ¿qué significa realmente?",
+       opts:["Que las proteínas se encogen físicamente","Que las proteínas mantienen su longitud pero se mueven relativamente, acercando las líneas Z","Que la miosina se disuelve","Que la actina se convierte en miosina"],
+       correct:1,
+       exp:"El mecanismo de deslizamiento significa que las proteínas de actina y miosina NO se acortan físicamente. Mantienen su longitud, pero los filamentos de actina se deslizan sobre los de miosina, acercando las líneas Z entre sí. Esto acorta el sarcómero y, en conjunto, el músculo."},
+
+      {q:"¿Qué ocurre si no hay Ca²⁺ disponible en el citoplasma de la fibra muscular?",
+       opts:["La contracción se produce igualmente","La miosina no puede unirse a la actina porque los sitios de unión en la actina permanecen bloqueados","El músculo se contrae más fuerte","El ATP se agota inmediatamente"],
+       correct:1,
+       exp:"En reposo, los sitios de unión de la actina están bloqueados por proteínas reguladoras (troponina y tropomiosina). El Ca²⁺ se une a la troponina, cambiando su forma y desplazando la tropomiosina, lo que deja libres los sitios de unión para que la miosina pueda unirse a la actina. Sin Ca²⁺, no hay contracción."},
+
+      {q:"Una bailarina hace un relevé y mantiene la posición arriba. A nivel molecular, ¿qué está ocurriendo en sus gemelos?",
+       opts:["Los sarcómeros se están acortando rápidamente","Los ciclos de actina-miosina se repiten continuamente generando tensión sin acortamiento neto","Las proteínas se han detenido completamente","El calcio ha desaparecido"],
+       correct:1,
+       exp:"En una contracción isométrica, los ciclos de actina-miosina continúan (se unen, generan fuerza, se sueltan con ATP, se vuelven a unir), pero el músculo no se acorta porque la tensión generada iguala la resistencia. A nivel molecular hay actividad continua, pero sin cambio neto de longitud."},
+
+      {q:"¿Cuántos pasos tiene la secuencia de la contracción muscular según la presentación?",
+       opts:["3 pasos","4 pasos","6 pasos","10 pasos"],
+       correct:2,
+       exp:"La secuencia se resume en 6 pasos: 1) Orden nerviosa, 2) Liberación de Ca²⁺, 3) Unión actina-miosina, 4) Deslizamiento de filamentos, 5) Acortamiento del sarcómero, 6) Generación de fuerza."},
+
+      {q:"Después del 'golpe de fuerza' (power stroke), ¿qué debe ocurrir para que la miosina pueda volver a unirse a un nuevo sitio de la actina?",
+       opts:["Nada, se une automáticamente","Debe llegar ATP para desacoplar la miosina de la actina, y luego el ATP se hidroliza para recargar la cabeza de miosina","Debe llegar más calcio","El sarcómero debe estirarse primero"],
+       correct:1,
+       exp:"Tras el golpe de fuerza, la miosina queda unida a la actina. Para soltarse, necesita ATP. El ATP se une a la cabeza de miosina, provocando su desacoplamiento de la actina. Luego, el ATP se hidroliza (se rompe en ADP + Pi), lo que 'recarga' la cabeza de miosina en posición de alta energía, lista para un nuevo ciclo."},
+
+      {q:"¿Por qué se dice que el músculo 'no se encoge físicamente' en su estructura proteica?",
+       opts:["Porque las proteínas de actina y miosina mantienen su longitud individual; lo que cambia es su posición relativa","Porque el músculo es rígido","Porque solo los huesos se mueven","Porque la contracción es una ilusión óptica"],
+       correct:0,
+       exp:"La contracción muscular no implica que las proteínas individuales se acorten. Los filamentos de actina y miosina mantienen su longitud constante. Lo que ocurre es que se deslizan unos sobre otros, acercando las líneas Z y acortando el sarcómero. Es un cambio de posición relativa, no de tamaño de las proteínas."},
+
+      {q:"Si una bailarina está en medio de un grand allegro y sus músculos necesitan contraerse repetidamente, ¿qué molécula es la más crítica para que cada ciclo de contracción pueda repetirse?",
+       opts:["Solo el calcio","El ATP, porque sin él la miosina no puede soltarse de la actina y el ciclo se detiene","La glucosa directamente","El oxígeno directamente"],
+       correct:1,
+       exp:"Aunque el calcio inicia la contracción y la glucosa/oxígeno son necesarios para producir energía, la molécula más directamente crítica para que cada ciclo se repita es el ATP. Sin ATP, la miosina no puede desacoplarse de la actina y el ciclo se detiene (como ocurre en el rigor mortis)."},
+
+      {q:"¿Qué relación hay entre el número de ciclos de actina-miosina y la fuerza generada?",
+       opts:["No hay relación","Cuantos más ciclos por unidad de tiempo, mayor tensión se genera","Un solo ciclo genera toda la fuerza posible","Los ciclos reducen la fuerza"],
+       correct:1,
+       exp:"La fuerza muscular depende del número de puentes cruzados (uniones actina-miosina) activos en un momento dado. Cuantos más ciclos se produzcan por unidad de tiempo (mayor frecuencia de estimulación), más puentes cruzados habrá activos simultáneamente y mayor será la tensión generada."}
+    ]
+  },
+  {
+    id:"b5", title:"Bloque 5: Tipos de Contracción Muscular",
+    ref:"Presentación I · Diapositiva 16 + Presentación II · Sección 4",
+    cases:[
+      {q:"En la fase de subida de un relevé, los gemelos se acortan mientras generan tensión. ¿Qué tipo de contracción es?",
+       opts:["Excéntrica","Isométrica","Concéntrica","Pasiva"],
+       correct:2,
+       exp:"En la contracción concéntrica, el músculo genera tensión mientras se acorta (tensión > resistencia). Al subir al relevé, los gemelos se acortan para elevar el talón, venciendo la resistencia del peso corporal."},
+
+      {q:"Una bailarina mantiene la posición de relevé arriba sin moverse. Sus gemelos están en contracción…",
+       opts:["Concéntrica","Excéntrica","Isométrica","Relajada"],
+       correct:2,
+       exp:"En la contracción isométrica, el músculo genera tensión sin modificar apreciablemente su longitud (tensión = resistencia). Al mantener el relevé estático, los gemelos generan fuerza para sostener el peso pero no se acortan ni se alargan."},
+
+      {q:"Al bajar lentamente desde un relevé, los gemelos se alargan mientras controlan el descenso. ¿Qué tipo de contracción es?",
+       opts:["Concéntrica","Isométrica","Excéntrica","No hay contracción, es relajación"],
+       correct:2,
+       exp:"En la contracción excéntrica, el músculo genera tensión mientras se alarga (la resistencia > tensión muscular). Al bajar del relevé de forma controlada, los gemelos se alargan pero siguen generando fuerza para frenar el descenso. No es relajación: si se relajaran, caería de golpe."},
+
+      {q:"En un demi-plié, ¿qué tipo de contracción realizan los cuádriceps al bajar?",
+       opts:["Concéntrica","Isométrica","Excéntrica","No trabajan"],
+       correct:2,
+       exp:"Al bajar en demi-plié, los cuádriceps se alargan (la rodilla se flexiona) pero generan tensión para controlar el descenso contra la gravedad. Esto es una contracción excéntrica: el músculo genera fuerza mientras se alarga."},
+
+      {q:"Y al subir desde el demi-plié, ¿qué tipo de contracción realizan los cuádriceps?",
+       opts:["Excéntrica","Isométrica","Concéntrica","Pasiva"],
+       correct:2,
+       exp:"Al subir desde el demi-plié, los cuádriceps se acortan (extienden la rodilla) generando tensión para elevar el cuerpo. Esto es una contracción concéntrica: tensión > resistencia, el músculo se acorta."},
+
+      {q:"¿Por qué es importante saber que el tipo de contracción depende del músculo analizado y de la fase del movimiento?",
+       opts:["Porque no importa, todos los músculos hacen lo mismo","Porque en un mismo gesto, un músculo puede estar en contracción concéntrica mientras otro está en excéntrica o isométrica","Porque solo los gemelos se contraen","Porque la contracción excéntrica no existe en danza"],
+       correct:1,
+       exp:"Un mismo movimiento implica diferentes tipos de contracción según el músculo y la fase. Por ejemplo, en un grand jeté: los cuádriceps de la pierna de impulso hacen concéntrica (extensión), los isquiotibiales de la pierna que se eleva hacen concéntrica (flexión de cadera), y los músculos del tronco pueden hacer isométrica (estabilización)."},
+
+      {q:"Una bailarina hace un développé à la seconde lento. Al elevar la pierna, los abductores de la cadera trabajan en…",
+       opts:["Contracción excéntrica","Contracción isométrica","Contracción concéntrica","No trabajan"],
+       correct:2,
+       exp:"Al elevar la pierna lateralmente, los abductores de la cadera se acortan generando tensión para vencer la gravedad y el peso de la pierna. Esto es una contracción concéntrica."},
+
+      {q:"En ese mismo développé, al bajar la pierna lentamente, los abductores trabajan en…",
+       opts:["Concéntrica","Isométrica","Excéntrica","Relajación total"],
+       correct:2,
+       exp:"Al bajar la pierna de forma controlada, los abductores se alargan (la pierna desciende) pero siguen generando tensión para frenar el movimiento contra la gravedad. Esto es una contracción excéntrica."},
+
+      {q:"¿Cuál de estas afirmaciones sobre la contracción excéntrica es correcta?",
+       opts:["El músculo no genera fuerza","El músculo genera tensión mientras se alarga, controlando el movimiento","Es la contracción más débil","Solo ocurre en los brazos"],
+       correct:1,
+       exp:"La contracción excéntrica se define como aquella en la que el músculo genera tensión (fuerza) mientras se alarga. Es fundamental para controlar movimientos como descensos, frenadas y cambios de dirección. De hecho, puede generar más fuerza que la concéntrica."},
+
+      {q:"En un grand jeté, durante la fase de vuelo, los músculos de las piernas…",
+       opts:["Están todos en contracción concéntrica","Están todos relajados completamente","Mantienen la posición mediante contracciones isométricas para sostener la forma en el aire","Solo trabajan los músculos de los brazos"],
+       correct:2,
+       exp:"Durante la fase de vuelo de un grand jeté, los músculos de las piernas mantienen la posición de apertura (split) mediante contracciones isométricas: generan tensión sin cambiar de longitud para sostener la forma del gesto en el aire."}
+    ]
+  },
+  {
+    id:"b6", title:"Bloque 6: Cuadros Clínicos y Coactivación",
+    ref:"Presentación I · Diapositiva 15 + Presentación II · Sección 5",
+    cases:[
+      {q:"¿Qué es el rigor mortis?",
+       opts:["Un tipo de contracción muscular voluntaria","La rigidez cadavérica que ocurre porque, al morir, no se produce ATP y la miosina no puede soltarse de la actina","Una enfermedad de los huesos","Un tipo de estiramiento"],
+       correct:1,
+       exp:"El rigor mortis es la rigidez que aparece tras la muerte. Al cesar la producción de ATP, las cabezas de miosina no pueden desacoplarse de la actina, quedando permanentemente unidas. Esto produce una rigidez muscular generalizada que dura hasta que las proteínas se degradan."},
+
+      {q:"Una bailarina tiene un calambre (rampa muscular) en el gemelo durante un ensayo largo en un día caluroso. ¿Cuál es la causa más probable?",
+       opts:["Exceso de ATP","Hiperexcitabilidad de la motoneurona alfa asociada a fatiga, deshidratación o pérdida de electrolitos","Fractura del peroné","Exceso de líquido sinovial"],
+       correct:1,
+       exp:"Las rampas musculares (calambres) son contracciones involuntarias causadas por hiperexcitabilidad de la motoneurona alfa. Los factores desencadenantes incluyen fatiga muscular, deshidratación y pérdida de electrolitos (como sodio, potasio, magnesio) por la sudoración intensa."},
+
+      {q:"¿Por qué la deshidratación puede provocar rampas musculares?",
+       opts:["Porque el agua lubrica los huesos","Porque la pérdida de agua y electrolitos altera el equilibrio iónico necesario para la función normal de las motoneuronas","Porque el agua es el componente principal de la miosina","Porque deshidrata el cartílago"],
+       correct:1,
+       exp:"La deshidratación implica pérdida de agua y electrolitos (Na⁺, K⁺, Ca²⁺, Mg²⁺). Estos iones son esenciales para la transmisión del impulso nervioso y la excitabilidad de las motoneuronas. Su desequilibrio puede causar hiperexcitabilidad neuronal, provocando contracciones involuntarias (rampas)."},
+
+      {q:"¿Qué es la coactivación muscular?",
+       opts:["Contraer un solo músculo al máximo","El trabajo coordinado de grupos musculares que permite la estabilidad y el control postural","Relajar todos los músculos a la vez","Contraer solo los músculos de las piernas"],
+       correct:1,
+       exp:"La coactivación muscular es la activación simultánea y coordinada de grupos musculares (agonistas, antagonistas y estabilizadores) que permite mantener la estabilidad articular y el control postural durante el movimiento."},
+
+      {q:"Cuando una bailarina hace equilibrio sobre una pierna en relevé, ¿qué papel juega la coactivación?",
+       opts:["No tiene ningún papel","Los músculos alrededor del tobillo, rodilla y cadera se coactivan para estabilizar las articulaciones y mantener el equilibrio","Solo trabaja el gemelo","Solo trabajan los músculos del pie"],
+       correct:1,
+       exp:"El equilibrio en relevé requiere coactivación de múltiples grupos musculares: los músculos intrínsecos del pie, los gemelos y sóleo (tobillo), los cuádriceps e isquiotibiales (rodilla), y los glúteos y aductores (cadera). Todos trabajan coordinadamente para estabilizar las articulaciones y mantener el centro de gravedad."},
+
+      {q:"Si el rigor mortis se debe a la falta de ATP, ¿qué nos dice esto sobre la importancia del ATP en la relajación muscular?",
+       opts:["Que el ATP solo sirve para contraer","Que el ATP es esencial tanto para contraer como para relajar el músculo (desacoplar actina-miosina)","Que el ATP no tiene relación con la relajación","Que la relajación es automática"],
+       correct:1,
+       exp:"El rigor mortis demuestra que sin ATP, el músculo no puede relajarse. Esto confirma que el ATP es necesario no solo para generar el golpe de fuerza, sino también para desacoplar la miosina de la actina, permitiendo la relajación. Sin ATP, la unión es permanente."},
+
+      {q:"Una bailarina nota que después de varias semanas de ensayos intensos, sus calambres son más frecuentes. ¿Qué debería revisar?",
+       opts:["Solo su técnica de baile","Su hidratación, ingesta de electrolitos y descanso, ya que la fatiga y la deshidratación predisponen a rampas musculares","Cambiar de zapatillas","Dejar de bailar"],
+       correct:1,
+       exp:"La fatiga acumulada, la deshidratación crónica y la pérdida de electrolitos son factores de riesgo para las rampas musculares. Revisar la hidratación, la nutrición (especialmente electrolitos como magnesio, potasio y sodio) y el descanso es fundamental para prevenirlas."},
+
+      {q:"En una pirouette, ¿qué grupos musculares se coactivan para mantener el eje de giro?",
+       opts:["Solo los gemelos","Los músculos del tronco (core), cadera, pierna de apoyo y brazos trabajan coordinadamente","Solo los músculos del cuello","Solo los músculos del pie de apoyo"],
+       correct:1,
+       exp:"La pirouette requiere coactivación de múltiples grupos: el core (estabilización del tronco), los músculos de la cadera y pierna de apoyo (equilibrio), los brazos (control del momento angular) y los músculos del pie (base de apoyo). La coactivación coordinada de todos ellos permite mantener el eje de giro estable."},
+
+      {q:"¿Por qué la coactivación es especialmente importante en danza?",
+       opts:["Porque en danza no se usa fuerza","Porque la danza exige movimientos complejos que requieren estabilidad articular, control postural y precisión simultáneamente","Porque solo importa la flexibilidad","Porque la coactivación solo sirve en deportes de contacto"],
+       correct:1,
+       exp:"La danza combina demandas de fuerza, flexibilidad, equilibrio, precisión y control postural en gestos complejos y a menudo sobre bases de apoyo reducidas (puntas, una pierna). La coactivación muscular es esencial para estabilizar las articulaciones, protegerlas de lesiones y permitir el control fino del movimiento."},
+
+      {q:"Si una motoneurona alfa se vuelve hiperexcitable, ¿qué ocurre?",
+       opts:["El músculo se relaja completamente","Puede disparar impulsos involuntarios que causan contracciones involuntarias (rampas/calambres)","El hueso se debilita","La articulación se inflama"],
+       correct:1,
+       exp:"La hiperexcitabilidad de la motoneurona alfa significa que se activa con estímulos que normalmente no serían suficientes, disparando impulsos involuntarios que provocan contracciones musculares involuntarias y sostenidas, conocidas como rampas musculares o calambres."}
+    ]
+  },
+  {
+    id:"b7", title:"Bloque 7: Huesos – Clasificación, Estructura y Remodelación",
+    ref:"Presentación II · Secciones 6-11",
+    cases:[
+      {q:"El fémur de una bailarina actúa como palanca durante un grand battement. ¿Qué tipo de hueso es según su forma?",
+       opts:["Hueso corto","Hueso plano","Hueso largo","Hueso irregular"],
+       correct:2,
+       exp:"El fémur es un hueso largo: tiene una diáfisis (parte central alargada) y dos epífisis (extremos). Los huesos largos actúan como palancas y soportan el movimiento. Otros ejemplos: tibia, húmero."},
+
+      {q:"Los huesos del carpo (muñeca) y del tarso (tobillo) son importantes para la estabilidad en danza. ¿Qué tipo de huesos son?",
+       opts:["Huesos largos","Huesos cortos","Huesos planos","Huesos sesamoideos"],
+       correct:1,
+       exp:"Los huesos del carpo y tarso son huesos cortos: tienen forma aproximadamente cúbica, aportan estabilidad y permiten pequeños desplazamientos. Son fundamentales para la movilidad y estabilidad de muñecas y tobillos en danza."},
+
+      {q:"La rótula de una bailarina se desarrolla dentro del tendón del cuádriceps. ¿Qué tipo de hueso es?",
+       opts:["Hueso largo","Hueso irregular","Hueso sesamoideo","Hueso plano"],
+       correct:2,
+       exp:"La rótula es un hueso sesamoideo: se desarrolla dentro de un tendón (el tendón del cuádriceps). Su función es modificar la dirección o el brazo de palanca de la fuerza muscular, aumentando la eficacia mecánica del cuádriceps en la extensión de rodilla."},
+
+      {q:"¿Qué parte del hueso largo contiene la placa de crecimiento durante el desarrollo?",
+       opts:["La epífisis","La diáfisis","La metáfisis","La cavidad medular"],
+       correct:2,
+       exp:"La metáfisis es la zona de transición entre la epífisis y la diáfisis. Durante la etapa de desarrollo, contiene la placa de crecimiento (cartílago de crecimiento), responsable del crecimiento en longitud del hueso."},
+
+      {q:"Una bailarina adolescente aún está creciendo. ¿Dónde se produce el crecimiento en longitud de sus huesos largos?",
+       opts:["En la diáfisis","En la epífisis","En la metáfisis (placa de crecimiento)","En el periostio"],
+       correct:2,
+       exp:"El crecimiento en longitud de los huesos largos ocurre en la placa de crecimiento, situada en la metáfisis. Esta placa de cartílago se va osificando progresivamente hasta que se cierra al final del desarrollo, momento en el que el hueso deja de crecer en longitud."},
+
+      {q:"¿Qué tipo de médula ósea se encuentra en la cavidad medular de los huesos largos de un adulto y produce células sanguíneas?",
+       opts:["Médula amarilla","Médula roja","Médula espinal","No hay médula en los huesos"],
+       correct:1,
+       exp:"La médula ósea roja es la responsable de la producción de células sanguíneas (hematopoyesis). En los adultos, se encuentra principalmente en huesos planos y en las epífisis de huesos largos. La médula amarilla es tejido adiposo de reserva."},
+
+      {q:"Una bailarina que entrena intensamente todos los días tiene huesos más densos que una persona sedentaria. ¿Por qué?",
+       opts:["Porque come más calcio","Porque el hueso es un tejido dinámico que se adapta y remodela según la carga mecánica que recibe","Porque los huesos no cambian","Porque el sudor endurece los huesos"],
+       correct:1,
+       exp:"El hueso es un tejido dinámico que se adapta continuamente a la carga mecánica (ley de Wolff). La carga repetida estimula a los osteoblastos (células formadoras de hueso) a depositar más matriz ósea, aumentando la densidad y resistencia del hueso. Por eso los bailarines tienen huesos más densos."},
+
+      {q:"¿Qué células del tejido óseo son responsables de la reabsorción (destrucción) de hueso?",
+       opts:["Osteoblastos","Osteocitos","Osteoclastos","Condrocitos"],
+       correct:2,
+       exp:"Los osteoclastos son las células responsables de la reabsorción ósea: destruyen tejido óseo viejo o dañado. Los osteoblastos forman hueso nuevo, y los osteocitos son células maduras que mantienen el tejido óseo. El equilibrio entre osteoclastos y osteoblastos es la base de la remodelación ósea."},
+
+      {q:"Las costillas y el esternón protegen el corazón y los pulmones de una bailarina. ¿Qué tipo de huesos son?",
+       opts:["Huesos largos","Huesos cortos","Huesos planos","Huesos sesamoideos"],
+       correct:2,
+       exp:"Las costillas, el esternón, la escápula y los huesos del cráneo son huesos planos: tienen forma aplanada, protegen órganos internos y ofrecen amplia superficie de inserción muscular."},
+
+      {q:"Las vértebras de una bailarina tienen formas complejas adaptadas a funciones específicas (soporte, protección de la médula, movilidad). ¿Qué tipo de huesos son?",
+       opts:["Huesos largos","Huesos planos","Huesos irregulares","Huesos cortos"],
+       correct:2,
+       exp:"Las vértebras son huesos irregulares: presentan formas complejas que no encajan en las categorías de largo, corto o plano. Su forma está adaptada a funciones específicas como el soporte del peso, la protección de la médula espinal y la permitividad de movimientos de la columna."}
+    ]
+  },
+  {
+    id:"b8", title:"Bloque 8: Articulaciones, Planos y Propiocepción",
+    ref:"Presentación II · Secciones 12-16",
+    cases:[
+      {q:"¿Qué tipo de articulación es la rodilla de una bailarina?",
+       opts:["Articulación fibrosa (inmóvil)","Articulación cartilaginosa (poco móvil)","Articulación sinovial (móvil)","No es una articulación"],
+       correct:2,
+       exp:"La rodilla es una articulación sinovial: tiene cavidad articular con líquido sinovial, cartílago articular, cápsula y ligamentos. Las articulaciones sinoviales son las más móviles del cuerpo e incluyen la mayoría de las articulaciones de las extremidades."},
+
+      {q:"¿Por qué el cartílago articular necesita movimiento y carga para nutrirse?",
+       opts:["Porque tiene muchos vasos sanguíneos que necesitan presión","Porque carece de vasos sanguíneos y se nutre por la alternancia carga (expulsa agua) y descarga (absorbe líquido sinovial)","Porque se alimenta directamente del músculo","Porque el cartílago no necesita nutrición"],
+       correct:1,
+       exp:"El cartílago articular es avascular (sin vasos sanguíneos). Su nutrición depende del intercambio de líquidos: la compresión (carga) expulsa agua y solutos del cartílago, y la descompresión (descarga) permite la reabsorción de líquido sinovial rico en nutrientes. Por eso el movimiento es esencial para la salud del cartílago."},
+
+      {q:"¿Qué estructuras protegen y amortiguan una articulación sinovial?",
+       opts:["Solo los músculos","El cartílago articular, la cápsula, el líquido sinovial y los ligamentos","Solo los tendones","Solo los huesos"],
+       correct:1,
+       exp:"Una articulación sinovial tiene varias estructuras protectoras: el cartílago articular (amortigua y reduce fricción), la cápsula articular (envuelve y sella), el líquido sinovial (lubrica y nutre) y los ligamentos (estabilizan y limitan movimientos excesivos)."},
+
+      {q:"Cuando una bailarina hace turnout de cadera en ballet, ¿en qué plano ocurre principalmente este movimiento?",
+       opts:["Plano sagital","Plano frontal","Plano transversal","Plano oblicuo"],
+       correct:2,
+       exp:"El turnout (rotación externa de cadera) es un movimiento de rotación que ocurre en el plano transversal. Este plano divide el cuerpo en parte superior e inferior, y los movimientos en él son rotaciones alrededor del eje vertical."},
+
+      {q:"¿Qué significa 'en dehors'?",
+       opts:["Rotación interna: la cara anterior se acerca a la línea media","Rotación externa: la cara anterior de la extremidad se aleja de la línea media","Flexión de la cadera","Extensión de la rodilla"],
+       correct:1,
+       exp:"'En dehors' significa rotación externa: la extremidad gira hacia afuera, alejando su cara anterior de la línea media del cuerpo. En ballet, el turnout de cadera es el ejemplo clásico de en dehors."},
+
+      {q:"¿Qué significa 'en dedans'?",
+       opts:["Rotación externa","Rotación interna: la cara anterior de la extremidad se orienta hacia el centro del cuerpo","Abducción de la pierna","Extensión del tronco"],
+       correct:1,
+       exp:"'En dedans' significa rotación interna: la extremidad gira hacia adentro, orientando su cara anterior hacia la línea media del cuerpo. En danza contemporánea, la posición neutra o paralela es un ejemplo de en dedans."},
+
+      {q:"¿Qué es la propiocepción?",
+       opts:["La capacidad de ver los movimientos del cuerpo","La capacidad inconsciente de percibir la posición y el movimiento del cuerpo mediante mecanorreceptores","La capacidad de escuchar la música mientras se baila","La flexibilidad de las articulaciones"],
+       correct:1,
+       exp:"La propiocepción es el sentido que permite percibir de forma inconsciente la posición, el movimiento y la fuerza de las partes del cuerpo. Se basa en mecanorreceptores situados en músculos (husos musculares), tendones (órganos tendinosos de Golgi) y articulaciones."},
+
+      {q:"Una bailarina hace un equilibrio con los ojos cerrados y no se cae. ¿Qué sistema le permite saber dónde está su cuerpo sin verlo?",
+       opts:["El sistema visual","El sistema propioceptivo (mecanorreceptores musculares, tendinosos y articulares)","El sistema auditivo","El sistema digestivo"],
+       correct:1,
+       exp:"Con los ojos cerrados, la bailarina depende de la propiocepción para mantener el equilibrio. Los mecanorreceptores en músculos, tendones y articulaciones envían información constante al sistema nervioso sobre la posición y el movimiento del cuerpo, permitiendo ajustes posturales inconscientes."},
+
+      {q:"¿Dónde se encuentran los mecanorreceptores que alimentan la propiocepción?",
+       opts:["Solo en la piel","En músculos, tendones y articulaciones","Solo en el cerebro","Solo en los huesos"],
+       correct:1,
+       exp:"Los mecanorreceptores propioceptivos se encuentran en tres localizaciones principales: los husos musculares (dentro de los músculos, detectan cambios de longitud), los órganos tendinosos de Golgi (en los tendones, detectan tensión) y los receptores articulares (en las cápsulas y ligamentos, detectan posición y movimiento articular)."},
+
+      {q:"Un rond de jambe à terre combina movimientos en varios planos. ¿Cuáles?",
+       opts:["Solo el plano transversal","Plano sagital (delante/atrás), frontal (lateral) y transversal (rotación de cadera)","Solo el plano frontal","Solo el plano sagital"],
+       correct:1,
+       exp:"Un rond de jambe à terre describe un semicírculo con el pie en el suelo: pasa por devant (plano sagital, flexión de cadera), à la seconde (plano frontal, abducción) y derrière (plano sagital, extensión), todo ello con rotación externa de cadera (plano transversal, en dehors). Es un ejemplo perfecto de movimiento multiplanar."}
+    ]
+  }
+];
+
+// ===================== INIT =====================
+let answered = 0;
+const totalCases = BLOCKS.reduce((s,b)=>s+b.cases.length,0);
+const results = {};
+
+document.addEventListener('DOMContentLoaded',()=>{
+  const now = new Date();
+  document.getElementById('startTime').textContent = now.toLocaleTimeString('es-ES',{hour:'2-digit',minute:'2-digit'});
+  document.getElementById('fillDate').value = now.toISOString().split('T')[0];
+  buildNav();
+  buildBlocks();
+  showBlock('b1');
+});
+
+function buildNav(){
+  const nav = document.getElementById('navBar');
+  BLOCKS.forEach((b,i)=>{
+    const btn = document.createElement('button');
+    btn.textContent = `B${i+1}`;
+    btn.title = b.title;
+    btn.onclick = ()=> showBlock(b.id);
+    btn.id = 'nav-'+b.id;
+    nav.appendChild(btn);
+  });
+}
+
+function showBlock(id){
+  document.querySelectorAll('.block').forEach(b=>b.classList.remove('visible'));
+  document.getElementById(id).classList.add('visible');
+  document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('active'));
+  document.getElementById('nav-'+id).classList.add('active');
+}
+
+function buildBlocks(){
+  const container = document.getElementById('blocksContainer');
+  BLOCKS.forEach((block,bi)=>{
+    const div = document.createElement('div');
+    div.className = 'block';
+    div.id = block.id;
+    let html = `<h2>${block.title}</h2><p class="block-ref">📖 ${block.ref}</p>`;
+    block.cases.forEach((c,ci)=>{
+      const cid = `${block.id}_c${ci}`;
+      html += `<div class="case" id="case_${cid}">
+        <span class="case-num">Caso ${ci+1}</span>
+        <span class="case-topic">${block.title.split(':')[1]?.trim()||block.title}</span>
+        <h3>${c.q}</h3>
+        <div class="options" id="opts_${cid}">`;
+      c.opts.forEach((o,oi)=>{
+        html += `<div class="opt" data-cid="${cid}" data-oi="${oi}" onclick="selectOpt(this,'${cid}',${oi})">${String.fromCharCode(97+oi)}) ${o}</div>`;
+      });
+      html += `</div>
+        <textarea class="reason-area" id="reason_${cid}" placeholder="✍️ Explica brevemente por qué has elegido esta respuesta..."></textarea>
+        <button class="btn-validate" id="btn_${cid}" onclick="validate('${cid}',${bi},${ci})" disabled>Validar respuesta</button>
+        <div class="feedback" id="fb_${cid}"></div>
+      </div>`;
+    });
+    div.innerHTML = html;
+    container.appendChild(div);
+  });
+}
+
+let selected = {};
+
+function selectOpt(el, cid, oi){
+  const opts = document.querySelectorAll(`[data-cid="${cid}"]`);
+  opts.forEach(o=>o.classList.remove('selected'));
+  el.classList.add('selected');
+  selected[cid] = oi;
+  document.getElementById('btn_'+cid).disabled = false;
+}
+
+function validate(cid, bi, ci){
+  const c = BLOCKS[bi].cases[ci];
+  const chosen = selected[cid];
+  if(chosen === undefined) return;
+  const isCorrect = chosen === c.correct;
+  const opts = document.querySelectorAll(`[data-cid="${cid}"]`);
+  opts.forEach(o=>{
+    o.classList.add('disabled');
+    const oi = parseInt(o.dataset.oi);
+    if(oi === c.correct) o.classList.add('show-correct','correct');
+    if(oi === chosen && !isCorrect) o.classList.add('incorrect');
+  });
+  const fb = document.getElementById('fb_'+cid);
+  fb.classList.add('show');
+  if(isCorrect){
+    fb.classList.add('ok');
+    fb.innerHTML = `<strong>✅ ¡Correcto!</strong><br>${c.exp}`;
+  } else {
+    fb.classList.add('bad');
+    fb.innerHTML = `<strong>❌ No es correcto.</strong> La respuesta correcta es la <strong>${String.fromCharCode(97+c.correct)})</strong>.<br><br>${c.exp}`;
+  }
+  document.getElementById('btn_'+cid).disabled = true;
+  results[cid] = {
+    block: BLOCKS[bi].title,
+    question: c.q,
+    chosen: chosen,
+    correct: c.correct,
+    isCorrect: isCorrect,
+    reason: document.getElementById('reason_'+cid).value,
+    explanation: c.exp
+  };
+  answered++;
+  updateProgress();
+}
+
+function updateProgress(){
+  const pct = Math.round((answered/totalCases)*100);
+  document.getElementById('progressFill').style.width = pct+'%';
+  document.getElementById('progressText').textContent = `Progreso: ${answered} / ${totalCases} casos respondidos (${pct}%)`;
+}
+
+function endTest(){
+  const now = new Date();
+  document.getElementById('endTime').textContent = now.toLocaleTimeString('es-ES',{hour:'2-digit',minute:'2-digit'});
+  showToast('⏹ Hora de finalización registrada');
+}
+
+function compileResults(){
+  const name = document.getElementById('studentName').value || 'Sin nombre';
+  const email = document.getElementById('studentEmail').value || 'Sin email';
+  const date = document.getElementById('fillDate').value || 'Sin fecha';
+  const start = document.getElementById('startTime').textContent;
+  const end = document.getElementById('endTime').textContent;
+  let correctCount = Object.values(results).filter(r=>r.isCorrect).length;
+  let txt = `CASOS PRÁCTICOS – SISTEMA MUSCULOESQUELÉTICO\n`;
+  txt += `============================================\n`;
+  txt += `Alumno/a: ${name}\nEmail: ${email}\nFecha: ${date}\nHora inicio: ${start}\nHora fin: ${end}\n`;
+  txt += `Resultado: ${correctCount}/${answered} correctas\n\n`;
+  for(const [cid,r] of Object.entries(results)){
+    txt += `--- ${cid} ---\n`;
+    txt += `Bloque: ${r.block}\n`;
+    txt += `Pregunta: ${r.question}\n`;
+    txt += `Respuesta elegida: ${String.fromCharCode(97+r.chosen)})\n`;
+    txt += `Respuesta correcta: ${String.fromCharCode(97+r.correct)})\n`;
+    txt += `Resultado: ${r.isCorrect?'✅ Correcto':'❌ Incorrecto'}\n`;
+    txt += `Razón del alumno: ${r.reason||'(sin respuesta)'}\n`;
+    txt += `Explicación: ${r.explanation}\n\n`;
+  }
+  return txt;
+}
+
+function sendEmail(){
+  const profEmail = document.getElementById('profEmail').value;
+  const name = document.getElementById('studentName').value || 'Alumno/a';
+  const subject = encodeURIComponent(`Casos Prácticos Musculoesquelético – ${name}`);
+  const body = encodeURIComponent(compileResults());
+  window.location.href = `mailto:${profEmail}?subject=${subject}&body=${body}`;
+  showToast('📧 Abriendo cliente de correo...');
+}
+
+function copyResults(){
+  navigator.clipboard.writeText(compileResults()).then(()=>{
+    showToast('📋 Resultados copiados al portapapeles');
+  }).catch(()=>{
+    showToast('⚠️ No se pudo copiar');
+  });
+}
+
+function showToast(msg){
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.style.display = 'block';
+  setTimeout(()=>t.style.display='none',3000);
+}
+</script>
+</body>
+</html>

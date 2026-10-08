@@ -1,0 +1,1111 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Los Músculos Trabajan en Equipo - Danza</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, sans-serif; }
+  body {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    padding: 20px;
+  }
+  .container {
+    max-width: 1100px;
+    margin: 0 auto;
+    background: #fff;
+    border-radius: 20px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    overflow: hidden;
+  }
+  header {
+    background: linear-gradient(90deg, #1e3c72, #2a5298);
+    color: white;
+    padding: 40px;
+    text-align: center;
+  }
+  header h1 { font-size: 2.2em; margin-bottom: 10px; }
+  header p { opacity: 0.9; font-size: 1.1em; }
+  header .subtitle { font-size: 0.95em; opacity: 0.85; margin-top: 8px; font-style: italic; }
+  
+  .nav-tabs {
+    display: flex;
+    background: #f8f9fa;
+    flex-wrap: wrap;
+    border-bottom: 3px solid #dee2e6;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .nav-tabs button {
+    flex: 1;
+    min-width: 120px;
+    padding: 14px 8px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 0.85em;
+    font-weight: 600;
+    color: #666;
+    transition: all 0.3s;
+    border-bottom: 4px solid transparent;
+  }
+  .nav-tabs button:hover { background: #e9ecef; color: #2a5298; }
+  .nav-tabs button.active {
+    color: #2a5298;
+    border-bottom-color: #2a5298;
+    background: white;
+  }
+  
+  .slide { display: none; padding: 30px; min-height: 600px; }
+  .slide.active { display: block; animation: fadeIn 0.5s; }
+  @keyframes fadeIn { from {opacity:0; transform:translateY(20px);} to {opacity:1; transform:translateY(0);} }
+  
+  .slide h2 {
+    color: #1e3c72;
+    margin-bottom: 20px;
+    font-size: 1.7em;
+    border-bottom: 3px solid #2a5298;
+    padding-bottom: 10px;
+  }
+  
+  .intro-box {
+    background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+    border-left: 5px solid #1976d2;
+    padding: 22px;
+    margin: 20px 0;
+    border-radius: 10px;
+    line-height: 1.7;
+  }
+  
+  .intro-box h3 {
+    color: #1565c0;
+    margin-bottom: 12px;
+    font-size: 1.25em;
+  }
+  
+  .exercise-card {
+    background: white;
+    border: 3px solid #2a5298;
+    border-radius: 15px;
+    padding: 25px;
+    margin: 20px 0;
+    box-shadow: 0 5px 20px rgba(42,82,152,0.15);
+  }
+  
+  .exercise-card h3 {
+    color: #2a5298;
+    font-size: 1.35em;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .how-it-works {
+    background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
+    padding: 20px;
+    border-radius: 10px;
+    margin: 15px 0;
+    border-left: 5px solid #f57c00;
+  }
+  
+  .how-it-works h4 {
+    color: #e65100;
+    margin-bottom: 12px;
+    font-size: 1.15em;
+  }
+  
+  .how-it-works ul {
+    margin-left: 25px;
+    line-height: 1.8;
+  }
+  
+  .muscle-info {
+    background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+    padding: 18px;
+    border-radius: 10px;
+    margin: 15px 0;
+    border-left: 5px solid #388e3c;
+  }
+  
+  .muscle-info h4 {
+    color: #2e7d32;
+    margin-bottom: 10px;
+    font-size: 1.1em;
+  }
+  
+  .scenario-box {
+    background: linear-gradient(135deg, #f3e5f5 0%, #e1bee7 100%);
+    padding: 22px;
+    border-radius: 10px;
+    margin: 20px 0;
+    border: 2px dashed #9b59b6;
+  }
+  
+  .scenario-box h4 {
+    color: #8e44ad;
+    margin-bottom: 15px;
+    font-size: 1.15em;
+  }
+  
+  .options-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 12px;
+    margin: 15px 0;
+  }
+  
+  .option-card {
+    background: white;
+    border: 2px solid #dee2e6;
+    border-radius: 10px;
+    padding: 16px;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-size: 0.95em;
+  }
+  
+  .option-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    border-color: #2a5298;
+  }
+  
+  .option-card.selected {
+    background: #e3f2fd;
+    border-color: #2a5298;
+    border-width: 3px;
+  }
+  
+  .option-card.correct {
+    background: #d4edda;
+    border-color: #28a745;
+  }
+  
+  .option-card.incorrect {
+    background: #f8d7da;
+    border-color: #dc3545;
+  }
+  
+  .option-card strong {
+    color: #2a5298;
+    display: block;
+    margin-bottom: 6px;
+    font-size: 1.05em;
+  }
+  
+  .explanation-field {
+    margin: 18px 0;
+  }
+  
+  .explanation-field label {
+    display: block;
+    font-weight: 600;
+    color: #2a5298;
+    margin-bottom: 8px;
+    font-size: 0.95em;
+  }
+  
+  .explanation-field textarea {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #dee2e6;
+    border-radius: 8px;
+    font-size: 0.95em;
+    resize: vertical;
+    min-height: 80px;
+    font-family: inherit;
+  }
+  
+  .explanation-field textarea:focus {
+    outline: none;
+    border-color: #2a5298;
+  }
+  
+  .btn {
+    background: linear-gradient(90deg, #2a5298, #1e3c72);
+    color: white;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 25px;
+    font-size: 1em;
+    font-weight: 600;
+    cursor: pointer;
+    margin: 8px 5px;
+    transition: all 0.3s;
+    box-shadow: 0 4px 12px rgba(42,82,152,0.3);
+  }
+  
+  .btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(42,82,152,0.4);
+  }
+  
+  .btn-secondary {
+    background: #6c757d;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  }
+  
+  .feedback {
+    margin-top: 15px;
+    padding: 18px;
+    border-radius: 10px;
+    display: none;
+    line-height: 1.7;
+    font-size: 0.95em;
+  }
+  
+  .feedback.show { display: block; animation: fadeIn 0.3s; }
+  .feedback.success { background: #d4edda; color: #155724; border: 2px solid #28a745; }
+  .feedback.error { background: #f8d7da; color: #721c24; border: 2px solid #dc3545; }
+  
+  .tip-box {
+    background: linear-gradient(135deg, #fff9c4 0%, #fff59d 100%);
+    padding: 16px;
+    border-radius: 10px;
+    margin: 15px 0;
+    border-left: 5px solid #fbc02d;
+  }
+  
+  .tip-box h4 {
+    color: #f57f17;
+    margin-bottom: 8px;
+    font-size: 1.05em;
+  }
+  
+  .emoji { font-size: 1.2em; margin-right: 6px; }
+  
+  @media (max-width: 768px) {
+    header h1 { font-size: 1.6em; }
+    .slide { padding: 20px; }
+    .exercise-card { padding: 18px; }
+    .options-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <h1>💪 Los Músculos Trabajan en Equipo</h1>
+    <p>10 Ejercicios para mejorar tu estabilidad y control en danza</p>
+    <div class="subtitle">Aprende cómo funcionan tus músculos mientras bailas</div>
+  </header>
+
+  <div class="nav-tabs">
+    <button class="active" onclick="showSlide(0, this)">📚 Introducción</button>
+    <button onclick="showSlide(1, this)">1. Plancha</button>
+    <button onclick="showSlide(2, this)">2. Relevé</button>
+    <button onclick="showSlide(3, this)">3. Arabesque</button>
+    <button onclick="showSlide(4, this)">4. Sentadilla</button>
+    <button onclick="showSlide(5, this)">5. Plié</button>
+    <button onclick="showSlide(6, this)">6. Equilibrio</button>
+    <button onclick="showSlide(7, this)">7. Puente</button>
+    <button onclick="showSlide(8, this)">8. Battement</button>
+    <button onclick="showSlide(9, this)">9. Giros</button>
+    <button onclick="showSlide(10, this)">10. Saltos</button>
+    <button onclick="showSlide(11, this)">📊 Resumen</button>
+  </div>
+
+  <!-- SLIDE 1: INTRODUCCIÓN -->
+  <div class="slide active">
+    <h2> ¿Qué es la Coactivación?</h2>
+    
+    <div class="intro-box">
+      <h3> Imagina un equipo de baile...</h3>
+      <p>Cuando bailas, tus músculos trabajan como un equipo de danza. No trabajan solos, sino que <strong>varios músculos se activan al mismo tiempo</strong> para mantenerte estable y controlar tus movimientos. Esto se llama <strong>coactivación</strong>.</p>
+    </div>
+    
+    <div class="how-it-works">
+      <h4>🎯 ¿Por qué es importante?</h4>
+      <ul>
+        <li><strong>Te mantiene estable:</strong> Como cuando haces un equilibrio sobre una pierna</li>
+        <li><strong>Protege tus articulaciones:</strong> Evita que te lesiones al saltar o girar</li>
+        <li><strong>Mejora tu control:</strong> Tus movimientos son más precisos y elegantes</li>
+        <li><strong>Te da más fuerza:</strong> Al trabajar en equipo, los músculos son más eficientes</li>
+      </ul>
+    </div>
+    
+    <div class="muscle-info">
+      <h4>💡 Ejemplo sencillo</h4>
+      <p>Cuando haces una <strong>plancha</strong> (posición de flexión), no solo trabaja tu abdomen. Tu espalda también se activa para mantenerte recto. Si solo trabajara el abdomen, tu espalda caería. Si solo trabajara la espalda, tu abdomen caería. <strong>¡Ambos trabajan juntos!</strong></p>
+    </div>
+    
+    <div class="tip-box">
+      <h4>🎭 En la danza</h4>
+      <p>La coactivación es lo que te permite:</p>
+      <ul style="margin-left: 25px; margin-top: 8px; line-height: 1.7;">
+        <li>Mantener un arabesque sin temblar</li>
+        <li>Aterrizar de un salto sin hacer ruido</li>
+        <li>Girar sin caerte</li>
+        <li>Moverte con fluidez y control</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- SLIDE 2: EJERCICIO 1 - PLANCHA -->
+  <div class="slide">
+    <h2>1️ Plancha: Fortalece tu centro</h2>
+    
+    <div class="exercise-card">
+      <h3><span class="emoji">📋</span> ¿Qué ocurre en tu cuerpo?</h3>
+      <div class="how-it-works">
+        <h4>🔍 Cómo funciona</h4>
+        <ul>
+          <li><strong>Tu abdomen</strong> se contrae para evitar que la espalda se arquee demasiado</li>
+          <li><strong>Tu espalda</strong> se contrae para evitar que el abdomen caiga</li>
+          <li><strong>Ambos trabajan juntos</strong> creando una "faja" natural que protege tu columna</li>
+          <li>Al principio tiemblas porque tus músculos se están cansando y el cerebro los activa y desactiva rápidamente</li>
+        </ul>
+      </div>
+      
+      <div class="muscle-info">
+        <h4>💪 Músculos que trabajan</h4>
+        <ul>
+          <li><strong>Abdomen:</strong> Mantiene la parte frontal estable</li>
+          <li><strong>Espalda baja:</strong> Mantiene la parte posterior estable</li>
+          <li><strong>Hombros y brazos:</strong> Soportan tu peso</li>
+        </ul>
+      </div>
+      
+      <div class="tip-box">
+        <h4>✨ Consejo</h4>
+        <p>Empieza con 15-20 segundos y ve aumentando. Es normal temblar al principio. ¡Significa que tus músculos se están fortaleciendo!</p>
+      </div>
+    </div>
+    
+    <div class="scenario-box">
+      <h4>🤔 Piensa y responde</h4>
+      <p>Estás haciendo la plancha y después de 20 segundos empiezas a temblar. ¿Por qué crees que ocurre esto?</p>
+      
+      <div class="options-grid" id="options1">
+        <div class="option-card" onclick="selectOption(1, 0, false)">
+          <strong>Opción A</strong>
+          Porque tus músculos se han quedado sin energía y ya no pueden funcionar
+        </div>
+        <div class="option-card" onclick="selectOption(1, 1, true)">
+          <strong>Opción B</strong>
+          Porque tus músculos se están cansando y tu cerebro los activa y desactiva rápidamente para mantener la posición
+        </div>
+        <div class="option-card" onclick="selectOption(1, 2, false)">
+          <strong>Opción C</strong>
+          Porque tus músculos se han roto y por eso tiemblan
+        </div>
+      </div>
+      
+      <div class="explanation-field">
+        <label for="explanation1">💭 Explica con tus palabras por qué elegiste esta opción:</label>
+        <textarea id="explanation1" placeholder="Piensa en qué le pasa a tus músculos cuando hacen un esfuerzo prolongado..."></textarea>
+      </div>
+      
+      <button class="btn" onclick="checkAnswer(1)">Verificar respuesta</button>
+      <button class="btn btn-secondary" onclick="resetExercise(1)">Reiniciar</button>
+      
+      <div class="feedback" id="feedback1"></div>
+    </div>
+  </div>
+
+  <!-- SLIDE 3: EJERCICIO 2 - RELEVÉ -->
+  <div class="slide">
+    <h2>2️⃣ Relevé: Subir sobre las puntas</h2>
+    
+    <div class="exercise-card">
+      <h3><span class="emoji">🩰</span> ¿Qué ocurre en tu cuerpo?</h3>
+      <div class="how-it-works">
+        <h4>🔍 Cómo funciona</h4>
+        <ul>
+          <li><strong>Tus gemelos</strong> (pantorrillas) te elevan sobre las puntas</li>
+          <li><strong>El músculo de la espinilla</strong> (parte frontal) también se activa un poco para estabilizar el tobillo</li>
+          <li>Es como si tuvieras un pie en el acelerador (gemelos) y otro en el freno (espinilla) al mismo tiempo</li>
+          <li>Esto evita que el tobillo se vaya demasiado hacia adelante y te caigas</li>
+        </ul>
+      </div>
+      
+      <div class="muscle-info">
+        <h4> Músculos que trabajan</h4>
+        <ul>
+          <li><strong>Gemelos y sóleo:</strong> Te elevan (parte posterior de la pierna)</li>
+          <li><strong>Tibial anterior:</strong> Estabiliza (parte frontal de la espinilla)</li>
+          <li><strong>Músculos laterales:</strong> Evitan que el tobillo se tuerza</li>
+        </ul>
+      </div>
+      
+      <div class="tip-box">
+        <h4>✨ Consejo</h4>
+        <p>Si sientes que te tambaleas, es normal. Tus músculos están aprendiendo a trabajar juntos. ¡Con la práctica será más fácil!</p>
+      </div>
+    </div>
+    
+    <div class="scenario-box">
+      <h4>🤔 Piensa y responde</h4>
+      <p>Cuando subes a relevé, el músculo de la espinilla (que normalmente baja el pie) también se activa un poco. ¿Para qué crees que sirve?</p>
+      
+      <div class="options-grid" id="options2">
+        <div class="option-card" onclick="selectOption(2, 0, false)">
+          <strong>Opción A</strong>
+          Es un error del cuerpo que debería evitarse
+        </div>
+        <div class="option-card" onclick="selectOption(2, 1, true)">
+          <strong>Opción B</strong>
+          Para estabilizar el tobillo y evitar que se vaya demasiado hacia adelante
+        </div>
+        <div class="option-card" onclick="selectOption(2, 2, false)">
+          <strong>Opción C</strong>
+          Para preparar la bajada del relevé
+        </div>
+      </div>
+      
+      <div class="explanation-field">
+        <label for="explanation2">💭 Explica por qué crees que es importante:</label>
+        <textarea id="explanation2" placeholder="Piensa en qué pasaría si solo trabajaran los gemelos..."></textarea>
+      </div>
+      
+      <button class="btn" onclick="checkAnswer(2)">Verificar respuesta</button>
+      <button class="btn btn-secondary" onclick="resetExercise(2)">Reiniciar</button>
+      
+      <div class="feedback" id="feedback2"></div>
+    </div>
+  </div>
+
+  <!-- SLIDE 4: EJERCICIO 3 - ARABESQUE -->
+  <div class="slide">
+    <h2>3️⃣ Arabesque: Mantener la pierna atrás</h2>
+    
+    <div class="exercise-card">
+      <h3><span class="emoji">🦵</span> ¿Qué ocurre en tu cuerpo?</h3>
+      <div class="how-it-works">
+        <h4>🔍 Cómo funciona</h4>
+        <ul>
+          <li><strong>Tus glúteos</strong> y la parte posterior del muslo mantienen la pierna elevada</li>
+          <li><strong>El psoas</strong> (músculo que está en la cadera y sube la pierna) también se activa un poco</li>
+          <li>Esto puede parecer raro: ¿por qué un músculo que sube la pierna trabaja cuando la pierna está atrás?</li>
+          <li>¡Para controlar! Evita que la pierna se vaya demasiado atrás y protege la cadera</li>
+        </ul>
+      </div>
+      
+      <div class="muscle-info">
+        <h4> Músculos que trabajan</h4>
+        <ul>
+          <li><strong>Glúteos:</strong> Mantienen la pierna elevada</li>
+          <li><strong>Isquiotibiales:</strong> (parte posterior del muslo) Ayudan a extender</li>
+          <li><strong>Psoas:</strong> Controla que no se vaya demasiado atrás</li>
+          <li><strong>Abdomen:</strong> Mantiene el tronco estable</li>
+        </ul>
+      </div>
+      
+      <div class="tip-box">
+        <h4>✨ Consejo</h4>
+        <p>No intentes subir la pierna lo más alto posible si pierdes el control. Mejor una posición más baja pero estable y controlada.</p>
+      </div>
+    </div>
+    
+    <div class="scenario-box">
+      <h4>🤔 Piensa y responde</h4>
+      <p>En el arabesque, el psoas (que normalmente sube la pierna) se activa aunque la pierna esté atrás. ¿Qué ventaja tiene esto?</p>
+      
+      <div class="options-grid" id="options3">
+        <div class="option-card" onclick="selectOption(3, 0, false)">
+          <strong>Opción A</strong>
+          Ninguna, es un desperdicio de energía
+        </div>
+        <div class="option-card" onclick="selectOption(3, 1, false)">
+          <strong>Opción B</strong>
+          Para preparar el siguiente movimiento de subir la pierna
+        </div>
+        <div class="option-card" onclick="selectOption(3, 2, true)">
+          <strong>Opción C</strong>
+          Para controlar la altura de la pierna y proteger la cadera de estirarse demasiado
+        </div>
+      </div>
+      
+      <div class="explanation-field">
+        <label for="explanation3">💭 Explica tu razonamiento:</label>
+        <textarea id="explanation3" placeholder="Piensa en qué pasaría si ningún músculo frenara la pierna..."></textarea>
+      </div>
+      
+      <button class="btn" onclick="checkAnswer(3)">Verificar respuesta</button>
+      <button class="btn btn-secondary" onclick="resetExercise(3)">Reiniciar</button>
+      
+      <div class="feedback" id="feedback3"></div>
+    </div>
+  </div>
+
+  <!-- SLIDE 5: EJERCICIO 4 - SENTADILLA -->
+  <div class="slide">
+    <h2>4️⃣ Sentadilla: Bajar y subir controlado</h2>
+    
+    <div class="exercise-card">
+      <h3><span class="emoji">🦵</span> ¿Qué ocurre en tu cuerpo?</h3>
+      <div class="how-it-works">
+        <h4> Cómo funciona</h4>
+        <ul>
+          <li><strong>Al bajar:</strong> Los músculos del frente del muslo (cuádriceps) trabajan frenando la bajada</li>
+          <li><strong>La parte de atrás del muslo</strong> también se activa para proteger la rodilla</li>
+          <li>Es como si tuvieras dos personas tirando de una cuerda en direcciones opuestas: se equilibran</li>
+          <li>Esto protege el ligamento cruzado de la rodilla (una especie de "cinta" que la mantiene estable)</li>
+        </ul>
+      </div>
+      
+      <div class="muscle-info">
+        <h4> Músculos que trabajan</h4>
+        <ul>
+          <li><strong>Cuádriceps:</strong> (frente del muslo) Controlan la bajada</li>
+          <li><strong>Isquiotibiales:</strong> (detrás del muslo) Protegen la rodilla</li>
+          <li><strong>Glúteos:</strong> Ayudan en el movimiento</li>
+          <li><strong>Gemelos:</strong> Estabilizan el tobillo</li>
+        </ul>
+      </div>
+      
+      <div class="tip-box">
+        <h4>✨ Consejo</h4>
+        <p>Baja lentamente (cuenta hasta 4) y sube también controlado. Así proteges tus rodillas y fortaleces más los músculos.</p>
+      </div>
+    </div>
+    
+    <div class="scenario-box">
+      <h4>🤔 Piensa y responde</h4>
+      <p>Cuando bajas en sentadilla, la parte de atrás del muslo se activa aunque el movimiento lo haga la parte de adelante. ¿Por qué es importante?</p>
+      
+      <div class="options-grid" id="options4">
+        <div class="option-card" onclick="selectOption(4, 0, true)">
+          <strong>Opción A</strong>
+          Para proteger la rodilla equilibrando las fuerzas y evitando que se lesione
+        </div>
+        <div class="option-card" onclick="selectOption(4, 1, false)">
+          <strong>Opción B</strong>
+          Para ayudar a la parte de adelante a hacer más fuerza
+        </div>
+        <div class="option-card" onclick="selectOption(4, 2, false)">
+          <strong>Opción C</strong>
+          Para estirar la parte de adelante del muslo
+        </div>
+      </div>
+      
+      <div class="explanation-field">
+        <label for="explanation4">💭 Explica por qué es importante:</label>
+        <textarea id="explanation4" placeholder="Piensa en qué pasaría si solo trabajara la parte de adelante..."></textarea>
+      </div>
+      
+      <button class="btn" onclick="checkAnswer(4)">Verificar respuesta</button>
+      <button class="btn btn-secondary" onclick="resetExercise(4)">Reiniciar</button>
+      
+      <div class="feedback" id="feedback4"></div>
+    </div>
+  </div>
+
+  <!-- SLIDE 6: EJERCICIO 5 - PLIÉ -->
+  <div class="slide">
+    <h2>5️⃣ Plié: Flexión con rotación</h2>
+    
+    <div class="exercise-card">
+      <h3><span class="emoji"></span> ¿Qué ocurre en tu cuerpo?</h3>
+      <div class="how-it-works">
+        <h4>🔍 Cómo funciona</h4>
+        <ul>
+          <li>En el plié de ballet, las piernas están rotadas hacia afuera</li>
+          <li><strong>Tres grupos de músculos</strong> trabajan juntos:</li>
+          <li>• Los de adelante y atrás del muslo controlan la flexión</li>
+          <li>• Los de la parte interna del muslo mantienen la rotación</li>
+          <li>Es como un trípode: si falta una pata, se cae</li>
+        </ul>
+      </div>
+      
+      <div class="muscle-info">
+        <h4>💪 Músculos que trabajan</h4>
+        <ul>
+          <li><strong>Cuádriceps:</strong> Controlan la flexión de rodilla</li>
+          <li><strong>Isquiotibiales:</strong> Estabilizan la rodilla</li>
+          <li><strong>Aductores:</strong> (parte interna) Mantienen la rotación externa</li>
+          <li><strong>Glúteos:</strong> Ayudan a mantener la cadera estable</li>
+        </ul>
+      </div>
+      
+      <div class="tip-box">
+        <h4>✨ Consejo</h4>
+        <p>Asegúrate de que las rodillas vayan en la misma dirección que los pies. Si las rodillas se van hacia adentro, estás perdiendo la activación correcta.</p>
+      </div>
+    </div>
+    
+    <div class="scenario-box">
+      <h4>🤔 Piensa y responde</h4>
+      <p>En el plié con las piernas rotadas hacia afuera, ¿por qué es importante que trabajen también los músculos de la parte interna del muslo?</p>
+      
+      <div class="options-grid" id="options5">
+        <div class="option-card" onclick="selectOption(5, 0, false)">
+          <strong>Opción A</strong>
+          Para ayudar a doblar la rodilla
+        </div>
+        <div class="option-card" onclick="selectOption(5, 1, true)">
+          <strong>Opción B</strong>
+          Para mantener la rotación de la cadera y estabilizar la rodilla
+        </div>
+        <div class="option-card" onclick="selectOption(5, 2, false)">
+          <strong>Opción C</strong>
+          Para estirar la parte externa del muslo
+        </div>
+      </div>
+      
+      <div class="explanation-field">
+        <label for="explanation5">💭 Explica tu respuesta:</label>
+        <textarea id="explanation5" placeholder="Piensa en qué pasaría si no trabajaran los músculos internos..."></textarea>
+      </div>
+      
+      <button class="btn" onclick="checkAnswer(5)">Verificar respuesta</button>
+      <button class="btn btn-secondary" onclick="resetExercise(5)">Reiniciar</button>
+      
+      <div class="feedback" id="feedback5"></div>
+    </div>
+  </div>
+
+  <!-- SLIDE 7: EJERCICIO 6 - EQUILIBRIO -->
+  <div class="slide">
+    <h2>6️⃣ Equilibrio sobre una pierna</h2>
+    
+    <div class="exercise-card">
+      <h3><span class="emoji">⚖️</span> ¿Qué ocurre en tu cuerpo?</h3>
+      <div class="how-it-works">
+        <h4> Cómo funciona</h4>
+        <ul>
+          <li>Cuando estás sobre una pierna, haces <strong>pequeños ajustes constantes</strong> sin darte cuenta</li>
+          <li>Los músculos del tobillo trabajan como un equipo, activándose y relajándose rápidamente</li>
+          <li>Es como cuando sostienes una bandeja con vasos: haces pequeños movimientos para que no se caiga</li>
+          <li>Si cierras los ojos, es más difícil porque solo puedes confiar en lo que sientes en tus músculos y articulaciones</li>
+        </ul>
+      </div>
+      
+      <div class="muscle-info">
+        <h4>💪 Músculos que trabajan</h4>
+        <ul>
+          <li><strong>Tobillo:</strong> Hace micro-ajustes constantes</li>
+          <li><strong>Cadera:</strong> Mantiene la pelvis nivelada</li>
+          <li><strong>Abdomen y espalda:</strong> Mantienen el tronco recto</li>
+          <li><strong>Pierna de apoyo:</strong> Todos sus músculos trabajan juntos</li>
+        </ul>
+      </div>
+      
+      <div class="tip-box">
+        <h4>✨ Consejo</h4>
+        <p>Prueba a mantener el equilibrio con los ojos abiertos y luego cerrados. Notarás la diferencia. ¡Es un buen ejercicio para mejorar!</p>
+      </div>
+    </div>
+    
+    <div class="scenario-box">
+      <h4>🤔 Piensa y responde</h4>
+      <p>Cuando mantienes el equilibrio sobre una pierna, sientes pequeñas oscilaciones. ¿Qué las causa?</p>
+      
+      <div class="options-grid" id="options6">
+        <div class="option-card" onclick="selectOption(6, 0, false)">
+          <strong>Opción A</strong>
+          Que no tienes suficiente fuerza
+        </div>
+        <div class="option-card" onclick="selectOption(6, 1, true)">
+          <strong>Opción B</strong>
+          Los pequeños ajustes que hacen tus músculos para mantenerte equilibrado
+        </div>
+        <div class="option-card" onclick="selectOption(6, 2, false)">
+          <strong>Opción C</strong>
+          Que te estás cansando demasiado rápido
+        </div>
+      </div>
+      
+      <div class="explanation-field">
+        <label for="explanation6">💭 Explica qué ocurre:</label>
+        <textarea id="explanation6" placeholder="Piensa en cómo se mantiene el equilibrio..."></textarea>
+      </div>
+      
+      <button class="btn" onclick="checkAnswer(6)">Verificar respuesta</button>
+      <button class="btn btn-secondary" onclick="resetExercise(6)">Reiniciar</button>
+      
+      <div class="feedback" id="feedback6"></div>
+    </div>
+  </div>
+
+  <!-- SLIDE 8: EJERCICIO 7 - PUENTE -->
+  <div class="slide">
+    <h2>7️ Puente de glúteos</h2>
+    
+    <div class="exercise-card">
+      <h3><span class="emoji"></span> ¿Qué ocurre en tu cuerpo?</h3>
+      <div class="how-it-works">
+        <h4> Cómo funciona</h4>
+        <ul>
+          <li><strong>Tus glúteos</strong> elevan la cadera</li>
+          <li><strong>Tu abdomen</strong> se activa para evitar que la espalda se arquee demasiado</li>
+          <li>Es como si tuvieras dos personas tirando de los extremos de una cuerda: se equilibran</li>
+          <li>Sin el abdomen trabajando, la espalda se arquearía demasiado y podrías lastimarte</li>
+        </ul>
+      </div>
+      
+      <div class="muscle-info">
+        <h4>💪 Músculos que trabajan</h4>
+        <ul>
+          <li><strong>Glúteos:</strong> Elevan la cadera</li>
+          <li><strong>Abdomen:</strong> Evita que la espalda se arquee demasiado</li>
+          <li><strong>Espalda baja:</strong> Mantiene la columna estable</li>
+          <li><strong>Isquiotibiales:</strong> Ayudan en el movimiento</li>
+        </ul>
+      </div>
+      
+      <div class="tip-box">
+        <h4>✨ Consejo</h4>
+        <p>Al subir, piensa en meter un poco el ombligo hacia adentro. Así activas el abdomen y proteges tu espalda.</p>
+      </div>
+    </div>
+    
+    <div class="scenario-box">
+      <h4>🤔 Piensa y responde</h4>
+      <p>En el puente, el abdomen se activa aunque el movimiento lo hagan los glúteos. ¿Por qué?</p>
+      
+      <div class="options-grid" id="options7">
+        <div class="option-card" onclick="selectOption(7, 0, true)">
+          <strong>Opción A</strong>
+          Para evitar que la espalda se arquee demasiado y mantener la pelvis en posición correcta
+        </div>
+        <div class="option-card" onclick="selectOption(7, 1, false)">
+          <strong>Opción B</strong>
+          Para ayudar a los glúteos a subir más la cadera
+        </div>
+        <div class="option-card" onclick="selectOption(7, 2, false)">
+          <strong>Opción C</strong>
+          Para respirar mejor durante el ejercicio
+        </div>
+      </div>
+      
+      <div class="explanation-field">
+        <label for="explanation7">💭 Explica por qué:</label>
+        <textarea id="explanation7" placeholder="Piensa en qué pasaría si solo trabajaran los glúteos..."></textarea>
+      </div>
+      
+      <button class="btn" onclick="checkAnswer(7)">Verificar respuesta</button>
+      <button class="btn btn-secondary" onclick="resetExercise(7)">Reiniciar</button>
+      
+      <div class="feedback" id="feedback7"></div>
+    </div>
+  </div>
+
+  <!-- SLIDE 9: EJERCICIO 8 - BATTEMENT -->
+  <div class="slide">
+    <h2>8️⃣ Battement contrôlé (movimiento controlado)</h2>
+    
+    <div class="exercise-card">
+      <h3><span class="emoji">🦵</span> ¿Qué ocurre en tu cuerpo?</h3>
+      <div class="how-it-works">
+        <h4>🔍 Cómo funciona</h4>
+        <ul>
+          <li><strong>Al subir la pierna:</strong> Los músculos de la parte externa de la cadera trabajan</li>
+          <li><strong>Al bajar lentamente:</strong> Esos mismos músculos trabajan frenando la bajada (como un freno de coche)</li>
+          <li><strong>Los músculos internos</strong> también se activan para estabilizar</li>
+          <li>Bajar lento es más difícil que subir rápido porque requiere más control</li>
+        </ul>
+      </div>
+      
+      <div class="muscle-info">
+        <h4>💪 Músculos que trabajan</h4>
+        <ul>
+          <li><strong>Abductores:</strong> (parte externa de la cadera) Elevan y controlan la bajada</li>
+          <li><strong>Aductores:</strong> (parte interna) Estabilizan</li>
+          <li><strong>Abdomen:</strong> Mantiene el tronco estable</li>
+        </ul>
+      </div>
+      
+      <div class="tip-box">
+        <h4>✨ Consejo</h4>
+        <p>Si al día siguiente te duelen más los músculos, es normal. Bajar lento crea más "agujetas" pero también te hace más fuerte.</p>
+      </div>
+    </div>
+    
+    <div class="scenario-box">
+      <h4>🤔 Piensa y responde</h4>
+      <p>Cuando bajas la pierna lentamente en battement contrôlé, ¿por qué es más difícil que subirla rápido?</p>
+      
+      <div class="options-grid" id="options8">
+        <div class="option-card" onclick="selectOption(8, 0, false)">
+          <strong>Opción A</strong>
+          Porque tardas más tiempo y te cansas más
+        </div>
+        <div class="option-card" onclick="selectOption(8, 1, true)">
+          <strong>Opción B</strong>
+          Porque los músculos tienen que frenar la pierna poco a poco, lo que requiere más control
+        </div>
+        <div class="option-card" onclick="selectOption(8, 2, false)">
+          <strong>Opción C</strong>
+          Porque se acumula más cansancio en los músculos
+        </div>
+      </div>
+      
+      <div class="explanation-field">
+        <label for="explanation8">💭 Explica tu respuesta:</label>
+        <textarea id="explanation8" placeholder="Piensa en la diferencia entre dejar caer y controlar..."></textarea>
+      </div>
+      
+      <button class="btn" onclick="checkAnswer(8)">Verificar respuesta</button>
+      <button class="btn btn-secondary" onclick="resetExercise(8)">Reiniciar</button>
+      
+      <div class="feedback" id="feedback8"></div>
+    </div>
+  </div>
+
+  <!-- SLIDE 10: EJERCICIO 9 - GIROS -->
+  <div class="slide">
+    <h2>9️⃣ Giros y piruetas</h2>
+    
+    <div class="exercise-card">
+      <h3><span class="emoji">🌀</span> ¿Qué ocurre en tu cuerpo?</h3>
+      <div class="how-it-works">
+        <h4>🔍 Cómo funciona</h4>
+        <ul>
+          <li><strong>Tu abdomen y espalda</strong> trabajan juntos creando un "cilindro" fuerte alrededor de tu tronco</li>
+          <li>Esto te mantiene recto mientras giras, como un trompo</li>
+          <li><strong>La pierna de apoyo</strong> también activa todos sus músculos para mantenerte estable</li>
+          <li>Si el "cilindro" del tronco no es fuerte, te caes o pierdes el equilibrio</li>
+        </ul>
+      </div>
+      
+      <div class="muscle-info">
+        <h4>💪 Músculos que trabajan</h4>
+        <ul>
+          <li><strong>Abdomen completo:</strong> Crea el "cilindro" de estabilidad</li>
+          <li><strong>Espalda:</strong> Trabaja junto con el abdomen</li>
+          <li><strong>Pierna de apoyo:</strong> Todos sus músculos trabajan</li>
+          <li><strong>Hombros y brazos:</strong> Ayudan a mantener el equilibrio</li>
+        </ul>
+      </div>
+      
+      <div class="tip-box">
+        <h4>✨ Consejo</h4>
+        <p>Antes de girar, activa el abdomen como si te fueran a dar un golpe. Esto crea la estabilidad que necesitas.</p>
+      </div>
+    </div>
+    
+    <div class="scenario-box">
+      <h4>🤔 Piensa y responde</h4>
+      <p>Durante una pirueta, el abdomen y la espalda trabajan juntos sin moverse. ¿Para qué sirve esto?</p>
+      
+      <div class="options-grid" id="options9">
+        <div class="option-card" onclick="selectOption(9, 0, true)">
+          <strong>Opción A</strong>
+          Para crear un "cilindro" fuerte que te mantenga recto y estable mientras giras
+        </div>
+        <div class="option-card" onclick="selectOption(9, 1, false)">
+          <strong>Opción B</strong>
+          Para generar el giro
+        </div>
+        <div class="option-card" onclick="selectOption(9, 2, false)">
+          <strong>Opción C</strong>
+          Para respirar mejor durante el giro
+        </div>
+      </div>
+      
+      <div class="explanation-field">
+        <label for="explanation9">💭 Explica por qué:</label>
+        <textarea id="explanation9" placeholder="Piensa en qué necesita un trompo para no caerse..."></textarea>
+      </div>
+      
+      <button class="btn" onclick="checkAnswer(9)">Verificar respuesta</button>
+      <button class="btn btn-secondary" onclick="resetExercise(9)">Reiniciar</button>
+      
+      <div class="feedback" id="feedback9"></div>
+    </div>
+  </div>
+
+  <!-- SLIDE 11: EJERCICIO 10 - SALTOS -->
+  <div class="slide">
+    <h2>🔟 Saltos y aterrizajes</h2>
+    
+    <div class="exercise-card">
+      <h3><span class="emoji">🦘</span> ¿Qué ocurre en tu cuerpo?</h3>
+      <div class="how-it-works">
+        <h4>🔍 Cómo funciona</h4>
+        <ul>
+          <li><strong>Al aterrizar:</strong> Todos los músculos de las piernas trabajan juntos frenando la caída</li>
+          <li>Es como cuando frenas un coche: todos los frenos trabajan juntos</li>
+          <li>Si solo trabajara un músculo, la fuerza del impacto iría directa a las articulaciones y te podrías lesionar</li>
+          <li>Al trabajar todos juntos, distribuyen la fuerza y te protegen</li>
+        </ul>
+      </div>
+      
+      <div class="muscle-info">
+        <h4>💪 Músculos que trabajan</h4>
+        <ul>
+          <li><strong>Cuádriceps:</strong> (frente del muslo) Frenan la rodilla</li>
+          <li><strong>Isquiotibiales:</strong> (detrás del muslo) Protegen la rodilla</li>
+          <li><strong>Gemelos:</strong> (pantorrillas) Controlan el tobillo</li>
+          <li><strong>Glúteos:</strong> Controlan la cadera</li>
+        </ul>
+      </div>
+      
+      <div class="tip-box">
+        <h4>✨ Consejo</h4>
+        <p>Un buen aterrizaje es silencioso. Si haces mucho ruido al caer, es que no estás usando bien tus músculos para amortiguar.</p>
+      </div>
+    </div>
+    
+    <div class="scenario-box">
+      <h4>🤔 Piensa y responde</h4>
+      <p>Cuando aterrizas de un salto, todos los músculos de las piernas trabajan juntos. ¿Por qué es importante?</p>
+      
+      <div class="options-grid" id="options10">
+        <div class="option-card" onclick="selectOption(10, 0, false)">
+          <strong>Opción A</strong>
+          Para poder saltar de nuevo inmediatamente
+        </div>
+        <div class="option-card" onclick="selectOption(10, 1, true)">
+          <strong>Opción B</strong>
+          Para distribuir la fuerza del impacto y proteger las articulaciones de lesiones
+        </div>
+        <div class="option-card" onclick="selectOption(10, 2, false)">
+          <strong>Opción C</strong>
+          Para estirar los músculos después del salto
+        </div>
+      </div>
+      
+      <div class="explanation-field">
+        <label for="explanation10">💭 Explica tu respuesta:</label>
+        <textarea id="explanation10" placeholder="Piensa en qué pasaría si ningún músculo frenara el impacto..."></textarea>
+      </div>
+      
+      <button class="btn" onclick="checkAnswer(10)">Verificar respuesta</button>
+      <button class="btn btn-secondary" onclick="resetExercise(10)">Reiniciar</button>
+      
+      <div class="feedback" id="feedback10"></div>
+    </div>
+  </div>
+
+  <!-- SLIDE 12: RESUMEN -->
+  <div class="slide">
+    <h2>📊 Resumen: Lo más importante</h2>
+    
+    <div class="intro-box">
+      <h3>🎯 Lo que has aprendido</h3>
+      <p>A lo largo de estos 10 ejercicios has descubierto que:</p>
+    </div>
+    
+    <div class="how-it-works">
+      <h4>💡 Conceptos clave</h4>
+      <ul>
+        <li><strong>Los músculos trabajan en equipo:</strong> Nunca trabajan solos, siempre hay varios activándose a la vez</li>
+        <li><strong>La estabilidad es clave:</strong> Para bailar bien, necesitas músculos que se activen juntos para mantenerte estable</li>
+        <li><strong>Protegen tus articulaciones:</strong> Esta forma de trabajar evita que te lesiones</li>
+        <li><strong>Mejoran tu control:</strong> Tus movimientos son más precisos y elegantes</li>
+        <li><strong>Se puede entrenar:</strong> Cuanto más practiques, mejor trabajarán tus músculos en equipo</li>
+      </ul>
+    </div>
+    
+    <div class="muscle-info">
+      <h4>✨ Consejos para tu entrenamiento</h4>
+      <ul>
+        <li>Presta atención a cómo se sienten tus músculos cuando bailas</li>
+        <li>Prioriza la calidad del movimiento sobre la cantidad</li>
+        <li>Empieza despacio y ve aumentando poco a poco</li>
+        <li>Si algo duele (no el cansancio normal, sino dolor), para y consulta</li>
+        <li>Practica estos ejercicios regularmente para mejorar</li>
+      </ul>
+    </div>
+    
+    <div class="tip-box">
+      <h4>🎭 En la práctica</h4>
+      <p>Ahora que entiendes cómo trabajan tus músculos:</p>
+      <ul style="margin-left: 25px; margin-top: 8px; line-height: 1.7;">
+        <li>Aplica estos conceptos en tus clases de danza</li>
+        <li>Observa cómo mejora tu estabilidad y control</li>
+        <li>Disfruta bailando con más seguridad y menos riesgo de lesión</li>
+        <li>¡Sigue practicando!</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<script>
+const exerciseState = {};
+
+function showSlide(i, btn) {
+  document.querySelectorAll('.slide').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-tabs button').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.slide')[i].classList.add('active');
+  btn.classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+function selectOption(exerciseNum, optionIndex, isCorrect) {
+  const options = document.querySelectorAll(`#options${exerciseNum} .option-card`);
+  options.forEach(opt => opt.classList.remove('selected', 'correct', 'incorrect'));
+  options[optionIndex].classList.add('selected');
+  exerciseState[exerciseNum] = { selected: optionIndex, isCorrect, checked: false };
+}
+
+function checkAnswer(exerciseNum) {
+  if (!exerciseState[exerciseNum] || exerciseState[exerciseNum].selected === undefined) {
+    alert('Por favor, selecciona una opción primero');
+    return;
+  }
+  
+  const state = exerciseState[exerciseNum];
+  const feedback = document.getElementById(`feedback${exerciseNum}`);
+  const options = document.querySelectorAll(`#options${exerciseNum} .option-card`);
+  
+  options.forEach((opt, idx) => {
+    if (idx === state.selected) {
+      opt.classList.add(state.isCorrect ? 'correct' : 'incorrect');
+    }
+  });
+  
+  feedback.classList.remove('show');
+  setTimeout(() => {
+    feedback.classList.add('show');
+    if (state.isCorrect) {
+      feedback.className = 'feedback show success';
+      feedback.innerHTML = getCorrectFeedback(exerciseNum);
+    } else {
+      feedback.className = 'feedback show error';
+      feedback.innerHTML = getIncorrectFeedback(exerciseNum);
+    }
+  }, 100);
+  
+  state.checked = true;
+}
+
+function getCorrectFeedback(num) {
+  const feedbacks = {
+    1: `<strong>¡Correcto!</strong> El temblor ocurre porque tus músculos se están cansando. Cuando se fatigan, tu cerebro los activa y desactiva muy rápido para mantener la posición. Esto crea las vibraciones que ves. Es normal y significa que te estás fortaleciendo. Con la práctica, aguantarás más tiempo sin temblar.`,
+    2: `<strong>¡Exacto!</strong> El músculo de la espinilla se activa para estabilizar el tobillo. Imagina que es como tener un freno de seguridad: evita que el tobillo se vaya demasiado hacia adelante y te caigas. Esta "cooperación" entre músculos opuestos es lo que te da estabilidad.`,
+    3: `<strong>¡Muy bien!</strong> El psoas trabaja para controlar que la pierna no se vaya demasiado atrás. Es como un "freno" que protege tu cadera de estirarse demasiado. Sin este control, la pierna o caería por gravedad o se iría demasiado atrás, y podrías lastimarte.`,
+    4: `<strong>¡Correcto!</strong> La parte de atrás del muslo trabaja para proteger la rodilla. Cuando bajas, la parte de adelante tira de la rodilla hacia adelante. La parte de atrás tira hacia atrás. Así se equilibran y protegen el ligamento cruzado (una "cinta" importante dentro de la rodilla).`,
+    5: `<strong>¡Excelente!</strong> Los músculos internos mantienen la rotación de la cadera y estabilizan la rodilla. En el plié de ballet, necesitas estabilidad en varias direcciones a la vez. Si no trabajaran los internos, las rodillas se irían hacia adentro y perderías la posición correcta.`,
+    6: `<strong>¡Perfecto!</strong> Las pequeñas oscilaciones son ajustes que hacen tus músculos constantemente para mantenerte equilibrado. Es como cuando sostienes algo delicado: haces pequeños movimientos para que no se caiga. Tus músculos hacen lo mismo, activándose y relajándose muy rápido.`,
+    7: `<strong>¡Correcto!</strong> El abdomen trabaja para evitar que la espalda se arquee demasiado. Los glúteos suben la cadera, pero si el abdomen no trabaja, la espalda se arquearía mucho y podrías lastimarte. Trabajando juntos, mantienen la pelvis en posición correcta y protegen la espalda.`,
+    8: `<strong>¡Muy bien!</strong> Bajar lento requiere que los músculos frenen la pierna poco a poco, como un coche que frena suavemente. Esto requiere más control y fuerza que dejarla caer. Por eso es más difícil y también por eso al día siguiente puedes tener más "agujetas".`,
+    9: `<strong>¡Exacto!</strong> El abdomen y la espalda trabajan juntos creando un "cilindro" fuerte alrededor de tu tronco. Esto te mantiene recto mientras giras, como un trompo. Si este cilindro no es fuerte, te caes o pierdes el equilibrio. Por eso es tan importante fortalecer el centro del cuerpo.`,
+    10: `<strong>¡Correcto!</strong> Todos los músculos trabajan juntos para distribuir la fuerza del impacto. Cuando aterrizas, la fuerza es 5-8 veces tu peso. Si todos los músculos frenan juntos, distribuyen esa fuerza y protegen tus articulaciones. Si no, la fuerza iría directa a huesos y ligamentos → lesión.`
+  };
+  return feedbacks[num];
+}
+
+function getIncorrectFeedback(num) {
+  const feedbacks = {
+    1: `<strong>Casi...</strong> Piensa: si los músculos se quedaran sin energía, no podrías moverte en absoluto. Si se rompieran, sentirías un dolor fuerte. El temblor es porque se están cansando y tu cerebro los activa y desactiva rápido para mantener la posición. Es una señal de que te estás fortaleciendo.`,
+    2: `<strong>Reflexiona...</strong> No es un error ni solo para preparar la bajada. El músculo de la espinilla estabiliza el tobillo mientras subes. Sin él, el tobillo sería inestable y podrías caerte o torcerte. Es como tener un sistema de seguridad que trabaja junto con los gemelos.`,
+    3: `<strong>Piensa...</strong> No es desperdicio de energía ni solo para preparar el siguiente movimiento. El psoas controla la posición de la pierna. Sin este control, la pierna se iría demasiado atrás (hiperextensión) y podrías lastimar la cadera. Es un "freno" de seguridad.`,
+    4: `<strong>Considera...</strong> La parte de atrás no ayuda a la de adelante (de hecho, hacen movimientos opuestos). Tampoco es para estirar. Trabaja para proteger la rodilla: contrarresta la fuerza que hace la parte de adelante, evitando que la rodilla se lesione. Es un sistema de seguridad.`,
+    5: `<strong>Analiza...</strong> Los músculos internos no ayudan a doblar la rodilla ni solo estiran. Mantienen la rotación de la cadera y estabilizan la rodilla en el plié. Sin ellos, las rodillas se irían hacia adentro y perderías la alineación correcta. Es trabajo en equipo en varias direcciones.`,
+    6: `<strong>Observa...</strong> No es falta de fuerza (puedes mantenerlo) ni solo cansancio. Las oscilaciones son ajustes constantes que hacen los músculos para mantenerte equilibrado. Es automático: tus músculos detectan que te vas a caer y corrigen rápidamente. Es como un sistema de equilibrio automático.`,
+    7: `<strong>Reflexiona...</strong> El abdomen no ayuda a subir (de hecho, es opuesto al movimiento). Tampoco es por respiración. Trabaja para evitar que la espalda se arquee demasiado cuando los glúteos suben la cadera. Es un contrapeso que protege la espalda.`,
+    8: `<strong>Piensa...</strong> No es por el tiempo ni solo por cansancio. Bajar lento requiere que los músculos frenen la pierna poco a poco, como un freno de coche. Esto es más difícil que dejarla caer y requiere más control. Por eso duele más al día siguiente (agujetas), pero también te hace más fuerte.`,
+    9: `<strong>Considera...</strong> El abdomen y espalda no generan el giro (eso lo hacen otros músculos). Tampoco es por respiración. Trabajan juntos creando un "cilindro" fuerte que te mantiene recto mientras giras. Sin esta estabilidad, te caerías. Es como el eje de un trompo.`,
+    10: `<strong>Analiza...</strong> No es para saltar de nuevo ni para estirar. Todos los músculos trabajan para absorber el impacto del aterrizaje. La fuerza es muy grande (5-8 veces tu peso). Si todos frenan juntos, distribuyen esa fuerza y protegen tus articulaciones. Si no, te podrías lesionar.`
+  };
+  return feedbacks[num];
+}
+
+function resetExercise(exerciseNum) {
+  const options = document.querySelectorAll(`#options${exerciseNum} .option-card`);
+  options.forEach(opt => opt.classList.remove('selected', 'correct', 'incorrect'));
+  const textarea = document.getElementById(`explanation${exerciseNum}`);
+  if (textarea) textarea.value = '';
+  const feedback = document.getElementById(`feedback${exerciseNum}`);
+  feedback.classList.remove('show');
+  delete exerciseState[exerciseNum];
+}
+</script>
+</body>
+</html>

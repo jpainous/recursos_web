@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Tauler de la Unitat Motora</title>
+<style>
+  body { font-family: 'Segoe UI', sans-serif; background: #0f172a; color: #e2e8f0; margin: 0; padding: 20px; }
+  h1 { text-align: center; color: #f59e0b; }
+  .container { max-width: 1100px; margin: auto; background: #1e293b; padding: 25px; border-radius: 12px; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  @media (max-width: 800px) { .grid { grid-template-columns: 1fr; } }
+  .panel { background: #0f172a; padding: 18px; border-radius: 10px; border: 1px solid #334155; }
+  .panel h3 { margin-top: 0; color: #fbbf24; }
+  canvas { background: #0b1220; border-radius: 8px; display: block; width: 100%; }
+  .slider-box { margin: 15px 0; }
+  .slider-box label { display: block; margin-bottom: 6px; font-weight: bold; }
+  input[type=range] { width: 100%; }
+  .info { margin-top: 15px; padding: 12px; background: #334155; border-radius: 6px; border-left: 4px solid #f59e0b; min-height: 80px; font-size: 14px; }
+  .leyenda { display: flex; gap: 15px; margin-top: 10px; flex-wrap: wrap; font-size: 13px; }
+  .dot { display: inline-block; width: 12px; height: 12px; border-radius: 50%; margin-right: 5px; vertical-align: middle; }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>🎛️ Tauler de Control de la Unitat Motora</h1>
+  <p style="text-align:center; color:#94a3b8;">Controla el reclutamiento y la frecuencia de impulsos nerviosos.</p>
+
+  <div class="grid">
+    <div class="panel">
+      <h3>Músculo (vista transversal)</h3>
+      <canvas id="muscle" width="450" height="300"></canvas>
+      <div class="leyenda">
+        <span><span class="dot" style="background:#3b82f6"></span>Tipo I (lentas)</span>
+        <span><span class="dot" style="background:#a855f7"></span>Tipo IIa (mixtas)</span>
+        <span><span class="dot" style="background:#ef4444"></span>Tipo IIx (potentes)</span>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h3>Fuerza resultante</h3>
+      <canvas id="fuerza" width="450" height="300"></canvas>
+      <div class="info" id="info">Ajusta los controles para ver cómo el sistema nervioso gradúa la fuerza.</div>
+    </div>
+  </div>
+
+  <div class="panel" style="margin-top:20px;">
+    <div class="slider-box">
+      <label>🎚️ Intensidad (Reclutamiento): <span id="intVal">0</span>%</label>
+      <input type="range" id="int" min="0" max="100" value="0">
+      <small style="color:#94a3b8;">Principio del tamaño: se reclutan primero las lentas (I), luego IIa, luego IIx.</small>
+    </div>
+    <div class="slider-box">
+      <label>⚡ Frecuencia de descarga: <span id="freqVal">1</span> impulso/s</label>
+      <input type="range" id="freq" min="1" max="60" value="1">
+      <small style="color:#94a3b8;">A mayor frecuencia → sumación temporal → tetanus.</small>
+    </div>
+  </div>
+</div>
+
+<script>
+const muscle = document.getElementById('muscle');
+const mctx = muscle.getContext('2d');
+const fuerza = document.getElementById('fuerza');
+const fctx = fuerza.getContext('2d');
+const intSlider = document.getElementById('int');
+const freqSlider = document.getElementById('freq');
+const info = document.getElementById('info');
+
+// Unidades motoras: tipo, tamaño, umbral de activación, fuerza máxima
+const unidades = [
+  // Tipo I (6 unidades, umbrales bajos)
+  {tipo:'I', color:'#3b82f6', x:80, y:80, r:10, umbral:5, fuerza:3},
+  {tipo:'I', color:'#3b82f6', x:130, y:110, r:11, umbral:10, fuerza:3},
+  {tipo:'I', color:'#3b82f6', x:90, y:160, r:10, umbral:15, fuerza:3},
+  {tipo:'I', color:'#3b82f6', x:140, y:200, r:11, umbral:20, fuerza:3},
+  {tipo:'I', color:'#3b82f6', x:100, y:240, r:10, umbral:25, fuerza:3},
+  {tipo:'I', color:'#3b82f6', x:170, y:150, r:12, umbral:30, fuerza:3},
+  // Tipo IIa (5 unidades, umbrales medios)
+  {tipo:'IIa', color:'#a855f7', x:240, y:90, r:16, umbral:35, fuerza:8},
+  {tipo:'IIa', color:'#a855f7', x:290, y:140, r:17, umbral:45, fuerza:8},
+  {tipo:'IIa', color:'#a855f7', x:230, y:190, r:16, umbral:55, fuerza:8},
+  {tipo:'IIa', color:'#a855f7', x:280, y:230, r:17, umbral:65, fuerza:8},
+  {tipo:'IIa', color:'#a855f7', x:330, y:180, r:18, umbral:70, fuerza:8},
+  // Tipo IIx (4 unidades, umbrales altos)
+  {tipo:'IIx', color:'#ef4444', x:380, y:100, r:22, umbral:75, fuerza:15},
+  {tipo:'IIx', color:'#ef4444', x:400, y:170, r:24, umbral:85, fuerza:15},
+  {tipo:'IIx', color:'#ef4444', x:370, y:230, r:22, umbral:92, fuerza:15},
+  {tipo:'IIx', color:'#ef4444', x:420, y:260, r:23, umbral:97, fuerza:15}
+];
+
+let historial = [];
+
+function draw() {
+  const intensidad = parseInt(intSlider.value);
+  const freq = parseInt(freqSlider.value);
+  document.getElementById('intVal').textContent = intensidad;
+  document.getElementById('freqVal').textContent = freq;
+
+  // Dibuja músculo
+  mctx.clearRect(0,0,muscle.width,muscle.height);
+  mctx.fillStyle = '#1e293b';
+  mctx.fillRect(0,0,muscle.width,muscle.height);
+
+  let fuerzaTotal = 0;
+  let activas = 0;
+  let tipoActivo = null;
+
+  unidades.forEach(u => {
+    const activa = intensidad >= u.umbral;
+    if (activa) {
+      activas++;
+      tipoActivo = u.tipo;
+      fuerzaTotal += u.fuerza;
+    }
+    // Efecto de "parpadeo" según frecuencia
+    let alpha = activa ? 1 : 0.2;
+    if (activa && freq > 1) {
+      const parpadeo = Math.sin(Date.now()/100 * freq/10) * 0.3 + 0.7;
+      alpha = parpadeo;
+    }
+    mctx.fillStyle = u.color;
+    mctx.globalAlpha = alpha;
+    mctx.beginPath();
+    mctx.arc(u.x, u.y, u.r, 0, Math.PI*2);
+    mctx.fill();
+    if (activa) {
+      mctx.strokeStyle = '#fbbf24';
+      mctx.lineWidth = 2;
+      mctx.stroke();
+    }
+  });
+  mctx.globalAlpha = 1;
+
+  // Sumación temporal: si freq > 20, fuerza se amplifica
+  let factorSumacion = 1;
+  if (freq >= 30) factorSumacion = 2.5; // tetanus
+  else if (freq >= 15) factorSumacion = 1.8;
+  else if (freq >= 8) factorSumacion = 1.3;
+
+  fuerzaTotal *= factorSumacion;
+  const fuerzaMax = 200;
+  const fuerzaPct = Math.min(100, (fuerzaTotal/fuerzaMax)*100);
+
+  // Historial
+  historial.push(fuerzaPct);
+  if (historial.length > 100) historial.shift();
+
+  // Dibuja gráfico de fuerza
+  fctx.clearRect(0,0,fuerza.width,fuerza.height);
+  fctx.fillStyle = '#1e293b';
+  fctx.fillRect(0,0,fuerza.width,fuerza.height);
+
+  // Ejes
+  fctx.strokeStyle = '#475569'; fctx.lineWidth = 1;
+  fctx.beginPath();
+  fctx.moveTo(40,20); fctx.lineTo(40,270); fctx.lineTo(440,270);
+  fctx.stroke();
+  fctx.fillStyle = '#94a3b8'; fctx.font = '12px sans-serif';
+  fctx.fillText('Fuerza (%)', 10, 15);
+  fctx.fillText('Tiempo →', 380, 288);
+
+  // Línea de fuerza
+  fctx.strokeStyle = '#f59e0b'; fctx.lineWidth = 2;
+  fctx.beginPath();
+  historial.forEach((v,i) => {
+    const x = 40 + i*4;
+    const y = 270 - (v/100)*250;
+    if (i===0) fctx.moveTo(x,y); else fctx.lineTo(x,y);
+  });
+  fctx.stroke();
+
+  // Info
+  let estado = '';
+  if (activas === 0) estado = '💤 <b>Reposo:</b> ninguna unidad motora activada.';
+  else if (freq < 8) estado = `⚡ <b>Twitch:</b> ${activas} UM activas. Contracciones aisladas (twitch).`;
+  else if (freq < 30) estado = `🔥 <b>Sumación temporal:</b> ${activas} UM. Los impulsos se suman → más fuerza.`;
+  else estado = `💥 <b>TETANUS:</b> ${activas} UM. Fusión completa → fuerza máxima sostenida.`;
+
+  let reclutamiento = '';
+  if (intensidad > 0) reclutamiento = `<br>📊 Se han reclutado fibras: ${tipoActivo === 'I' ? 'solo Tipo I (baja intensidad)' : tipoActivo === 'IIa' ? 'Tipo I + IIa (intensidad media)' : 'TODAS las fibras (máxima intensidad)'}`;
+
+  info.innerHTML = estado + reclutamiento;
+
+  requestAnimationFrame(draw);
+}
+
+intSlider.addEventListener('input', () => {});
+freqSlider.addEventListener('input', () => {});
+draw();
+</script>
+</body>
+</html>

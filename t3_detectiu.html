@@ -1,0 +1,1323 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>🕵️ Detectiu Biomecànic - Casos Pràctics Tema 3</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    color: #e2e8f0;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+  .app { max-width: 1200px; margin: auto; padding: 20px; }
+  
+  /* Header */
+  .header {
+    background: rgba(15, 23, 42, 0.9);
+    padding: 15px 25px;
+    border-radius: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-bottom: 20px;
+    border: 1px solid #334155;
+    position: sticky;
+    top: 10px;
+    z-index: 100;
+    backdrop-filter: blur(10px);
+  }
+  .logo {
+    font-size: 22px;
+    font-weight: bold;
+    background: linear-gradient(90deg, #f59e0b, #ef4444);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .stats {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  .stat {
+    background: #334155;
+    padding: 8px 14px;
+    border-radius: 20px;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .stat.punts { background: linear-gradient(90deg, #f59e0b, #ef4444); color: #0f172a; font-weight: bold; }
+  .stat.badges { background: #8b5cf6; color: white; }
+  
+  /* Selector d'idioma */
+  .lang-selector {
+    display: flex;
+    gap: 5px;
+  }
+  .lang-btn {
+    background: #334155;
+    color: #e2e8f0;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: bold;
+    transition: all 0.2s;
+  }
+  .lang-btn.active {
+    background: #38bdf8;
+    color: #0f172a;
+  }
+  
+  /* Pantalles */
+  .screen {
+    display: none;
+    animation: fadeIn 0.5s;
+  }
+  .screen.active { display: block; }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  
+  /* Portada */
+  .portada {
+    text-align: center;
+    padding: 40px 20px;
+    background: radial-gradient(circle at center, #422006 0%, #0f172a 70%);
+    border-radius: 16px;
+    border: 2px solid #f59e0b;
+  }
+  .portada h1 {
+    font-size: 48px;
+    background: linear-gradient(90deg, #f59e0b, #ef4444, #ec4899);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 15px;
+  }
+  .portada .subtitle {
+    font-size: 20px;
+    color: #94a3b8;
+    margin-bottom: 30px;
+  }
+  .rol-card {
+    background: rgba(30, 41, 59, 0.8);
+    padding: 25px;
+    border-radius: 12px;
+    margin: 30px auto;
+    max-width: 600px;
+    border: 2px dashed #f59e0b;
+  }
+  .rol-card h3 { color: #fbbf24; margin-bottom: 10px; }
+  .rol-card .emoji { font-size: 60px; margin: 15px 0; }
+  
+  /* Botons */
+  .btn {
+    background: linear-gradient(90deg, #f59e0b, #ef4444);
+    color: white;
+    border: none;
+    padding: 14px 30px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 16px;
+    transition: all 0.3s;
+    margin: 5px;
+    box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3);
+  }
+  .btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(245, 158, 11, 0.5); }
+  .btn.secondary { background: #38bdf8; box-shadow: 0 4px 15px rgba(56, 189, 248, 0.3); }
+  .btn.success { background: linear-gradient(90deg, #10b981, #34d399); box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3); }
+  .btn.email { background: linear-gradient(90deg, #8b5cf6, #ec4899); }
+  
+  /* Casos */
+  .caso-container {
+    background: rgba(30, 41, 59, 0.8);
+    padding: 30px;
+    border-radius: 16px;
+    margin-bottom: 20px;
+    border: 2px solid #334155;
+  }
+  .caso-header {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid #475569;
+  }
+  .caso-num {
+    background: linear-gradient(135deg, #f59e0b, #ef4444);
+    color: white;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    font-weight: bold;
+    flex-shrink: 0;
+  }
+  .caso-title { flex: 1; }
+  .caso-title h2 { color: #fbbf24; font-size: 26px; margin-bottom: 5px; }
+  .caso-title .estilo { color: #38bdf8; font-size: 14px; text-transform: uppercase; letter-spacing: 2px; }
+  
+  /* Escenari visual */
+  .escenario {
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    border-radius: 12px;
+    padding: 20px;
+    margin: 20px 0;
+    text-align: center;
+    border: 1px solid #334155;
+  }
+  .escenario svg { max-width: 100%; height: auto; }
+  .escenario .descripcion {
+    background: rgba(56, 189, 248, 0.1);
+    border-left: 4px solid #38bdf8;
+    padding: 15px;
+    border-radius: 8px;
+    margin-top: 15px;
+    text-align: left;
+    font-size: 15px;
+    line-height: 1.6;
+  }
+  
+  /* Observacions */
+  .observaciones {
+    background: rgba(251, 191, 36, 0.08);
+    border: 2px dashed #fbbf24;
+    border-radius: 12px;
+    padding: 20px;
+    margin: 20px 0;
+  }
+  .observaciones h3 {
+    color: #fbbf24;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .obs-item {
+    background: rgba(15, 23, 42, 0.6);
+    padding: 12px 15px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    border-left: 3px solid #64748b;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+  .obs-item.alerta { border-left-color: #ef4444; }
+  .obs-item.normal { border-left-color: #10b981; }
+  
+  /* Preguntes */
+  .pregunta {
+    background: rgba(139, 92, 246, 0.1);
+    border: 2px solid #8b5cf6;
+    border-radius: 12px;
+    padding: 20px;
+    margin: 20px 0;
+  }
+  .pregunta h4 {
+    color: #a78bfa;
+    margin-bottom: 15px;
+    font-size: 18px;
+  }
+  .opcions { display: grid; gap: 10px; }
+  .opcio {
+    background: #334155;
+    padding: 14px 18px;
+    border-radius: 8px;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: all 0.2s;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+  .opcio:hover { border-color: #8b5cf6; transform: translateX(5px); }
+  .opcio.selected { background: #1e3a5f; border-color: #38bdf8; }
+  .opcio.correcta { background: #14532d; border-color: #34d399; }
+  .opcio.incorrecta { background: #7f1d1d; border-color: #ef4444; }
+  
+  /* Feedback */
+  .feedback {
+    padding: 20px;
+    border-radius: 12px;
+    margin-top: 15px;
+    display: none;
+    animation: slideDown 0.4s;
+  }
+  .feedback.visible { display: block; }
+  @keyframes slideDown {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .feedback.success { background: rgba(16, 185, 129, 0.15); border: 2px solid #10b981; }
+  .feedback.error { background: rgba(239, 68, 68, 0.15); border: 2px solid #ef4444; }
+  .feedback h4 { margin-bottom: 10px; }
+  .feedback.success h4 { color: #34d399; }
+  .feedback.error h4 { color: #f87171; }
+  
+  /* Badge */
+  .badge-popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    background: linear-gradient(135deg, #fbbf24, #f59e0b);
+    color: #0f172a;
+    padding: 40px 50px;
+    border-radius: 20px;
+    text-align: center;
+    z-index: 1000;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  .badge-popup.visible { transform: translate(-50%, -50%) scale(1); }
+  .badge-popup .emoji { font-size: 80px; margin-bottom: 15px; }
+  .badge-popup h2 { font-size: 28px; margin-bottom: 10px; }
+  .badge-popup p { font-size: 16px; }
+  
+  /* Test final */
+  .test-container {
+    background: rgba(30, 41, 59, 0.8);
+    padding: 30px;
+    border-radius: 16px;
+    border: 2px solid #8b5cf6;
+  }
+  .test-question {
+    background: rgba(15, 23, 42, 0.6);
+    padding: 20px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    border-left: 4px solid #8b5cf6;
+  }
+  .test-question h4 {
+    color: #a78bfa;
+    margin-bottom: 15px;
+    font-size: 16px;
+  }
+  .test-question .num-q {
+    display: inline-block;
+    background: #8b5cf6;
+    color: white;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 28px;
+    font-size: 14px;
+    margin-right: 10px;
+  }
+  
+  /* Formulari email */
+  .email-form {
+    background: rgba(139, 92, 246, 0.1);
+    border: 2px dashed #8b5cf6;
+    border-radius: 12px;
+    padding: 25px;
+    margin-top: 25px;
+  }
+  .email-form h3 { color: #a78bfa; margin-bottom: 15px; }
+  .email-form label {
+    display: block;
+    margin: 12px 0 6px;
+    color: #cbd5e1;
+    font-size: 14px;
+  }
+  .email-form input, .email-form textarea {
+    width: 100%;
+    padding: 10px;
+    background: #0f172a;
+    border: 1px solid #475569;
+    border-radius: 6px;
+    color: #e2e8f0;
+    font-family: inherit;
+    font-size: 14px;
+  }
+  .email-form input:focus, .email-form textarea:focus {
+    outline: none;
+    border-color: #8b5cf6;
+  }
+  .email-form textarea { min-height: 100px; resize: vertical; }
+  
+  /* Resultat final */
+  .resultado-final {
+    background: linear-gradient(135deg, #14532d 0%, #0f172a 100%);
+    padding: 30px;
+    border-radius: 16px;
+    text-align: center;
+    border: 2px solid #34d399;
+    margin-top: 20px;
+  }
+  .resultado-final h2 {
+    font-size: 36px;
+    color: #34d399;
+    margin-bottom: 15px;
+  }
+  .nota {
+    font-size: 60px;
+    font-weight: bold;
+    background: linear-gradient(90deg, #fbbf24, #ef4444);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin: 20px 0;
+  }
+  
+  /* Progressió */
+  .progres-casos {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin: 20px 0;
+  }
+  .progres-dot {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #334155;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    transition: all 0.3s;
+  }
+  .progres-dot.active { background: #f59e0b; color: #0f172a; transform: scale(1.1); }
+  .progres-dot.done { background: #10b981; color: white; }
+  
+  /* Responsive */
+  @media (max-width: 768px) {
+    .portada h1 { font-size: 32px; }
+    .caso-header { flex-direction: column; text-align: center; }
+    .header { flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+
+<div class="app">
+  <!-- HEADER -->
+  <div class="header">
+    <div class="logo">🕵️ <span data-i18n="appTitle">Detectiu Biomecànic</span></div>
+    <div class="stats">
+      <div class="stat punts">⭐ <span id="punts">0</span> <span data-i18n="punts">punts</span></div>
+      <div class="stat badges">🏆 <span id="badges">0</span>/4 <span data-i18n="insignies">insígnies</span></div>
+      <div class="lang-selector">
+        <button class="lang-btn active" onclick="setLang('ca')">CAT</button>
+        <button class="lang-btn" onclick="setLang('es')">CAST</button>
+        <button class="lang-btn" onclick="setLang('en')">ENG</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- PANTALLA 1: PORTADA -->
+  <div class="screen active" id="screen-portada">
+    <div class="portada">
+      <div style="font-size: 80px;">🕵️‍♀️🩰🦴</div>
+      <h1 data-i18n="portadaTitle">Detectiu Biomecànic</h1>
+      <p class="subtitle" data-i18n="portadaSub">Casos Pràctics del Tema 3</p>
+      
+      <div class="rol-card">
+        <div class="emoji">🎭</div>
+        <h3 data-i18n="rolTitle">El teu rol</h3>
+        <p data-i18n="rolText">Ets el <b>fisioterapeuta d'una companyia de dansa</b>. Durant l'assaig general, els ballarins presenten diferents problemes. La teva missió: <b>observar, diagnosticar i intervenir</b> abans que apareguin lesions.</p>
+      </div>
+      
+      <div class="progres-casos">
+        <div class="progres-dot" id="pd1">1</div>
+        <div class="progres-dot" id="pd2">2</div>
+        <div class="progres-dot" id="pd3">3</div>
+        <div class="progres-dot" id="pd4">4</div>
+        <div class="progres-dot" id="pd5">📝</div>
+      </div>
+      
+      <button class="btn" onclick="iniciarCas(1)" data-i18n="comencem">🎬 Comencem!</button>
+    </div>
+  </div>
+
+  <!-- PANTALLA CASOS -->
+  <div class="screen" id="screen-caso">
+    <div class="caso-container" id="casoContainer"></div>
+    <div style="text-align:center; margin-top:20px;">
+      <button class="btn secondary" onclick="tornarPortada()" data-i18n="tornar">← Tornar al menú</button>
+    </div>
+  </div>
+
+  <!-- PANTALLA TEST FINAL -->
+  <div class="screen" id="screen-test">
+    <div class="test-container" id="testContainer"></div>
+  </div>
+
+  <!-- PANTALLA RESULTATS -->
+  <div class="screen" id="screen-resultats">
+    <div id="resultatsContainer"></div>
+  </div>
+</div>
+
+<!-- POPUP BADGE -->
+<div class="badge-popup" id="badgePopup">
+  <div class="emoji" id="badgeEmoji">🏆</div>
+  <h2 id="badgeTitle">Insígnia obtinguda!</h2>
+  <p id="badgeText"></p>
+</div>
+
+<script>
+// ==================== TRADUCCIONS ====================
+const traduccions = {
+  ca: {
+    appTitle: "Detectiu Biomecànic",
+    punts: "punts",
+    insígnies: "insígnies",
+    portadaTitle: "Detectiu Biomecànic",
+    portadaSub: "Casos Pràctics del Tema 3",
+    rolTitle: "El teu rol",
+    rolText: "Ets el <b>fisioterapeuta d'una companyia de dansa</b>. Durant l'assaig general, els ballarins presenten diferents problemes. La teva missió: <b>observar, diagnosticar i intervenir</b> abans que apareguin lesions.",
+    comencem: "🎬 Comencem!",
+    tornar: "← Tornar al menú",
+    observar: "🔍 Observa l'escena",
+    diagnosticar: "🧠 Diagnòstic",
+    intervenir: "💊 Intervenció",
+    comprovar: "✔ Comprovar",
+    seguent: "Següent cas →",
+    test: "📝 Test Final",
+    enviarEmail: "📧 Enviar a la professora",
+    nom: "El teu nom",
+    emailProf: "Email de la professora",
+    comentaris: "Comentaris o reflexions",
+    resultat: "Resultat del Test",
+    puntsObtinguts: "punts obtinguts",
+    encerts: "Encerts",
+    de: "de",
+    felicitats: "🎉 Felicitats!",
+    revisar: "Cal revisar alguns conceptes",
+    perfecte: "Perfecte! Domines el tema",
+    correcte: "✔ Correcte!",
+    incorrecte: "✘ Incorrecte",
+    explicacio: "Explicació",
+    respostaCorrecta: "Resposta correcta",
+    badge1T: "🦵 Mestre del Demi-Plié",
+    badge1D: "Has detectat la fatiga excèntrica",
+    badge2T: "🩰 Expert en Arabesque",
+    badge2D: "Domines l'estabilitat pèlvica",
+    badge3T: "🤸 Analista de Freeze",
+    badge3D: "Entens l'amortiguació del tren superior",
+    badge4T: "🧠 Detectiu de Propriocepció",
+    badge4D: "Identifiques la descalibració dels sensors",
+    cas1Title: "El Demi-Plié que col·lapsa",
+    cas1Estil: "Ballet Clàssic · Assaig general",
+    cas2Title: "L'Arabesque que tremola",
+    cas2Estil: "Ballet Clàssic · Sostén llarg",
+    cas3Title: "El Freeze que perd el bloqueig",
+    cas3Estil: "Breakdance · Sessió intensa",
+    cas4Title: "L'Attitude que oscil·la",
+    cas4Estil: "Ballet Clàssic · Final d'assaig"
+  },
+  es: {
+    appTitle: "Detective Biomecánico",
+    punts: "puntos",
+    insígnies: "insignias",
+    portadaTitle: "Detective Biomecánico",
+    portadaSub: "Casos Prácticos del Tema 3",
+    rolTitle: "Tu rol",
+    rolText: "Eres el <b>fisioterapeuta de una compañía de danza</b>. Durante el ensayo general, los bailarines presentan diferentes problemas. Tu misión: <b>observar, diagnosticar e intervenir</b> antes de que aparezcan lesiones.",
+    comencem: "🎬 ¡Empezamos!",
+    tornar: "← Volver al menú",
+    observar: "🔍 Observa la escena",
+    diagnosticar: "🧠 Diagnóstico",
+    intervenir: "💊 Intervención",
+    comprovar: "✔ Comprobar",
+    seguent: "Siguiente caso →",
+    test: "📝 Test Final",
+    enviarEmail: "📧 Enviar a la profesora",
+    nom: "Tu nombre",
+    emailProf: "Email de la profesora",
+    comentaris: "Comentarios o reflexiones",
+    resultat: "Resultado del Test",
+    puntsObtinguts: "puntos obtenidos",
+    encerts: "Aciertos",
+    de: "de",
+    felicitats: "🎉 ¡Felicidades!",
+    revisar: "Hay que revisar algunos conceptos",
+    perfecte: "¡Perfecto! Dominas el tema",
+    correcte: "✔ ¡Correcto!",
+    incorrecte: "✘ Incorrecto",
+    explicacio: "Explicación",
+    respostaCorrecta: "Respuesta correcta",
+    badge1T: "🦵 Maestro del Demi-Plié",
+    badge1D: "Has detectado la fatiga excéntrica",
+    badge2T: "🩰 Experto en Arabesque",
+    badge2D: "Dominas la estabilidad pélvica",
+    badge3T: "🤸 Analista de Freeze",
+    badge3D: "Entiendes la amortiguación del tren superior",
+    badge4T: "🧠 Detective de Propiocepción",
+    badge4D: "Identificas la descalibración de los sensores",
+    cas1Title: "El Demi-Plié que colapsa",
+    cas1Estil: "Ballet Clásico · Ensayo general",
+    cas2Title: "El Arabesque que tiembla",
+    cas2Estil: "Ballet Clásico · Sosten largo",
+    cas3Title: "El Freeze que pierde el bloqueo",
+    cas3Estil: "Breakdance · Sesión intensa",
+    cas4Title: "La Attitude que oscila",
+    cas4Estil: "Ballet Clásico · Final de ensayo"
+  },
+  en: {
+    appTitle: "Biomechanical Detective",
+    punts: "points",
+    insígnies: "badges",
+    portadaTitle: "Biomechanical Detective",
+    portadaSub: "Practical Cases - Topic 3",
+    rolTitle: "Your role",
+    rolText: "You are the <b>physiotherapist of a dance company</b>. During the general rehearsal, dancers present different problems. Your mission: <b>observe, diagnose and intervene</b> before injuries occur.",
+    comencem: "🎬 Let's start!",
+    tornar: "← Back to menu",
+    observar: "🔍 Observe the scene",
+    diagnosticar: "🧠 Diagnosis",
+    intervenir: "💊 Intervention",
+    comprovar: "✔ Check",
+    seguent: "Next case →",
+    test: "📝 Final Test",
+    enviarEmail: "📧 Send to teacher",
+    nom: "Your name",
+    emailProf: "Teacher's email",
+    comentaris: "Comments or reflections",
+    resultat: "Test Result",
+    puntsObtinguts: "points obtained",
+    encerts: "Correct",
+    de: "of",
+    felicitats: "🎉 Congratulations!",
+    revisar: "Some concepts need review",
+    perfecte: "Perfect! You master the topic",
+    correcte: "✔ Correct!",
+    incorrecte: "✘ Incorrect",
+    explicacio: "Explanation",
+    respostaCorrecta: "Correct answer",
+    badge1T: "🦵 Demi-Plié Master",
+    badge1D: "You detected eccentric fatigue",
+    badge2T: "🩰 Arabesque Expert",
+    badge2D: "You master pelvic stability",
+    badge3T: "🤸 Freeze Analyst",
+    badge3D: "You understand upper body cushioning",
+    badge4T: "🧠 Proprioception Detective",
+    badge4D: "You identify sensor miscalibration",
+    cas1Title: "The Collapsing Demi-Plié",
+    cas1Estil: "Classical Ballet · General rehearsal",
+    cas2Title: "The Shaking Arabesque",
+    cas2Estil: "Classical Ballet · Long hold",
+    cas3Title: "The Unlocked Freeze",
+    cas3Estil: "Breakdance · Intense session",
+    cas4Title: "The Swaying Attitude",
+    cas4Estil: "Classical Ballet · End of rehearsal"
+  }
+};
+
+let langActual = 'ca';
+let punts = 0;
+let badges = 0;
+let badgesObtingudes = [];
+let casActual = 0;
+let respostesCas = {};
+let respostesTest = {};
+
+function setLang(lang) {
+  langActual = lang;
+  document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+  event.target.classList.add('active');
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const clau = el.getAttribute('data-i18n');
+    if (traduccions[lang][clau]) el.innerHTML = traduccions[lang][clau];
+  });
+  if (document.getElementById('screen-caso').classList.contains('active')) {
+    mostrarCas(casActual);
+  }
+  if (document.getElementById('screen-test').classList.contains('active')) {
+    mostrarTest();
+  }
+}
+
+function t(clau) { return traduccions[langActual][clau] || clau; }
+
+function iniciarCas(num) {
+  casActual = num;
+  mostrarCas(num);
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById('screen-caso').classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+function tornarPortada() {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById('screen-portada').classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+// ==================== CASOS PRÀCTICS ====================
+const casos = {
+  1: {
+    svg: `<svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+      <rect width="400" height="300" fill="#0b1220"/>
+      <line x1="50" y1="270" x2="350" y2="270" stroke="#475569" stroke-width="2" stroke-dasharray="5,5"/>
+      <ellipse cx="200" cy="260" rx="40" ry="10" fill="#fbbf24" opacity="0.3"/>
+      <path d="M 170 260 Q 200 240 230 260" fill="#fde68a" stroke="#f59e0b" stroke-width="2"/>
+      <circle cx="200" cy="220" r="12" fill="#fca5a5" stroke="#dc2626" stroke-width="2"/>
+      <path d="M 180 215 Q 170 170 185 130 L 215 130 Q 230 170 220 215 Z" fill="#f472b6" stroke="#be185d" stroke-width="2"/>
+      <circle cx="200" cy="120" r="15" fill="#fca5a5" stroke="#dc2626" stroke-width="2"/>
+      <path d="M 185 115 L 180 50 L 220 50 L 215 115 Z" fill="#fb923c" stroke="#c2410c" stroke-width="2"/>
+      <circle cx="160" cy="170" r="15" fill="#ef4444" opacity="0.6"/>
+      <text x="160" y="175" text-anchor="middle" fill="white" font-size="12" font-weight="bold">⚠</text>
+      <text x="200" y="30" text-anchor="middle" fill="#94a3b8" font-size="12">Demi-plié en 1a posició</text>
+    </svg>`,
+    descripcio: {
+      ca: "Una ballarina de ballet executa una sèrie de <b>demi-pliés</b> en primera posició després de 45 segons de salts intensos. Observes la seva execució amb atenció.",
+      es: "Una bailarina de ballet ejecuta una serie de <b>demi-pliés</b> en primera posición después de 45 segundos de saltos intensos. Observas su ejecución con atención.",
+      en: "A ballet dancer performs a series of <b>demi-pliés</b> in first position after 45 seconds of intense jumps. You watch her execution carefully."
+    },
+    observacions: [
+      {text: {ca: "La baixada és brusca i accelerada al final del plié, sense control.", es: "La bajada es brusca y acelerada al final del plié, sin control.", en: "The descent is abrupt and accelerated at the end of the plié, without control."}, tipus: "alerta"},
+      {text: {ca: "El genoll de la cama dreta col·lapsa cap endins (valgo dinàmic).", es: "La rodilla de la pierna derecha colapsa hacia adentro (valgo dinámico).", en: "The knee of the right leg collapses inward (dynamic valgus)."}, tipus: "alerta"},
+      {text: {ca: "Es visible un tremolor als quàdriceps durant el manteniment.", es: "Se observa un temblor en los cuádriceps durante el mantenimiento.", en: "A tremor is visible in the quadriceps during the hold."}, tipus: "alerta"},
+      {text: {ca: "El turnout s'ha perdut: els peus roten cap endins.", es: "El turnout se ha perdido: los pies rotan hacia adentro.", en: "Turnout is lost: feet rotate inward."}, tipus: "alerta"}
+    ],
+    preguntes: [
+      {
+        q: {ca: "Quin tipus de contracció està fallant principalment?", es: "¿Qué tipo de contracción está fallando principalmente?", en: "What type of contraction is mainly failing?"},
+        opcions: [
+          {ca: "Concèntrica (pujada)", es: "Concéntrica (subida)", en: "Concentric (ascent)"},
+          {ca: "Isomètrica (manteniment)", es: "Isométrica (mantenimiento)", en: "Isometric (hold)"},
+          {ca: "Excèntrica (baixada i amortiguació)", es: "Excéntrica (bajada y amortiguación)", en: "Eccentric (descent and cushioning)"},
+        ],
+        correcta: 2,
+        explicacio: {
+          ca: "La <b>contracció excèntrica</b> és la que permet frenar la gravetat durant la baixada. Quan falla, el plié 'col·lapsa' perquè el múscul no pot allargar-se generant tensió.",
+          es: "La <b>contracción excéntrica</b> es la que permite frenar la gravedad durante la bajada. Cuando falla, el plié 'colapsa' porque el músculo no puede alargarse generando tensión.",
+          en: "The <b>eccentric contraction</b> is what allows braking gravity during descent. When it fails, the plié 'collapses' because the muscle cannot lengthen while generating tension."
+        }
+      },
+      {
+        q: {ca: "Quina és la causa molecular d'aquest fallo?", es: "¿Cuál es la causa molecular de este fallo?", en: "What is the molecular cause of this failure?"},
+        opcions: [
+          {ca: "Excés d'ATP disponible", es: "Exceso de ATP disponible", en: "Excess of available ATP"},
+          {ca: "Fatiga perifèrica: esgotament d'ATP i alteració del Ca²⁺", es: "Fatiga periférica: agotamiento de ATP y alteración del Ca²⁺", en: "Peripheral fatigue: ATP depletion and Ca²⁺ alteration"},
+          {ca: "Fatiga central exclusiva", es: "Fatiga central exclusiva", en: "Exclusive central fatigue"},
+        ],
+        correcta: 1,
+        explicacio: {
+          ca: "La <b>fatiga perifèrica</b> esgota l'ATP (imprescindible per desacoblar la miosina) i altera la dinàmica del Ca²⁺, reduint els ponts creuats eficients.",
+          es: "La <b>fatiga periférica</b> agota el ATP (imprescindible para desacoplar la miosina) y altera la dinámica del Ca²⁺, reduciendo los puentes cruzados eficientes.",
+          en: "<b>Peripheral fatigue</b> depletes ATP (essential to uncouple myosin) and alters Ca²⁺ dynamics, reducing efficient cross-bridges."
+        }
+      },
+      {
+        q: {ca: "Quina és la teva intervenció immediata?", es: "¿Cuál es tu intervención inmediata?", en: "What is your immediate intervention?"},
+        opcions: [
+          {ca: "Continuar l'exercici per 'trencar' la fatiga", es: "Continuar el ejercicio para 'romper' la fatiga", en: "Continue the exercise to 'break' the fatigue"},
+          {ca: "Parada immediata + pausa activa de 3 min caminant", es: "Parada inmediata + pausa activa de 3 min caminando", en: "Immediate stop + 3 min active pause walking"},
+          {ca: "Estiraments passius intensos", es: "Estiramientos pasivos intensos", en: "Intense passive stretches"},
+        ],
+        correcta: 1,
+        explicacio: {
+          ca: "S'ha d'<b>aturar la càrrega</b> abans que els lligaments entrin a la <b>Warning Zone</b>. La caminada suau nodreix el cartílag (bombeig sinovial) i permet resintetitzar ATP.",
+          es: "Se debe <b>detener la carga</b> antes de que los ligamentos entren en la <b>Warning Zone</b>. La caminata suave nutre el cartílago (bombeo sinovial) y permite resintetizar ATP.",
+          en: "You must <b>stop the load</b> before ligaments enter the <b>Warning Zone</b>. Gentle walking nourishes cartilage (synovial pumping) and allows ATP resynthesis."
+        }
+      }
+    ],
+    badge: 1
+  },
+  2: {
+    svg: `<svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+      <rect width="400" height="300" fill="#0b1220"/>
+      <line x1="50" y1="270" x2="350" y2="270" stroke="#475569" stroke-width="2" stroke-dasharray="5,5"/>
+      <!-- Ballarina en arabesque -->
+      <ellipse cx="150" cy="260" rx="25" ry="8" fill="#fbbf24" opacity="0.3"/>
+      <path d="M 140 260 L 145 200 L 155 200 L 160 260" fill="#fde68a" stroke="#f59e0b" stroke-width="2"/>
+      <circle cx="150" cy="195" r="10" fill="#fca5a5" stroke="#dc2626" stroke-width="2"/>
+      <path d="M 140 190 L 140 130 L 160 130 L 160 190 Z" fill="#f472b6" stroke="#be185d" stroke-width="2"/>
+      <circle cx="150" cy="125" r="12" fill="#fca5a5" stroke="#dc2626" stroke-width="2"/>
+      <!-- Cama aixecada enrere -->
+      <path d="M 155 185 Q 220 170 280 160" stroke="#fb923c" stroke-width="8" fill="none" stroke-linecap="round"/>
+      <!-- Braç endavant -->
+      <path d="M 145 140 Q 100 130 70 120" stroke="#f472b6" stroke-width="6" fill="none" stroke-linecap="round"/>
+      <!-- Fletxes de tremolor -->
+      <text x="150" y="100" text-anchor="middle" fill="#ef4444" font-size="20">〰️</text>
+      <text x="150" y="220" text-anchor="middle" fill="#ef4444" font-size="14">⚠ valgo</text>
+    </svg>`,
+    descripcio: {
+      ca: "Un ballarí manté un <b>arabesque</b> a 90° des de fa 25 segons. Comences a notar oscil·lacions a la pelvis.",
+      es: "Un bailarín mantiene un <b>arabesque</b> a 90° desde hace 25 segundos. Empiezas a notar oscilaciones en la pelvis.",
+      en: "A dancer has been holding an <b>arabesque</b> at 90° for 25 seconds. You start noticing oscillations in the pelvis."
+    },
+    observacions: [
+      {text: {ca: "La pelvis ja no està horitzontal: la cama d'apoig 'cau' cap endins.", es: "La pelvis ya no está horizontal: la pierna de apoyo 'cae' hacia adentro.", en: "The pelvis is no longer horizontal: the supporting leg 'drops' inward."}, tipus: "alerta"},
+      {text: {ca: "Apareix una hiperlordosi lumbar compensatòria.", es: "Aparece una hiperlordosis lumbar compensatoria.", en: "A compensatory lumbar hyperlordosis appears."}, tipus: "alerta"},
+      {text: {ca: "Tremolor visible a la cama d'apoig.", es: "Tremolor visible en la pierna de apoyo.", en: "Visible tremor in the supporting leg."}, tipus: "alerta"},
+      {text: {ca: "S'ha perdut el turnout de les dues cames.", es: "Se ha perdido el turnout de ambas piernas.", en: "Turnout of both legs has been lost."}, tipus: "alerta"}
+    ],
+    preguntes: [
+      {
+        q: {ca: "Quin múscul estabilizador està fallant principalment a la cama d'apoig?", es: "¿Qué músculo estabilizador está fallando principalmente en la pierna de apoyo?", en: "Which stabilizing muscle is mainly failing in the supporting leg?"},
+        opcions: [
+          {ca: "Bíceps braquial", es: "Bíceps braquial", en: "Biceps brachii"},
+          {ca: "Gluti mitjà (abductors de maluc)", es: "Glúteo medio (abductores de cadera)", en: "Gluteus medius (hip abductors)"},
+          {ca: "Pectoral major", es: "Pectoral mayor", en: "Pectoralis major"},
+        ],
+        correcta: 1,
+        explicacio: {
+          ca: "El <b>gluti mitjà</b> és clau per mantenir la pelvis horitzontal en monopodal. Quan falla, la pelvis 'cau' cap al costat contrari (Trendelenburg).",
+          es: "El <b>glúteo medio</b> es clave para mantener la pelvis horizontal en monopodal. Cuando falla, la pelvis 'cae' hacia el lado contrario (Trendelenburg).",
+          en: "The <b>gluteus medius</b> is key to keeping the pelvis horizontal in single-leg stance. When it fails, the pelvis 'drops' to the opposite side (Trendelenburg)."
+        }
+      },
+      {
+        q: {ca: "Quin tipus de contracció manté l'arabesque?", es: "¿Qué tipo de contracción mantiene el arabesque?", en: "What type of contraction maintains the arabesque?"},
+        opcions: [
+          {ca: "Concèntrica", es: "Concéntrica", en: "Concentric"},
+          {ca: "Excèntrica", es: "Excéntrica", en: "Eccentric"},
+          {ca: "Isomètrica (tensió sense canvi de longitud)", es: "Isométrica (tensión sin cambio de longitud)", en: "Isometric (tension without length change)"},
+        ],
+        correcta: 2,
+        explicacio: {
+          ca: "L'<b>isomètrica</b> permet sostenir la posició sense moviment aparent, amb Tensió = Resistència. Requereix fibres Tipus I resistents i coactivació equilibrada.",
+          es: "La <b>isométrica</b> permite sostener la posición sin movimiento aparent, con Tensión = Resistencia. Requiere fibras Tipo I resistentes y coactivación equilibrada.",
+          en: "<b>Isometric</b> allows holding the position without apparent movement, with Tension = Resistance. It requires resistant Type I fibers and balanced coactivation."
+        }
+      },
+      {
+        q: {ca: "Si la hiperlordosi lumbar persisteix, quina estructura entra en risc?", es: "Si la hiperlordosis lumbar persiste, ¿qué estructura entra en riesgo?", en: "If lumbar hyperlordosis persists, which structure is at risk?"},
+        opcions: [
+          {ca: "Els lligaments lumbars i discs intervertebrals (Warning Zone)", es: "Los ligamentos lumbares y discos intervertebrales (Warning Zone)", en: "Lumbar ligaments and intervertebral discs (Warning Zone)"},
+          {ca: "El tendó d'Aquil·les", es: "El tendón de Aquiles", en: "The Achilles tendon"},
+          {ca: "Els músculs de la mà", es: "Los músculos de la mano", en: "The hand muscles"},
+        ],
+        correcta: 0,
+        explicacio: {
+          ca: "La hiperlordosi desplaça la càrrega als <b>ligaments i discs</b> lumbars, entrant en la <b>Warning Zone</b> amb risc de pinçaments i sobrecàrregues passives.",
+          es: "La hiperlordosis desplaza la carga a los <b>ligamentos y discos</b> lumbares, entrando en la <b>Warning Zone</b> con riesgo de pinzamientos y sobrecargas pasivas.",
+          en: "Hyperlordosis shifts the load to the lumbar <b>ligaments and discs</b>, entering the <b>Warning Zone</b> with risk of pinching and passive overloads."
+        }
+      }
+    ],
+    badge: 2
+  },
+  3: {
+    svg: `<svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+      <rect width="400" height="300" fill="#0b1220"/>
+      <line x1="50" y1="270" x2="350" y2="270" stroke="#475569" stroke-width="2" stroke-dasharray="5,5"/>
+      <!-- B-boy en freeze -->
+      <ellipse cx="120" cy="260" rx="30" ry="8" fill="#fbbf24" opacity="0.3"/>
+      <!-- Braç d'apoig -->
+      <path d="M 120 255 L 130 200 L 160 180" stroke="#f472b6" stroke-width="10" fill="none" stroke-linecap="round"/>
+      <!-- Cos -->
+      <circle cx="180" cy="170" r="25" fill="#fb923c" stroke="#c2410c" stroke-width="2"/>
+      <!-- Cap -->
+      <circle cx="220" cy="160" r="18" fill="#fca5a5" stroke="#dc2626" stroke-width="2"/>
+      <!-- Cames en l'aire -->
+      <path d="M 195 185 Q 260 180 300 160" stroke="#3b82f6" stroke-width="8" fill="none" stroke-linecap="round"/>
+      <path d="M 195 195 Q 250 210 280 220" stroke="#3b82f6" stroke-width="8" fill="none" stroke-linecap="round"/>
+      <!-- Alerta canell -->
+      <circle cx="125" cy="245" r="12" fill="#ef4444" opacity="0.6"/>
+      <text x="125" y="250" text-anchor="middle" fill="white" font-size="14" font-weight="bold">⚠</text>
+      <text x="200" y="30" text-anchor="middle" fill="#94a3b8" font-size="12">Baby freeze</text>
+    </svg>`,
+    descripcio: {
+      ca: "Un b-boy executa <b>freezes</b> repetits sobre el tren superior. Al 8è freeze, notes que el canell col·lapsa.",
+      es: "Un b-boy ejecuta <b>freezes</b> repetidos sobre el tren superior. En el 8º freeze, notas que la muñeca colapsa.",
+      en: "A b-boy performs repeated <b>freezes</b> on the upper body. On the 8th freeze, you notice the wrist collapsing."
+    },
+    observacions: [
+      {text: {ca: "El canell hiperextén passivament: el pes cau sobre la base del carp.", es: "La muñeca hiperextiende pasivamente: el peso cae sobre la base del carpo.", en: "The wrist passively hyperextends: weight falls on the base of the carpus."}, tipus: "alerta"},
+      {text: {ca: "El colze es tanca de cop, sense frenada excèntrica.", es: "El codo se cierra de golpe, sin frenada excéntrica.", en: "The elbow closes suddenly, without eccentric braking."}, tipus: "alerta"},
+      {text: {ca: "L'escàpula s'al·la (no es fixa al tòrax).", es: "La escápula se ala (no se fija al tórax).", en: "The scapula wings (doesn't fix to the thorax)."}, tipus: "alerta"},
+      {text: {ca: "Tremolor marcat al braç d'apoig.", es: "Tremolor marcado en el brazo de apoyo.", en: "Marked tremor in the supporting arm."}, tipus: "alerta"}
+    ],
+    preguntes: [
+      {
+        q: {ca: "Quina fase del freeze ha fallat?", es: "¿Qué fase del freeze ha fallado?", en: "Which phase of the freeze has failed?"},
+        opcions: [
+          {ca: "La recepció i impacte inicial (frenada excèntrica)", es: "La recepción e impacto inicial (frenada excéntrica)", en: "Initial reception and impact (eccentric braking)"},
+          {ca: "La sortida (concèntrica)", es: "La salida (concéntrica)", en: "The exit (concentric)"},
+          {ca: "La propiocepció", es: "La propiocepción", en: "Proprioception"},
+        ],
+        correcta: 0,
+        explicacio: {
+          ca: "La <b>recepció excèntrica</b> ha de frenar la caiguda. Si falla, l'impacte es trasllada als lligaments radiocarpianos → Warning Zone.",
+          es: "La <b>recepción excéntrica</b> debe frenar la caída. Si falla, el impacto se traslada a los ligamentos radiocarpianos → Warning Zone.",
+          en: "The <b>eccentric reception</b> must brake the fall. If it fails, the impact transfers to the radiocarpal ligaments → Warning Zone."
+        }
+      },
+      {
+        q: {ca: "Què és el 'gecko grip' que hauria d'activar el b-boy?", es: "¿Qué es el 'gecko grip' que debería activar el b-boy?", en: "What is the 'gecko grip' the b-boy should activate?"},
+        opcions: [
+          {ca: "Agar passiu amb la palma plana", es: "Agarre pasivo con la palma plana", en: "Passive grip with flat palm"},
+          {ca: "Treball actiu dels flexors dels dits que reparteix la força", es: "Trabajo activo de los flexores de los dedos que reparte la fuerza", en: "Active work of finger flexors that distributes force"},
+          {ca: "Tancar el puny completament", es: "Cerrar el puño completamente", en: "Close the fist completely"},
+        ],
+        correcta: 1,
+        explicacio: {
+          ca: "El <b>gecko grip</b> és l'activació activa dels flexors dels dits que reparteix la força per la superfície articular, evitant la hiperextensió passiva del canell.",
+          es: "El <b>gecko grip</b> es la activación activa de los flexores de los dedos que reparte la fuerza por la superficie articular, evitando la hiperextensión pasiva de la muñeca.",
+          en: "The <b>gecko grip</b> is the active activation of finger flexors that distributes force across the joint surface, avoiding passive wrist hyperextension."
+        }
+      },
+      {
+        q: {ca: "Quina és la intervenció correcta?", es: "¿Cuál es la intervención correcta?", en: "What is the correct intervention?"},
+        opcions: [
+          {ca: "Continuar amb freezes més baixos", es: "Continuar con freezes más bajos", en: "Continue with lower freezes"},
+          {ca: "Aturar immediatament + 3 min mobilitat suau en descàrrega", es: "Detener inmediatamente + 3 min movilidad suave en descarga", en: "Stop immediately + 3 min gentle mobility in unloading"},
+          {ca: "Aplicar gel i continuar", es: "Aplicar hielo y continuar", en: "Apply ice and continue"},
+        ],
+        correcta: 1,
+        explicacio: {
+          ca: "Amb 2+ signes de fatiga, cal <b>aturar els apoyos</b>. La mobilitat en descàrrega nodreix el cartílag (bombeig sinovial) i permet resintetitzar ATP.",
+          es: "Con 2+ signos de fatiga, hay que <b>detener los apoyos</b>. La movilidad en descarga nutre el cartílago (bombeo sinovial) y permite resintetizar ATP.",
+          en: "With 2+ signs of fatigue, you must <b>stop the supports</b>. Unloaded mobility nourishes cartilage (synovial pumping) and allows ATP resynthesis."
+        }
+      }
+    ],
+    badge: 3
+  },
+  4: {
+    svg: `<svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+      <rect width="400" height="300" fill="#0b1220"/>
+      <line x1="50" y1="270" x2="350" y2="270" stroke="#475569" stroke-width="2" stroke-dasharray="5,5"/>
+      <!-- Ballarina en attitude sobre punta -->
+      <ellipse cx="180" cy="260" rx="15" ry="5" fill="#fbbf24" opacity="0.4"/>
+      <path d="M 175 260 L 178 200 L 182 200 L 185 260" fill="#fde68a" stroke="#f59e0b" stroke-width="1.5"/>
+      <circle cx="180" cy="195" r="8" fill="#fca5a5" stroke="#dc2626" stroke-width="1.5"/>
+      <path d="M 172 190 L 172 130 L 188 130 L 188 190 Z" fill="#f472b6" stroke="#be185d" stroke-width="1.5"/>
+      <circle cx="180" cy="125" r="10" fill="#fca5a5" stroke="#dc2626" stroke-width="1.5"/>
+      <!-- Cama aixecada darrere flexionada -->
+      <path d="M 185 180 Q 220 170 240 140 Q 245 120 230 110" stroke="#fb923c" stroke-width="6" fill="none" stroke-linecap="round"/>
+      <!-- Oscil·lacions -->
+      <path d="M 160 130 Q 155 125 160 120 Q 165 115 160 110" stroke="#ef4444" stroke-width="2" fill="none"/>
+      <path d="M 200 130 Q 205 125 200 120 Q 195 115 200 110" stroke="#ef4444" stroke-width="2" fill="none"/>
+      <text x="180" y="40" text-anchor="middle" fill="#94a3b8" font-size="12">Attitude derrière en relevé</text>
+      <text x="180" y="55" text-anchor="middle" fill="#ef4444" font-size="11">〰️ oscil·lacions</text>
+    </svg>`,
+    descripcio: {
+      ca: "Final d'un assaig de 3 hores. La ballarina ha de mantenir una <b>attitude derrière en relevé</b>. Observes oscil·lacions cada cop més àmplies.",
+      es: "Final de un ensayo de 3 horas. La bailarina debe mantener una <b>attitude derrière en relevé</b>. Observas oscilaciones cada vez más amplias.",
+      en: "End of a 3-hour rehearsal. The dancer must hold an <b>attitude derrière en relevé</b>. You observe increasingly wide oscillations."
+    },
+    observacions: [
+      {text: {ca: "Oscil·lacions àmplies del turmell i la pelvis.", es: "Oscilaciones amplias del tobillo y la pelvis.", en: "Wide oscillations of the ankle and pelvis."}, tipus: "alerta"},
+      {text: {ca: "El cos triga dècimes a 'reaccionar' als desequilibris.", es: "El cuerpo tarda décimas en 'reaccionar' a los desequilibrios.", en: "The body takes tenths of a second to 'react' to imbalances."}, tipus: "alerta"},
+      {text: {ca: "Coactivació rígida i tremolor visible.", es: "Coactivación rígida y temblor visible.", en: "Rigid coactivation and visible tremor."}, tipus: "alerta"},
+      {text: {ca: "Els sensors propioceptius envien senyal 'brut sorollós'.", es: "Los sensores propioceptivos envían señal 'ruido sucio'.", en: "Proprioceptive sensors send 'noisy dirty' signal."}, tipus: "alerta"}
+    ],
+    preguntes: [
+      {
+        q: {ca: "Quins receptors estan descalibrats per la fatiga perifèrica?", es: "¿Qué receptores están descalibrados por la fatiga periférica?", en: "Which receptors are miscalibrated by peripheral fatigue?"},
+        opcions: [
+          {ca: "Els fusos musculars (detecten longitud)", es: "Los husos musculares (detectan longitud)", en: "Muscle spindles (detect length)"},
+          {ca: "Els quimioreceptors", es: "Los quimioreceptores", en: "Chemoreceptors"},
+          {ca: "Els termoreceptors", es: "Los termorreceptores", en: "Thermoreceptors"},
+        ],
+        correcta: 0,
+        explicacio: {
+          ca: "Els <b>fusos musculars</b> detecten canvis de longitud. Amb fatiga perifèrica, envien la senyal correctament però el múscul respon amb retard → oscil·lacions.",
+          es: "Los <b>husos musculares</b> detectan cambios de longitud. Con fatiga periférica, envían la señal correctamente pero el músculo responde con retraso → oscilaciones.",
+          en: "<b>Muscle spindles</b> detect length changes. With peripheral fatigue, they send the signal correctly but the muscle responds with delay → oscillations."
+        }
+      },
+      {
+        q: {ca: "Què fa l'OTG (Òrgan Tendinós de Golgi) quan detecta pics desordenats de tensió?", es: "¿Qué hace el OTG (Órgano Tendinoso de Golgi) cuando detecta picos desordenados de tensión?", en: "What does the GTO (Golgi Tendon Organ) do when it detects disordered tension peaks?"},
+        opcions: [
+          {ca: "Augmenta la contracció muscular", es: "Aumenta la contracción muscular", en: "Increases muscle contraction"},
+          {ca: "Envia impulsos inhibidors que 'deixen anar' la contracció de cop", es: "Envía impulsos inhibidores que 'soltan' la contracción de golpe", en: "Sends inhibitory impulses that 'release' the contraction suddenly"},
+          {ca: "No fa res", es: "No hace nada", en: "Does nothing"},
+        ],
+        correcta: 1,
+        explicacio: {
+          ca: "L'<b>OTG</b> detecta tensions excessives i, com a mecanisme de protecció, envia impulsos inhibidors que provoquen una relaxació reflexa → el relevé 'col·lapsa'.",
+          es: "El <b>OTG</b> detecta tensiones excesivas y, como mecanismo de protección, envía impulsos inhibidores que provocan una relajación refleja → el relevé 'colapsa'.",
+          en: "The <b>GTO</b> detects excessive tensions and, as a protective mechanism, sends inhibitory impulses that cause reflex relaxation → the relevé 'collapses'."
+        }
+      },
+      {
+        q: {ca: "Quina estratègia de reajust és més adequada?", es: "¿Qué estrategia de reajuste es más adecuada?", en: "Which readjustment strategy is most appropriate?"},
+        opcions: [
+          {ca: "Continuar assajant amb més intensitat", es: "Continuar ensayando con más intensidad", en: "Continue rehearsing with more intensity"},
+          {ca: "Pausa sensorial amb ulls tancats + mobilitat en descàrrega", es: "Pausa sensorial con ojos cerrados + movilidad en descarga", en: "Sensory pause with closed eyes + unloaded mobility"},
+          {ca: "Estiraments passius extrems", es: "Estiramientos pasivos extremos", en: "Extreme passive stretches"},
+        ],
+        correcta: 1,
+        explicacio: {
+          ca: "La <b>pausa sensorial amb ulls tancats</b> redueix el soroll visual i permet al SNC recalibrar els sensors propioceptius. La mobilitat en descàrrega nodreix el cartílag.",
+          es: "La <b>pausa sensorial con ojos cerrados</b> reduce el ruido visual y permite al SNC recalibrar los sensores propioceptivos. La movilidad en descarga nutre el cartílago.",
+          en: "The <b>sensory pause with closed eyes</b> reduces visual noise and allows the CNS to recalibrate proprioceptive sensors. Unloaded mobility nourishes cartilage."
+        }
+      }
+    ],
+    badge: 4
+  }
+};
+
+function mostrarCas(num) {
+  const caso = casos[num];
+  const cont = document.getElementById('casoContainer');
+  respostesCas[num] = {};
+  
+  let html = `
+    <div class="caso-header">
+      <div class="caso-num">${num}</div>
+      <div class="caso-title">
+        <div class="estilo">${t('cas'+num+'Estil')}</div>
+        <h2>${t('cas'+num+'Title')}</h2>
+      </div>
+    </div>
+    
+    <div class="escenario">
+      <h3 style="color:#38bdf8; margin-bottom:10px;">${t('observar')}</h3>
+      ${caso.svg}
+      <div class="descripcion">${caso.descripcio[langActual]}</div>
+    </div>
+    
+    <div class="observaciones">
+      <h3>📋 ${langActual === 'ca' ? 'Observacions clíniques' : langActual === 'es' ? 'Observaciones clínicas' : 'Clinical observations'}</h3>
+      ${caso.observacions.map(o => `
+        <div class="obs-item ${o.tipus}">${o.text[langActual]}</div>
+      `).join('')}
+    </div>
+    
+    <h3 style="color:#a78bfa; margin:20px 0 10px;">${t('diagnosticar')} + ${t('intervenir')}</h3>
+  `;
+  
+  caso.preguntes.forEach((p, i) => {
+    html += `
+      <div class="pregunta" id="preg-${num}-${i}">
+        <h4>${i+1}. ${p.q[langActual]}</h4>
+        <div class="opcions">
+          ${p.opcions.map((op, j) => `
+            <div class="opcio" onclick="seleccionarOpcio(${num}, ${i}, ${j})" data-idx="${j}">${op[langActual]}</div>
+          `).join('')}
+        </div>
+        <div class="feedback" id="fb-${num}-${i}"></div>
+      </div>
+    `;
+  });
+  
+  html += `
+    <div style="text-align:center; margin-top:25px;">
+      <button class="btn success" onclick="comprovarCas(${num})">${t('comprovar')}</button>
+      ${num < 4 ? `<button class="btn" onclick="iniciarCas(${num+1})" id="btnSeg" style="display:none;">${t('seguint')}</button>` : `<button class="btn" onclick="mostrarTest()" id="btnSeg" style="display:none;">📝 ${t('test')}</button>`}
+    </div>
+  `;
+  
+  cont.innerHTML = html;
+  window.scrollTo(0, 0);
+}
+
+function seleccionarOpcio(cas, preg, idx) {
+  const opcions = document.querySelectorAll(`#preg-${cas}-${preg} .opcio`);
+  opcions.forEach(o => o.classList.remove('selected'));
+  opcions[idx].classList.add('selected');
+  respostesCas[cas][preg] = idx;
+}
+
+function comprovarCas(cas) {
+  const caso = casos[cas];
+  let encerts = 0;
+  
+  caso.preguntes.forEach((p, i) => {
+    const fb = document.getElementById(`fb-${cas}-${i}`);
+    const opcions = document.querySelectorAll(`#preg-${cas}-${i} .opcio`);
+    const resposta = respostesCas[cas][i];
+    
+    opcions.forEach(o => o.classList.remove('correcta', 'incorrecta'));
+    
+    if (resposta === undefined) {
+      fb.className = 'feedback error visible';
+      fb.innerHTML = `<h4>⚠️ ${langActual === 'ca' ? 'Has de respondre' : langActual === 'es' ? 'Debes responder' : 'You must answer'}</h4>`;
+      return;
+    }
+    
+    if (resposta === p.correcta) {
+      encerts++;
+      opcions[resposta].classList.add('correcta');
+      fb.className = 'feedback success visible';
+      fb.innerHTML = `<h4>${t('correcte')} +10 punts</h4><p><b>${t('explicacio')}:</b> ${p.explicacio[langActual]}</p>`;
+    } else {
+      opcions[resposta].classList.add('incorrecta');
+      opcions[p.correcta].classList.add('correcta');
+      fb.className = 'feedback error visible';
+      fb.innerHTML = `<h4>${t('incorrecte')}</h4><p><b>${t('respostaCorrecta')}:</b> ${p.opcions[p.correcta][langActual]}</p><p><b>${t('explicacio')}:</b> ${p.explicacio[langActual]}</p>`;
+    }
+  });
+  
+  if (encerts === caso.preguntes.length) {
+    punts += encerts * 10;
+    if (!badgesObtingudes.includes(caso.badge)) {
+      badges++;
+      badgesObtingudes.push(caso.badge);
+      mostrarBadge(caso.badge);
+    }
+    document.getElementById('punts').textContent = punts;
+    document.getElementById('badges').textContent = badges;
+    document.getElementById('pd'+cas).classList.add('done');
+    document.getElementById('btnSeg').style.display = 'inline-block';
+  } else {
+    punts += encerts * 5;
+    document.getElementById('punts').textContent = punts;
+  }
+}
+
+function mostrarBadge(num) {
+  const popup = document.getElementById('badgePopup');
+  document.getElementById('badgeEmoji').textContent = ['🦵','🩰','🤸','🧠'][num-1];
+  document.getElementById('badgeTitle').textContent = t('badge'+num+'T');
+  document.getElementById('badgeText').textContent = t('badge'+num+'D');
+  popup.classList.add('visible');
+  setTimeout(() => popup.classList.remove('visible'), 3000);
+}
+
+// ==================== TEST FINAL ====================
+const testPreguntes = [
+  {
+    q: {ca: "Quina és la funció principal de l'ATP al cicle de la miosina?", es: "¿Cuál es la función principal del ATP en el ciclo de la miosina?", en: "What is the main function of ATP in the myosin cycle?"},
+    opcions: [
+      {ca: "Iniciar la contracció", es: "Iniciar la contracción", en: "Start contraction"},
+      {ca: "Desacoblar la miosina de l'actina i rearmar-la", es: "Desacoplar la miosina de la actina y rearmarla", en: "Uncouple myosin from actin and reset it"},
+      {ca: "Bloquejar la tropomiosina", es: "Bloquear la tropomiosina", en: "Block tropomyosin"}
+    ],
+    correcta: 1
+  },
+  {
+    q: {ca: "El cartílag articular es nodreix per:", es: "El cartílago articular se nutre por:", en: "Articular cartilage is nourished by:"},
+    opcions: [
+      {ca: "Vasos sanguinis propis", es: "Vasos sanguíneos propios", en: "Its own blood vessels"},
+      {ca: "Bombeig mecànic del líquid sinovial (càrrega/descàrrega)", es: "Bombeo mecánico del líquido sinovial (carga/descarga)", en: "Mechanical pumping of synovial fluid (load/unload)"},
+      {ca: "Limfa", es: "Linf", en: "Lymph"}
+    ],
+    correcta: 1
+  },
+  {
+    q: {ca: "La 'Warning Zone' es refereix a:", es: "La 'Warning Zone' se refiere a:", en: "The 'Warning Zone' refers to:"},
+    opcions: [
+      {ca: "Zona de màxim rendiment muscular", es: "Zona de máximo rendimiento muscular", en: "Zone of maximum muscular performance"},
+      {ca: "Zona de risc on els lligaments actuen com a únic fre passiu", es: "Zona de riesgo donde los ligamentos actúan como único freno pasivo", en: "Risk zone where ligaments act as the only passive brake"},
+      {ca: "Zona de descans", es: "Zona de descanso", en: "Rest zone"}
+    ],
+    correcta: 1
+  },
+  {
+    q: {ca: "El RED-S es produeix per:", es: "El RED-S se produce por:", en: "RED-S occurs due to:"},
+    opcions: [
+      {ca: "Excés de calories", es: "Exceso de calorías", en: "Excess calories"},
+      {ca: "Desequilibri entre despesa energètica i ingesta insuficient", es: "Desequilibrio entre gasto energético e ingesta insuficiente", en: "Imbalance between energy expenditure and insufficient intake"},
+      {ca: "Excés de son", es: "Exceso de sueño", en: "Excess sleep"}
+    ],
+    correcta: 1
+  },
+  {
+    q: {ca: "Quina cèl·lula forma nova matriu òssia?", es: "¿Qué célula forma nueva matriz ósea?", en: "Which cell forms new bone matrix?"},
+    opcions: [
+      {ca: "Osteoclast", es: "Osteoclasto", en: "Osteoclast"},
+      {ca: "Osteoblast", es: "Osteoblasto", en: "Osteoblast"},
+      {ca: "Condrocit", es: "Condrocito", en: "Chondrocyte"}
+    ],
+    correcta: 1
+  },
+  {
+    q: {ca: "El principi del tamany estableix que:", es: "El principio del tamaño establece que:", en: "The size principle states that:"},
+    opcions: [
+      {ca: "Les unitats motores es recluten de major a menor", es: "Las unidades motoras se reclutan de mayor a menor", en: "Motor units are recruited from largest to smallest"},
+      {ca: "Les unitats motores es recluten de menor a major tamany", es: "Las unidades motoras se reclutan de menor a mayor tamaño", en: "Motor units are recruited from smallest to largest"},
+      {ca: "Totes s'activen alhora", es: "Todas se activan a la vez", en: "All are activated at once"}
+    ],
+    correcta: 1
+  },
+  {
+    q: {ca: "La fatiga perifèrica es produeix a:", es: "La fatiga periférica se produce en:", en: "Peripheral fatigue occurs in:"},
+    opcions: [
+      {ca: "El cervell", es: "El cerebro", en: "The brain"},
+      {ca: "El propi múscul (esgotament d'ATP, Ca²⁺)", es: "El propio músculo (agotamiento de ATP, Ca²⁺)", en: "The muscle itself (ATP depletion, Ca²⁺)"},
+      {ca: "Els lligaments", es: "Los ligamentos", en: "The ligaments"}
+    ],
+    correcta: 1
+  },
+  {
+    q: {ca: "La coactivació muscular és:", es: "La coactivación muscular es:", en: "Muscle coactivation is:"},
+    opcions: [
+      {ca: "Contracció només d'agonistes", es: "Contracción solo de agonistas", en: "Contraction of agonists only"},
+      {ca: "Contracció simultània d'agonistes i antagonistes", es: "Contracción simultánea de agonistas y antagonistas", en: "Simultaneous contraction of agonists and antagonists"},
+      {ca: "Relaxació total", es: "Relajación total", en: "Total relaxation"}
+    ],
+    correcta: 1
+  },
+  {
+    q: {ca: "Quin receptor detecta la tensió al tendó?", es: "¿Qué receptor detecta la tensión en el tendón?", en: "Which receptor detects tension in the tendon?"},
+    opcions: [
+      {ca: "Fus muscular", es: "Huso muscular", en: "Muscle spindle"},
+      {ca: "Òrgan Tendinós de Golgi (OTG)", es: "Órgano Tendinoso de Golgi (OTG)", en: "Golgi Tendon Organ (GTO)"},
+      {ca: "Receptors articulars", es: "Receptores articulares", en: "Articular receptors"}
+    ],
+    correcta: 1
+  },
+  {
+    q: {ca: "La relació longitud-tensió diu que la força màxima es genera a:", es: "La relación longitud-tensión dice que la fuerza máxima se genera en:", en: "The length-tension relationship says maximum force is generated at:"},
+    opcions: [
+      {ca: "Longitud molt curta", es: "Longitud muy corta", en: "Very short length"},
+      {ca: "Longitud intermèdia (solapament òptim)", es: "Longitud intermedia (solapamiento óptimo)", en: "Intermediate length (optimal overlap)"},
+      {ca: "Longitud molt llarga", es: "Longitud muy larga", en: "Very long length"}
+    ],
+    correcta: 1
+  }
+];
+
+function mostrarTest() {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById('screen-test').classList.add('active');
+  document.getElementById('pd5').classList.add('active');
+  respostesTest = {};
+  
+  const cont = document.getElementById('testContainer');
+  let html = `
+    <h1 style="color:#a78bfa; text-align:center; margin-bottom:10px;">📝 ${t('test')}</h1>
+    <p style="text-align:center; color:#94a3b8; margin-bottom:25px;">
+      ${langActual === 'ca' ? '10 preguntes per avaluar el teu domini del Tema 3. Al final podràs enviar els resultats a la professora.' : langActual === 'es' ? '10 preguntas para evaluar tu dominio del Tema 3. Al final podrás enviar los resultados a la profesora.' : '10 questions to assess your mastery of Topic 3. At the end you can send the results to the teacher.'}
+    </p>
+  `;
+  
+  testPreguntes.forEach((p, i) => {
+    html += `
+      <div class="test-question" id="tq-${i}">
+        <h4><span class="num-q">${i+1}</span>${p.q[langActual]}</h4>
+        <div class="opcions">
+          ${p.opcions.map((op, j) => `
+            <div class="opcio" onclick="selTest(${i}, ${j})" data-idx="${j}">${op[langActual]}</div>
+          `).join('')}
+        </div>
+      </div>
+    `;
+  });
+  
+  html += `
+    <div class="email-form">
+      <h3>📧 ${t('enviarEmail')}</h3>
+      <label>${t('nom')}</label>
+      <input type="text" id="alumneNom" placeholder="...">
+      <label>${t('emailProf')}</label>
+      <input type="email" id="profEmail" placeholder="professora@escola.cat">
+      <label>${t('comentaris')}</label>
+      <textarea id="comentaris" placeholder="..."></textarea>
+    </div>
+    
+    <div style="text-align:center; margin-top:25px;">
+      <button class="btn success" onclick="corregirTest()">✔ ${langActual === 'ca' ? 'Corregir i enviar' : langActual === 'es' ? 'Corregir y enviar' : 'Correct and send'}</button>
+    </div>
+  `;
+  
+  cont.innerHTML = html;
+  window.scrollTo(0, 0);
+}
+
+function selTest(preg, idx) {
+  const opcions = document.querySelectorAll(`#tq-${preg} .opcio`);
+  opcions.forEach(o => o.classList.remove('selected'));
+  opcions[idx].classList.add('selected');
+  respostesTest[preg] = idx;
+}
+
+function corregirTest() {
+  let encerts = 0;
+  const total = testPreguntes.length;
+  const respostesDetall = [];
+  
+  testPreguntes.forEach((p, i) => {
+    const opcions = document.querySelectorAll(`#tq-${i} .opcio`);
+    opcions.forEach(o => o.classList.remove('correcta', 'incorrecta'));
+    
+    const resposta = respostesTest[i];
+    if (resposta === undefined) {
+      respostesDetall.push(`Q${i+1}: ${langActual === 'ca' ? 'Sense respondre' : langActual === 'es' ? 'Sin responder' : 'Not answered'}`);
+      return;
+    }
+    
+    if (resposta === p.correcta) {
+      encerts++;
+      opcions[resposta].classList.add('correcta');
+    } else {
+      opcions[resposta].classList.add('incorrecta');
+      opcions[p.correcta].classList.add('correcta');
+    }
+    respostesDetall.push(`Q${i+1}: ${resposta === p.correcta ? '✔' : '✘'} ${p.opcions[resposta][langActual]}`);
+  });
+  
+  const puntsTest = encerts * 10;
+  punts += puntsTest;
+  document.getElementById('punts').textContent = punts;
+  
+  const percent = (encerts/total)*100;
+  let missatge = '';
+  if (percent >= 80) missatge = t('perfekte');
+  else if (percent >= 50) missatge = t('revisar');
+  else missatge = t('revisar');
+  
+  const cont = document.getElementById('testContainer');
+  const resultat = document.createElement('div');
+  resultat.className = 'resultado-final';
+  resultat.innerHTML = `
+    <h2>${t('felicitats')}</h2>
+    <div class="nota">${encerts}/${total}</div>
+    <p style="font-size:18px;">${encerts} ${t('encerts')} ${t('de')} ${total} · ${puntsTest} ${t('puntsObtinguts')}</p>
+    <p style="margin-top:15px; font-size:16px;">${missatge}</p>
+    <button class="btn email" onclick="enviarEmail(${encerts}, ${total}, ${puntsTest})" style="margin-top:20px;">📧 ${t('enviarEmail')}</button>
+    <button class="btn secondary" onclick="tornarPortada()" style="margin-top:10px;">← ${t('tornar')}</button>
+  `;
+  cont.appendChild(resultat);
+  resultat.scrollIntoView({behavior: 'smooth'});
+}
+
+function enviarEmail(encerts, total, puntsTest) {
+  const nom = document.getElementById('alumneNom').value || (langActual === 'ca' ? 'Alumne/a' : langActual === 'es' ? 'Alumno/a' : 'Student');
+  const email = document.getElementById('profEmail').value;
+  const comentaris = document.getElementById('comentaris').value;
+  
+  if (!email) {
+    alert(langActual === 'ca' ? 'Has d\'indicar l\'email de la professora' : langActual === 'es' ? 'Debes indicar el email de la profesora' : 'You must enter the teacher\'s email');
+    return;
+  }
+  
+  const assumpte = encodeURIComponent(`[Tema 3] Resultats Detectiu Biomecànic - ${nom}`);
+  const cos = encodeURIComponent(
+`Hola professora,
+
+Soc ${nom} i he completat l'activitat "Detectiu Biomecànic" del Tema 3.
+
+📊 RESULTATS:
+- Test final: ${encerts}/${total} encerts
+- Punts del test: ${puntsTest}
+- Punts totals acumulats: ${punts}
+- Insígnies obtingudes: ${badges}/4
+
+📝 RESPOSTES DEL TEST:
+${testPreguntes.map((p, i) => {
+  const r = respostesTest[i];
+  return `Q${i+1}: ${r !== undefined ? (r === p.correcta ? '✔' : '✘') + ' ' + p.opcions[r][langActual] : 'Sense respondre'}`;
+}).join('\n')}
+
+💭 REFLEXIONS PERSONALS:
+${comentaris || '(Cap comentari)'}
+
+Salutacions,
+${nom}
+`);
+  
+  window.location.href = `mailto:${email}?subject=${assumpte}&body=${cos}`;
+}
+</script>
+
+</body>
+</html>

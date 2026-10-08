@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tejido Óseo y Recubrimientos (6) - Adaptación a la Carga</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, sans-serif; }
+  body {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    padding: 20px;
+  }
+  .container {
+    max-width: 1100px;
+    margin: 0 auto;
+    background: #fff;
+    border-radius: 20px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    overflow: hidden;
+  }
+  header {
+    background: linear-gradient(90deg, #1e3c72, #2a5298);
+    color: white;
+    padding: 35px;
+    text-align: center;
+  }
+  header h1 { font-size: 2.1em; margin-bottom: 10px; }
+  header p { opacity: 0.95; font-size: 1.1em; }
+  header .subtitle { font-size: 0.95em; opacity: 0.85; margin-top: 8px; font-style: italic; }
+  
+  .nav-tabs {
+    display: flex;
+    background: #f8f9fa;
+    flex-wrap: wrap;
+    border-bottom: 3px solid #dee2e6;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .nav-tabs button {
+    flex: 1;
+    min-width: 140px;
+    padding: 14px 10px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 0.9em;
+    font-weight: 600;
+    color: #666;
+    transition: all 0.3s;
+    border-bottom: 4px solid transparent;
+  }
+  .nav-tabs button:hover { background: #e9ecef; color: #2a5298; }
+  .nav-tabs button.active {
+    color: #2a5298;
+    border-bottom-color: #2a5298;
+    background: white;
+  }
+  
+  .slide { display: none; padding: 30px; min-height: 600px; }
+  .slide.active { display: block; animation: fadeIn 0.5s; }
+  @keyframes fadeIn { from {opacity:0; transform:translateY(20px);} to {opacity:1; transform:translateY(0);} }
+  
+  .slide h2 {
+    color: #1e3c72;
+    margin-bottom: 20px;
+    font-size: 1.7em;
+    border-bottom: 3px solid #2a5298;
+    padding-bottom: 10px;
+  }
+  
+  .reminder-box {
+    background: linear-gradient(135deg, #fff9c4 0%, #fff59d 100%);
+    border-left: 5px solid #fbc02d;
+    padding: 18px;
+    margin: 20px 0;
+    border-radius: 10px;
+  }
+  
+  .reminder-box h4 {
+    color: #f57f17;
+    margin-bottom: 10px;
+    font-size: 1.1em;
+  }
+  
+  .intro-box {
+    background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+    border-left: 5px solid #1976d2;
+    padding: 22px;
+    margin: 20px 0;
+    border-radius: 10px;
+    line-height: 1.7;
+  }
+  
+  .intro-box h3 {
+    color: #1565c0;
+    margin-bottom: 12px;
+    font-size: 1.25em;
+  }
+  
+  .concept-card {
+    background: white;
+    border: 3px solid #2a5298;
+    border-radius: 15px;
+    padding: 25px;
+    margin: 20px 0;
+    box-shadow: 0 5px 20px rgba(42,82,152,0.15);
+  }
+  
+  .concept-card h3 {
+    color: #2a5298;
+    font-size: 1.35em;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .how-it-works {
+    background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
+    padding: 20px;
+    border-radius: 10px;
+    margin: 15px 0;
+    border-left: 5px solid #f57c00;
+  }
+  
+  .how-it-works h4 {
+    color: #e65100;
+    margin-bottom: 12px;
+    font-size: 1.15em;
+  }
+  
+  .how-it-works ul {
+    margin-left: 25px;
+    line-height: 1.8;
+  }
+  
+  .dance-box {
+    background: linear-gradient(135deg, #fff5e6 0%, #ffe8cc 100%);
+    padding: 20px;
+    border-radius: 10px;
+    margin: 15px 0;
+    border: 2px dashed #f39c12;
+  }
+  
+  .dance-box h4 {
+    color: #e67e22;
+    margin-bottom: 12px;
+    font-size: 1.15em;
+  }
+  
+  .dance-box ul {
+    margin-left: 25px;
+    line-height: 1.8;
+  }
+  
+  .practical-activity {
+    background: linear-gradient(135deg, #e8f8f5 0%, #d5f5e3 100%);
+    padding: 22px;
+    border-radius: 15px;
+    margin: 20px 0;
+    border: 2px solid #1abc9c;
+  }
+  
+  .practical-activity h4 {
+    color: #16a085;
+    font-size: 1.2em;
+    margin-bottom: 12px;
+  }
+  
+  .activity-steps {
+    margin-left: 25px;
+    line-height: 1.9;
+  }
+  
+  .activity-steps li {
+    margin-bottom: 8px;
+  }
+  
+  .activity-steps strong {
+    color: #16a085;
+  }
+  
+  .diagram-container {
+    background: white;
+    border: 2px solid #dee2e6;
+    border-radius: 10px;
+    padding: 20px;
+    margin: 20px 0;
+    text-align: center;
+  }
+  
+  .diagram-container svg {
+    max-width: 100%;
+    height: auto;
+  }
+  
+  .diagram-container h4 {
+    color: #2a5298;
+    margin-bottom: 15px;
+    font-size: 1.1em;
+  }
+  
+  .tip-box {
+    background: linear-gradient(135deg, #f3e5f5 0%, #e1bee7 100%);
+    padding: 16px;
+    border-radius: 10px;
+    margin: 15px 0;
+    border-left: 5px solid #9b59b6;
+  }
+  
+  .tip-box h4 {
+    color: #8e44ad;
+    margin-bottom: 8px;
+    font-size: 1.05em;
+  }
+  
+  .warning-box {
+    background: linear-gradient(135deg, #ffebee 0%, #ffcdd2 100%);
+    padding: 18px;
+    border-radius: 10px;
+    margin: 15px 0;
+    border-left: 5px solid #e53935;
+  }
+  
+  .warning-box h4 {
+    color: #c62828;
+    margin-bottom: 10px;
+    font-size: 1.1em;
+  }
+  
+  .highlight {
+    background: linear-gradient(120deg, #ffeaa7 0%, #ffeaa7 100%);
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-weight: 600;
+  }
+  
+  .emoji { font-size: 1.2em; margin-right: 6px; }
+  
+  .btn {
+    background: linear-gradient(90deg, #2a5298, #1e3c72);
+    color: white;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 25px;
+    font-size: 1em;
+    font-weight: 600;
+    cursor: pointer;
+    margin: 10px 5px;
+    transition: all 0.3s;
+    box-shadow: 0 4px 12px rgba(42,82,152,0.3);
+  }
+  
+  .btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(42,82,152,0.4);
+  }
+  
+  .quiz-container {
+    background: white;
+    border: 2px solid #e4e8ec;
+    border-radius: 15px;
+    padding: 25px;
+    margin: 20px 0;
+  }
+  
+  .quiz-container h3 {
+    color: #2a5298;
+    margin-bottom: 18px;
+    font-size: 1.25em;
+  }
+  
+  .question-box {
+    background: #f8f9fa;
+    border-left: 5px solid #2a5298;
+    padding: 16px;
+    margin-bottom: 16px;
+    border-radius: 8px;
+  }
+  
+  .question-box p {
+    font-weight: 600;
+    margin-bottom: 12px;
+    font-size: 1em;
+    color: #2c3e50;
+  }
+  
+  .options {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .options label {
+    background: white;
+    border: 2px solid #dee2e6;
+    padding: 12px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    font-size: 0.93em;
+  }
+  
+  .options label:hover {
+    border-color: #2a5298;
+    background: #e3f2fd;
+  }
+  
+  .options input { margin-right: 12px; }
+  
+  .options label.correct {
+    background: #d4edda;
+    border-color: #28a745;
+    color: #155724;
+  }
+  
+  .options label.incorrect {
+    background: #f8d7da;
+    border-color: #dc3545;
+    color: #721c24;
+  }
+  
+  .feedback {
+    margin-top: 18px;
+    padding: 18px;
+    border-radius: 10px;
+    display: none;
+    font-weight: 600;
+    line-height: 1.6;
+  }
+  
+  .feedback.show { display: block; animation: fadeIn 0.3s; }
+  .feedback.success { background: #d4edda; color: #155724; border: 2px solid #28a745; }
+  .feedback.error { background: #f8d7da; color: #721c24; border: 2px solid #dc3545; }
+  
+  @media (max-width: 768px) {
+    header h1 { font-size: 1.6em; }
+    .slide { padding: 20px; }
+    .concept-card { padding: 18px; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <h1> Tejido Óseo y Recubrimientos</h1>
+    <p>Parte 6: El Hueso se Adapta a la Carga</p>
+    <div class="subtitle">Mecanotransducción y la Ley de Wolff: cómo el baile esculpe tus huesos</div>
+  </header>
+
+  <div class="nav-tabs">
+    <button class="active" onclick="showSlide(0, this)">📡 Mecanotransducción</button>
+    <button onclick="showSlide(1, this)">📐 Ley de Wolff</button>
+    <button onclick="showSlide(2, this)">⚖️ La carga perfecta</button>
+    <button onclick="showSlide(3, this)">🎯 Quiz</button>
+  </div>
+
+  <!-- SLIDE 1: MECANOTRANSDUCCIÓN -->
+  <div class="slide active">
+    <h2>📡 Mecanotransducción: Cómo el hueso "siente" el baile</h2>
+    
+    <div class="reminder-box">
+      <h4>💡 Recordatorio</h4>
+      <p>En el archivo 4 conocimos a los <strong>osteocitos</strong>, los "sensores" del hueso. En el archivo 5 vimos el ciclo de <strong>remodelación</strong>. Ahora uniremos las piezas: <strong>¿cómo sabe el hueso que has bailado y necesita hacerse más fuerte?</strong> La respuesta es la mecanotransducción.</p>
+    </div>
+    
+    <div class="intro-box">
+      <h3>🎯 ¿Qué es la mecanotransducción?</h3>
+      <p>Es una palabra complicada para un concepto sencillo: <span class="highlight">traducir una fuerza mecánica (un salto, un giro) en una señal biológica (una orden para construir hueso)</span>.</p>
+      <p style="margin-top: 12px;">Es el "idioma" que usa tu cuerpo para decir: "Oye, hemos recibido un impacto, ¡fortalece esta zona!"</p>
+    </div>
+    
+    <div class="concept-card">
+      <h3><span class="emoji"></span> El secreto está en el líquido</h3>
+      <div class="how-it-works">
+        <h4> ¿Cómo "sienten" los osteocitos?</h4>
+        <ul>
+          <li><strong>Paso 1: El hueso se dobla (un poquito):</strong> Cuando aterrizas de un salto, tu hueso se dobla de forma microscópica. ¡Sí, los huesos son ligeramente elásticos!</li>
+          <li><strong>Paso 2: El líquido se mueve:</strong> Dentro del hueso compacto hay unos "túneles" (los canalículos que vimos en el archivo 3) llenos de líquido. Al doblarse el hueso, este líquido se desplaza, como agua en una pajita cuando la aprietas.</li>
+          <li><strong>Paso 3: Los osteocitos lo notan:</strong> Los osteocitos tienen unos "pelitos" (cilios) que actúan como antenas. Cuando el líquido se mueve, mueve estos pelitos.</li>
+          <li><strong>Paso 4: Envían el mensaje:</strong> Al moverse las antenas, el osteocito libera sustancias químicas que dicen a los osteoblastos: "¡Construye más hueso aquí!"</li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="diagram-container">
+      <h4>📐 El proceso de mecanotransducción</h4>
+      <svg viewBox="0 0 700 280">
+        <!-- Hueso doblandose -->
+        <path d="M 50 100 Q 350 120 650 100" stroke="#bdc3c7" stroke-width="20" fill="none"/>
+        <text x="350" y="60" text-anchor="middle" font-size="12" fill="#7f8c8d" font-weight="bold">1. El hueso se dobla al aterrizar</text>
+        
+        <!-- Canalículo con líquido -->
+        <rect x="150" y="140" width="400" height="40" fill="#e3f2fd" stroke="#1976d2" stroke-width="2" rx="5"/>
+        <text x="350" y="165" text-anchor="middle" font-size="11" fill="#1565c0" font-weight="bold">Canalículo con líquido</text>
+        
+        <!-- Flechas de flujo -->
+        <line x1="200" y1="160" x2="280" y2="160" stroke="#3498db" stroke-width="3" marker-end="url(#arrowBlue)"/>
+        <line x1="420" y1="160" x2="500" y2="160" stroke="#3498db" stroke-width="3" marker-end="url(#arrowBlue)"/>
+        <text x="350" y="200" text-anchor="middle" font-size="11" fill="#3498db" font-weight="bold">2. El líquido se desplaza</text>
+        
+        <!-- Osteocito -->
+        <g transform="translate(320, 210)">
+          <ellipse cx="30" cy="20" rx="25" ry="15" fill="#9b59b6" opacity="0.8"/>
+          <text x="30" y="25" text-anchor="middle" font-size="9" fill="white">Osteocito</text>
+          <!-- Cilios moviéndose -->
+          <line x1="10" y1="15" x2="0" y2="5" stroke="#9b59b6" stroke-width="2"/>
+          <line x1="20" y1="10" x2="15" y2="0" stroke="#9b59b6" stroke-width="2"/>
+          <line x1="40" y1="10" x2="45" y2="0" stroke="#9b59b6" stroke-width="2"/>
+          <line x1="50" y1="15" x2="60" y2="5" stroke="#9b59b6" stroke-width="2"/>
+        </g>
+        <text x="350" y="265" text-anchor="middle" font-size="11" fill="#8e44ad" font-weight="bold">3. Las "antenas" se mueven y envían la señal</text>
+        
+        <defs>
+          <marker id="arrowBlue" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+            <polygon points="0 0, 10 3, 0 6" fill="#3498db"/>
+          </marker>
+        </defs>
+      </svg>
+    </div>
+    
+    <div class="dance-box">
+      <h4><span class="emoji">💃</span> Aplicación en la danza</h4>
+      <ul>
+        <li><strong>Sin impacto, no hay señal:</strong> Si solo haces movimientos suaves en el suelo (sin saltos), los osteocitos no reciben suficiente "sacudida" de líquido y no envían la orden de fortalecer el hueso.</li>
+        <li><strong>Variedad de movimientos:</strong> Diferentes saltos doblan el hueso en diferentes direcciones. Esto estimula a los osteocitos desde varios ángulos, creando un hueso más fuerte en 3D.</li>
+        <li><strong>El agua es clave:</strong> Si estás deshidratado/a, hay menos líquido en los canalículos y la señal llega más débil. ¡Bebe agua!</li>
+      </ul>
+    </div>
+    
+    <div class="practical-activity">
+      <h4><span class="emoji">🎭</span> Actividad: "La regla de plástico"</h4>
+      <p><strong>Objetivo:</strong> Sentir cómo se dobla un "hueso" y cómo se movería el líquido dentro</p>
+      <ol class="activity-steps">
+        <li><strong>Material:</strong> Una regla de plástico transparente (o una pajita transparente) y un poco de agua con colorante alimentario.</li>
+        <li><strong>Prepara:</strong> Si usas la pajita, llénala con el agua coloreada y tapa los extremos con plastilina.</li>
+        <li><strong>Simula el impacto:</strong> Dobla suavemente la regla o la pajita.
+          <ul>
+            <li>Si usas la pajita: Verás cómo el agua se mueve de un lado a otro al doblarla.</li>
+            <li>Si usas la regla: Imagina que dentro hay líquido moviéndose.</li>
+          </ul>
+        </li>
+        <li><strong>Reflexión:</strong> Ese movimiento del líquido es exactamente lo que "despierta" a los osteocitos cuando aterrizas de un <em>sauté</em>. Si no doblas el hueso (no hay impacto), el líquido no se mueve y los osteocitos se "duermen".</li>
+      </ol>
+    </div>
+    
+    <div class="tip-box">
+      <h4>✨ Dato curioso</h4>
+      <p>Los astronautas en el espacio pierden hasta un <strong>1-2% de densidad ósea por mes</strong>. ¿Por qué? Porque en el espacio no hay gravedad. Sus huesos no se doblan al caminar (porque flotan), el líquido de los canalículos no se mueve, y los osteocitos "piensan" que no necesitan hueso. ¡La gravedad es el mejor amigo de tus huesos!</p>
+    </div>
+  </div>
+
+  <!-- SLIDE 2: LEY DE WOLFF -->
+  <div class="slide">
+    <h2>📐 La Ley de Wolff: El hueso se esculpe solo</h2>
+    
+    <div class="reminder-box">
+      <h4>💡 Recordatorio</h4>
+      <p>Ya conocemos la Ley de Wolff de forma básica ("el hueso se fortalece donde se usa"). Ahora vamos a ver <strong>cómo lo hace a nivel interno</strong> y por qué es tan específica.</p>
+    </div>
+    
+    <div class="intro-box">
+      <h3> Especificidad de la adaptación</h3>
+      <p>La Ley de Wolff no solo dice que el hueso se hace más fuerte. Dice que <span class="highlight">se adapta EXACTAMENTE al tipo de fuerza que recibe</span>. No es una respuesta general; es una respuesta de precisión.</p>
+    </div>
+    
+    <div class="concept-card">
+      <h3><span class="emoji">🧭</span> ¿Cómo sabe el hueso hacia dónde crecer?</h3>
+      <div class="how-it-works">
+        <h4>🕸️ Las trabéculas siguen las líneas de fuerza</h4>
+        <p>Recuerda el hueso esponjoso y sus trabéculas (Archivo 3). No están puestas al azar:</p>
+        <ul>
+          <li><strong>Si la fuerza siempre va de arriba a abajo</strong> (como al saltar y aterrizar): Las trabéculas se alinean en vertical, como columnas de un edificio.</li>
+          <li><strong>Si la fuerza es torsional</strong> (como al girar en una pirueta): Las trabéculas se entrelazan en espiral para resistir el giro.</li>
+          <li><strong>Si la fuerza desaparece</strong> (reposo en cama): Las trabéculas que no se usan se disuelven y desaparecen.</li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="diagram-container">
+      <h4>📊 Comparación: Hueso sedentario vs. Hueso de bailarín</h4>
+      <svg viewBox="0 0 700 280">
+        <!-- Hueso sedentario -->
+        <g transform="translate(50, 30)">
+          <rect x="0" y="0" width="250" height="220" fill="#f8f9fa" stroke="#dee2e6" stroke-width="2" rx="10"/>
+          <text x="125" y="25" text-anchor="middle" font-size="12" font-weight="bold" fill="#7f8c8d">SEDENTARIO</text>
+          
+          <!-- Trabéculas finas y desordenadas -->
+          <line x1="40" y1="50" x2="80" y2="90" stroke="#bdc3c7" stroke-width="2"/>
+          <line x1="80" y1="50" x2="120" y2="90" stroke="#bdc3c7" stroke-width="2"/>
+          <line x1="120" y1="50" x2="160" y2="90" stroke="#bdc3c7" stroke-width="2"/>
+          <line x1="160" y1="50" x2="200" y2="90" stroke="#bdc3c7" stroke-width="2"/>
+          
+          <line x1="40" y1="90" x2="80" y2="130" stroke="#bdc3c7" stroke-width="2"/>
+          <line x1="80" y1="90" x2="120" y2="130" stroke="#bdc3c7" stroke-width="2"/>
+          <line x1="120" y1="90" x2="160" y2="130" stroke="#bdc3c7" stroke-width="2"/>
+          <line x1="160" y1="90" x2="200" y2="130" stroke="#bdc3c7" stroke-width="2"/>
+          
+          <line x1="40" y1="130" x2="80" y2="170" stroke="#bdc3c7" stroke-width="2"/>
+          <line x1="80" y1="130" x2="120" y2="170" stroke="#bdc3c7" stroke-width="2"/>
+          <line x1="120" y1="130" x2="160" y2="170" stroke="#bdc3c7" stroke-width="2"/>
+          <line x1="160" y1="130" x2="200" y2="170" stroke="#bdc3c7" stroke-width="2"/>
+          
+          <text x="125" y="205" text-anchor="middle" font-size="10" fill="#7f8c8d">Trabéculas finas</text>
+          <text x="125" y="220" text-anchor="middle" font-size="10" fill="#7f8c8d">Hueso frágil</text>
+        </g>
+        
+        <!-- Hueso bailarín -->
+        <g transform="translate(400, 30)">
+          <rect x="0" y="0" width="250" height="220" fill="#e8f5e9" stroke="#27ae60" stroke-width="2" rx="10"/>
+          <text x="125" y="25" text-anchor="middle" font-size="12" font-weight="bold" fill="#2e7d32">BAILARÍN</text>
+          
+          <!-- Flecha de carga -->
+          <line x1="125" y1="35" x2="125" y2="50" stroke="#e74c3c" stroke-width="3" marker-end="url(#arrowRed)"/>
+          <text x="125" y="30" text-anchor="middle" font-size="9" fill="#e74c3c" font-weight="bold">CARGA</text>
+          
+          <!-- Trabéculas gruesas y alineadas verticalmente -->
+          <line x1="60" y1="50" x2="60" y2="170" stroke="#27ae60" stroke-width="5"/>
+          <line x1="100" y1="50" x2="100" y2="170" stroke="#27ae60" stroke-width="5"/>
+          <line x1="140" y1="50" x2="140" y2="170" stroke="#27ae60" stroke-width="5"/>
+          <line x1="180" y1="50" x2="180" y2="170" stroke="#27ae60" stroke-width="5"/>
+          
+          <!-- Conexiones horizontales -->
+          <line x1="60" y1="90" x2="180" y2="90" stroke="#27ae60" stroke-width="3"/>
+          <line x1="60" y1="130" x2="180" y2="130" stroke="#27ae60" stroke-width="3"/>
+          
+          <text x="125" y="205" text-anchor="middle" font-size="10" fill="#2e7d32" font-weight="bold">Trabéculas gruesas</text>
+          <text x="125" y="220" text-anchor="middle" font-size="10" fill="#2e7d32" font-weight="bold">Alineadas con la carga</text>
+        </g>
+        
+        <defs>
+          <marker id="arrowRed" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+            <polygon points="0 0, 10 3, 0 6" fill="#e74c3c"/>
+          </marker>
+        </defs>
+      </svg>
+    </div>
+    
+    <div class="dance-box">
+      <h4><span class="emoji">💃</span> Ejemplos reales en bailarines</h4>
+      <ul>
+        <li><strong>Bailarines de flamenco:</strong> Tienen los huesos del pie (metatarsianos) y el tobillo significativamente más densos que la población general, adaptados al zapateo.</li>
+        <li><strong>Bailarines de ballet:</strong> El cuello del fémur (cadera) se adapta para soportar las rotaciones extremas y el trabajo en media punta.</li>
+        <li><strong>Bailarines de breakdance:</strong> Tienen los huesos de las muñecas y el radio (antebrazo) mucho más densos por los apoyos invertidos (freezes).</li>
+        <li><strong>Unilateralidad:</strong> Si siempre giras hacia el mismo lado, ese lado de tu columna y cadera tendrá un hueso ligeramente más denso. ¡Por eso es importante bailar a ambos lados!</li>
+      </ul>
+    </div>
+    
+    <div class="practical-activity">
+      <h4><span class="emoji">🎭</span> Actividad: "Observa tus propias adaptaciones"</h4>
+      <p><strong>Objetivo:</strong> Ver la Ley de Wolff en tu propio cuerpo (en la piel, como ejemplo visible)</p>
+      <ol class="activity-steps">
+        <li><strong>Observa tus manos:</strong> Si tocas la guitarra, escribes mucho o haces deporte, tendrás "callos" en zonas específicas. La piel se ha adaptado exactamente donde recibe fricción.</li>
+        <li><strong>Relación con el hueso:</strong> El hueso hace lo mismo, pero por dentro. Donde recibe carga, se hace más denso (un "callo interno").</li>
+        <li><strong>Reflexión:</strong> Si dejaras de bailar durante 6 meses, ¿qué pasaría? (Los "callos" de la piel se irían, y las trabéculas del hueso empezarían a afinarse porque ya no reciben esa carga específica).</li>
+      </ol>
+    </div>
+    
+    <div class="tip-box">
+      <h4>✨ Dato curioso</h4>
+      <p>La Ley de Wolff también explica por qué los <strong>tenistas profesionales</strong> tienen el hueso del brazo de la raqueta hasta un <strong>30% más denso</strong> que el del otro brazo. ¡El hueso sabe exactamente qué brazo trabaja más!</p>
+    </div>
+  </div>
+
+  <!-- SLIDE 3: LA CARGA PERFECTA -->
+  <div class="slide">
+    <h2>⚖️ La "Zona Ricitos de Oro" de la carga ósea</h2>
+    
+    <div class="reminder-box">
+      <h4>💡 Recordatorio</h4>
+      <p>Ya sabemos que el hueso necesita carga para fortalecerse. Pero... <strong>¿cuánta carga?</strong> ¿Más es siempre mejor? La respuesta es no. Existe una "zona perfecta".</p>
+    </div>
+    
+    <div class="intro-box">
+      <h3>🎯 La curva de adaptación ósea</h3>
+      <p>La relación entre la carga (entrenamiento) y la salud del hueso no es una línea recta. Es una curva en forma de U invertida. Hay un punto óptimo: ni muy poco, ni demasiado.</p>
+    </div>
+    
+    <div class="concept-card">
+      <h3><span class="emoji">🐻</span> Las 3 zonas de la carga</h3>
+      <div class="how-it-works">
+        <h4> ¿En qué zona estás?</h4>
+        <ul>
+          <li><strong>Zona 1: Carga insuficiente (Poca carga)</strong>
+            <br>El hueso no recibe señales. Los osteoclastos ganan a los osteoblastos. El hueso se debilita. (Ejemplo: reposo en cama, sedentarismo, o bailarinas con restricción calórica severa).</li>
+          <li><strong>Zona 2: Carga óptima (La zona Ricitos de Oro)</strong>
+            <br>El estímulo es suficiente para activar a los osteocitos, pero no tanto como para dañar el hueso. Los osteoblastos construyen más de lo que los osteoclastos destruyen. ¡El hueso se fortalece!</li>
+          <li><strong>Zona 3: Carga excesiva (Demasiada carga)</strong>
+            <br>El impacto es tan grande o tan frecuente que se producen más microgrietas de las que el cuerpo puede reparar. Los osteoclastos se vuelven locos intentando limpiar tanto daño. Resultado: fracturas por estrés.</li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="diagram-container">
+      <h4> La curva de adaptación del hueso</h4>
+      <svg viewBox="0 0 700 300">
+        <!-- Ejes -->
+        <line x1="50" y1="250" x2="650" y2="250" stroke="#333" stroke-width="2"/>
+        <line x1="50" y1="250" x2="50" y2="50" stroke="#333" stroke-width="2"/>
+        
+        <!-- Etiquetas ejes -->
+        <text x="350" y="280" text-anchor="middle" font-size="12" fill="#333" font-weight="bold">CANTIDAD DE ENTRENAMIENTO (Carga)</text>
+        <text x="20" y="150" text-anchor="middle" font-size="12" fill="#333" font-weight="bold" transform="rotate(-90 20 150)">SALUD ÓSEA</text>
+        
+        <!-- Curva -->
+        <path d="M 50 220 Q 200 230 350 100 Q 500 20 650 240" stroke="#2a5298" stroke-width="4" fill="none"/>
+        
+        <!-- Zonas -->
+        <rect x="50" y="50" width="150" height="200" fill="#ffebee" opacity="0.3"/>
+        <text x="125" y="240" text-anchor="middle" font-size="10" fill="#c0392b" font-weight="bold">ZONA 1: Poca carga</text>
+        <text x="125" y="255" text-anchor="middle" font-size="9" fill="#c0392b">Hueso débil</text>
+        
+        <rect x="250" y="50" width="200" height="200" fill="#e8f5e9" opacity="0.5"/>
+        <text x="350" y="240" text-anchor="middle" font-size="10" fill="#27ae60" font-weight="bold">ZONA 2: Carga óptima</text>
+        <text x="350" y="255" text-anchor="middle" font-size="9" fill="#27ae60">¡Hueso fuerte!</text>
+        
+        <rect x="500" y="50" width="150" height="200" fill="#ffebee" opacity="0.3"/>
+        <text x="575" y="240" text-anchor="middle" font-size="10" fill="#c0392b" font-weight="bold">ZONA 3: Exceso</text>
+        <text x="575" y="255" text-anchor="middle" font-size="9" fill="#c0392b">Fracturas</text>
+        
+        <!-- Punto óptimo -->
+        <circle cx="350" cy="100" r="8" fill="#27ae60"/>
+        <text x="350" y="85" text-anchor="middle" font-size="10" fill="#27ae60" font-weight="bold">Punto máximo</text>
+      </svg>
+    </div>
+    
+    <div class="warning-box">
+      <h4>🚨 El peligro de la Zona 3 para los bailarines</h4>
+      <p>Las <strong>fracturas por estrés</strong> (muy comunes en bailarines, especialmente en los metatarsianos del pie y la tibia) ocurren cuando se cruzan accidentalmente a la Zona 3. Esto suele pasar por:</p>
+      <ul style="margin-left: 25px; margin-top: 10px; line-height: 1.8;">
+        <li>Aumentar la carga de entrenamiento demasiado rápido (ej: pasar de 3 a 6 horas de clase de golpe).</li>
+        <li>Cambiar de superficie (bailar siempre en suelo duro en lugar de suelo de madera/sprung floor).</li>
+        <li>No descansar lo suficiente entre sesiones (la fase de formación de la remodelación necesita tiempo).</li>
+      </ul>
+    </div>
+    
+    <div class="dance-box">
+      <h4><span class="emoji">💃</span> ¿Cómo mantenerse en la Zona 2?</h4>
+      <ul>
+        <li><strong>Progresión lenta:</strong> Aumenta la intensidad o duración del entrenamiento poco a poco (regla del 10%: no aumentes más del 10% por semana).</li>
+        <li><strong>Variedad:</strong> Alterna días de mucho impacto (saltos) con días de menos impacto (suelo, estiramientos, técnica de brazos).</li>
+        <li><strong>Suelo adecuado:</strong> Baila siempre que puedas en suelos con absorción de impacto (suelos de danza, madera flotante). Evita el cemento o las baldosas duras.</li>
+        <li><strong>Escucha las señales:</strong> Un dolor que aparece al empezar a bailar y desaparece al calentar es una señal de alerta de que estás cerca de la Zona 3.</li>
+      </ul>
+    </div>
+    
+    <div class="practical-activity">
+      <h4><span class="emoji">🎭</span> Actividad: "Encuentra tu Zona 2"</h4>
+      <p><strong>Objetivo:</strong> Aprender a dosificar la carga</p>
+      <ol class="activity-steps">
+        <li><strong>Analiza tu semana:</strong> Dibuja en un papel 7 días. Marca con colores:
+          <ul>
+            <li>Verde: Día de carga óptima (bailas, pero descansas bien).</li>
+            <li>Amarillo: Día de carga baja (descanso activo, estiramientos).</li>
+            <li>Rojo: Día de carga alta (muchos saltos, ensayo largo).</li>
+          </ul>
+        </li>
+        <li><strong>Regla de oro:</strong> Nunca pongas dos días rojos seguidos. Después de un día rojo, debe haber un día amarillo o verde para que los osteoblastos puedan hacer la fase de formación.</li>
+        <li><strong>Reflexión:</strong> ¿Tu semana actual está en la Zona 2, o estás pasando demasiado tiempo en la Zona 1 (sedentarismo entre clases) o Zona 3 (sin días de descanso)?</li>
+      </ol>
+    </div>
+    
+    <div class="tip-box">
+      <h4>✨ El principio de los "100 saltos"</h4>
+      <p>Estudios recientes sugieren que los osteocitos se "acostumbran" a la carga. Después de unos <strong>40-100 impactos</strong> (saltos) en una sesión, los osteocitos dejan de enviar señales de "construir hueso". ¡Hacer 500 saltos seguidos no construye 5 veces más hueso que hacer 100! Por eso es mejor hacer sesiones cortas de saltos repartidas en la semana, que un día maratónico.</p>
+    </div>
+  </div>
+
+  <!-- SLIDE 4: QUIZ -->
+  <div class="slide">
+    <h2>🎯 Quiz: Comprueba lo aprendido</h2>
+    
+    <div class="quiz-container">
+      <h3>Preguntas sobre adaptación a la carga</h3>
+      <div id="quizContainer"></div>
+      <button class="btn" onclick="checkQuiz()">Comprobar respuestas</button>
+      <button class="btn" style="background: #6c757d;" onclick="resetQuiz()">Reiniciar</button>
+      <div class="feedback" id="fbQuiz"></div>
+    </div>
+    
+    <div class="practical-activity">
+      <h4><span class="emoji"></span> Actividad final: "Diseña un entrenamiento inteligente para tus huesos"</h4>
+      <p><strong>Objetivo:</strong> Aplicar la mecanotransducción y la Ley de Wolff a tu rutina</p>
+      <ol class="activity-steps">
+        <li><strong>Elige 3 ejercicios</strong> de tu clase de danza que generen impacto controlado (ej: relevés, sautés, saltos en primera).</li>
+        <li><strong>Aplica la regla de los 100 impactos:</strong> En lugar de hacerlos 200 veces seguidas, propón hacer 3 series de 30-40 repeticiones, descansando entre ellas.</li>
+        <li><strong>Añade variedad:</strong> Incluye un ejercicio que cargue el hueso en una dirección diferente (ej: saltos laterales, no solo hacia adelante).</li>
+        <li><strong>Planifica el descanso:</strong> Asegúrate de que después de este entrenamiento haya al menos 24-48 horas antes de volver a cargar esos mismos huesos con intensidad.</li>
+      </ol>
+    </div>
+    
+    <div class="tip-box" style="margin-top: 20px;">
+      <h4> Resumen clave de los 6 archivos</h4>
+      <ul style="margin-left: 25px; line-height: 1.8;">
+        <li><strong>Archivo 1:</strong> El periostio nutre, repara y siente el dolor.</li>
+        <li><strong>Archivo 2:</strong> El endostio regula el calcio y el cartílago necesita movimiento para nutrirse.</li>
+        <li><strong>Archivo 3:</strong> El hueso compacto (fuerte) y el esponjoso (ligero con trabéculas inteligentes).</li>
+        <li><strong>Archivo 4:</strong> El equipo celular (osteoblastos, osteoclastos, osteocitos).</li>
+        <li><strong>Archivo 5:</strong> El ciclo de remodelación (las 4 fases y el equilibrio).</li>
+        <li><strong>Archivo 6:</strong> La mecanotransducción y la Ley de Wolff (el hueso se esculpe según el baile).</li>
+      </ul>
+      <p style="margin-top: 15px; text-align: center; font-size: 1.1em; color: #2a5298; font-weight: 600;">¡Ahora entiendes la fisiología completa de cómo el baile construye tus huesos! 🦴💃</p>
+    </div>
+  </div>
+</div>
+
+<script>
+function showSlide(i, btn) {
+  document.querySelectorAll('.slide').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-tabs button').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.slide')[i].classList.add('active');
+  btn.classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+const quizData = [
+  {
+    q: "¿Qué es la mecanotransducción?",
+    opts: [
+      "La reparación de una fractura",
+      "La traducción de una fuerza mecánica en una señal biológica para el hueso",
+      "El proceso de digestión del calcio",
+      "La contracción del músculo"
+    ],
+    correct: 1
+  },
+  {
+    q: "¿Qué detectan los osteocitos cuando aterrizas de un salto?",
+    opts: [
+      "Un aumento de temperatura",
+      "El movimiento del líquido dentro de los canalículos",
+      "Un cambio en el color del hueso",
+      "La llegada de sangre nueva"
+    ],
+    correct: 1
+  },
+  {
+    q: "Según la Ley de Wolff, ¿cómo se adaptan las trabéculas del hueso?",
+    opts: [
+      "Se hacen más gruesas en todas las direcciones por igual",
+      "Se alinean siguiendo la dirección de las fuerzas que recibe el hueso",
+      "Desaparecen completamente",
+      "Se convierten en hueso compacto"
+    ],
+    correct: 1
+  },
+  {
+    q: "¿Qué pasa si un bailarín hace 500 saltos seguidos sin descanso?",
+    opts: [
+      "Sus huesos se hacen 5 veces más fuertes",
+      "Los osteocitos se 'acostumbran' y dejan de enviar señales después de unos 100 impactos",
+      "El hueso se vuelve de cartílago",
+      "No pasa nada, es perfecto"
+    ],
+    correct: 1
+  },
+  {
+    q: "¿Qué ocurre en la 'Zona 3' de la curva de carga ósea?",
+    opts: [
+      "El hueso se mantiene igual",
+      "El hueso se fortalece al máximo",
+      "Hay demasiada carga, se producen más microdaños de los que se pueden reparar (fracturas por estrés)",
+      "El hueso se hace más flexible"
+    ],
+    correct: 2
+  },
+  {
+    q: "¿Por qué los astronautas pierden densidad ósea en el espacio?",
+    opts: [
+      "Porque comen peor",
+      "Porque no hay gravedad, sus huesos no se doblan y los osteocitos no reciben señal para construir hueso",
+      "Porque hace mucho frío",
+      "Porque duermen demasiado"
+    ],
+    correct: 1
+  },
+  {
+    q: "¿Cuál es la mejor estrategia para fortalecer los huesos según la mecanotransducción?",
+    opts: [
+      "Hacer 1000 saltos un solo día a la semana",
+      "Hacer sesiones cortas de impacto repartidas a lo largo de la semana con descansos",
+      "No saltar nunca para no dañar el hueso",
+      "Solo estirar"
+    ],
+    correct: 1
+  },
+  {
+    q: "Si un bailarín solo baila sobre una superficie muy dura (como cemento), ¿qué riesgo aumenta?",
+    opts: [
+      "Ninguno, el hueso se hace más fuerte siempre",
+      "Pasar a la 'Zona 3' de carga excesiva y sufrir fracturas por estrés",
+      "Que el hueso se vuelva de goma",
+      "Que los músculos crezcan demasiado"
+    ],
+    correct: 1
+  }
+];
+
+function renderQuiz() {
+  const cont = document.getElementById('quizContainer');
+  cont.innerHTML = '';
+  quizData.forEach((item, qi) => {
+    let html = `<div class="question-box"><p>${qi+1}. ${item.q}</p><div class="options">`;
+    item.opts.forEach((opt, oi) => {
+      html += `<label><input type="radio" name="q${qi}" value="${oi}"> ${opt}</label>`;
+    });
+    html += `</div></div>`;
+    cont.innerHTML += html;
+  });
+}
+renderQuiz();
+
+function checkQuiz() {
+  let score = 0;
+  quizData.forEach((item, qi) => {
+    const sel = document.querySelector(`input[name="q${qi}"]:checked`);
+    const labels = document.querySelectorAll(`input[name="q${qi}"]`);
+    labels.forEach(l => l.parentElement.classList.remove('correct','incorrect'));
+    if (sel) {
+      const val = parseInt(sel.value);
+      if (val === item.correct) {
+        sel.parentElement.classList.add('correct');
+        score++;
+      } else {
+        sel.parentElement.classList.add('incorrect');
+        labels[item.correct].parentElement.classList.add('correct');
+      }
+    } else {
+      labels[item.correct].parentElement.classList.add('correct');
+    }
+  });
+  const fb = document.getElementById('fbQuiz');
+  fb.classList.add('show');
+  if (score === quizData.length) {
+    fb.className = 'feedback show success';
+    fb.innerHTML = `🏆 ¡Excelente! ${score}/${quizData.length}. Dominas la fisiología de la adaptación ósea.`;
+  } else if (score >= 6) {
+    fb.className = 'feedback show';
+    fb.style.background = '#fff3cd';
+    fb.style.color = '#856404';
+    fb.style.border = '2px solid #ffc107';
+    fb.innerHTML = `👍 Bien: ${score}/${quizData.length}. Repasa los conceptos fallados.`;
+  } else {
+    fb.className = 'feedback show error';
+    fb.innerHTML = `📚 ${score}/${quizData.length}. Vuelve a leer los apartados y reinténtalo.`;
+  }
+}
+
+function resetQuiz() {
+  document.querySelectorAll('#quizContainer input').forEach(i => { i.checked = false; i.parentElement.classList.remove('correct','incorrect'); });
+  document.getElementById('fbQuiz').classList.remove('show');
+}
+</script>
+</body>
+</html>

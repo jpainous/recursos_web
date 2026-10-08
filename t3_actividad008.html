@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Nutrición del Cartílago</title>
+<style>
+  body { font-family: 'Segoe UI', sans-serif; background: #0f172a; color: #e2e8f0; margin: 0; padding: 20px; }
+  h1 { text-align: center; color: #10b981; }
+  .container { max-width: 1000px; margin: auto; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  @media (max-width: 800px) { .grid { grid-template-columns: 1fr; } }
+  .panel { background: #1e293b; padding: 20px; border-radius: 12px; }
+  canvas { background: #0b1220; border-radius: 8px; display: block; width: 100%; cursor: pointer; }
+  .info { margin-top: 15px; padding: 12px; background: #0f172a; border-radius: 6px; border-left: 4px solid #10b981; min-height: 80px; }
+  button { background: #10b981; color: #0f172a; border: none; padding: 12px 20px; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 15px; margin: 5px; }
+  .barra { height: 20px; background: #334155; border-radius: 10px; overflow: hidden; margin: 10px 0; }
+  .barra-fill { height: 100%; background: linear-gradient(90deg, #10b981, #34d399); transition: width 0.3s; }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>🦵 Nutrición del Cartílago Articular</h1>
+  <p style="text-align:center; color:#94a3b8;">El cartílago es <b>avascular</b>: se nutre por bombeo mecánico. Haz clic para comprimir y ver el proceso.</p>
+
+  <div class="grid">
+    <div class="panel">
+      <h3 style="color:#10b981;">Articulación (clic para cargar/descargar)</h3>
+      <canvas id="cart" width="450" height="400"></canvas>
+      <button onclick="comprimir()">⬇️ Comprimir (carga)</button>
+      <button onclick="descargar()">⬆️ Descargar (reposo)</button>
+      <button onclick="ciclo()">🔄 Ciclo automático</button>
+    </div>
+    <div class="panel">
+      <h3 style="color:#10b981;">Estado del cartílago</h3>
+      <div class="info" id="info">
+        <b>Sin carga:</b> el cartílago absorbe líquido sinovial rico en nutrientes.
+      </div>
+      <div>
+        <b>Nivel de hidratación:</b>
+        <div class="barra"><div class="barra-fill" id="hidro" style="width:80%"></div></div>
+      </div>
+      <div>
+        <b>Eliminación de desechos:</b>
+        <div class="barra"><div class="barra-fill" id="desechos" style="width:30%; background: linear-gradient(90deg, #ef4444, #f87171);"></div></div>
+      </div>
+      <div style="margin-top:20px; padding:15px; background:#0f172a; border-radius:8px;">
+        <b>📚 ¿Por qué es importante?</b><br>
+        Sin movimiento regular, el cartílago no se nutre → se degrada → artrosis. Por eso la inmovilización prolongada es perjudicial.
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const canvas = document.getElementById('cart');
+const ctx = canvas.getContext('2d');
+
+let estado = 'descargado'; // 'cargado' o 'descargado'
+let hidratacion = 80;
+let desechos = 30;
+let particulas = [];
+let cicloActivo = false;
+
+// Generar partículas de líquido
+for (let i = 0; i < 30; i++) {
+  particulas.push({
+    x: 100 + Math.random()*250,
+    y: 200 + Math.random()*80,
+    r: 3 + Math.random()*3,
+    tipo: Math.random() > 0.5 ? 'nutriente' : 'desecho'
+  });
+}
+
+function draw() {
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  
+  // Hueso superior
+  ctx.fillStyle = '#e5e7eb';
+  ctx.fillRect(80, 50, 290, 100);
+  ctx.fillStyle = '#9ca3af';
+  ctx.font = '14px sans-serif';
+  ctx.fillText('Hueso subcondral', 170, 100);
+  
+  // Cartílago
+  const grosor = estado === 'cargado' ? 60 : 100;
+  const yCart = 150;
+  ctx.fillStyle = estado === 'cargado' ? '#6ee7b7' : '#a7f3d0';
+  ctx.fillRect(80, yCart, 290, grosor);
+  ctx.strokeStyle = '#10b981';
+  ctx.lineWidth = 2;
+  ctx.strokeRect(80, yCart, 290, grosor);
+  ctx.fillStyle = '#064e3b';
+  ctx.font = 'bold 14px sans-serif';
+  ctx.fillText('CARTÍLAGO', 190, yCart + grosor/2);
+  
+  // Partículas dentro del cartílago
+  particulas.forEach(p => {
+    if (estado === 'cargado') {
+      // Expulsar hacia los lados
+      p.x += (Math.random()-0.5)*2;
+      if (p.x < 80 || p.x > 370) p.x = 100 + Math.random()*250;
+    } else {
+      // Absorber desde los lados
+      p.x += (225 - p.x)*0.01;
+      p.y += (yCart + grosor/2 - p.y)*0.02;
+    }
+    ctx.fillStyle = p.tipo === 'nutriente' ? '#fbbf24' : '#ef4444';
+    ctx.beginPath();
+    ctx.arc(p.x, yCart + 10 + (p.y-200)%grosor, p.r, 0, Math.PI*2);
+    ctx.fill();
+  });
+  
+  // Hueso inferior
+  ctx.fillStyle = '#e5e7eb';
+  ctx.fillRect(80, yCart + grosor, 290, 100);
+  
+  // Líquido sinovial (arriba y abajo)
+  ctx.fillStyle = 'rgba(56, 189, 248, 0.3)';
+  ctx.fillRect(80, yCart - 30, 290, 30);
+  ctx.fillRect(80, yCart + grosor, 290, 30);
+  ctx.fillStyle = '#38bdf8';
+  ctx.font = '12px sans-serif';
+  ctx.fillText('Líquido sinovial', 170, yCart - 10);
+  
+  // Flechas de flujo
+  if (estado === 'cargado') {
+    ctx.strokeStyle = '#ef4444';
+    ctx.lineWidth = 3;
+    // Expulsar desechos
+    ctx.beginPath();
+    ctx.moveTo(100, yCart + grosor/2);
+    ctx.lineTo(60, yCart + grosor/2);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(60, yCart + grosor/2);
+    ctx.lineTo(70, yCart + grosor/2 - 5);
+    ctx.lineTo(70, yCart + grosor/2 + 5);
+    ctx.closePath();
+    ctx.fill();
+  } else {
+    ctx.strokeStyle = '#fbbf24';
+    ctx.lineWidth = 3;
+    // Absorber nutrientes
+    ctx.beginPath();
+    ctx.moveTo(60, yCart + grosor/2);
+    ctx.lineTo(100, yCart + grosor/2);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(100, yCart + grosor/2);
+    ctx.lineTo(90, yCart + grosor/2 - 5);
+    ctx.lineTo(90, yCart + grosor/2 + 5);
+    ctx.closePath();
+    ctx.fillStyle = '#fbbf24';
+    ctx.fill();
+  }
+  
+  // Actualizar barras
+  document.getElementById('hidro').style.width = hidratacion + '%';
+  document.getElementById('desechos').style.width = desechos + '%';
+}
+
+function comprimir() {
+  estado = 'cargado';
+  hidratacion = Math.max(40, hidratacion - 15);
+  desechos = Math.min(80, desechos + 10);
+  document.getElementById('info').innerHTML = `
+    <b>⬇️ CARGA (compresión):</b> el cartílago se comprime → expulsa agua y desechos metabólicos hacia el líquido sinovial.
+  `;
+  draw();
+}
+
+function descargar() {
+  estado = 'descargado';
+  hidratacion = Math.min(100, hidratacion + 15);
+  desechos = Math.max(10, desechos - 15);
+  document.getElementById('info').innerHTML = `
+    <b>⬆️ DESCARGA (reposo):</b> el cartílago se expande → absorbe líquido sinovial rico en nutrientes (glucosa, oxígeno).
+  `;
+  draw();
+}
+
+function ciclo() {
+  if (cicloActivo) return;
+  cicloActivo = true;
+  let i = 0;
+  const interval = setInterval(() => {
+    if (i % 2 === 0) descargar();
+    else comprimir();
+    i++;
+    if (i > 10) {
+      clearInterval(interval);
+      cicloActivo = false;
+      document.getElementById('info').innerHTML += '<br><br>🎉 <b>¡Perfecto!</b> Has simulado 5 ciclos de bombeo. Así se nutre el cartílago durante el movimiento articular.';
+    }
+  }, 1000);
+}
+
+canvas.addEventListener('click', () => {
+  if (estado === 'descargado') comprimir();
+  else descargar();
+});
+
+draw();
+</script>
+</body>
+</html>

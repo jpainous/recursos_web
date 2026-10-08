@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Análisis del Relevé</title>
+<style>
+  body { font-family: 'Segoe UI', sans-serif; background: #0f172a; color: #e2e8f0; margin: 0; padding: 20px; }
+  h1 { text-align: center; color: #ec4899; }
+  .container { max-width: 1100px; margin: auto; display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  @media (max-width: 800px) { .container { grid-template-columns: 1fr; } }
+  .escena { background: #1e293b; padding: 20px; border-radius: 12px; }
+  svg { width: 100%; height: auto; background: linear-gradient(to bottom, #1e293b, #0f172a); border-radius: 8px; }
+  .hotspot { cursor: pointer; transition: all 0.3s; }
+  .hotspot:hover { transform: scale(1.2); }
+  .hotspot circle { fill: #fbbf24; stroke: #fff; stroke-width: 2; }
+  .hotspot text { fill: #0f172a; font-weight: bold; font-size: 14px; text-anchor: middle; dominant-baseline: central; pointer-events: none; }
+  .info-panel { background: #1e293b; padding: 25px; border-radius: 12px; }
+  .info-panel h2 { color: #ec4899; margin-top: 0; }
+  .contraccion { display: inline-block; padding: 6px 14px; border-radius: 20px; font-weight: bold; margin: 10px 0; }
+  .concentrica { background: #16a34a; color: white; }
+  .isometrica { background: #2563eb; color: white; }
+  .excentrica { background: #dc2626; color: white; }
+  .estructura { background: #334155; color: #fbbf24; }
+  .detalle { background: #0f172a; padding: 15px; border-radius: 8px; margin-top: 15px; border-left: 4px solid #ec4899; line-height: 1.6; }
+  .placeholder { color: #64748b; text-align: center; padding: 40px 20px; }
+  .roles { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+  .rol { background: #475569; padding: 4px 10px; border-radius: 12px; font-size: 12px; }
+</style>
+</head>
+<body>
+<h1>🩰 Análisis Biomecánico del Relevé</h1>
+<p style="text-align:center; color:#94a3b8;">Haz clic en cada punto numerado para descubrir la fisiología del gesto.</p>
+
+<div class="container">
+  <div class="escena">
+    <svg viewBox="0 0 400 500" xmlns="http://www.w3.org/2000/svg">
+      <!-- Suelo -->
+      <line x1="50" y1="450" x2="350" y2="450" stroke="#475569" stroke-width="2" stroke-dasharray="5,5"/>
+      
+      <!-- Pie en relevé -->
+      <ellipse cx="200" cy="430" rx="35" ry="12" fill="#fbbf24" opacity="0.3"/>
+      <path d="M 180 430 Q 200 400 220 430" fill="#fde68a" stroke="#f59e0b" stroke-width="2"/>
+      
+      <!-- Tobillo -->
+      <circle cx="200" cy="380" r="15" fill="#fca5a5" stroke="#dc2626" stroke-width="2"/>
+      
+      <!-- Pantorrilla (gemelos) -->
+      <path d="M 175 370 Q 160 300 175 230 L 225 230 Q 240 300 225 370 Z" 
+            fill="#f472b6" stroke="#be185d" stroke-width="2"/>
+      
+      <!-- Tendón de Aquiles -->
+      <rect x="192" y="370" width="16" height="60" fill="#e5e7eb" stroke="#6b7280" stroke-width="1.5" rx="4"/>
+      
+      <!-- Rodilla -->
+      <circle cx="200" cy="220" r="18" fill="#fca5a5" stroke="#dc2626" stroke-width="2"/>
+      
+      <!-- Muslo -->
+      <path d="M 180 215 L 175 120 L 225 120 L 220 215 Z" fill="#fb923c" stroke="#c2410c" stroke-width="2"/>
+      
+      <!-- Hotspots -->
+      <g class="hotspot" onclick="mostrar(1)">
+        <circle cx="150" cy="300" r="18"/>
+        <text x="150" y="300">1</text>
+      </g>
+      <g class="hotspot" onclick="mostrar(2)">
+        <circle cx="200" cy="400" r="18"/>
+        <text x="200" y="400">2</text>
+      </g>
+      <g class="hotspot" onclick="mostrar(3)">
+        <circle cx="250" cy="300" r="18"/>
+        <text x="250" y="300">3</text>
+      </g>
+      <g class="hotspot" onclick="mostrar(4)">
+        <circle cx="200" cy="220" r="18"/>
+        <text x="200" y="220">4</text>
+      </g>
+      <g class="hotspot" onclick="mostrar(5)">
+        <circle cx="200" cy="150" r="18"/>
+        <text x="200" y="150">5</text>
+      </g>
+    </svg>
+  </div>
+
+  <div class="info-panel" id="panel">
+    <div class="placeholder">
+      👆 Haz clic en un punto numerado del dibujo para ver el análisis biomecánico.
+    </div>
+  </div>
+</div>
+
+<script>
+const contenidos = {
+  1: {
+    titulo: 'Gemelos (Gastrocnemio + Sóleo)',
+    tipo: 'concentrica',
+    etiqueta: 'CONCÉNTRICA',
+    detalle: 'Durante la <b>subida al relevé</b>, los gemelos generan tensión mientras se <b>acortan</b> (Tensión > Resistencia). Son los <b>agonistas</b> principales del movimiento de flexión plantar.',
+    roles: ['Agonista principal', 'Motor del movimiento', 'Fibras mixtas (I + IIa)']
+  },
+  2: {
+    titulo: 'Tendón de Aquiles',
+    tipo: 'estructura',
+    etiqueta: 'MUELLE ELÁSTICO',
+    detalle: 'No es un músculo, sino <b>tejido conectivo</b> que une el gemelo al calcáneo. Actúa como un <b>muelle</b>: acumula energía elástica durante la fase excéntrica y la devuelve en la concéntrica, ahorrando hasta un 50% del coste metabólico.',
+    roles: ['Transmite fuerza', 'Almacena energía elástica', 'Reduce coste metabólico']
+  },
+  3: {
+    titulo: 'Tibial anterior (antagonista)',
+    tipo: 'excentrica',
+    etiqueta: 'EXCÉNTRICA / CONTROL',
+    detalle: 'Mientras los gemelos se acortan, el tibial anterior se <b>alarga controladamente</b> para frenar el movimiento y dar precisión. Es el <b>antagonista</b>: su acción es opuesta pero necesaria para un gesto limpio.',
+    roles: ['Antagonista', 'Frena el movimiento', 'Da precisión']
+  },
+  4: {
+    titulo: 'Tobillo en posición media',
+    tipo: 'isometrica',
+    etiqueta: 'ISOMÉTRICA',
+    detalle: 'Cuando <b>mantienes</b> el relevé arriba, los músculos generan tensión <b>sin cambiar su longitud</b> (Tensión = Resistencia). Es una contracción isométrica pura, con <b>coactivación</b> de agonistas y antagonistas para estabilizar.',
+    roles: ['Estabilización', 'Coactivación', 'Gasto energético alto sin movimiento']
+  },
+  5: {
+    titulo: 'Cuádriceps / Estabilizadores',
+    tipo: 'isometrica',
+    etiqueta: 'ESTABILIZADORES',
+    detalle: 'Aunque no mueven el tobillo, los músculos del muslo y la cadera trabajan <b>isométricamente</b> para fijar la rodilla y la pelvis. Sin ellos, el gesto sería imposible: son los <b>estabilizadores</b> de la cadena cinética.',
+    roles: ['Estabilizadores', 'Fijan articulaciones proximales', 'Permiten el gesto distal']
+  }
+};
+
+function mostrar(n) {
+  const c = contenidos[n];
+  const panel = document.getElementById('panel');
+  const rolesHtml = c.roles.map(r => `<span class="rol">${r}</span>`).join('');
+  panel.innerHTML = `
+    <h2>${n}. ${c.titulo}</h2>
+    <span class="contraccion ${c.tipo}">${c.etiqueta}</span>
+    <div class="detalle">${c.detalle}</div>
+    <div class="roles">${rolesHtml}</div>
+  `;
+}
+</script>
+</body>
+</html>

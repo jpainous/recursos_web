@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Remodelación Ósea</title>
+<style>
+  body { font-family: 'Segoe UI', sans-serif; background: #0f172a; color: #e2e8f0; margin: 0; padding: 20px; }
+  h1 { text-align: center; color: #06b6d4; }
+  .container { max-width: 1100px; margin: auto; }
+  .timeline { display: flex; gap: 15px; margin: 30px 0; flex-wrap: wrap; }
+  .phase { flex: 1; min-width: 200px; background: #1e293b; border: 3px dashed #475569; border-radius: 12px; padding: 15px; min-height: 280px; text-align: center; transition: all 0.3s; }
+  .phase h3 { color: #06b6d4; margin-top: 0; }
+  .phase.over { border-color: #06b6d4; background: #0e3b4a; }
+  .phase.correct { border-color: #34d399; background: #064e3b; border-style: solid; }
+  .phase.wrong { border-color: #ef4444; background: #450a0a; border-style: solid; }
+  .numero { font-size: 40px; font-weight: bold; color: #475569; }
+  .drop-zone { min-height: 80px; margin: 10px 0; background: rgba(0,0,0,0.2); border-radius: 8px; padding: 8px; }
+  .bank { background: #1e293b; padding: 20px; border-radius: 12px; margin: 20px 0; }
+  .bank h3 { color: #fbbf24; margin-top: 0; }
+  .items { display: flex; flex-wrap: wrap; gap: 10px; }
+  .item { background: #334155; padding: 10px 15px; border-radius: 8px; cursor: grab; border: 2px solid #475569; transition: all 0.2s; }
+  .item:hover { border-color: #fbbf24; transform: translateY(-2px); }
+  .item.dragging { opacity: 0.4; }
+  .item.placed { background: #1e3a5f; border-color: #06b6d4; }
+  button { background: #06b6d4; color: #0f172a; border: none; padding: 12px 24px; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 15px; margin: 5px; }
+  button:hover { background: #22d3ee; }
+  .resultado { margin-top: 20px; padding: 15px; background: #1e293b; border-radius: 8px; text-align: center; font-size: 16px; min-height: 50px; }
+  .desc { font-size: 12px; color: #94a3b8; margin-top: 8px; }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>🦴 Línea del Tiempo de la Remodelación Ósea</h1>
+  <p style="text-align:center; color:#94a3b8;">Ordena las 4 fases y asigna la célula responsable a cada una.</p>
+
+  <div class="timeline" id="timeline">
+    <div class="phase" data-orden="1" data-celula="activacion">
+      <div class="numero">1</div>
+      <h3>Fase 1</h3>
+      <div class="drop-zone" data-tipo="fase"></div>
+      <div class="drop-zone" data-tipo="celula"></div>
+      <div class="desc">¿Qué ocurre y quién lo hace?</div>
+    </div>
+    <div class="phase" data-orden="2" data-celula="osteoclasto">
+      <div class="numero">2</div>
+      <h3>Fase 2</h3>
+      <div class="drop-zone" data-tipo="fase"></div>
+      <div class="drop-zone" data-tipo="celula"></div>
+      <div class="desc">¿Qué ocurre y quién lo hace?</div>
+    </div>
+    <div class="phase" data-orden="3" data-celula="osteoblasto">
+      <div class="numero">3</div>
+      <h3>Fase 3</h3>
+      <div class="drop-zone" data-tipo="fase"></div>
+      <div class="drop-zone" data-tipo="celula"></div>
+      <div class="desc">¿Qué ocurre y quién lo hace?</div>
+    </div>
+    <div class="phase" data-orden="4" data-celula="mineralizacion">
+      <div class="numero">4</div>
+      <h3>Fase 4</h3>
+      <div class="drop-zone" data-tipo="fase"></div>
+      <div class="drop-zone" data-tipo="celula"></div>
+      <div class="desc">¿Qué ocurre y quién lo hace?</div>
+    </div>
+  </div>
+
+  <div class="bank">
+    <h3>🧩 Banco de piezas (arrastra a la fase correcta)</h3>
+    <div class="items" id="bank"></div>
+  </div>
+
+  <div style="text-align:center;">
+    <button onclick="comprobar()">✔ Comprobar</button>
+    <button onclick="location.reload()">🔄 Reiniciar</button>
+  </div>
+  <div class="resultado" id="res"></div>
+</div>
+
+<script>
+const piezas = [
+  // Fases
+  {id:'f1', tipo:'fase', texto:'Activación', correcto:1},
+  {id:'f2', tipo:'fase', texto:'Resorción', correcto:2},
+  {id:'f3', tipo:'fase', texto:'Formación', correcto:3},
+  {id:'f4', tipo:'fase', texto:'Mineralización', correcto:4},
+  // Células
+  {id:'c1', tipo:'celula', texto:'🔬 Osteocitos detectan microdaño', correcto:1},
+  {id:'c2', tipo:'celula', texto:'💥 Osteoclastos (disuelven hueso)', correcto:2},
+  {id:'c3', tipo:'celula', texto:'🏗️ Osteoblastos (fabrican matriz)', correcto:3},
+  {id:'c4', tipo:'celula', texto:'💎 Depósito de calcio y fósforo', correcto:4}
+];
+
+const bank = document.getElementById('bank');
+// Mezclar
+piezas.sort(() => Math.random() - 0.5);
+piezas.forEach(p => {
+  const el = document.createElement('div');
+  el.className = 'item';
+  el.draggable = true;
+  el.dataset.id = p.id;
+  el.dataset.tipo = p.tipo;
+  el.dataset.correcto = p.correcto;
+  el.textContent = p.texto;
+  el.addEventListener('dragstart', e => {
+    el.classList.add('dragging');
+    e.dataTransfer.setData('id', p.id);
+  });
+  el.addEventListener('dragend', () => el.classList.remove('dragging'));
+  bank.appendChild(el);
+});
+
+document.querySelectorAll('.drop-zone').forEach(zone => {
+  zone.addEventListener('dragover', e => { e.preventDefault(); zone.parentElement.classList.add('over'); });
+  zone.addEventListener('dragleave', () => zone.parentElement.classList.remove('over'));
+  zone.addEventListener('drop', e => {
+    e.preventDefault();
+    zone.parentElement.classList.remove('over');
+    const id = e.dataTransfer.getData('id');
+    const item = document.querySelector(`.item[data-id="${id}"]`);
+    const tipoItem = item.dataset.tipo;
+    const tipoZone = zone.dataset.tipo;
+    if (tipoItem !== tipoZone) {
+      alert('⚠️ Esta zona solo acepta ' + (tipoZone === 'fase' ? 'nombres de fases' : 'descripciones de células'));
+      return;
+    }
+    // Limpiar zona previa
+    if (item.parentElement.classList.contains('drop-zone')) {
+      item.parentElement.removeChild(item);
+    }
+    zone.appendChild(item);
+    item.classList.add('placed');
+  });
+});
+
+function comprobar() {
+  let aciertos = 0;
+  document.querySelectorAll('.phase').forEach(phase => {
+    const ordenCorrecto = phase.dataset.orden;
+    const celulaCorrecta = phase.dataset.celula;
+    let faseOk = false, celulaOk = false;
+    phase.querySelectorAll('.drop-zone').forEach(zone => {
+      const item = zone.querySelector('.item');
+      if (!item) return;
+      if (zone.dataset.tipo === 'fase' && item.dataset.correcto === ordenCorrecto) faseOk = true;
+      if (zone.dataset.tipo === 'celula') {
+        // Mapeo células
+        const map = {1:'activacion', 2:'osteoclasto', 3:'osteoblasto', 4:'mineralizacion'};
+        if (map[item.dataset.correcto] === celulaCorrecta) celulaOk = true;
+      }
+    });
+    if (faseOk && celulaOk) {
+      phase.classList.add('correct');
+      phase.classList.remove('wrong');
+      aciertos++;
+    } else {
+      phase.classList.add('wrong');
+      phase.classList.remove('correct');
+    }
+  });
+  document.getElementById('res').innerHTML = 
+    aciertos === 4 ? '🎉 <b>¡Perfecto!</b> Dominas el ciclo de remodelación ósea (≈10 años para renovar todo el esqueleto).' :
+    `Has acertado <b>${aciertos}/4</b> fases completas. Recuerda: <b>Activación → Resorción → Formación → Mineralización</b>.`;
+}
+</script>
+</body>
+</html>

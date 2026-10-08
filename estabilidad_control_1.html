@@ -1,0 +1,1178 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Coactivación Muscular en Danza - Estabilidad y Control</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, sans-serif; }
+  body {
+    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+    min-height: 100vh;
+    padding: 20px;
+  }
+  .container {
+    max-width: 1100px;
+    margin: 0 auto;
+    background: #fff;
+    border-radius: 20px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    overflow: hidden;
+  }
+  header {
+    background: linear-gradient(90deg, #0f2027, #203a43, #2c5364);
+    color: white;
+    padding: 40px;
+    text-align: center;
+  }
+  header h1 { font-size: 2.3em; margin-bottom: 10px; }
+  header p { opacity: 0.9; font-size: 1.15em; }
+  header .subtitle { font-size: 0.95em; opacity: 0.8; margin-top: 8px; font-style: italic; }
+  
+  .nav-tabs {
+    display: flex;
+    background: #f8f9fa;
+    flex-wrap: wrap;
+    border-bottom: 3px solid #dee2e6;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .nav-tabs button {
+    flex: 1;
+    min-width: 120px;
+    padding: 15px 8px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 0.85em;
+    font-weight: 600;
+    color: #666;
+    transition: all 0.3s;
+    border-bottom: 4px solid transparent;
+  }
+  .nav-tabs button:hover { background: #e9ecef; color: #2a5298; }
+  .nav-tabs button.active {
+    color: #2a5298;
+    border-bottom-color: #2a5298;
+    background: white;
+  }
+  
+  .slide { display: none; padding: 30px; min-height: 600px; }
+  .slide.active { display: block; animation: fadeIn 0.5s; }
+  @keyframes fadeIn { from {opacity:0; transform:translateY(20px);} to {opacity:1; transform:translateY(0);} }
+  
+  .slide h2 {
+    color: #0f2027;
+    margin-bottom: 20px;
+    font-size: 1.7em;
+    border-bottom: 3px solid #2a5298;
+    padding-bottom: 10px;
+  }
+  
+  .intro-box {
+    background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+    border-left: 5px solid #1976d2;
+    padding: 25px;
+    margin: 20px 0;
+    border-radius: 10px;
+    line-height: 1.7;
+  }
+  
+  .intro-box h3 {
+    color: #1565c0;
+    margin-bottom: 12px;
+    font-size: 1.3em;
+  }
+  
+  .exercise-card {
+    background: white;
+    border: 3px solid #2a5298;
+    border-radius: 15px;
+    padding: 30px;
+    margin: 25px 0;
+    box-shadow: 0 5px 20px rgba(42,82,152,0.15);
+  }
+  
+  .exercise-card h3 {
+    color: #2a5298;
+    font-size: 1.5em;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .exercise-description {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 10px;
+    margin: 15px 0;
+    border-left: 4px solid #2a5298;
+    line-height: 1.7;
+  }
+  
+  .coactivation-diagram {
+    background: white;
+    border: 2px solid #dee2e6;
+    border-radius: 10px;
+    padding: 20px;
+    margin: 20px 0;
+    text-align: center;
+  }
+  
+  .coactivation-diagram svg {
+    max-width: 100%;
+    height: auto;
+  }
+  
+  .scenario-box {
+    background: linear-gradient(135deg, #fff5e6 0%, #ffe8cc 100%);
+    padding: 20px;
+    border-radius: 10px;
+    margin: 20px 0;
+    border: 2px dashed #f39c12;
+  }
+  
+  .scenario-box h4 {
+    color: #e67e22;
+    margin-bottom: 15px;
+    font-size: 1.2em;
+  }
+  
+  .options-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 15px;
+    margin: 20px 0;
+  }
+  
+  .option-card {
+    background: white;
+    border: 2px solid #dee2e6;
+    border-radius: 10px;
+    padding: 20px;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-align: center;
+  }
+  
+  .option-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+    border-color: #2a5298;
+  }
+  
+  .option-card.selected {
+    background: #e3f2fd;
+    border-color: #2a5298;
+    border-width: 3px;
+  }
+  
+  .option-card.correct {
+    background: #d4edda;
+    border-color: #28a745;
+  }
+  
+  .option-card.incorrect {
+    background: #f8d7da;
+    border-color: #dc3545;
+  }
+  
+  .option-card h5 {
+    color: #2a5298;
+    margin-bottom: 10px;
+    font-size: 1.1em;
+  }
+  
+  .explanation-field {
+    margin: 20px 0;
+  }
+  
+  .explanation-field label {
+    display: block;
+    font-weight: 600;
+    color: #2a5298;
+    margin-bottom: 8px;
+  }
+  
+  .explanation-field textarea {
+    width: 100%;
+    padding: 15px;
+    border: 2px solid #dee2e6;
+    border-radius: 10px;
+    font-size: 1em;
+    resize: vertical;
+    min-height: 100px;
+    font-family: inherit;
+  }
+  
+  .explanation-field textarea:focus {
+    outline: none;
+    border-color: #2a5298;
+  }
+  
+  .btn {
+    background: linear-gradient(90deg, #2a5298, #1e3c72);
+    color: white;
+    border: none;
+    padding: 14px 35px;
+    border-radius: 30px;
+    font-size: 1.05em;
+    font-weight: 600;
+    cursor: pointer;
+    margin: 10px 5px;
+    transition: all 0.3s;
+    box-shadow: 0 4px 15px rgba(42,82,152,0.3);
+  }
+  
+  .btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(42,82,152,0.4);
+  }
+  
+  .btn-secondary {
+    background: #6c757d;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  }
+  
+  .feedback {
+    margin-top: 20px;
+    padding: 20px;
+    border-radius: 10px;
+    display: none;
+    line-height: 1.7;
+  }
+  
+  .feedback.show { display: block; animation: fadeIn 0.3s; }
+  .feedback.success { background: #d4edda; color: #155724; border: 2px solid #28a745; }
+  .feedback.error { background: #f8d7da; color: #721c24; border: 2px solid #dc3545; }
+  
+  .key-concept {
+    background: linear-gradient(135deg, #f3e5f5 0%, #e1bee7 100%);
+    padding: 20px;
+    border-radius: 10px;
+    margin: 15px 0;
+    border-left: 5px solid #9b59b6;
+  }
+  
+  .key-concept h4 {
+    color: #8e44ad;
+    margin-bottom: 10px;
+  }
+  
+  .muscle-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 10px 0;
+  }
+  
+  .muscle-tag {
+    padding: 5px 12px;
+    border-radius: 15px;
+    font-size: 0.85em;
+    font-weight: 600;
+  }
+  
+  .tag-agonist { background: #e74c3c; color: white; }
+  .tag-antagonist { background: #3498db; color: white; }
+  .tag-coactive { background: #9b59b6; color: white; }
+  
+  .progress-tracker {
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 10px;
+    margin: 20px 0;
+    text-align: center;
+  }
+  
+  .progress-bar {
+    background: #dee2e6;
+    height: 10px;
+    border-radius: 5px;
+    margin: 10px 0;
+    overflow: hidden;
+  }
+  
+  .progress-fill {
+    background: linear-gradient(90deg, #2a5298, #1e3c72);
+    height: 100%;
+    transition: width 0.5s;
+  }
+  
+  @media (max-width: 768px) {
+    header h1 { font-size: 1.7em; }
+    .slide { padding: 20px; }
+    .exercise-card { padding: 20px; }
+    .options-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <h1>💪 Coactivación Muscular en Danza</h1>
+    <p>10 Ejercicios para Estabilidad y Control</p>
+    <div class="subtitle">Aprende, practica y reflexiona sobre el trabajo muscular coordinado</div>
+  </header>
+
+  <div class="nav-tabs">
+    <button class="active" onclick="showSlide(0, this)">📚 Introducción</button>
+    <button onclick="showSlide(1, this)">1. Plancha</button>
+    <button onclick="showSlide(2, this)">2. Relevé</button>
+    <button onclick="showSlide(3, this)">3. Arabesque</button>
+    <button onclick="showSlide(4, this)">4. Sentadilla</button>
+    <button onclick="showSlide(5, this)">5. Plié</button>
+    <button onclick="showSlide(6, this)">6. Equilibrio</button>
+    <button onclick="showSlide(7, this)">7. Puente</button>
+    <button onclick="showSlide(8, this)">8. Battement</button>
+    <button onclick="showSlide(9, this)">9. Giros</button>
+    <button onclick="showSlide(10, this)">10. Saltos</button>
+    <button onclick="showSlide(11, this)">📊 Resumen</button>
+  </div>
+
+  <!-- SLIDE 1: INTRODUCCIÓN -->
+  <div class="slide active">
+    <h2> ¿Qué es la Coactivación Muscular?</h2>
+    
+    <div class="intro-box">
+      <h3> Definición</h3>
+      <p>La <strong>coactivación</strong> (o co-contracción) es la <strong>activación simultánea de músculos agonistas y antagonistas</strong> alrededor de una articulación. A diferencia del movimiento normal donde uno se contrae y el otro se relaja, en la coactivación <strong>ambos trabajan juntos</strong> para proporcionar <strong>estabilidad y control</strong>.</p>
+    </div>
+    
+    <div class="key-concept">
+      <h4>🔑 ¿Por qué es importante en danza?</h4>
+      <ul style="margin-left: 25px; line-height: 1.8;">
+        <li><strong>Estabilidad articular:</strong> Protege las articulaciones en posiciones estáticas</li>
+        <li><strong>Control del movimiento:</strong> Permite movimientos precisos y controlados</li>
+        <li><strong>Prevención de lesiones:</strong> Evita hiperextensiones y movimientos bruscos</li>
+        <li><strong>Equilibrio:</strong> Esencial para mantener posiciones difíciles</li>
+        <li><strong>Calidad del gesto:</strong> Proporciona fluidez y elegancia al movimiento</li>
+      </ul>
+    </div>
+    
+    <div class="coactivation-diagram">
+      <h4>📐 Esquema de Coactivación</h4>
+      <svg viewBox="0 0 700 350">
+        <!-- Título -->
+        <text x="350" y="30" text-anchor="middle" font-size="16" font-weight="bold" fill="#2a5298">Coactivación vs. Movimiento Normal</text>
+        
+        <!-- Movimiento Normal -->
+        <g transform="translate(50, 60)">
+          <rect x="0" y="0" width="280" height="130" fill="#f8f9fa" stroke="#dee2e6" stroke-width="2" rx="10"/>
+          <text x="140" y="25" text-anchor="middle" font-size="14" font-weight="bold" fill="#2c3e50">MOVIMIENTO NORMAL</text>
+          
+          <!-- Bíceps activo -->
+          <rect x="30" y="40" width="80" height="50" fill="#e74c3c" opacity="0.8" rx="5"/>
+          <text x="70" y="70" text-anchor="middle" font-size="10" fill="white" font-weight="bold">BÍCEPS</text>
+          <text x="70" y="85" text-anchor="middle" font-size="9" fill="white">Activo ✓</text>
+          
+          <!-- Tríceps relajado -->
+          <rect x="170" y="40" width="80" height="50" fill="#3498db" opacity="0.3" rx="5"/>
+          <text x="210" y="70" text-anchor="middle" font-size="10" fill="#2980b9" font-weight="bold">TRÍCEPS</text>
+          <text x="210" y="85" text-anchor="middle" font-size="9" fill="#2980b9">Relajado ✗</text>
+          
+          <text x="140" y="115" text-anchor="middle" font-size="10" fill="#7f8c8d">Uno trabaja, otro descansa</text>
+        </g>
+        
+        <!-- Coactivación -->
+        <g transform="translate(370, 60)">
+          <rect x="0" y="0" width="280" height="130" fill="#e3f2fd" stroke="#2a5298" stroke-width="3" rx="10"/>
+          <text x="140" y="25" text-anchor="middle" font-size="14" font-weight="bold" fill="#2a5298">COACTIVACIÓN</text>
+          
+          <!-- Bíceps activo -->
+          <rect x="30" y="40" width="80" height="50" fill="#e74c3c" opacity="0.9" rx="5"/>
+          <text x="70" y="70" text-anchor="middle" font-size="10" fill="white" font-weight="bold">BÍCEPS</text>
+          <text x="70" y="85" text-anchor="middle" font-size="9" fill="white">Activo ✓</text>
+          
+          <!-- Tríceps también activo -->
+          <rect x="170" y="40" width="80" height="50" fill="#3498db" opacity="0.9" rx="5"/>
+          <text x="210" y="70" text-anchor="middle" font-size="10" fill="white" font-weight="bold">TRÍCEPS</text>
+          <text x="210" y="85" text-anchor="middle" font-size="9" fill="white">Activo ✓</text>
+          
+          <text x="140" y="115" text-anchor="middle" font-size="10" fill="#2a5298" font-weight="bold">¡Ambos trabajan!</text>
+        </g>
+        
+        <!-- Flecha -->
+        <line x1="340" y1="125" x2="360" y2="125" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arrow)"/>
+        
+        <!-- Beneficios -->
+        <g transform="translate(150, 220)">
+          <rect x="0" y="0" width="400" height="100" fill="#fff5e6" stroke="#f39c12" stroke-width="2" rx="10"/>
+          <text x="200" y="25" text-anchor="middle" font-size="14" font-weight="bold" fill="#e67e22">BENEFICIOS DE LA COACTIVACIÓN</text>
+          
+          <text x="100" y="50" text-anchor="middle" font-size="11" fill="#7f8c8d">🏛️ Estabilidad</text>
+          <text x="200" y="50" text-anchor="middle" font-size="11" fill="#7f8c8d">🎯 Precisión</text>
+          <text x="300" y="50" text-anchor="middle" font-size="11" fill="#7f8c8d">🛡️ Protección</text>
+          
+          <text x="200" y="75" text-anchor="middle" font-size="11" fill="#7f8c8d">⚖️ Control postural</text>
+          <text x="200" y="90" text-anchor="middle" font-size="10" fill="#95a5a6">Esencial en danza clásica y contemporánea</text>
+        </g>
+        
+        <defs>
+          <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+            <polygon points="0 0, 10 3, 0 6" fill="#7f8c8d"/>
+          </marker>
+        </defs>
+      </svg>
+    </div>
+    
+    <div class="intro-box" style="background: linear-gradient(135deg, #e8f8f5 0%, #d5f5e3 100%); border-left-color: #1abc9c;">
+      <h3>🎭 Cómo usar este recurso</h3>
+      <p>Cada ejercicio presenta:</p>
+      <ol style="margin-left: 25px; line-height: 1.8;">
+        <li><strong>Una situación</strong> de danza específica</li>
+        <li><strong>Opciones de respuesta</strong> sobre qué músculos trabajan</li>
+        <li><strong>Un campo</strong> para que expliques tu razonamiento</li>
+        <li><strong>Retroalimentación</strong> que confirma o corrige tu elección</li>
+      </ol>
+      <p style="margin-top: 10px;"><strong>Objetivo:</strong> No solo elegir la respuesta correcta, sino <strong>comprender el porqué</strong> de la coactivación en cada caso.</p>
+    </div>
+  </div>
+
+  <!-- SLIDE 2: EJERCICIO 1 - PLANCHA -->
+  <div class="slide">
+    <h2>1️⃣ Ejercicio: Plancha (Core Stability)</h2>
+    
+    <div class="exercise-card">
+      <h3><span class="emoji">📋</span> Situación</h3>
+      <div class="exercise-description">
+        <p>Estás manteniendo una <strong>plancha frontal</strong> durante 30 segundos. Tu cuerpo forma una línea recta desde la cabeza hasta los talones. No hay movimiento aparente, pero sientes tensión en múltiples zonas.</p>
+      </div>
+      
+      <div class="coactivation-diagram">
+        <h4> Músculos implicados</h4>
+        <svg viewBox="0 0 600 250">
+          <!-- Silueta simplificada en plancha -->
+          <rect x="150" y="80" width="300" height="40" fill="#f5d5cb" stroke="#d4a59a" stroke-width="2" rx="5"/>
+          <text x="300" y="105" text-anchor="middle" font-size="11" fill="#7f8c8d">Cuerpo en línea</text>
+          
+          <!-- Brazos -->
+          <rect x="180" y="120" width="20" height="60" fill="#f5d5cb" stroke="#d4a59a" stroke-width="2" rx="3"/>
+          <rect x="400" y="120" width="20" height="60" fill="#f5d5cb" stroke="#d4a59a" stroke-width="2" rx="3"/>
+          
+          <!-- Core (abdomen) -->
+          <rect x="250" y="85" width="100" height="30" fill="#e74c3c" opacity="0.7"/>
+          <text x="300" y="105" text-anchor="middle" font-size="9" fill="white" font-weight="bold">ABDOMEN</text>
+          
+          <!-- Espalda -->
+          <rect x="250" y="50" width="100" height="30" fill="#3498db" opacity="0.7"/>
+          <text x="300" y="70" text-anchor="middle" font-size="9" fill="white" font-weight="bold">ESPALDA</text>
+          
+          <text x="300" y="200" text-anchor="middle" font-size="11" fill="#2a5298" font-weight="bold">Ambos grupos trabajan simultáneamente</text>
+          <text x="300" y="220" text-anchor="middle" font-size="10" fill="#7f8c8d">Coactivación anterior-posterior</text>
+        </svg>
+      </div>
+      
+      <div class="scenario-box">
+        <h4>🤔 Pregunta: ¿Qué ocurre a nivel muscular?</h4>
+        <div class="options-grid" id="options1">
+          <div class="option-card" onclick="selectOption(1, 0, false)">
+            <h5>Opción A</h5>
+            <p>Solo el abdomen se contrae. La espalda está relajada.</p>
+          </div>
+          <div class="option-card" onclick="selectOption(1, 1, true)">
+            <h5>Opción B</h5>
+            <p>Abdomen y espalda se contraen simultáneamente (coactivación).</p>
+          </div>
+          <div class="option-card" onclick="selectOption(1, 2, false)">
+            <h5>Opción C</h5>
+            <p>Solo la espalda trabaja para mantener la postura.</p>
+          </div>
+        </div>
+        
+        <div class="explanation-field">
+          <label for="explanation1"> Explica por qué elegiste esta opción:</label>
+          <textarea id="explanation1" placeholder="Describe qué músculos crees que trabajan y por qué es necesaria la coactivación en este ejercicio..."></textarea>
+        </div>
+        
+        <button class="btn" onclick="checkAnswer(1)">Verificar respuesta</button>
+        <button class="btn btn-secondary" onclick="resetExercise(1)">Reiniciar</button>
+        
+        <div class="feedback" id="feedback1"></div>
+      </div>
+    </div>
+    
+    <div class="key-concept">
+      <h4>🎯 Concepto clave: Estabilidad del core</h4>
+      <p>En la plancha, los <strong>músculos abdominales</strong> (recto, oblicuos, transverso) y los <strong>extensores de la espalda</strong> (erectores espinales, multífidos) trabajan juntos para:</p>
+      <ul style="margin-left: 25px; line-height: 1.8; margin-top: 10px;">
+        <li>Mantener la columna en posición neutra</li>
+        <li>Evitar que la cadera caiga (lordosis excesiva)</li>
+        <li>Prevenir que la cadera suba demasiado (cifosis)</li>
+        <li>Crear una "faja" natural que protege la columna</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- SLIDE 3: EJERCICIO 2 - RELEVÉ -->
+  <div class="slide">
+    <h2>2️ Ejercicio: Relevé (Elevación sobre puntas)</h2>
+    
+    <div class="exercise-card">
+      <h3><span class="emoji">🩰</span> Situación</h3>
+      <div class="exercise-description">
+        <p>Te elevas sobre las <strong>puntas de los pies</strong> (relevé) y mantienes la posición durante 10 segundos. Sientes trabajo en pantorrillas pero también en otras zonas.</p>
+      </div>
+      
+      <div class="coactivation-diagram">
+        <h4>📐 Coactivación en tobillo</h4>
+        <svg viewBox="0 0 600 280">
+          <!-- Pierna -->
+          <rect x="250" y="50" width="100" height="180" fill="#f5d5cb" stroke="#d4a59a" stroke-width="2" rx="5"/>
+          <text x="300" y="145" text-anchor="middle" font-size="10" fill="#7f8c8d">Pierna</text>
+          
+          <!-- Gemelos (posterior) -->
+          <path d="M 260 80 Q 240 130 260 180 L 300 180 Q 320 130 300 80 Z" fill="#e74c3c" opacity="0.8"/>
+          <text x="280" y="135" text-anchor="middle" font-size="9" fill="white" font-weight="bold">GEMELOS</text>
+          
+          <!-- Tibial anterior (anterior) -->
+          <path d="M 300 80 Q 340 130 340 180 L 300 180 Z" fill="#3498db" opacity="0.7"/>
+          <text x="320" y="135" text-anchor="middle" font-size="8" fill="white">TIBIAL ANT.</text>
+          
+          <!-- Pie -->
+          <ellipse cx="300" cy="240" rx="50" ry="25" fill="#f5d5cb" stroke="#d4a59a" stroke-width="2"/>
+          <text x="300" y="245" text-anchor="middle" font-size="9" fill="#7f8c8d">Pie</text>
+          
+          <!-- Flechas de fuerza -->
+          <line x1="280" y1="200" x2="280" y2="230" stroke="#e74c3c" stroke-width="3" marker-end="url(#arrowRed)"/>
+          <line x1="320" y1="200" x2="320" y2="230" stroke="#3498db" stroke-width="3" marker-end="url(#arrowBlue)"/>
+          
+          <text x="300" y="270" text-anchor="middle" font-size="10" fill="#2a5298" font-weight="bold">Ambos estabilizan el tobillo</text>
+          
+          <defs>
+            <marker id="arrowRed" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+              <polygon points="0 0, 10 3, 0 6" fill="#e74c3c"/>
+            </marker>
+            <marker id="arrowBlue" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+              <polygon points="0 0, 10 3, 0 6" fill="#3498db"/>
+            </marker>
+          </defs>
+        </svg>
+      </div>
+      
+      <div class="scenario-box">
+        <h4>🤔 Pregunta: ¿Qué músculos del tobillo trabajan?</h4>
+        <div class="options-grid" id="options2">
+          <div class="option-card" onclick="selectOption(2, 0, false)">
+            <h5>Opción A</h5>
+            <p>Solo gemelos y sóleo (flexores plantares).</p>
+          </div>
+          <div class="option-card" onclick="selectOption(2, 1, true)">
+            <h5>Opción B</h5>
+            <p>Gemelos + tibial anterior (coactivación para estabilidad).</p>
+          </div>
+          <div class="option-card" onclick="selectOption(2, 2, false)">
+            <h5>Opción C</h5>
+            <p>Solo los músculos laterales (peroneos).</p>
+          </div>
+        </div>
+        
+        <div class="explanation-field">
+          <label for="explanation2">💭 Explica por qué elegiste esta opción:</label>
+          <textarea id="explanation2" placeholder="Describe la función del tibial anterior durante el relevé y por qué es necesaria la coactivación..."></textarea>
+        </div>
+        
+        <button class="btn" onclick="checkAnswer(2)">Verificar respuesta</button>
+        <button class="btn btn-secondary" onclick="resetExercise(2)">Reiniciar</button>
+        
+        <div class="feedback" id="feedback2"></div>
+      </div>
+    </div>
+    
+    <div class="key-concept">
+      <h4> Concepto clave: Estabilidad del tobillo</h4>
+      <p>Aunque el movimiento principal es de <strong>flexión plantar</strong> (gemelos), el <strong>tibial anterior</strong> (flexor dorsal) se activa ligeramente para:</p>
+      <ul style="margin-left: 25px; line-height: 1.8; margin-top: 10px;">
+        <li>Evitar la hiperextensión del tobillo</li>
+        <li>Mantener el equilibrio anteroposterior</li>
+        <li>Controlar la altura del relevé</li>
+        <li>Proteger contra esguinces</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- SLIDE 4: EJERCICIO 3 - ARABESQUE -->
+  <div class="slide">
+    <h2>3️⃣ Ejercicio: Arabesque (Extensión de cadera)</h2>
+    
+    <div class="exercise-card">
+      <h3><span class="emoji">🦵</span> Situación</h3>
+      <div class="exercise-description">
+        <p>Mantienes un <strong>arabesque</strong>: una pierna extendida hacia atrás a 90°, tronco inclinado hacia adelante, brazos extendidos. Posición estática durante 15 segundos.</p>
+      </div>
+      
+      <div class="scenario-box">
+        <h4>🤔 Pregunta: ¿Qué ocurre en la cadera de la pierna elevada?</h4>
+        <div class="options-grid" id="options3">
+          <div class="option-card" onclick="selectOption(3, 0, false)">
+            <h5>Opción A</h5>
+            <p>Solo glúteos e isquiotibiales trabajan. El psoas está relajado.</p>
+          </div>
+          <div class="option-card" onclick="selectOption(3, 1, true)">
+            <h5>Opción B</h5>
+            <p>Glúteos + psoas trabajan juntos (coactivación) para estabilizar.</p>
+          </div>
+          <div class="option-card" onclick="selectOption(3, 2, false)">
+            <h5>Opción C</h5>
+            <p>Solo el psoas trabaja para mantener la pierna arriba.</p>
+          </div>
+        </div>
+        
+        <div class="explanation-field">
+          <label for="explanation3">💭 Explica por qué elegiste esta opción:</label>
+          <textarea id="explanation3" placeholder="Reflexiona sobre por qué el psoas (flexor de cadera) podría activarse cuando la pierna está en extensión..."></textarea>
+        </div>
+        
+        <button class="btn" onclick="checkAnswer(3)">Verificar respuesta</button>
+        <button class="btn btn-secondary" onclick="resetExercise(3)">Reiniciar</button>
+        
+        <div class="feedback" id="feedback3"></div>
+      </div>
+    </div>
+    
+    <div class="key-concept">
+      <h4>🎯 Concepto clave: Coactivación en extensión</h4>
+      <p>En el arabesque, aunque los <strong>extensores de cadera</strong> (glúteos, isquiotibiales) son los principales, el <strong>psoas-ilíaco</strong> (flexor) se coactiva para:</p>
+      <ul style="margin-left: 25px; line-height: 1.8; margin-top: 10px;">
+        <li>Evitar la hiperextensión de la cadera</li>
+        <li>Mantener la altura controlada de la pierna</li>
+        <li>Estabilizar la articulación coxofemoral</li>
+        <li>Permitir ajustes finos de posición</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- SLIDE 5: EJERCICIO 4 - SENTADILLA -->
+  <div class="slide">
+    <h2>4️⃣ Ejercicio: Sentadilla (Squat)</h2>
+    
+    <div class="exercise-card">
+      <h3><span class="emoji">🦵</span> Situación</h3>
+      <div class="exercise-description">
+        <p>Realizas una <strong>sentadilla lenta y controlada</strong>, bajando en 4 segundos y subiendo en 4 segundos. Mantienes la espalda recta y las rodillas alineadas.</p>
+      </div>
+      
+      <div class="scenario-box">
+        <h4> Pregunta: ¿Qué ocurre en la rodilla durante la bajada (fase excéntrica)?</h4>
+        <div class="options-grid" id="options4">
+          <div class="option-card" onclick="selectOption(4, 0, true)">
+            <h5>Opción A</h5>
+            <p>Cuádriceps (excéntrico) + isquiotibiales (coactivación estabilizadora).</p>
+          </div>
+          <div class="option-card" onclick="selectOption(4, 1, false)">
+            <h5>Opción B</h5>
+            <p>Solo los isquiotibiales trabajan para frenar la bajada.</p>
+          </div>
+          <div class="option-card" onclick="selectOption(4, 2, false)">
+            <h5>Opción C</h5>
+            <p>Solo el cuádriceps se alarga pasivamente sin activación.</p>
+          </div>
+        </div>
+        
+        <div class="explanation-field">
+          <label for="explanation4">💭 Explica por qué elegiste esta opción:</label>
+          <textarea id="explanation4" placeholder="Describe el papel del cuádriceps en fase excéntrica y por qué los isquiotibiales también se activan..."></textarea>
+        </div>
+        
+        <button class="btn" onclick="checkAnswer(4)">Verificar respuesta</button>
+        <button class="btn btn-secondary" onclick="resetExercise(4)">Reiniciar</button>
+        
+        <div class="feedback" id="feedback4"></div>
+      </div>
+    </div>
+    
+    <div class="key-concept">
+      <h4>🎯 Concepto clave: Protección de la rodilla</h4>
+      <p>Durante la bajada de la sentadilla:</p>
+      <ul style="margin-left: 25px; line-height: 1.8; margin-top: 10px;">
+        <li><strong>Cuádriceps:</strong> Trabaja excéntricamente para controlar la flexión de rodilla</li>
+        <li><strong>Isquiotibiales:</strong> Se coactivan para estabilizar la rodilla y proteger el LCA (ligamento cruzado anterior)</li>
+        <li>Esta coactivación <strong>previene el desplazamiento anterior de la tibia</strong></li>
+        <li>Es fundamental en danza para aterrizajes de saltos</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- SLIDE 6: EJERCICIO 5 - PLIÉ -->
+  <div class="slide">
+    <h2>5️⃣ Ejercicio: Plié (Flexión de rodilla en danza)</h2>
+    
+    <div class="exercise-card">
+      <h3><span class="emoji"></span> Situación</h3>
+      <div class="exercise-description">
+        <p>Ejecutas un <strong>grand plié</strong> en primera posición: bajada lenta y controlada, rodillas hacia afuera, talones en el suelo (hasta donde sea posible), subida controlada.</p>
+      </div>
+      
+      <div class="scenario-box">
+        <h4> Pregunta: ¿Qué músculos coactivan para proteger la rodilla en plié?</h4>
+        <div class="options-grid" id="options5">
+          <div class="option-card" onclick="selectOption(5, 0, false)">
+            <h5>Opción A</h5>
+            <p>Solo cuádriceps y gemelos.</p>
+          </div>
+          <div class="option-card" onclick="selectOption(5, 1, true)">
+            <h5>Opción B</h5>
+            <p>Cuádriceps + isquiotibiales + aductores (coactivación triple).</p>
+          </div>
+          <div class="option-card" onclick="selectOption(5, 2, false)">
+            <h5>Opción C</h5>
+            <p>Solo los aductores para mantener la rotación externa.</p>
+          </div>
+        </div>
+        
+        <div class="explanation-field">
+          <label for="explanation5"> Explica por qué elegiste esta opción:</label>
+          <textarea id="explanation5" placeholder="Considera la rotación externa de cadera y la necesidad de estabilidad en múltiples planos..."></textarea>
+        </div>
+        
+        <button class="btn" onclick="checkAnswer(5)">Verificar respuesta</button>
+        <button class="btn btn-secondary" onclick="resetExercise(5)">Reiniciar</button>
+        
+        <div class="feedback" id="feedback5"></div>
+      </div>
+    </div>
+    
+    <div class="key-concept">
+      <h4> Concepto clave: Estabilidad multiplanar</h4>
+      <p>En el plié con rotación externa:</p>
+      <ul style="margin-left: 25px; line-height: 1.8; margin-top: 10px;">
+        <li><strong>Cuádriceps:</strong> Controla la flexión de rodilla</li>
+        <li><strong>Isquiotibiales:</strong> Estabilizan la rodilla y cadera</li>
+        <li><strong>Aductores:</strong> Mantienen la rotación externa y estabilizan la cadera</li>
+        <li>La coactivación de estos tres grupos crea una <strong>estabilidad en 3 planos</strong> (sagital, frontal, transversal)</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- SLIDE 7: EJERCICIO 6 - EQUILIBRIO -->
+  <div class="slide">
+    <h2>6️⃣ Ejercicio: Equilibrio monopodal</h2>
+    
+    <div class="exercise-card">
+      <h3><span class="emoji">⚖️</span> Situación</h3>
+      <div class="exercise-description">
+        <p>Te mantienes sobre <strong>una sola pierna</strong> durante 30 segundos con los ojos cerrados. La pierna libre está en passé (rodilla hacia afuera, pie en rodilla de apoyo).</p>
+      </div>
+      
+      <div class="scenario-box">
+        <h4>🤔 Pregunta: ¿Qué ocurre en el tobillo de la pierna de apoyo?</h4>
+        <div class="options-grid" id="options6">
+          <div class="option-card" onclick="selectOption(6, 0, false)">
+            <h5>Opción A</h5>
+            <p>Los músculos del tobillo están relajados; el equilibrio depende solo de la vista.</p>
+          </div>
+          <div class="option-card" onclick="selectOption(6, 1, true)">
+            <h5>Opción B</h5>
+            <p>Múltiples músculos del tobillo coactivan constantemente (ajustes posturales).</p>
+          </div>
+          <div class="option-card" onclick="selectOption(6, 2, false)">
+            <h5>Opción C</h5>
+            <p>Solo los gemelos trabajan para mantenerse de pie.</p>
+          </div>
+        </div>
+        
+        <div class="explanation-field">
+          <label for="explanation6">💭 Explica por qué elegiste esta opción:</label>
+          <textarea id="explanation6" placeholder="Piensa en cómo se mantiene el equilibrio sin referencia visual y qué músculos hacen micro-ajustes..."></textarea>
+        </div>
+        
+        <button class="btn" onclick="checkAnswer(6)">Verificar respuesta</button>
+        <button class="btn btn-secondary" onclick="resetExercise(6)">Reiniciar</button>
+        
+        <div class="feedback" id="feedback6"></div>
+      </div>
+    </div>
+    
+    <div class="key-concept">
+      <h4> Concepto clave: Coactivación refleja</h4>
+      <p>En equilibrio monopodal:</p>
+      <ul style="margin-left: 25px; line-height: 1.8; margin-top: 10px;">
+        <li><strong>Músculos del tobillo:</strong> Tibial anterior, gemelos, peroneos coactivan constantemente</li>
+        <li>Realizan <strong>micro-ajustes</strong> (oscilaciones de 5-10 Hz) para mantener el centro de gravedad</li>
+        <li>Sin visión, la <strong>propiocepción</strong> (receptores en músculos y articulaciones) es crucial</li>
+        <li>La coactivación es <strong>automática y refleja</strong>, no consciente</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- SLIDE 8: EJERCICIO 7 - PUENTE -->
+  <div class="slide">
+    <h2>7️⃣ Ejercicio: Puente de glúteos</h2>
+    
+    <div class="exercise-card">
+      <h3><span class="emoji"></span> Situación</h3>
+      <div class="exercise-description">
+        <p>Tumbado boca arriba con rodillas flexionadas, elevas la cadera hasta formar una línea recta hombros-rodillas. Mantienes 5 segundos arriba y bajas lentamente.</p>
+      </div>
+      
+      <div class="scenario-box">
+        <h4> Pregunta: ¿Qué ocurre en la zona lumbar durante el puente?</h4>
+        <div class="options-grid" id="options7">
+          <div class="option-card" onclick="selectOption(7, 0, false)">
+            <h5>Opción A</h5>
+            <p>La espalda está totalmente relajada; solo trabajan glúteos.</p>
+          </div>
+          <div class="option-card" onclick="selectOption(7, 1, true)">
+            <h5>Opción B</h5>
+            <p>Glúteos + abdominales + lumbares coactivan para estabilizar la pelvis.</p>
+          </div>
+          <div class="option-card" onclick="selectOption(7, 2, false)">
+            <h5>Opción C</h5>
+            <p>Solo los erectores espinales trabajan para arquear la espalda.</p>
+          </div>
+        </div>
+        
+        <div class="explanation-field">
+          <label for="explanation7">💭 Explica por qué elegiste esta opción:</label>
+          <textarea id="explanation7" placeholder="Considera la posición de la pelvis y qué músculos evitan la hiperlordosis..."></textarea>
+        </div>
+        
+        <button class="btn" onclick="checkAnswer(7)">Verificar respuesta</button>
+        <button class="btn btn-secondary" onclick="resetExercise(7)">Reiniciar</button>
+        
+        <div class="feedback" id="feedback7"></div>
+      </div>
+    </div>
+    
+    <div class="key-concept">
+      <h4>🎯 Concepto clave: Control pélvico</h4>
+      <p>En el puente:</p>
+      <ul style="margin-left: 25px; line-height: 1.8; margin-top: 10px;">
+        <li><strong>Glúteos:</strong> Extienden la cadera (movimiento principal)</li>
+        <li><strong>Abdominales:</strong> Evitan la anteversión pélvica excesiva (hiperlordosis)</li>
+        <li><strong>Lumbares:</strong> Estabilizan la columna</li>
+        <li>Esta coactivación <strong>anterior-posterior</strong> mantiene la pelvis en posición neutra</li>
+        <li>Esencial en danza para movimientos de cadera controlados</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- SLIDE 9: EJERCICIO 8 - BATTEMENT -->
+  <div class="slide">
+    <h2>8️⃣ Ejercicio: Battement contrôlé</h2>
+    
+    <div class="exercise-card">
+      <h3><span class="emoji">🦵</span> Situación</h3>
+      <div class="exercise-description">
+        <p>De pie, elevas la pierna lateralmente a 45° (à la seconde) y la bajas <strong>muy lentamente</strong> (8 segundos). Control total del movimiento.</p>
+      </div>
+      
+      <div class="scenario-box">
+        <h4>🤔 Pregunta: ¿Qué músculos trabajan durante la bajada lenta?</h4>
+        <div class="options-grid" id="options8">
+          <div class="option-card" onclick="selectOption(8, 0, false)">
+            <h5>Opción A</h5>
+            <p>Solo los aductores frenan la pierna pasivamente.</p>
+          </div>
+          <div class="option-card" onclick="selectOption(8, 1, true)">
+            <h5>Opción B</h5>
+            <p>Abductores (excéntrico) + aductores (coactivación estabilizadora).</p>
+          </div>
+          <div class="option-card" onclick="selectOption(8, 2, false)">
+            <h5>Opción C</h5>
+            <p>La gravedad hace todo el trabajo; los músculos están relajados.</p>
+          </div>
+        </div>
+        
+        <div class="explanation-field">
+          <label for="explanation8">💭 Explica por qué elegiste esta opción:</label>
+          <textarea id="explanation8" placeholder="Reflexiona sobre qué músculos elevan la pierna y cómo controlan la bajada..."></textarea>
+        </div>
+        
+        <button class="btn" onclick="checkAnswer(8)">Verificar respuesta</button>
+        <button class="btn btn-secondary" onclick="resetExercise(8)">Reiniciar</button>
+        
+        <div class="feedback" id="feedback8"></div>
+      </div>
+    </div>
+    
+    <div class="key-concept">
+      <h4>🎯 Concepto clave: Control excéntrico</h4>
+      <p>En el battement contrôlé:</p>
+      <ul style="margin-left: 25px; line-height: 1.8; margin-top: 10px;">
+        <li><strong>Abductores (glúteo medio, tensor):</strong> Trabajan excéntricamente para frenar la bajada</li>
+        <li><strong>Aductores:</strong> Se coactivan para estabilizar la cadera en el plano frontal</li>
+        <li>Esta coactivación crea un <strong>freno controlado</strong> que evita que la pierna caiga</li>
+        <li>El control excéntrico es <strong>más difícil</strong> que el concéntrico y genera más agujetas</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- SLIDE 10: EJERCICIO 9 - GIROS -->
+  <div class="slide">
+    <h2>9️⃣ Ejercicio: Piruetas (Giros)</h2>
+    
+    <div class="exercise-card">
+      <h3><span class="emoji">🌀</span> Situación</h3>
+      <div class="exercise-description">
+        <p>Ejecutas una <strong>pirueta</strong> en relevé: preparación, impulso, giro sobre una pierna con la otra en passé, y final en posición fija.</p>
+      </div>
+      
+      <div class="scenario-box">
+        <h4>🤔 Pregunta: ¿Qué ocurre durante el giro en términos de coactivación?</h4>
+        <div class="options-grid" id="options9">
+          <div class="option-card" onclick="selectOption(9, 0, true)">
+            <h5>Opción A</h5>
+            <p>Core completo (abdomen + espalda) + músculos de la pierna de apoyo coactivan.</p>
+          </div>
+          <div class="option-card" onclick="selectOption(9, 1, false)">
+            <h5>Opción B</h5>
+            <p>Solo los músculos rotadores trabajan; el core está relajado.</p>
+          </div>
+          <div class="option-card" onclick="selectOption(9, 2, false)">
+            <h5>Opción C</h5>
+            <p>La inercia hace todo; los músculos no necesitan trabajar durante el giro.</p>
+          </div>
+        </div>
+        
+        <div class="explanation-field">
+          <label for="explanation9">💭 Explica por qué elegiste esta opción:</label>
+          <textarea id="explanation9" placeholder="Considera la necesidad de mantener el eje vertical y la estabilidad durante la rotación..."></textarea>
+        </div>
+        
+        <button class="btn" onclick="checkAnswer(9)">Verificar respuesta</button>
+        <button class="btn btn-secondary" onclick="resetExercise(9)">Reiniciar</button>
+        
+        <div class="feedback" id="feedback9"></div>
+      </div>
+    </div>
+    
+    <div class="key-concept">
+      <h4>🎯 Concepto clave: Estabilidad rotacional</h4>
+      <p>Durante la pirueta:</p>
+      <ul style="margin-left: 25px; line-height: 1.8; margin-top: 10px;">
+        <li><strong>Core completo:</strong> Coactivación 360° (recto, oblicuos, transverso, lumbares, multífidos)</li>
+        <li><strong>Función:</strong> Mantener el <strong>eje vertical</strong> durante la rotación</li>
+        <li><strong>Pierna de apoyo:</strong> Cuádriceps + isquiotibiales + gemelos coactivan para estabilidad</li>
+        <li>Sin esta coactivación, el bailarín <strong>se desestabiliza</strong> y cae</li>
+        <li>La coactivación del core es <strong>isométrica</strong> (sin cambio de longitud)</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- SLIDE 11: EJERCICIO 10 - SALTOS -->
+  <div class="slide">
+    <h2>🔟 Ejercicio: Aterrizaje de saltos</h2>
+    
+    <div class="exercise-card">
+      <h3><span class="emoji">🦘</span> Situación</h3>
+      <div class="exercise-description">
+        <p>Realizas un <strong>grand jeté</strong> y aterrizas suavemente en plié profundo. El aterrizaje debe ser silencioso y controlado.</p>
+      </div>
+      
+      <div class="scenario-box">
+        <h4>🤔 Pregunta: ¿Qué ocurre en las rodillas durante el aterrizaje?</h4>
+        <div class="options-grid" id="options10">
+          <div class="option-card" onclick="selectOption(10, 0, false)">
+            <h5>Opción A</h5>
+            <p>Las piernas absorben el impacto pasivamente; los músculos están relajados.</p>
+          </div>
+          <div class="option-card" onclick="selectOption(10, 1, true)">
+            <h5>Opción B</h5>
+            <p>Cuádriceps + isquiotibiales + gemelos coactivan excéntricamente para frenar.</p>
+          </div>
+          <div class="option-card" onclick="selectOption(10, 2, false)">
+            <h5>Opción C</h5>
+            <p>Solo los gemelos trabajan para amortiguar.</p>
+          </div>
+        </div>
+        
+        <div class="explanation-field">
+          <label for="explanation10">💭 Explica por qué elegiste esta opción:</label>
+          <textarea id="explanation10" placeholder="Piensa en cómo se absorbe el impacto y qué músculos protegen las articulaciones..."></textarea>
+        </div>
+        
+        <button class="btn" onclick="checkAnswer(10)">Verificar respuesta</button>
+        <button class="btn btn-secondary" onclick="resetExercise(10)">Reiniciar</button>
+        
+        <div class="feedback" id="feedback10"></div>
+      </div>
+    </div>
+    
+    <div class="key-concept">
+      <h4>🎯 Concepto clave: Absorción de impacto</h4>
+      <p>En el aterrizaje:</p>
+      <ul style="margin-left: 25px; line-height: 1.8; margin-top: 10px;">
+        <li><strong>Cuádriceps:</strong> Excéntrico para controlar la flexión de rodilla</li>
+        <li><strong>Isquiotibiales:</strong> Coactivación para proteger el LCA</li>
+        <li><strong>Gemelos/sóleo:</strong> Excéntrico para controlar el tobillo</li>
+        <li><strong>Glúteos:</strong> Excéntrico para controlar la cadera</li>
+        <li>Esta <strong>coactivación global</strong> distribuye las fuerzas (hasta 8x el peso corporal)</li>
+        <li>Sin coactivación: <strong>lesiones</strong> de rodilla, tobillo o cadera</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- SLIDE 12: RESUMEN -->
+  <div class="slide">
+    <h2>📊 Resumen: Coactivación en Danza</h2>
+    
+    <div class="intro-box">
+      <h3>🎯 Conceptos clave aprendidos</h3>
+      <p>Has explorado 10 situaciones diferentes donde la coactivación muscular es esencial para la estabilidad y el control en danza.</p>
+    </div>
+    
+    <div class="exercise-card">
+      <h3><span class="emoji">📋</span> Principios fundamentales</h3>
+      <div class="options-grid">
+        <div class="option-card">
+          <h5>1. Estabilidad articular</h5>
+          <p>La coactivación protege las articulaciones en posiciones estáticas y dinámicas.</p>
+        </div>
+        <div class="option-card">
+          <h5>2. Control del movimiento</h5>
+          <p>Permite movimientos precisos, especialmente en fases excéntricas (bajadas).</p>
+        </div>
+        <div class="option-card">
+          <h5>3. Prevención de lesiones</h5>
+          <p>Evita hiperextensiones y controla las fuerzas de impacto.</p>
+        </div>
+        <div class="option-card">
+          <h5>4. Equilibrio</h5>
+          <p>Micro-ajustes constantes mediante coactivación refleja.</p>
+        </div>
+        <div class="option-card">
+          <h5>5. Calidad del gesto</h5>
+          <p>Proporciona fluidez, elegancia y control en la ejecución.</p>
+        </div>
+        <div class="option-card">
+          <h5>6. Multiplanaridad</h5>
+          <p>La coactivación trabaja en los 3 planos del movimiento.</p>
+        </div>
+      </div>
+    </div>
+    
+    <div class="key-concept">
+      <h4>🎭 Aplicación en tu entrenamiento</h4>
+      <ul style="margin-left: 25px; line-height: 1.8;">
+        <li><strong>Consciencia:</strong> Presta atención a qué músculos trabajan en cada ejercicio</li>
+        <li><strong>Control:</strong> Prioriza la calidad del movimiento sobre la cantidad</li>
+        <li><strong>Progresión:</strong> Comienza con coactivación consciente, luego se vuelve automática</li>
+        <li><strong>Prevención:</strong> La coactivación adecuada previene lesiones a largo plazo</li>
+        <li><strong>Integración:</strong> Combina ejercicios de fuerza, equilibrio y control</li>
+      </ul>
+    </div>
+    
+    <div class="intro-box" style="background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%); border-left-color: #28a745;">
+      <h3>✅ ¡Completado!</h3>
+      <p>Has revisado los 10 ejercicios de coactivación muscular. Ahora debes:</p>
+      <ol style="margin-left: 25px; line-height: 1.8; margin-top: 10px;">
+        <li>Practicar estos ejercicios en el estudio</li>
+        <li>Prestar atención a las sensaciones de coactivación</li>
+        <li>Aplicar estos conceptos en tu técnica de danza diaria</li>
+        <li>Observar cómo mejora tu estabilidad y control</li>
+      </ol>
+    </div>
+  </div>
+</div>
+
+<script>
+// Estado de los ejercicios
+const exerciseState = {};
+
+function showSlide(i, btn) {
+  document.querySelectorAll('.slide').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-tabs button').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.slide')[i].classList.add('active');
+  btn.classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+function selectOption(exerciseNum, optionIndex, isCorrect) {
+  // Limpiar selecciones previas
+  const options = document.querySelectorAll(`#options${exerciseNum} .option-card`);
+  options.forEach(opt => opt.classList.remove('selected', 'correct', 'incorrect'));
+  
+  // Marcar la opción seleccionada
+  options[optionIndex].classList.add('selected');
+  
+  // Guardar estado
+  exerciseState[exerciseNum] = {
+    selected: optionIndex,
+    isCorrect: isCorrect,
+    checked: false
+  };
+}
+
+function checkAnswer(exerciseNum) {
+  if (!exerciseState[exerciseNum] || exerciseState[exerciseNum].selected === undefined) {
+    alert('Por favor, selecciona una opción primero.');
+    return;
+  }
+  
+  const state = exerciseState[exerciseNum];
+  const feedback = document.getElementById(`feedback${exerciseNum}`);
+  const options = document.querySelectorAll(`#options${exerciseNum} .option-card`);
+  
+  // Marcar visualmente
+  options.forEach((opt, idx) => {
+    if (idx === state.selected) {
+      opt.classList.add(state.isCorrect ? 'correct' : 'incorrect');
+    }
+  });
+  
+  // Mostrar feedback
+  feedback.classList.remove('show');
+  setTimeout(() => {
+    feedback.classList.add('show');
+    if (state.isCorrect) {
+      feedback.className = 'feedback show success';
+      feedback.innerHTML = getCorrectFeedback(exerciseNum);
+    } else {
+      feedback.className = 'feedback show error';
+      feedback.innerHTML = getIncorrectFeedback(exerciseNum);
+    }
+  }, 100);
+  
+  state.checked = true;
+}
+
+function getCorrectFeedback(num) {
+  const feedbacks = {
+    1: `<strong>¡Correcto!</strong> En la plancha, abdomen y espalda trabajan juntos (coactivación) para mantener la columna estable. Si solo trabajara el abdomen, la espalda caería (hiperlordosis). Si solo trabajara la espalda, el abdomen caería. <strong>La coactivación crea una "faja" natural</strong> que protege la columna.`,
+    2: `<strong>¡Exacto!</strong> Aunque el movimiento principal es de los gemelos (flexión plantar), el tibial anterior se coactiva para <strong>estabilizar el tobillo</strong> y evitar la hiperextensión. Esto es crucial en relevés para mantener el equilibrio y prevenir esguinces.`,
+    3: `<strong>¡Muy bien!</strong> En el arabesque, aunque los extensores (glúteos, isquiotibiales) son los principales, el psoas (flexor) se coactiva para <strong>evitar la hiperextensión</strong> y mantener un control fino de la altura. Sin esta coactivación, la pierna "caería" por gravedad o se iría demasiado arriba.`,
+    4: `<strong>¡Correcto!</strong> Durante la bajada, el cuádriceps trabaja excéntricamente (se alarga controlando), pero los isquiotibiales se coactivan para <strong>proteger el LCA</strong> (ligamento cruzado anterior) evitando el desplazamiento anterior de la tibia. Esta coactivación es esencial en aterrizajes de saltos.`,
+    5: `<strong>¡Excelente!</strong> En el plié con rotación externa, necesitas estabilidad en múltiples planos: cuádriceps (flexión rodilla), isquiotibiales (estabilidad), y aductores (rotación externa + estabilidad de cadera). Esta <strong>coactivación triple</strong> es lo que permite un plié seguro y controlado.`,
+    6: `<strong>¡Perfecto!</strong> En equilibrio monopodal, especialmente sin visión, los músculos del tobillo (tibial, gemelos, peroneos) realizan <strong>micro-ajustes constantes</strong> (coactivación refleja) para mantener el centro de gravedad. Es un proceso automático controlado por la propiocepción.`,
+    7: `<strong>¡Correcto!</strong> En el puente, glúteos extienden la cadera, pero los abdominales se coactivan para <strong>evitar la hiperlordosis</strong> (arquear demasiado la espalda). Los lumbares estabilizan. Esta coactivación anterior-posterior mantiene la pelvis neutra y protege la columna.`,
+    8: `<strong>¡Muy bien!</strong> Durante la bajada lenta, los abductores trabajan excéntricamente (frenan), pero los aductores se coactivan para <strong>estabilizar la cadera</strong> en el plano frontal. Sin esta coactivación, la cadera se desplazaría lateralmente y perderías el control del movimiento.`,
+    9: `<strong>¡Exacto!</strong> Durante la pirueta, el core completo (360°) coactiva isométricamente para <strong>mantener el eje vertical</strong> durante la rotación. Además, la pierna de apoyo requiere coactivación de cuádriceps, isquiotibiales y gemelos para estabilidad. Sin esto, el giro sería incontrolable.`,
+    10: `<strong>¡Correcto!</strong> En el aterrizaje, todos los músculos de la cadena posterior y anterior coactivan excéntricamente para <strong>absorber el impacto</strong> (hasta 8x el peso corporal). Esta coactivación global distribuye las fuerzas y protege rodillas, tobillos y caderas de lesiones.`
+  };
+  return feedbacks[num];
+}
+
+function getIncorrectFeedback(num) {
+  const feedbacks = {
+    1: `<strong>Casi...</strong> Piensa: si solo el abdomen trabajara, ¿qué evitaría que la espalda se arquee demasiado? Si solo la espalda trabajara, ¿qué evitaría que el abdomen caiga? <strong>Ambos deben trabajar juntos</strong> para crear estabilidad. Revisa el diagrama y reflexiona sobre la función de cada grupo muscular.`,
+    2: `<strong>Reflexiona...</strong> Si solo los gemelos trabajaran, el tobillo sería inestable y tendería a hiperextenderse. El tibial anterior actúa como <strong>contrapeso</strong> para mantener la estabilidad. En danza, esto es crucial para evitar esguinces y mantener el control del relevé.`,
+    3: `<strong>Piensa en esto...</strong> Si solo los extensores trabajaran, ¿qué evitaría que la pierna se vaya demasiado atrás (hiperextensión)? El psoas actúa como <strong>freno</strong> y estabilizador. La coactivación permite un control fino de la posición, esencial en la estética del arabesque.`,
+    4: `<strong>Considera...</strong> Si el cuádriceps trabajara solo excéntricamente sin coactivación de isquiotibiales, la tibia se desplazaría hacia adelante, <strong>estresando el LCA</strong>. Los isquiotibiales actúan como "freno posterior" para proteger la rodilla. Esto es vital en danza para prevenir lesiones.`,
+    5: `<strong>Analiza...</strong> El plié en rotación externa requiere estabilidad en 3 planos. Los aductores no solo rotan, sino que <strong>estabilizan la cadera</strong>. Sin su coactivación junto con cuádriceps e isquiotibiales, la rodilla colapsaría hacia adentro o la cadera perdería la rotación.`,
+    6: `<strong>Observa...</strong> Cierra los ojos ahora mismo e intenta mantenerte sobre una pierna. ¿Sientes cómo el tobillo hace pequeños ajustes? Esos son los músculos coactivando constantemente. Sin visión, la <strong>propiocepción</strong> (receptores en músculos) es la única fuente de información para mantener el equilibrio.`,
+    7: `<strong>Reflexiona...</strong> Si solo los glúteos trabajaran, la pelvis se inclinaría hacia adelante (anteversión) creando hiperlordosis. Los abdominales actúan como <strong>contrapeso</strong> para mantener la pelvis neutra. Esta coactivación es esencial para proteger la columna lumbar.`,
+    8: `<strong>Piensa...</strong> Si solo los aductores frenaran pasivamente, la pierna caería sin control. Los abductores deben trabajar excéntricamente (alargándose controladamente) mientras los aductores coactivan para <strong>estabilizar lateralmente</strong>. Esto crea el control fino característico del battement contrôlé.`,
+    9: `<strong>Considera...</strong> Si el core estuviera relajado durante el giro, ¿qué mantendría el cuerpo recto? La inercia por sí sola no puede mantener el eje. El core debe coactivar <strong>isométricamente</strong> (sin cambiar de longitud) para crear un "cilindro" estable que permita la rotación controlada.`,
+    10: `<strong>Reflexiona...</strong> Si los músculos estuvieran relajados al aterrizar, el impacto iría directo a las articulaciones (¡lesión segura!). La coactivación excéntrica de todos los músculos de la pierna <strong>absorbe y distribuye</strong> las fuerzas. Es el sistema de amortiguación del cuerpo.`
+  };
+  return feedbacks[num];
+}
+
+function resetExercise(exerciseNum) {
+  const options = document.querySelectorAll(`#options${exerciseNum} .option-card`);
+  options.forEach(opt => opt.classList.remove('selected', 'correct', 'incorrect'));
+  
+  const textarea = document.getElementById(`explanation${exerciseNum}`);
+  if (textarea) textarea.value = '';
+  
+  const feedback = document.getElementById(`feedback${exerciseNum}`);
+  feedback.classList.remove('show');
+  
+  delete exerciseState[exerciseNum];
+}
+</script>
+</body>
+</html>

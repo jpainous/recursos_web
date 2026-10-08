@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Escape Room: RED-S</title>
+<style>
+  body { font-family: 'Segoe UI', sans-serif; background: #0f172a; color: #e2e8f0; margin: 0; padding: 20px; }
+  h1 { text-align: center; color: #f59e0b; }
+  .container { max-width: 800px; margin: auto; }
+  .escena { background: #1e293b; padding: 25px; border-radius: 12px; margin-bottom: 20px; }
+  .personaje { display: flex; gap: 20px; align-items: center; margin-bottom: 20px; }
+  .avatar { font-size: 80px; }
+  .dialogo { background: #0f172a; padding: 15px; border-radius: 8px; border-left: 4px solid #f59e0b; flex: 1; }
+  .opciones { display: grid; gap: 10px; }
+  .opcion { background: #334155; padding: 15px; border-radius: 8px; cursor: pointer; border: 2px solid transparent; transition: all 0.2s; }
+  .opcion:hover { border-color: #f59e0b; background: #475569; }
+  .opcion.elegida { background: #1e3a5f; border-color: #38bdf8; }
+  .progreso { display: flex; gap: 5px; margin-bottom: 15px; }
+  .paso { flex: 1; height: 8px; background: #334155; border-radius: 4px; }
+  .paso.activo { background: #f59e0b; }
+  .paso.hecho { background: #34d399; }
+  .resultado { background: #1e293b; padding: 25px; border-radius: 12px; text-align: center; }
+  .diagnostico { font-size: 24px; color: #ef4444; margin: 20px 0; }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>🕵️ Escape Room: Diagnóstico del RED-S</h1>
+  <p style="text-align:center; color:#94a3b8;">Eres el fisioterapeuta de una joven bailarina con fracturas por estrés. Investiga su caso.</p>
+  
+  <div class="progreso" id="progreso"></div>
+  <div id="escena"></div>
+</div>
+
+<script>
+const casos = [
+  {
+    titulo: 'Presentación del caso',
+    avatar: '🩰',
+    texto: 'Soy Laura, 17 años, bailarina de compañía profesional. Llevo 3 meses con dolor en la tibia y me han diagnosticado fractura por estrés. No entiendo por qué, entreno mucho...',
+    opciones: [
+      {texto: '¿Cuántas horas entrenas al día?', sig: 1},
+      {texto: '¿Cómo es tu alimentación?', sig: 2},
+      {texto: '¿Descansas lo suficiente?', sig: 3}
+    ]
+  },
+  {
+    titulo: 'Entrenamiento',
+    avatar: '🩰',
+    texto: 'Entreno 6 horas al día, 6 días a la semana. A veces hago doble sesión los viernes antes de las funciones.',
+    opciones: [
+      {texto: '¿Y cómo comes para aguantar ese ritmo?', sig: 2},
+      {texto: '¿Duermes bien?', sig: 3},
+      {texto: '¿Tomas suplementos?', sig: 4}
+    ]
+  },
+  {
+    titulo: 'Alimentación',
+    avatar: '🩰',
+    texto: 'Pues... como poco. Mi profesora dice que las bailarinas debemos estar ligeras. A veces me salto el desayuno y la cena es una ensalada. He perdido 4 kg este año.',
+    opciones: [
+      {texto: '¿Has tenido la menstruación últimamente?', sig: 5},
+      {texto: '¿Te sientes cansada o mareada?', sig: 6},
+      {texto: '¿Tienes más lesiones?', sig: 7}
+    ]
+  },
+  {
+    titulo: 'Descanso',
+    avatar: '🩰',
+    texto: 'Duermo 5-6 horas. Me cuesta dormirme porque estoy muy activa. Los domingos descanso, pero a veces ensayo.',
+    opciones: [
+      {texto: '¿Y cómo comes?', sig: 2},
+      {texto: '¿Tomas cafeína o estimulantes?', sig: 8}
+    ]
+  },
+  {
+    titulo: 'Suplementos',
+    avatar: '🩰',
+    texto: 'Solo café y algunas vitaminas. No tomo nada más.',
+    opciones: [
+      {texto: '¿Cómo es tu alimentación real?', sig: 2},
+      {texto: '¿Cómo duermes?', sig: 3}
+    ]
+  },
+  {
+    titulo: 'Menstruación',
+    avatar: '🩰',
+    texto: 'La verdad... no me ha venido en 4 meses. Pensé que era normal por el entrenamiento intenso.',
+    opciones: [
+      {texto: 'Necesito hacerte una analítica y DXA (densitometría)', sig: 9},
+      {texto: '¿Tienes más síntomas?', sig: 6}
+    ]
+  },
+  {
+    titulo: 'Síntomas',
+    avatar: '🩰',
+    texto: 'Sí, estoy siempre cansada, me mareo al levantarme, me cuesta concentrarme y me he lesionado dos veces más este año (tobillo y metatarso).',
+    opciones: [
+      {texto: 'Esto apunta a algo sistémico. Voy a evaluar tu balance energético', sig: 9}
+    ]
+  },
+  {
+    titulo: 'Más lesiones',
+    avatar: '🩰',
+    texto: 'Sí, este año me he lesionado 3 veces: tibia, tobillo y un metatarso. Nunca me había pasado.',
+    opciones: [
+      {texto: 'Necesito evaluar tu estado nutricional y hormonal', sig: 9}
+    ]
+  },
+  {
+    titulo: 'Estimulantes',
+    avatar: '🩰',
+    texto: 'Tomo 4 cafés al día para aguantar. Y a veces bebidas energéticas antes de ensayar.',
+    opciones: [
+      {texto: '¿Y cómo comes realmente?', sig: 2}
+    ]
+  },
+  {
+    titulo: 'Diagnóstico',
+    avatar: '⚕️',
+    texto: 'Laura, tras evaluar tu caso: bajo aporte energético, amenorrea (3 meses sin regla), múltiples fracturas por estrés, fatiga crónica. Los análisis muestran baja densidad ósea y alteraciones hormonales.',
+    opciones: [
+      {texto: 'Ver diagnóstico final', sig: 10}
+    ]
+  }
+];
+
+let paso = 0;
+
+function mostrar() {
+  const prog = document.getElementById('progreso');
+  prog.innerHTML = '';
+  for (let i = 0; i < casos.length; i++) {
+    const div = document.createElement('div');
+    div.className = 'paso' + (i < paso ? ' hecho' : i === paso ? ' activo' : '');
+    prog.appendChild(div);
+  }
+  
+  if (paso >= casos.length) {
+    mostrarFinal();
+    return;
+  }
+  
+  const c = casos[paso];
+  document.getElementById('escena').innerHTML = `
+    <div class="escena">
+      <h3>${c.titulo}</h3>
+      <div class="personaje">
+        <div class="avatar">${c.avatar}</div>
+        <div class="dialogo">${c.texto}</div>
+      </div>
+      <div class="opciones">
+        ${c.opciones.map((o,i) => `<div class="opcion" onclick="elegir(${o.sig})">${o.texto}</div>`).join('')}
+      </div>
+    </div>
+  `;
+}
+
+function elegir(sig) {
+  paso++;
+  mostrar();
+}
+
+function mostrarFinal() {
+  document.getElementById('escena').innerHTML = `
+    <div class="resultado">
+      <h2 style="color:#f59e0b;">🔍 Diagnóstico Final</h2>
+      <div class="diagnostico">RED-S (Relative Energy Deficiency in Sport)</div>
+      <p>Laura presenta el <b>síndrome de deficiencia energética relativa en el deporte</b>:</p>
+      <ul style="text-align:left; max-width:500px; margin:20px auto;">
+        <li>❌ <b>Bajo aporte energético</b> (come menos de lo que gasta)</li>
+        <li>❌ <b>Amenorrea funcional</b> (4 meses sin regla)</li>
+        <li>❌ <b>Fracturas por estrés múltiples</b> (hueso no se remodela correctamente)</li>
+        <li>❌ <b>Baja densidad ósea</b> (osteoclastos > osteoblastos)</li>
+        <li>❌ <b>Fatiga crónica</b> y bajo rendimiento</li>
+      </ul>
+      <div style="background:#0f172a; padding:15px; border-radius:8px; margin-top:20px; text-align:left;">
+        <b>📚 Fisiología subyacente:</b><br>
+        El hueso es un tejido dinámico que se remodela en ciclos de 10 años. Requiere:<br>
+        ✓ Energía suficiente (calorías)<br>
+        ✓ Nutrientes (calcio, vitamina D, proteínas)<br>
+        ✓ Descanso adecuado<br>
+        ✓ Carga mecánica apropiada<br><br>
+        Sin esto, los <b>osteoclastos</b> reabsorben hueso más rápido de lo que los <b>osteoblastos</b> lo forman → fragilidad ósea → fracturas.
+      </div>
+      <button onclick="reiniciar()" style="margin-top:20px;">🔄 Jugar de nuevo</button>
+    </div>
+  `;
+}
+
+function reiniciar() {
+  paso = 0;
+  mostrar();
+}
+
+mostrar();
+</script>
+</body>
+</html>

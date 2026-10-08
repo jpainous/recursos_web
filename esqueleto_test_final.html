@@ -1,0 +1,1794 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Test de Fisiología Aplicada a la Danza</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, sans-serif; }
+  body {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    padding: 20px;
+  }
+  .container {
+    max-width: 900px;
+    margin: 0 auto;
+    background: #fff;
+    border-radius: 20px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    overflow: hidden;
+  }
+  header {
+    background: linear-gradient(90deg, #1e3c72, #2a5298);
+    color: white;
+    padding: 30px;
+    text-align: center;
+  }
+  header h1 { font-size: 2em; margin-bottom: 10px; }
+  header p { opacity: 0.95; font-size: 1.1em; }
+  
+  .student-info {
+    background: #f8f9fa;
+    padding: 25px;
+    border-bottom: 3px solid #dee2e6;
+  }
+  
+  .student-info h2 {
+    color: #2a5298;
+    margin-bottom: 15px;
+    font-size: 1.3em;
+  }
+  
+  .info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+    margin-bottom: 15px;
+  }
+  
+  .info-field {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .info-field label {
+    font-weight: 600;
+    color: #2a5298;
+    margin-bottom: 5px;
+    font-size: 0.9em;
+  }
+  
+  .info-field input {
+    padding: 10px;
+    border: 2px solid #dee2e6;
+    border-radius: 8px;
+    font-size: 1em;
+  }
+  
+  .info-field input:focus {
+    outline: none;
+    border-color: #2a5298;
+  }
+  
+  .timer-box {
+    background: linear-gradient(90deg, #e74c3c, #c0392b);
+    color: white;
+    padding: 15px 25px;
+    border-radius: 10px;
+    text-align: center;
+    margin-top: 15px;
+  }
+  
+  .timer-box h3 {
+    font-size: 1.8em;
+    margin-bottom: 5px;
+  }
+  
+  .timer-box p {
+    font-size: 0.9em;
+    opacity: 0.9;
+  }
+  
+  .test-info {
+    background: #fff3cd;
+    border-left: 4px solid #ffc107;
+    padding: 15px;
+    margin: 20px 25px;
+    border-radius: 0 8px 8px 0;
+  }
+  
+  .test-info h3 {
+    color: #856404;
+    margin-bottom: 8px;
+  }
+  
+  .test-info ul {
+    margin-left: 20px;
+    line-height: 1.6;
+  }
+  
+  .question {
+    margin: 25px 30px;
+    padding: 25px;
+    background: white;
+    border: 2px solid #dee2e6;
+    border-radius: 15px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+  }
+  
+  .question-header {
+    background: linear-gradient(90deg, #2a5298, #1e3c72);
+    color: white;
+    padding: 10px 20px;
+    margin: -25px -25px 20px -25px;
+    border-radius: 13px 13px 0 0;
+    font-size: 1em;
+    font-weight: 600;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .topic-tag {
+    background: rgba(255,255,255,0.2);
+    padding: 3px 10px;
+    border-radius: 12px;
+    font-size: 0.85em;
+    font-weight: 400;
+  }
+  
+  .question-text {
+    font-size: 1.1em;
+    color: #333;
+    margin-bottom: 20px;
+    line-height: 1.6;
+    font-weight: 500;
+  }
+  
+  .case-box {
+    background: #fff3cd;
+    border-left: 4px solid #ffc107;
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 0 8px 8px 0;
+    font-style: italic;
+  }
+  
+  .options {
+    margin: 20px 0;
+  }
+  
+  .option {
+    background: #f8f9fa;
+    border: 2px solid #dee2e6;
+    padding: 12px 15px;
+    margin: 10px 0;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  
+  .option:hover {
+    background: #e3f2fd;
+    border-color: #2a5298;
+    transform: translateX(5px);
+  }
+  
+  .option input[type="radio"] {
+    margin-top: 3px;
+    cursor: pointer;
+  }
+  
+  .option label {
+    cursor: pointer;
+    flex: 1;
+    line-height: 1.5;
+  }
+  
+  .controls {
+    padding: 30px;
+    background: #f8f9fa;
+    border-top: 3px solid #dee2e6;
+    text-align: center;
+  }
+  
+  .btn {
+    background: linear-gradient(90deg, #2a5298, #1e3c72);
+    color: white;
+    border: none;
+    padding: 15px 40px;
+    border-radius: 30px;
+    font-size: 1.1em;
+    font-weight: 600;
+    cursor: pointer;
+    margin: 10px;
+    transition: all 0.3s;
+    box-shadow: 0 4px 12px rgba(42,82,152,0.3);
+  }
+  
+  .btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(42,82,152,0.4);
+  }
+  
+  .btn-secondary {
+    background: #6c757d;
+  }
+  
+  .results {
+    display: none;
+    padding: 40px;
+    background: #e8f5e9;
+    text-align: center;
+  }
+  
+  .results.show {
+    display: block;
+  }
+  
+  .results h2 {
+    color: #2e7d32;
+    font-size: 2em;
+    margin-bottom: 20px;
+  }
+  
+  .score {
+    font-size: 3em;
+    color: #198754;
+    font-weight: bold;
+    margin: 20px 0;
+  }
+  
+  .results-details {
+    background: white;
+    padding: 25px;
+    border-radius: 10px;
+    margin: 20px 0;
+    text-align: left;
+  }
+  
+  .results-details h3 {
+    color: #2a5298;
+    margin-bottom: 15px;
+  }
+  
+  .results-details p {
+    line-height: 1.8;
+    margin-bottom: 10px;
+  }
+  
+  .print-btn {
+    background: linear-gradient(90deg, #198754, #0f5132);
+  }
+  
+  @media print {
+    body { background: white; }
+    .container { box-shadow: none; }
+    .controls, .timer-box { display: none; }
+    .question { break-inside: avoid; }
+  }
+  
+  @media (max-width: 768px) {
+    header h1 { font-size: 1.5em; }
+    .question { margin: 15px; padding: 20px; }
+    .question-header { margin: -20px -20px 15px -20px; }
+    .info-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <h1>📝 Test de Fisiología Aplicada a la Danza</h1>
+    <p>Evaluación completa: Esqueleto, Músculos, Tejido Óseo, Tendones y Articulaciones</p>
+  </header>
+  
+  <div class="student-info">
+    <h2>👤 Información del Estudiante</h2>
+    <div class="info-grid">
+      <div class="info-field">
+        <label for="studentName">Nombre completo:</label>
+        <input type="text" id="studentName" placeholder="Ej: María García López">
+      </div>
+      <div class="info-field">
+        <label for="studentEmail">Email:</label>
+        <input type="email" id="studentEmail" placeholder="Ej: maria@email.com">
+      </div>
+      <div class="info-field">
+        <label for="testDate">Fecha:</label>
+        <input type="date" id="testDate">
+      </div>
+      <div class="info-field">
+        <label for="timeLimit">Tiempo límite (minutos):</label>
+        <input type="number" id="timeLimit" value="75" min="30" max="120">
+      </div>
+    </div>
+    <div class="timer-box">
+      <h3 id="timer">75:00</h3>
+      <p>Tiempo restante</p>
+    </div>
+  </div>
+  
+  <div class="test-info">
+    <h3>📋 Instrucciones del Test</h3>
+    <ul>
+      <li><strong>50 preguntas</strong> de diferentes tipos (opción múltiple, casos prácticos, verdadero/falso)</li>
+      <li><strong>Tiempo límite:</strong> 75 minutos (ajustable por el profesor)</li>
+      <li>Cada pregunta indica el <strong>tema</strong> al que corresponde</li>
+      <li>Solo <strong>una respuesta correcta</strong> por pregunta</li>
+      <li>Al finalizar, podrás <strong>imprimir o guardar como PDF</strong> para enviar al profesor</li>
+    </ul>
+  </div>
+
+  <form id="testForm">
+    <!-- PREGUNTAS DEL ESQUELETO (1-10) -->
+    <div class="question" data-topic="Esqueleto - Parte 1">
+      <div class="question-header">
+        <span>Pregunta 1 de 50</span>
+        <span class="topic-tag">Esqueleto - Parte 1</span>
+      </div>
+      <div class="question-text">¿Por qué decimos que el hueso es un tejido "vivo" y no una estructura inerte?</div>
+      <div class="options">
+        <div class="option">
+          <input type="radio" name="q1" id="q1a" value="A">
+          <label for="q1a">A) Porque duele cuando te golpeas</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="q1" id="q1b" value="B">
+          <label for="q1b">B) Porque se renueva constantemente, se adapta al esfuerzo y tiene células vivas que lo mantienen</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="q1" id="q1c" value="C">
+          <label for="q1c">C) Porque está lleno de sangre</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="q1" id="q1d" value="D">
+          <label for="q1d">D) Porque se mueve con los músculos</label>
+        </div>
+      </div>
+    </div>
+
+    <div class="question" data-topic="Esqueleto - Parte 1">
+      <div class="question-header">
+        <span>Pregunta 2 de 50</span>
+        <span class="topic-tag">Esqueleto - Parte 1</span>
+      </div>
+      <div class="case-box">
+        <strong>Caso práctico:</strong> Ana, una bailarina de 20 años, entrena 4 horas diarias con saltos y relevés. Su densidad ósea es un 15% mayor que la de una persona sedentaria de su edad.
+      </div>
+      <div class="question-text">¿Qué principio fisiológico explica este fenómeno?</div>
+      <div class="options">
+        <div class="option">
+          <input type="radio" name="q2" id="q2a" value="A">
+          <label for="q2a">A) Los huesos crecen más con el ejercicio</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="q2" id="q2b" value="B">
+          <label for="q2b">B) Ley de Wolff: el hueso se adapta y fortalece donde recibe más carga mecánica</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="q2" id="q2c" value="C">
+          <label for="q2c">C) Ana come más calcio que la persona sedentaria</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="q2" id="q2d" value="D">
+          <label for="q2d">D) Es solo genético</label>
+        </div>
+      </div>
+    </div>
+
+    <div class="question" data-topic="Esqueleto - Parte 1">
+      <div class="question-header">
+        <span>Pregunta 3 de 50</span>
+        <span class="topic-tag">Esqueleto - Parte 1</span>
+      </div>
+      <div class="question-text">En un relevé (elevarse sobre las puntas), ¿qué tipo de palanca utiliza el cuerpo?</div>
+      <div class="options">
+        <div class="option">
+          <input type="radio" name="q3" id="q3a" value="A">
+          <label for="q3a">A) Tipo 1 (equilibrio) - como una balanza</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="q3" id="q3b" value="B">
+          <label for="q3b">B) Tipo 2 (fuerza) - la carga (peso corporal) está entre el apoyo (punta del pie) y la fuerza (gemelos)</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="q3" id="q3c" value="C">
+          <label for="q3c">C) Tipo 3 (velocidad) - como el brazo al lanzar</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="q3" id="q3d" value="D">
+          <label for="q3d">D) No es una palanca</label>
+        </div>
+      </div>
+    </div>
+
+    <div class="question" data-topic="Esqueleto - Parte 2">
+      <div class="question-header">
+        <span>Pregunta 4 de 50</span>
+        <span class="topic-tag">Esqueleto - Parte 2</span>
+      </div>
+      <div class="question-text">¿Por qué el calcio es tan importante para la función muscular?</div>
+      <div class="options">
+        <div class="option">
+          <input type="radio" name="q4" id="q4a" value="A">
+          <label for="q4a">A) Porque hace los huesos más duros</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="q4" id="q4b" value="B">
+          <label for="q4b">B) Porque es necesario para que los músculos se contraigan (actúa como "chispa" que activa las proteínas contráctiles)</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="q4" id="q4c" value="C">
+          <label for="q4c">C) Porque da energía a los músculos</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="q4" id="q4d" value="D">
+          <label for="q4d">D) Porque evita los calambres</label>
+        </div>
+      </div>
+    </div>
+
+    <div class="question" data-topic="Esqueleto - Parte 2">
+      <div class="question-header">
+        <span>Pregunta 5 de 50</span>
+        <span class="topic-tag">Esqueleto - Parte 2</span>
+      </div>
+      <div class="case-box">
+        <strong>Caso práctico:</strong> Carlos, un bailarín, se siente muy fatigado durante los ensayos. Se le diagnostica anemia (pocos glóbulos rojos).
+      </div>
+      <div class="question-text">¿Cómo afecta esto a su rendimiento en la danza desde el punto de vista fisiológico?</div>
+      <div class="options">
+        <div class="option">
+          <input type="radio" name="q5" id="q5a" value="A">
+          <label for="q5a">A) No afecta, solo es un problema de sangre</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="q5" id="q5b" value="B">
+          <label for="q5b">B) Menos glóbulos rojos = menos transporte de oxígeno a los músculos = fatiga rápida y bajo rendimiento</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="q5" id="q5c" value="C">
+          <label for="q5c">C) Solo le afecta la fuerza, no la resistencia</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="q5" id="q5d" value="D">
+          <label for="q5d">D) Mejora su flexibilidad</label>
+        </div>
+      </div>
+    </div>
+
+    <div class="question" data-topic="Esqueleto - Parte 3">
+      <div class="question-header">
+        <span>Pregunta 6 de 50</span>
+        <span class="topic-tag">Esqueleto - Parte 3</span>
+      </div>
+      <div class="question-text">¿Cuál es el principal riesgo de la Tríada de la Mujer Atleta para la salud ósea?</div>
+      <div class="options">
+        <div class="option">
+          <input type="radio" name="q6" id="q6a" value="A">
+          <label for="q6a">A) Aumento de peso</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="q6" id="q6b" value="B">
+          <label for="q6b">B) Osteoporosis precoz por pérdida de estrógenos y baja energía disponible</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="q6" id="q6c" value="C">
+          <label for="q6c">C) Demasiada masa muscular</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="q6" id="q6d" value="D">
+          <label for="q6d">D) Mejora del rendimiento</label>
+        </div>
+      </div>
+    </div>
+
+    <div class="question" data-topic="Esqueleto - Parte 3">
+      <div class="question-header">
+        <span>Pregunta 7 de 50</span>
+        <span class="topic-tag">Esqueleto - Parte 3</span>
+      </div>
+      <div class="case-box">
+        <strong>Caso práctico:</strong> Laura, bailarina de 19 años, lleva 6 meses sin menstruación y entrena 5 horas diarias con dieta muy restrictiva.
+      </div>
+      <div class="question-text">¿Qué condición fisiológica representa mayor riesgo para sus huesos?</div>
+      <div class="options">
+        <div class="option">
+          <input type="radio" name="q7" id="q7a" value="A">
+          <label for="q7a">A) Ganancia de peso</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="q7" id="q7b" value="B">
+          <label for="q7b">B) RED-S (Déficit Relativo de Energía) con pérdida de densidad ósea</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="q7" id="q7c" value="C">
+          <label for="q7c">C) Hipertrofia muscular</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="q7" id="q7d" value="D">
+          <label for="q7d">D) Mejora de la flexibilidad</label>
+        </div>
+      </div>
+    </div>
+
+    <div class="question" data-topic="Esqueleto - Parte 3">
+      <div class="question-header">
+        <span>Pregunta 8 de 50</span>
+        <span class="topic-tag">Esqueleto - Parte 3</span>
+      </div>
+      <div class="question-text">¿Por qué es importante el descanso para la salud ósea?</div>
+      <div class="options">
+        <div class="option">
+          <input type="radio" name="q8" id="q8a" value="A">
+          <label for="q8a">A) Porque los huesos duermen</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="q8" id="q8b" value="B">
+          <label for="q8b">B) Porque durante el sueño se libera la hormona del crecimiento y los osteoblastos construyen hueso nuevo</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="q8" id="q8c" value="C">
+          <label for="q8c">C) Porque así no se cansan los músculos</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="q8" id="q8d" value="D">
+          <label for="q8d">D) No es importante</label>
+        </div>
+      </div>
+    </div>
+
+    <div class="question" data-topic="Esqueleto - Parte 3">
+      <div class="question-header">
+        <span>Pregunta 9 de 50</span>
+        <span class="topic-tag">Esqueleto - Parte 3</span>
+      </div>
+      <div class="question-text">¿Qué son las fracturas por estrés y por qué son comunes en bailarines?</div>
+      <div class="options">
+        <div class="option">
+          <input type="radio" name="q9" id="q9a" value="A">
+          <label for="q9a">A) Son fracturas completas por accidentes</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="q9" id="q9b" value="B">
+          <label for="q9b">B) Son microgrietas que aparecen cuando el daño por impacto supera la capacidad de reparación del hueso</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="q9" id="q9c" value="C">
+          <label for="q9c">C) Son fracturas por falta de calcio</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="q9" id="q9d" value="D">
+          <label for="q9d">D) Solo ocurren en personas mayores</label>
+        </div>
+      </div>
+    </div>
+
+    <div class="question" data-topic="Esqueleto - Parte 3">
+      <div class="question-header">
+        <span>Pregunta 10 de 50</span>
+        <span class="topic-tag">Esqueleto - Parte 3</span>
+      </div>
+      <div class="question-text">Verdadero o Falso: Las mujeres tienen mayor riesgo de lesiones del LCA (ligamento cruzado anterior) que los hombres debido a diferencias hormonales y anatómicas.</div>
+      <div class="options">
+        <div class="option">
+          <input type="radio" name="q10" id="q10a" value="A">
+          <label for="q10a">A) Verdadero</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="q10" id="q10b" value="B">
+          <label for="q10b">B) Falso</label>
+        </div>
+      </div>
+    </div>
+
+    <!-- PREGUNTAS DE COACTIVACIÓN MUSCULAR (11-20) -->
+    <div class="question" data-topic="Coactivación Muscular - Parte 1">
+      <div class="question-header">
+        <span>Pregunta 11 de 50</span>
+        <span class="topic-tag">Coactivación - Parte 1</span>
+      </div>
+      <div class="question-text">¿Qué es la coactivación muscular?</div>
+      <div class="options">
+        <div class="option">
+          <input type="radio" name="q11" id="q11a" value="A">
+          <label for="q11a">A) Cuando un músculo trabaja solo</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="q11" id="q11b" value="B">
+          <label for="q11b">B) Activación simultánea de músculos agonistas y antagonistas para proporcionar estabilidad</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="q11" id="q11c" value="C">
+          <label for="q11c">C) Cuando los músculos se relajan</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="q11" id="q11d" value="D">
+          <label for="q11d">D) Solo ocurre en el abdomen</label>
+        </div>
+      </div>
+    </div>
+
+    <div class="question" data-topic="Coactivación Muscular - Parte 1">
+      <div class="question-header">
+        <span>Pregunta 12 de 50</span>
+        <span class="topic-tag">Coactivación - Parte 1</span>
+      </div>
+      <div class="case-box">
+        <strong>Caso práctico:</strong> Durante una plancha abdominal, María nota que tanto su abdomen como su espalda baja están trabajando.
+      </div>
+      <div class="question-text">¿Qué tipo de coactivación está ocurriendo?</div>
+      <div class="options">
+        <div class="option">
+          <input type="radio" name="q12" id="q12a" value="A">
+          <label for="q12a">A) Coactivación agonista-antagonista (abdomen-espalda) para estabilizar el core</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="q12" id="q12b" value="B">
+          <label for="q12b">B) Solo trabaja el abdomen</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="q12" id="q12c" value="C">
+          <label for="q12c">C) Es un error, debería trabajar solo uno</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="q12" id="q12d" value="D">
+          <label for="q12d">D) No hay coactivación</label>
+        </div>
+      </div>
+    </div>
+
+    <div class="question" data-topic="Coactivación Muscular - Parte 2">
+      <div class="question-header">
+        <span>Pregunta 13 de 50</span>
+        <span class="topic-tag">Coactivación - Parte 2</span>
+      </div>
+      <div class="question-text">En un arabesque (pierna extendida hacia atrás), ¿por qué el psoas (flexor de cadera) se coactiva aunque la pierna esté en extensión?</div>
+      <div class="options">
+        <div class="option">
+          <input type="radio" name="q13" id="q13a" value="A">
+          <label for="q13a">A) Es un error del sistema nervioso</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="q13" id="q13b" value="B">
+          <label for="q13b">B) Para controlar la altura de la pierna y proteger la cadera de hiperextensión</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="q13" id="q13c" value="C">
+          <label for="q13c">C) Para preparar el siguiente movimiento</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="q13" id="q13d" value="D">
+          <label for="q13d">D) No se coactiva</label>
+        </div>
+      </div>
+    </div>
+
+    <div class="question" data-topic="Coactivación Muscular - Parte 2">
+      <div class="question-header">
+        <span>Pregunta 14 de 50</span>
+        <span class="topic-tag">Coactivación - Parte 2</span>
+      </div>
+      <div class="question-text">¿Por qué es importante la coactivación del core durante una pirueta?</div>
+      <div class="options">
+        <div class="option">
+          <input type="radio" name="q14" id="q14a" value="A">
+          <label for="q14a">A) Para generar el giro</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="q14" id="q14b" value="B">
+          <label for="q14b">B) Para crear un "cilindro" estable que mantenga el eje vertical durante la rotación</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="q14" id="q14c" value="C">
+          <label for="q14c">C) Para respirar mejor</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="q14" id="q14d" value="D">
+          <label for="q14d">D) No es importante</label>
+        </div>
+      </div>
+    </div>
+
+    <div class="question" data-topic="Coactivación Muscular - Parte 3">
+      <div class="question-header">
+        <span>Pregunta 15 de 50</span>
+        <span class="topic-tag">Coactivación - Parte 3</span>
+      </div>
+      <div class="question-text">Durante el aterrizaje de un salto, ¿qué ocurre a nivel de coactivación muscular?</div>
+      <div class="options">
+        <div class="option">
+          <input type="radio" name="q15" id="q15a" value="A">
+          <label for="q15a">A) Todos los músculos se relajan</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="q15" id="q15b" value="B">
+          <label for="q15b">B) Coactivación global de cuádriceps, isquiotibiales, gemelos y glúteos para absorber el impacto (5-8x el peso corporal)</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="q15" id="q15c" value="C">
+          <label for="q15c">C) Solo trabajan los gemelos</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="q15" id="q15d" value="D">
+          <label for="q15d">D) Solo trabajan los abdominales</label>
+        </div>
+      </div>
+    </div>
+
+    <div class="question" data-topic="Coactivación Muscular - Parte 3">
+      <div class="question-header">
+        <span>Pregunta 16 de 50</span>
+        <span class="topic-tag">Coactivación - Parte 3</span>
+      </div>
+      <div class="question-text">Verdadero o Falso: La coactivación es un desperdicio de energía porque dos músculos opuestos trabajan al mismo tiempo.</div>
+      <div class="options">
+        <div class="option">
+          <input type="radio" name="q16" id="q16a" value="A">
+          <label for="q16a">A) Verdadero</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="q16" id="q16b" value="B">
+          <label for="q16b">B) Falso - Es esencial para la estabilidad articular y el control del movimiento</label>
+        </div>
+      </div>
+    </div>
+
+    <div class="question" data-topic="Coactivación Muscular - Parte 1">
+      <div class="question-header">
+        <span>Pregunta 17 de 50</span>
+        <span class="topic-tag">Coactivación - Parte 1</span>
+      </div>
+      <div class="question-text">¿Qué tipos de fibras musculares se reclutan principalmente durante una coactivación sostenida de baja intensidad (como mantener un equilibrio)?</div>
+      <div class="options">
+        <div class="option">
+          <input type="radio" name="q17" id="q17a" value="A">
+          <label for="q17a">A) Tipo IIx (rápidas glucolíticas)</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="q17" id="q17b" value="B">
+          <label for="q17b">B) Tipo I (lentas oxidativas) - resistentes a la fatiga</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="q17" id="q17c" value="C">
+          <label for="q17c">C) Solo fibras tipo II</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="q17" id="q17d" value="D">
+          <label for="q17d">D) Ninguna</label>
+        </div>
+      </div>
+    </div>
+
+    <div class="question" data-topic="Coactivación Muscular - Parte 2">
+      <div class="question-header">
+        <span>Pregunta 18 de 50</span>
+        <span class="topic-tag">Coactivación - Parte 2</span>
+      </div>
+      <div class="case-box">
+        <strong>Caso práctico:</strong> En un plié profundo con rotación externa, Pedro nota que trabaja la parte interna del muslo además de la parte frontal y posterior.
+      </div>
+      <div class="question-text">¿Qué tipo de coactivación está ocurriendo?</div>
+      <div class="options">
+        <div class="option">
+          <input type="radio" name="q18" id="q18a" value="A">
+          <label for="q18a">A) Coactivación multiplanar: cuádriceps + isquiotibiales + aductores para estabilidad en 3 planos</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="q18" id="q18b" value="B">
+          <label for="q18b">B) Solo trabajan los aductores</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="q18" id="q18c" value="C">
+          <label for="q18c">C) Es un error de técnica</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="q18" id="q18d" value="D">
+          <label for="q18d">D) No hay coactivación</label>
+        </div>
+      </div>
+    </div>
+
+    <div class="question" data-topic="Coactivación Muscular - Parte 3">
+      <div class="question-header">
+        <span>Pregunta 19 de 50</span>
+        <span class="topic-tag">Coactivación - Parte 3</span>
+      </div>
+      <div class="question-text">¿Por qué es importante entrenar la coactivación en bailarines?</div>
+      <div class="options">
+        <div class="option">
+          <input type="radio" name="q19" id="q19a" value="A">
+          <label for="q19a">A) No es importante</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="q19" id="q19b" value="B">
+          <label for="q19b">B) Mejora la estabilidad, previene lesiones y permite un control más preciso del movimiento</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="q19" id="q19c" value="C">
+          <label for="q19c">C) Solo mejora la fuerza</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="q19" id="q19d" value="D">
+          <label for="q19d">D) Solo es útil para deportistas, no bailarines</label>
+        </div>
+      </div>
+    </div>
+
+    <div class="question" data-topic="Coactivación Muscular - Parte 1">
+      <div class="question-header">
+        <span>Pregunta 20 de 50</span>
+        <span class="topic-tag">Coactivación - Parte 1</span>
+      </div>
+      <div class="question-text">¿Qué ocurre a nivel neural durante la coactivación?</div>
+      <div class="options">
+        <div class="option">
+          <input type="radio" name="q20" id="q20a" value="A">
+          <label for="q20a">A) El sistema nervioso inhibe completamente al antagonista</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="q20" id="q20b" value="B">
+          <label for="q20b">B) El SNC reduce pero no elimina completamente la inhibición del antagonista, permitiendo activación simultánea</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="q20" id="q20c" value="C">
+          <label for="q20c">C) No hay control neural</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="q20" id="q20d" value="D">
+          <label for="q20d">D) Solo trabaja el sistema nervioso simpático</label>
+        </div>
+      </div>
+    </div>
+
+    <!-- PREGUNTAS DE TEJIDO ÓSEO (21-30) -->
+    <div class="question" data-topic="Tejido Óseo - Parte 1">
+      <div class="question-header">
+        <span>Pregunta 21 de 50</span>
+        <span class="topic-tag">Tejido Óseo - Parte 1</span>
+      </div>
+      <div class="question-text">¿Qué es el periostio y cuál es su función principal?</div>
+      <div class="options">
+        <div class="option">
+          <input type="radio" name="q21" id="q21a" value="A">
+          <label for="q21a">A) La médula ósea interior</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="q21" id="q21b" value="B">
+          <label for="q21b">B) La membrana viva que recubre el hueso por fuera, con vasos sanguíneos, nervios y células reparadoras</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="q21" id="q21c" value="C">
+          <label for="q21c">C) El cartílago articular</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="q21" id="q21d" value="D">
+          <label for="q21d">D) Un ligamento</label>
+        </div>
+      </div>
+    </div>
+
+    <div class="question" data-topic="Tejido Óseo - Parte 1">
+      <div class="question-header">
+        <span>Pregunta 22 de 50</span>
+        <span class="topic-tag">Tejido Óseo - Parte 1</span>
+      </div>
+      <div class="question-text">¿Por qué duele tanto cuando te golpeas la espinilla (tibia)?</div>
+      <div class="options">
+        <div class="option">
+          <input type="radio" name="q22" id="q22a" value="A">
+          <label for="q22a">A) Porque el hueso es muy duro</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="q22" id="q22b" value="B">
+          <label for="q22b">B) Porque el periostio tiene muchos nervios y está casi bajo la piel en esa zona</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="q22" id="q22c" value="C">
+          <label for="q22c">C) Porque se rompe el hueso</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="q22" id="q22d" value="D">
+          <label for="q22d">D) Porque hay mucho músculo</label>
+        </div>
+      </div>
+    </div>
+
+    <div class="question" data-topic="Tejido Óseo - Parte 2">
+      <div class="question-header">
+        <span>Pregunta 23 de 50</span>
+        <span class="topic-tag">Tejido Óseo - Parte 2</span>
+      </div>
+      <div class="question-text">¿Por qué el cartílago articular NO tiene vasos sanguíneos y cómo se nutre?</div>
+      <div class="options">
+        <div class="option">
+          <input type="radio" name="q23" id="q23a" value="A">
+          <label for="q23a">A) Porque no lo necesita</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="q23" id="q23b" value="B">
+          <label for="q23b">B) Se nutre por difusión del líquido sinovial mediante el movimiento (compresión-descompresión)</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="q23" id="q23c" value="C">
+          <label for="q23c">C) Porque es tejido muerto</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="q23" id="q23d" value="D">
+          <label for="q23d">D) Se nutre de la sangre del músculo</label>
+        </div>
+      </div>
+    </div>
+
+    <div class="question" data-topic="Tejido Óseo - Parte 3">
+      <div class="question-header">
+        <span>Pregunta 24 de 50</span>
+        <span class="topic-tag">Tejido Óseo - Parte 3</span>
+      </div>
+      <div class="question-text">¿Cuál es la diferencia principal entre el hueso compacto y el hueso esponjoso?</div>
+      <div class="options">
+        <div class="option">
+          <input type="radio" name="q24" id="q24a" value="A">
+          <label for="q24a">A) El compacto es blando y el esponjoso es duro</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="q24" id="q24b" value="B">
+          <label for="q24b">B) El compacto es denso y resistente (forma la cáscara); el esponjoso es ligero con trabéculas que se adaptan a las cargas</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="q24" id="q24c" value="C">
+          <label for="q24c">C) Son lo mismo</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="q24" id="q24d" value="D">
+          <label for="q24d">D) El esponjoso solo está en los niños</label>
+        </div>
+      </div>
+    </div>
+
+    <div class="question" data-topic="Tejido Óseo - Parte 4">
+      <div class="question-header">
+        <span>Pregunta 25 de 50</span>
+        <span class="topic-tag">Tejido Óseo - Parte 4</span>
+      </div>
+      <div class="question-text">¿Qué función tienen los osteocitos en el hueso?</div>
+      <div class="options">
+        <div class="option">
+          <input type="radio" name="q25" id="q25a" value="A">
+          <label for="q25a">A) Construir hueso nuevo</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="q25" id="q25b" value="B">
+          <label for="q25b">B) Actuar como sensores que detectan fuerzas mecánicas y dirigen la remodelación</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="q25" id="q25c" value="C">
+          <label for="q25c">C) Destruir hueso viejo</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="q25" id="q25d" value="D">
+          <label for="q25d">D) Producir sangre</label>
+        </div>
+      </div>
+    </div>
+
+    <div class="question" data-topic="Tejido Óseo - Parte 4">
+      <div class="question-header">
+        <span>Pregunta 26 de 50</span>
+        <span class="topic-tag">Tejido Óseo - Parte 4</span>
+      </div>
+      <div class="question-text">¿Qué células son responsables de construir hueso nuevo?</div>
+      <div class="options">
+        <div class="option">
+          <input type="radio" name="q26" id="q26a" value="A">
+          <label for="q26a">A) Osteoclastos</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="q26" id="q26b" value="B">
+          <label for="q26b">B) Osteoblastos</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="q26" id="q26c" value="C">
+          <label for="q26c">C) Osteocitos</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="q26" id="q26d" value="D">
+          <label for="q26d">D) Condrocitos</label>
+        </div>
+      </div>
+    </div>
+
+    <div class="question" data-topic="Tejido Óseo - Parte 5">
+      <div class="question-header">
+        <span>Pregunta 27 de 50</span>
+        <span class="topic-tag">Tejido Óseo - Parte 5</span>
+      </div>
+      <div class="question-text">¿Cuánto tiempo tarda aproximadamente en renovarse todo el esqueleto humano?</div>
+      <div class="options">
+        <div class="option">
+          <input type="radio" name="q27" id="q27a" value="A">
+          <label for="q27a">A) 1 año</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="q27" id="q27b" value="B">
+          <label for="q27b">B) 10 años</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="q27" id="q27c" value="C">
+          <label for="q27c">C) 50 años</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="q27" id="q27d" value="D">
+          <label for="q27d">D) Nunca se renueva</label>
+        </div>
+      </div>
+    </div>
+
+    <div class="question" data-topic="Tejido Óseo - Parte 5">
+      <div class="question-header">
+        <span>Pregunta 28 de 50</span>
+        <span class="topic-tag">Tejido Óseo - Parte 5</span>
+      </div>
+      <div class="question-text">¿Cuáles son las 4 fases del ciclo de remodelación ósea en orden correcto?</div>
+      <div class="options">
+        <div class="option">
+          <input type="radio" name="q28" id="q28a" value="A">
+          <label for="q28a">A) Formación → Resorción → Activación → Inversión</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="q28" id="q28b" value="B">
+          <label for="q28b">B) Activación → Resorción → Inversión → Formación</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="q28" id="q28c" value="C">
+          <label for="q28c">C) Resorción → Formación → Activación → Inversión</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="q28" id="q28d" value="D">
+          <label for="q28d">D) Inversión → Activación → Formación → Resorción</label>
+        </div>
+      </div>
+    </div>
+
+    <div class="question" data-topic="Tejido Óseo - Parte 6">
+      <div class="question-header">
+        <span>Pregunta 29 de 50</span>
+        <span class="topic-tag">Tejido Óseo - Parte 6</span>
+      </div>
+      <div class="question-text">¿Qué es la mecanotransducción?</div>
+      <div class="options">
+        <div class="option">
+          <input type="radio" name="q29" id="q29a" value="A">
+          <label for="q29a">A) La reparación de fracturas</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="q29" id="q29b" value="B">
+          <label for="q29b">B) El proceso por el cual las células óseas convierten una fuerza mecánica (impacto) en una señal biológica para construir hueso</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="q29" id="q29c" value="C">
+          <label for="q29c">C) La contracción muscular</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="q29" id="q29d" value="D">
+          <label for="q29d">D) La digestión del calcio</label>
+        </div>
+      </div>
+    </div>
+
+    <div class="question" data-topic="Tejido Óseo - Parte 6">
+      <div class="question-header">
+        <span>Pregunta 30 de 50</span>
+        <span class="topic-tag">Tejido Óseo - Parte 6</span>
+      </div>
+      <div class="case-box">
+        <strong>Caso práctico:</strong> Un astronauta pasa 6 meses en el espacio sin gravedad. Al volver, sus huesos han perdido densidad.
+      </div>
+      <div class="question-text">¿Qué principio fisiológico explica esto?</div>
+      <div class="options">
+        <div class="option">
+          <input type="radio" name="q30" id="q30a" value="A">
+          <label for="q30a">A) En el espacio hace mucho frío</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="q30" id="q30b" value="B">
+          <label for="q30b">B) Sin gravedad, no hay carga mecánica, los osteocitos no detectan fuerzas y el hueso no recibe señal para mantenerse fuerte</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="q30" id="q30c" value="C">
+          <label for="q30c">C) Porque no comen bien en el espacio</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="q30" id="q30d" value="D">
+          <label for="q30d">D) Es solo temporal, no tiene explicación fisiológica</label>
+        </div>
+      </div>
+    </div>
+
+    <!-- PREGUNTAS DE TENDONES (31-40) -->
+    <div class="question" data-topic="Fisiología de Tendones">
+      <div class="question-header">
+        <span>Pregunta 31 de 50</span>
+        <span class="topic-tag">Tendones</span>
+      </div>
+      <div class="question-text">¿Por qué las lesiones de tendón tardan tanto en curar (3-6 meses) comparado con las lesiones musculares (3-6 semanas)?</div>
+      <div class="options">
+        <div class="option">
+          <input type="radio" name="q31" id="q31a" value="A">
+          <label for="q31a">A) Porque los tendones son más largos</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="q31" id="q31b" value="B">
+          <label for="q31b">B) Porque los tendones tienen 7-8 veces menos vascularización que el músculo, lo que limita la llegada de nutrientes y células reparadoras</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="q31" id="q31c" value="C">
+          <label for="q31c">C) Porque los tendones no tienen células vivas</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="q31" id="q31d" value="D">
+          <label for="q31d">D) Porque son más duros</label>
+        </div>
+      </div>
+    </div>
+
+    <div class="question" data-topic="Fisiología de Tendones">
+      <div class="question-header">
+        <span>Pregunta 32 de 50</span>
+        <span class="topic-tag">Tendones</span>
+      </div>
+      <div class="question-text">¿Qué es el ciclo estiramiento-acortamiento (CEA) y cómo beneficia a un bailarín?</div>
+      <div class="options">
+        <div class="option">
+          <input type="radio" name="q32" id="q32a" value="A">
+          <label for="q32a">A) Es un tipo de estiramiento</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="q32" id="q32b" value="B">
+          <label for="q32b">B) El tendón almacena energía elástica al estirarse (aterrizaje) y la libera al acortarse (impulso), ahorrando energía y mejorando el salto</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="q32" id="q32c" value="C">
+          <label for="q32c">C) Es cuando el músculo se contrae sin moverse</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="q32" id="q32d" value="D">
+          <label for="q32d">D) No beneficia al bailarín</label>
+        </div>
+      </div>
+    </div>
+
+    <div class="question" data-topic="Fisiología de Tendones">
+      <div class="question-header">
+        <span>Pregunta 33 de 50</span>
+        <span class="topic-tag">Tendones</span>
+      </div>
+      <div class="question-text">¿Por qué los ejercicios excéntricos (bajadas lentas) son efectivos para rehabilitar tendones aunque duelan al principio?</div>
+      <div class="options">
+        <div class="option">
+          <input type="radio" name="q33" id="q33a" value="A">
+          <label for="q33a">A) Porque estiran el tendón</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="q33" id="q33b" value="B">
+          <label for="q33b">B) Porque generan alta tensión mecánica que estimula a los tenocitos a producir más colágeno tipo I y reorganizar las fibras</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="q33" id="q33c" value="C">
+          <label for="q33c">C) Porque relajan el músculo</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="q33" id="q33d" value="D">
+          <label for="q33d">D) No son efectivos</label>
+        </div>
+      </div>
+    </div>
+
+    <div class="question" data-topic="Fisiología de Tendones">
+      <div class="question-header">
+        <span>Pregunta 34 de 50</span>
+        <span class="topic-tag">Tendones</span>
+      </div>
+      <div class="question-text">¿Por qué el calentamiento es importante para proteger los tendones?</div>
+      <div class="options">
+        <div class="option">
+          <input type="radio" name="q34" id="q34a" value="A">
+          <label for="q34a">A) Solo calienta los músculos</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="q34" id="q34b" value="B">
+          <label for="q34b">B) Aumenta la temperatura del tendón, reduce su viscosidad y aumenta su elasticidad, permitiendo mayor deformación antes de la rotura</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="q34" id="q34c" value="C">
+          <label for="q34c">C) Hace el tendón más rígido</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="q34" id="q34d" value="D">
+          <label for="q34d">D) No es importante</label>
+        </div>
+      </div>
+    </div>
+
+    <div class="question" data-topic="Fisiología de Tendones">
+      <div class="question-header">
+        <span>Pregunta 35 de 50</span>
+        <span class="topic-tag">Tendones</span>
+      </div>
+      <div class="question-text">¿Qué efecto tienen los corticoides en los tendones?</div>
+      <div class="options">
+        <div class="option">
+          <input type="radio" name="q35" id="q35a" value="A">
+          <label for="q35a">A) Los fortalecen</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="q35" id="q35b" value="B">
+          <label for="q35b">B) Inhiben la síntesis de colágeno, aumentan la degradación y pueden producir muerte de tenocitos → debilitan el tendón</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="q35" id="q35c" value="C">
+          <label for="q35c">C) No tienen efecto</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="q35" id="q35d" value="D">
+          <label for="q35d">D) Solo reducen el dolor</label>
+        </div>
+      </div>
+    </div>
+
+    <div class="question" data-topic="Fisiología de Tendones">
+      <div class="question-header">
+        <span>Pregunta 36 de 50</span>
+        <span class="topic-tag">Tendones</span>
+      </div>
+      <div class="question-text">¿Qué diferencia principal hay entre un tendón y un ligamento?</div>
+      <div class="options">
+        <div class="option">
+          <input type="radio" name="q36" id="q36a" value="A">
+          <label for="q36a">A) No hay diferencia</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="q36" id="q36b" value="B">
+          <label for="q36b">B) El tendón conecta músculo-hueso y es eficiente almacenando energía; el ligamento conecta hueso-hueso y estabiliza articulaciones</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="q36" id="q36c" value="C">
+          <label for="q36c">C) El tendón es más fuerte</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="q36" id="q36d" value="D">
+          <label for="q36d">D) El ligamento es más largo</label>
+        </div>
+      </div>
+    </div>
+
+    <div class="question" data-topic="Fisiología de Tendones">
+      <div class="question-header">
+        <span>Pregunta 37 de 50</span>
+        <span class="topic-tag">Tendones</span>
+      </div>
+      <div class="question-text">¿Por qué es importante la nutrición (vitamina C, proteínas, colágeno) para la salud tendinosa?</div>
+      <div class="options">
+        <div class="option">
+          <input type="radio" name="q37" id="q37a" value="A">
+          <label for="q37a">A) No es importante</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="q37" id="q37b" value="B">
+          <label for="q37b">B) La vitamina C es esencial para la síntesis de colágeno; las proteínas proporcionan aminoácidos; tomarlos antes del ejercicio maximiza la síntesis</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="q37" id="q37c" value="C">
+          <label for="q37c">C) Solo importa comer mucho</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="q37" id="q37d" value="D">
+          <label for="q37d">D) Solo importa el calcio</label>
+        </div>
+      </div>
+    </div>
+
+    <div class="question" data-topic="Fisiología de Tendones">
+      <div class="question-header">
+        <span>Pregunta 38 de 50</span>
+        <span class="topic-tag">Tendones</span>
+      </div>
+      <div class="question-text">¿Qué es la unión miotendinosa y por qué es vulnerable a lesiones?</div>
+      <div class="options">
+        <div class="option">
+          <input type="radio" name="q38" id="q38a" value="A">
+          <label for="q38a">A) Es la unión entre dos músculos</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="q38" id="q38b" value="B">
+          <label for="q38b">B) Es donde el músculo se une al tendón; es vulnerable porque hay un cambio brusco de propiedades (músculo blando → tendón rígido) que concentra el estrés mecánico</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="q38" id="q38c" value="C">
+          <label for="q38c">C) Es la parte más fuerte</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="q38" id="q38d" value="D">
+          <label for="q38d">D) No es vulnerable</label>
+        </div>
+      </div>
+    </div>
+
+    <div class="question" data-topic="Fisiología de Tendones">
+      <div class="question-header">
+        <span>Pregunta 39 de 50</span>
+        <span class="topic-tag">Tendones</span>
+      </div>
+      <div class="question-text">Verdadero o Falso: Los tendones se adaptan al entrenamiento tan rápido como los músculos (4-6 semanas).</div>
+      <div class="options">
+        <div class="option">
+          <input type="radio" name="q39" id="q39a" value="A">
+          <label for="q39a">A) Verdadero</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="q39" id="q39b" value="B">
+          <label for="q39b">B) Falso - Los tendones tardan 3-4 meses en adaptarse porque tienen menor tasa metabólica</label>
+        </div>
+      </div>
+    </div>
+
+    <div class="question" data-topic="Fisiología de Tendones">
+      <div class="question-header">
+        <span>Pregunta 40 de 50</span>
+        <span class="topic-tag">Tendones</span>
+      </div>
+      <div class="question-text">¿Qué es la "histeresis" en un tendón?</div>
+      <div class="options">
+        <div class="option">
+          <input type="radio" name="q40" id="q40a" value="A">
+          <label for="q40a">A) Una enfermedad del tendón</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="q40" id="q40b" value="B">
+          <label for="q40b">B) La energía perdida (disipada como calor) en cada ciclo de estiramiento-acortamiento; menor histeresis = mayor eficiencia</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="q40" id="q40c" value="C">
+          <label for="q40c">C) La longitud del tendón</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="q40" id="q40d" value="D">
+          <label for="q40d">D) La fuerza del tendón</label>
+        </div>
+      </div>
+    </div>
+
+    <!-- PREGUNTAS DE ARTICULACIONES (41-50) -->
+    <div class="question" data-topic="Articulaciones - Tipos">
+      <div class="question-header">
+        <span>Pregunta 41 de 50</span>
+        <span class="topic-tag">Articulaciones - Tipos</span>
+      </div>
+      <div class="question-text">¿Qué tipo de articulación es la cadera y qué característica tiene?</div>
+      <div class="options">
+        <div class="option">
+          <input type="radio" name="q41" id="q41a" value="A">
+          <label for="q41a">A) Bisagra (ginglimo) - solo permite flexo-extensión</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="q41" id="q41b" value="B">
+          <label for="q41b">B) Enartrosis (esférica) - permite movimiento en los 3 planos del espacio (multiaxial)</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="q41" id="q41c" value="C">
+          <label for="q41c">C) Pivot - solo permite rotación</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="q41" id="q41d" value="D">
+          <label for="q41d">D) Plana - solo permite deslizamiento</label>
+        </div>
+      </div>
+    </div>
+
+    <div class="question" data-topic="Articulaciones - Partes">
+      <div class="question-header">
+        <span>Pregunta 42 de 50</span>
+        <span class="topic-tag">Articulaciones - Partes</span>
+      </div>
+      <div class="question-text">¿Qué estructura produce el líquido sinovial y cuál es su función?</div>
+      <div class="options">
+        <div class="option">
+          <input type="radio" name="q42" id="q42a" value="A">
+          <label for="q42a">A) El cartílago - nutre el hueso</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="q42" id="q42b" value="B">
+          <label for="q42b">B) La membrana sinovial (capa interna de la cápsula) - lubrica, nutre el cartílago y amortigua</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="q42" id="q42c" value="C">
+          <label for="q42c">C) Los ligamentos - estabilizan</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="q42" id="q42d" value="D">
+          <label for="q42d">D) Los músculos - mueven</label>
+        </div>
+      </div>
+    </div>
+
+    <div class="question" data-topic="Articulaciones - Cartílago">
+      <div class="question-header">
+        <span>Pregunta 43 de 50</span>
+        <span class="topic-tag">Articulaciones - Cartílago</span>
+      </div>
+      <div class="question-text">¿Por qué el cartílago necesita movimiento y carga para mantenerse sano?</div>
+      <div class="options">
+        <div class="option">
+          <input type="radio" name="q43" id="q43a" value="A">
+          <label for="q43a">A) Porque así se estira</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="q43" id="q43b" value="B">
+          <label for="q43b">B) Porque el movimiento crea un ciclo de compresión-descompresión que hace circular el líquido sinovial y nutre los condrocitos</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="q43" id="q43c" value="C">
+          <label for="q43c">C) Porque sin movimiento se endurece</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="q43" id="q43d" value="D">
+          <label for="q43d">D) No lo necesita</label>
+        </div>
+      </div>
+    </div>
+
+    <div class="question" data-topic="Articulaciones - Planos">
+      <div class="question-header">
+        <span>Pregunta 44 de 50</span>
+        <span class="topic-tag">Articulaciones - Planos</span>
+      </div>
+      <div class="question-text">¿En qué plano del espacio ocurre un esguince de tobillo en inversión (pie hacia dentro)?</div>
+      <div class="options">
+        <div class="option">
+          <input type="radio" name="q44" id="q44a" value="A">
+          <label for="q44a">A) Plano sagital</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="q44" id="q44b" value="B">
+          <label for="q44b">B) Plano frontal</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="q44" id="q44c" value="C">
+          <label for="q44c">C) Plano transversal</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="q44" id="q44d" value="D">
+          <label for="q44d">D) En todos los planos</label>
+        </div>
+      </div>
+    </div>
+
+    <div class="question" data-topic="Articulaciones - Planos">
+      <div class="question-header">
+        <span>Pregunta 45 de 50</span>
+        <span class="topic-tag">Articulaciones - Planos</span>
+      </div>
+      <div class="question-text">¿Por qué la rodilla es vulnerable a lesiones rotacionales (plano transversal) si es principalmente una articulación del plano sagital?</div>
+      <div class="options">
+        <div class="option">
+          <input type="radio" name="q45" id="q45a" value="A">
+          <label for="q45a">A) Porque es muy fuerte</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="q45" id="q45b" value="B">
+          <label for="q45b">B) Porque está diseñada para flexo-extensión; la rotación genera fuerzas de cizallamiento que dañan LCA y meniscos</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="q45" id="q45c" value="C">
+          <label for="q45c">C) Porque no tiene ligamentos</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="q45" id="q45d" value="D">
+          <label for="q45d">D) Porque es muy móvil</label>
+        </div>
+      </div>
+    </div>
+
+    <div class="question" data-topic="Articulaciones - Propiocepción">
+      <div class="question-header">
+        <span>Pregunta 46 de 50</span>
+        <span class="topic-tag">Articulaciones - Propiocepción</span>
+      </div>
+      <div class="question-text">¿Qué es la propiocepción?</div>
+      <div class="options">
+        <div class="option">
+          <input type="radio" name="q46" id="q46a" value="A">
+          <label for="q46a">A) La fuerza muscular</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="q46" id="q46b" value="B">
+          <label for="q46b">B) La capacidad de sentir la posición y movimiento de las articulaciones sin mirar</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="q46" id="q46c" value="C">
+          <label for="q46c">C) La flexibilidad</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="q46" id="q46d" value="D">
+          <label for="q46d">D) La resistencia</label>
+        </div>
+      </div>
+    </div>
+
+    <div class="question" data-topic="Articulaciones - Propiocepción">
+      <div class="question-header">
+        <span>Pregunta 47 de 50</span>
+        <span class="topic-tag">Articulaciones - Propiocepción</span>
+      </div>
+      <div class="question-text">¿Por qué se pierde la propiocepción tras un esguince?</div>
+      <div class="options">
+        <div class="option">
+          <input type="radio" name="q47" id="q47a" value="A">
+          <label for="q47a">A) Porque el músculo se atrofia</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="q47" id="q47b" value="B">
+          <label for="q47b">B) Porque se dañan los mecanorreceptores en ligamentos y cápsula que envían información de posición al cerebro</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="q47" id="q47c" value="C">
+          <label for="q47c">C) Porque el ligamento se acorta</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="q47" id="q47d" value="D">
+          <label for="q47d">D) No se pierde</label>
+        </div>
+      </div>
+    </div>
+
+    <div class="question" data-topic="Articulaciones - Propiocepción">
+      <div class="question-header">
+        <span>Pregunta 48 de 50</span>
+        <span class="topic-tag">Articulaciones - Propiocepción</span>
+      </div>
+      <div class="question-text">¿Cómo mejora el entrenamiento propioceptivo (equilibrio sobre una pierna, superficies inestables) la estabilidad articular?</div>
+      <div class="options">
+        <div class="option">
+          <input type="radio" name="q48" id="q48a" value="A">
+          <label for="q48a">A) Fortalece los músculos</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="q48" id="q48b" value="B">
+          <label for="q48b">B) Mejora la sensibilidad de los receptores, acelera la conducción nerviosa y optimiza los patrones de activación muscular (co-contracción, respuestas anticipatorias)</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="q48" id="q48c" value="C">
+          <label for="q48c">C) Estira los ligamentos</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="q48" id="q48d" value="D">
+          <label for="q48d">D) No mejora nada</label>
+        </div>
+      </div>
+    </div>
+
+    <div class="question" data-topic="Articulaciones - General">
+      <div class="question-header">
+        <span>Pregunta 49 de 50</span>
+        <span class="topic-tag">Articulaciones - General</span>
+      </div>
+      <div class="case-box">
+        <strong>Caso práctico:</strong> Un bailarín pasa 3 meses inmovilizado por una fractura. Al quitarle la escayola, nota que sus articulaciones están rígidas y el cartílago se ha deteriorado.
+      </div>
+      <div class="question-text">¿Qué principio fisiológico explica esto?</div>
+      <div class="options">
+        <div class="option">
+          <input type="radio" name="q49" id="q49a" value="A">
+          <label for="q49a">A) La inmovilización fortalece las articulaciones</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="q49" id="q49b" value="B">
+          <label for="q49b">B) Sin movimiento, el cartílago no se nutre (no funciona la "bomba" de compresión-descompresión) y se degrada</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="q49" id="q49c" value="C">
+          <label for="q49c">C) Es solo psicológico</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="q49" id="q49d" value="D">
+          <label for="q49d">D) La escayola daña el cartílago</label>
+        </div>
+      </div>
+    </div>
+
+    <div class="question" data-topic="Articulaciones - General">
+      <div class="question-header">
+        <span>Pregunta 50 de 50</span>
+        <span class="topic-tag">Articulaciones - General</span>
+      </div>
+      <div class="question-text">¿Por qué es importante la variedad de movimientos en diferentes planos para la salud articular en la danza?</div>
+      <div class="options">
+        <div class="option">
+          <input type="radio" name="q50" id="q50a" value="A">
+          <label for="q50a">A) No es importante</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="q50" id="q50b" value="B">
+          <label for="q50b">B) Porque estimula el cartílago desde diferentes ángulos, promueve una distribución uniforme de la carga y previene el desgaste localizado</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="q50" id="q50c" value="C">
+          <label for="q50c">C) Porque es más divertido</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="q50" id="q50d" value="D">
+          <label for="q50d">D) Solo es importante para la estética</label>
+        </div>
+      </div>
+    </div>
+  </form>
+
+  <div class="controls">
+    <button type="button" class="btn" onclick="startTest()">Iniciar Test</button>
+    <button type="button" class="btn btn-secondary" onclick="saveProgress()">Guardar Progreso</button>
+    <button type="button" class="btn" onclick="finishTest()">Finalizar y Ver Resultados</button>
+    <button type="button" class="btn print-btn" onclick="printResults()">Imprimir/Guardar PDF</button>
+  </div>
+
+  <div class="results" id="results">
+    <h2> Resultados del Test</h2>
+    <div class="score" id="scoreDisplay">0/50</div>
+    <div class="results-details" id="resultsDetails">
+      <h3>Información del Estudiante</h3>
+      <p><strong>Nombre:</strong> <span id="resultName"></span></p>
+      <p><strong>Email:</strong> <span id="resultEmail"></span></p>
+      <p><strong>Fecha:</strong> <span id="resultDate"></span></p>
+      <p><strong>Hora de inicio:</strong> <span id="resultStartTime"></span></p>
+      <p><strong>Hora de finalización:</strong> <span id="resultEndTime"></span></p>
+      <p><strong>Tiempo utilizado:</strong> <span id="resultTimeUsed"></span></p>
+      <p><strong>Puntuación:</strong> <span id="resultScore"></span>/50</p>
+      <p><strong>Porcentaje:</strong> <span id="resultPercentage"></span>%</p>
+    </div>
+    <button type="button" class="btn print-btn" onclick="printResults()">Imprimir/Guardar PDF</button>
+  </div>
+</div>
+
+<script>
+let timerInterval;
+let timeRemaining;
+let startTime;
+let endTime;
+
+// Set today's date as default
+document.getElementById('testDate').valueAsDate = new Date();
+
+function startTest() {
+  const studentName = document.getElementById('studentName').value;
+  if (!studentName) {
+    alert('Por favor, introduce tu nombre completo antes de iniciar.');
+    return;
+  }
+  
+  startTime = new Date();
+  const timeLimit = parseInt(document.getElementById('timeLimit').value) * 60;
+  timeRemaining = timeLimit;
+  
+  updateTimer();
+  timerInterval = setInterval(updateTimer, 1000);
+  
+  // Disable start button
+  document.querySelector('.btn').disabled = true;
+  
+  alert('¡Test iniciado! Tienes ' + document.getElementById('timeLimit').value + ' minutos.');
+}
+
+function updateTimer() {
+  const minutes = Math.floor(timeRemaining / 60);
+  const seconds = timeRemaining % 60;
+  document.getElementById('timer').textContent = 
+    `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+  
+  if (timeRemaining <= 0) {
+    clearInterval(timerInterval);
+    finishTest();
+    alert('¡Tiempo agotado! El test se ha finalizado automáticamente.');
+  }
+  timeRemaining--;
+}
+
+function saveProgress() {
+  const formData = new FormData(document.getElementById('testForm'));
+  const answers = {};
+  for (let [key, value] of formData.entries()) {
+    answers[key] = value;
+  }
+  
+  const data = {
+    studentName: document.getElementById('studentName').value,
+    studentEmail: document.getElementById('studentEmail').value,
+    testDate: document.getElementById('testDate').value,
+    answers: answers,
+    timeRemaining: timeRemaining
+  };
+  
+  localStorage.setItem('testProgress', JSON.stringify(data));
+  alert('Progreso guardado. Puedes cerrar el navegador y continuar más tarde.');
+}
+
+function finishTest() {
+  clearInterval(timerInterval);
+  endTime = new Date();
+  
+  // Calculate score
+  const correctAnswers = {
+    q1: 'B', q2: 'B', q3: 'B', q4: 'B', q5: 'B',
+    q6: 'B', q7: 'B', q8: 'B', q9: 'B', q10: 'A',
+    q11: 'B', q12: 'A', q13: 'B', q14: 'B', q15: 'B',
+    q16: 'B', q17: 'B', q18: 'A', q19: 'B', q20: 'B',
+    q21: 'B', q22: 'B', q23: 'B', q24: 'B', q25: 'B',
+    q26: 'B', q27: 'B', q28: 'B', q29: 'B', q30: 'B',
+    q31: 'B', q32: 'B', q33: 'B', q34: 'B', q35: 'B',
+    q36: 'B', q37: 'B', q38: 'B', q39: 'B', q40: 'B',
+    q41: 'B', q42: 'B', q43: 'B', q44: 'B', q45: 'B',
+    q46: 'B', q47: 'B', q48: 'B', q49: 'B', q50: 'B'
+  };
+  
+  let score = 0;
+  const formData = new FormData(document.getElementById('testForm'));
+  
+  for (let [question, correctAnswer] of Object.entries(correctAnswers)) {
+    const userAnswer = formData.get(question);
+    if (userAnswer === correctAnswer) {
+      score++;
+    }
+  }
+  
+  // Display results
+  const timeUsed = Math.floor((endTime - startTime) / 1000 / 60);
+  const percentage = Math.round((score / 50) * 100);
+  
+  document.getElementById('resultName').textContent = document.getElementById('studentName').value;
+  document.getElementById('resultEmail').textContent = document.getElementById('studentEmail').value;
+  document.getElementById('resultDate').textContent = document.getElementById('testDate').value;
+  document.getElementById('resultStartTime').textContent = startTime.toLocaleTimeString();
+  document.getElementById('resultEndTime').textContent = endTime.toLocaleTimeString();
+  document.getElementById('resultTimeUsed').textContent = timeUsed + ' minutos';
+  document.getElementById('resultScore').textContent = score;
+  document.getElementById('resultPercentage').textContent = percentage;
+  document.getElementById('scoreDisplay').textContent = `${score}/50`;
+  
+  document.getElementById('results').classList.add('show');
+  document.querySelector('.controls').style.display = 'none';
+  
+  // Scroll to results
+  document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
+}
+
+function printResults() {
+  window.print();
+}
+
+// Load saved progress if exists
+window.onload = function() {
+  const saved = localStorage.getItem('testProgress');
+  if (saved) {
+    const data = JSON.parse(saved);
+    document.getElementById('studentName').value = data.studentName || '';
+    document.getElementById('studentEmail').value = data.studentEmail || '';
+    document.getElementById('testDate').value = data.testDate || '';
+    
+    if (data.answers) {
+      for (let [key, value] of Object.entries(data.answers)) {
+        const radio = document.querySelector(`input[name="${key}"][value="${value}"]`);
+        if (radio) radio.checked = true;
+      }
+    }
+    
+    if (data.timeRemaining) {
+      timeRemaining = data.timeRemaining;
+    }
+  }
+};
+</script>
+</body>
+</html>

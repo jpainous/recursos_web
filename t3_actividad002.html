@@ -1,0 +1,135 @@
+// Gráfico Longitud-Tensión Interactivo
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Relación Longitud-Tensión</title>
+<style>
+  body { font-family: 'Segoe UI', sans-serif; background: #0f172a; color: #e2e8f0; margin: 0; padding: 20px; }
+  h1 { text-align: center; color: #a78bfa; }
+  .wrap { max-width: 1000px; margin: auto; display: flex; gap: 20px; flex-wrap: wrap; }
+  .box { background: #1e293b; padding: 20px; border-radius: 12px; flex: 1; min-width: 300px; }
+  canvas { background: #0b1220; border-radius: 8px; cursor: crosshair; display: block; }
+  .lectura { margin-top: 15px; padding: 12px; background: #0f172a; border-radius: 6px; border-left: 4px solid #a78bfa; }
+</style>
+</head>
+<body>
+<h1>📈 Relación Longitud-Tensión del Sarcómero</h1>
+<div class="wrap">
+  <div class="box">
+    <h3>Arrastra el punto por la curva</h3>
+    <canvas id="graf" width="450" height="350"></canvas>
+    <div class="lectura" id="lectura">Longitud: — | Tensión: —</div>
+  </div>
+  <div class="box">
+    <h3>Solapamiento de miofilamentos</h3>
+    <canvas id="sarc" width="450" height="200"></canvas>
+    <div class="lectura" id="expl">Mueve el punto para ver el estado del sarcómero.</div>
+  </div>
+</div>
+
+<script>
+const graf = document.getElementById('graf');
+const gctx = graf.getContext('2d');
+const sarc = document.getElementById('sarc');
+const sctx = sarc.getContext('2d');
+
+// Curva teórica (x: 0-1 longitud relativa, y: 0-1 tensión)
+function tension(x) {
+  // Máximo en x≈0.5 (longitud óptima), cae a los lados
+  const peak = 0.5;
+  const sigma = 0.18;
+  return Math.exp(-Math.pow(x-peak,2)/(2*sigma*sigma));
+}
+
+let puntoX = 0.5;
+
+function drawGraf() {
+  gctx.clearRect(0,0,graf.width,graf.height);
+  const W = graf.width, H = graf.height;
+  const pad = 40;
+
+  // Ejes
+  gctx.strokeStyle = "#64748b"; gctx.lineWidth = 2;
+  gctx.beginPath();
+  gctx.moveTo(pad, pad); gctx.lineTo(pad, H-pad); gctx.lineTo(W-pad, H-pad);
+  gctx.stroke();
+
+  // Etiquetas
+  gctx.fillStyle = "#cbd5e1"; gctx.font = "13px sans-serif";
+  gctx.fillText("Tensión activa", 10, 25);
+  gctx.fillText("Longitud del sarcómero →", W-180, H-15);
+
+  // Curva
+  gctx.strokeStyle = "#a78bfa"; gctx.lineWidth = 3;
+  gctx.beginPath();
+  for (let i = 0; i <= 100; i++) {
+    const x = i/100;
+    const y = tension(x);
+    const px = pad + x*(W-2*pad);
+    const py = H - pad - y*(H-2*pad);
+    if (i===0) gctx.moveTo(px,py); else gctx.lineTo(px,py);
+  }
+  gctx.stroke();
+
+  // Punto
+  const px = pad + puntoX*(W-2*pad);
+  const py = H - pad - tension(puntoX)*(H-2*pad);
+  gctx.fillStyle = "#fbbf24";
+  gctx.beginPath(); gctx.arc(px,py,8,0,Math.PI*2); gctx.fill();
+
+  // Líneas guía
+  gctx.strokeStyle = "rgba(251,191,36,0.3)"; gctx.setLineDash([4,4]);
+  gctx.beginPath(); gctx.moveTo(px,py); gctx.lineTo(px,H-pad); gctx.stroke();
+  gctx.beginPath(); gctx.moveTo(px,py); gctx.lineTo(pad,py); gctx.stroke();
+  gctx.setLineDash([]);
+}
+
+function drawSarc() {
+  sctx.clearRect(0,0,sarc.width,sarc.height);
+  const W = sarc.width, H = sarc.height;
+  const y = H/2;
+
+  // Líneas Z
+  const lz1 = 30 + puntoX*50;
+  const lz2 = W - 30 - puntoX*50;
+  sctx.strokeStyle = "#22d3ee"; sctx.lineWidth = 3;
+  sctx.beginPath(); sctx.moveTo(lz1, 30); sctx.lineTo(lz1, H-30); sctx.stroke();
+  sctx.beginPath(); sctx.moveTo(lz2, 30); sctx.lineTo(lz2, H-30); sctx.stroke();
+
+  // Miosina (centro fijo)
+  sctx.fillStyle = "#64748b";
+  for (let x = 150; x < 300; x += 25) sctx.fillRect(x, y-30, 10, 60);
+
+  // Actina (desde las Z)
+  sctx.fillStyle = "#f472b6";
+  for (let x = lz1+5; x < lz1+120; x += 15) sctx.fillRect(x, y-20, 8, 40);
+  for (let x = lz2-120; x < lz2-5; x += 15) sctx.fillRect(x, y-20, 8, 40);
+
+  // Explicación
+  const t = tension(puntoX);
+  let msg = "";
+  if (puntoX < 0.3) msg = "🔴 <b>MUY ACORTADO:</b> los filamentos finos se solapan entre sí y chocan con las líneas Z. Fuerza baja.";
+  else if (puntoX < 0.65) msg = "🟢 <b>LONGITUD ÓPTIMA:</b> solapamiento ideal actina-miosina. ¡Fuerza máxima!";
+  else msg = "🔵 <b>MUY ESTIRADO:</b> apenas hay solapamiento entre actina y miosina. Fuerza baja o nula.";
+  document.getElementById('expl').innerHTML = msg;
+  document.getElementById('lectura').innerHTML = `Longitud: <b>${(puntoX*100).toFixed(0)}%</b> | Tensión activa: <b>${(t*100).toFixed(0)}%</b>`;
+}
+
+graf.addEventListener('mousedown', e => {
+  const mover = ev => {
+    const rect = graf.getBoundingClientRect();
+    const x = ev.clientX - rect.left;
+    const W = graf.width, pad = 40;
+    puntoX = Math.max(0, Math.min(1, (x-pad)/(W-2*pad)));
+    drawGraf(); drawSarc();
+  };
+  mover(e);
+  document.addEventListener('mousemove', mover);
+  document.addEventListener('mouseup', () => document.removeEventListener('mousemove', mover), {once:true});
+});
+
+drawGraf(); drawSarc();
+</script>
+</body>
+</html>

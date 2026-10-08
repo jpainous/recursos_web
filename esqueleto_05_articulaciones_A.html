@@ -1,0 +1,934 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fisiología de las Articulaciones - 10 Casos Prácticos</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, sans-serif; }
+  body {
+    background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+    min-height: 100vh;
+    padding: 20px;
+  }
+  .container {
+    max-width: 1000px;
+    margin: 0 auto;
+    background: #fff;
+    border-radius: 20px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    overflow: hidden;
+  }
+  header {
+    background: linear-gradient(90deg, #0f5132, #198754);
+    color: white;
+    padding: 35px;
+    text-align: center;
+  }
+  header h1 { font-size: 2.1em; margin-bottom: 10px; }
+  header p { opacity: 0.95; font-size: 1.1em; }
+  
+  .intro {
+    padding: 30px;
+    background: #f8f9fa;
+    border-bottom: 3px solid #dee2e6;
+  }
+  
+  .intro h2 {
+    color: #198754;
+    margin-bottom: 15px;
+    font-size: 1.5em;
+  }
+  
+  .intro p {
+    line-height: 1.7;
+    margin-bottom: 10px;
+    color: #333;
+  }
+  
+  .case {
+    margin: 25px 30px;
+    padding: 25px;
+    background: white;
+    border: 2px solid #dee2e6;
+    border-radius: 15px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+  }
+  
+  .case-header {
+    background: linear-gradient(90deg, #198754, #0f5132);
+    color: white;
+    padding: 12px 20px;
+    margin: -25px -25px 20px -25px;
+    border-radius: 13px 13px 0 0;
+    font-size: 1.2em;
+    font-weight: 600;
+  }
+  
+  .case-topic {
+    display: inline-block;
+    background: rgba(255,255,255,0.2);
+    padding: 3px 10px;
+    border-radius: 12px;
+    font-size: 0.8em;
+    margin-left: 10px;
+    font-weight: 400;
+  }
+  
+  .case-description {
+    background: #fff3cd;
+    border-left: 4px solid #ffc107;
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 0 8px 8px 0;
+    line-height: 1.6;
+  }
+  
+  .options {
+    margin: 20px 0;
+  }
+  
+  .option {
+    background: #f8f9fa;
+    border: 2px solid #dee2e6;
+    padding: 15px;
+    margin: 10px 0;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+  
+  .option:hover {
+    background: #e8f5e9;
+    border-color: #198754;
+    transform: translateX(5px);
+  }
+  
+  .option.selected {
+    background: #c8e6c9;
+    border-color: #2e7d32;
+    border-width: 3px;
+  }
+  
+  .option.correct {
+    background: #c8e6c9;
+    border-color: #4caf50;
+  }
+  
+  .option.incorrect {
+    background: #ffcdd2;
+    border-color: #f44336;
+  }
+  
+  .btn-check {
+    background: linear-gradient(90deg, #198754, #0f5132);
+    color: white;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 25px;
+    font-size: 1em;
+    font-weight: 600;
+    cursor: pointer;
+    margin: 15px 5px;
+    transition: all 0.3s;
+  }
+  
+  .btn-check:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(25,135,84,0.4);
+  }
+  
+  .btn-check:disabled {
+    background: #bdc3c7;
+    cursor: not-allowed;
+    transform: none;
+  }
+  
+  .explanation-box {
+    display: none;
+    margin-top: 20px;
+    padding: 20px;
+    border-radius: 10px;
+    animation: slideDown 0.3s ease;
+  }
+  
+  @keyframes slideDown {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  
+  .explanation-box.show {
+    display: block;
+  }
+  
+  .explanation-box.correct {
+    background: #e8f5e9;
+    border: 2px solid #4caf50;
+  }
+  
+  .explanation-box.incorrect {
+    background: #ffebee;
+    border: 2px solid #f44336;
+  }
+  
+  .explanation-box h4 {
+    margin-bottom: 10px;
+    font-size: 1.1em;
+  }
+  
+  .explanation-box.correct h4 {
+    color: #2e7d32;
+  }
+  
+  .explanation-box.incorrect h4 {
+    color: #c62828;
+  }
+  
+  .explanation-content {
+    line-height: 1.7;
+    color: #333;
+  }
+  
+  .explanation-content strong {
+    color: #198754;
+  }
+  
+  .key-concept {
+    background: #fff9c4;
+    padding: 10px 15px;
+    border-radius: 5px;
+    margin-top: 15px;
+    font-size: 0.95em;
+    border-left: 4px solid #fbc02d;
+  }
+  
+  .progress-bar {
+    background: #f8f9fa;
+    padding: 20px 30px;
+    border-top: 3px solid #dee2e6;
+    text-align: center;
+  }
+  
+  .progress-text {
+    font-size: 1.1em;
+    color: #198754;
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+  
+  .progress-fill {
+    background: linear-gradient(90deg, #11998e, #38ef7d);
+    height: 10px;
+    border-radius: 5px;
+    transition: width 0.5s;
+  }
+  
+  @media (max-width: 768px) {
+    header h1 { font-size: 1.6em; }
+    .case { margin: 15px; padding: 20px; }
+    .case-header { margin: -20px -20px 15px -20px; }
+    .case-topic { display: block; margin: 5px 0 0 0; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <h1>🦴 Fisiología de las Articulaciones</h1>
+    <p>10 Casos Prácticos: Tipos, Estructura, Cartílago, Planos y Propiocepción</p>
+  </header>
+  
+  <div class="intro">
+    <h2>📚 Introducción</h2>
+    <p>Las articulaciones son estructuras complejas que permiten el movimiento del cuerpo. No son simples "bisagras" mecánicas, sino <strong>órganos dinámicos</strong> con metabolismo propio, capacidad de adaptación y sistemas de protección sofisticados.</p>
+    <p>En estos 10 casos prácticos exploraremos:</p>
+    <ul style="margin-left: 25px; line-height: 1.8;">
+      <li>Los <strong>tipos de articulaciones</strong> y sus implicaciones funcionales</li>
+      <li>Las <strong>partes de una articulación</strong> y su fisiología</li>
+      <li>La importancia del <strong>movimiento y la carga</strong> para el cartílago</li>
+      <li>Los <strong>planos del movimiento</strong> y su aplicación clínica</li>
+      <li>La <strong>propiocepción</strong> como sistema de protección articular</li>
+    </ul>
+    <p style="margin-top: 15px;"><strong>Instrucciones:</strong> Lee cada caso, selecciona la respuesta que creas correcta y pulsa "Verificar". Abre el cajón para ver la explicación fisiológica detallada.</p>
+  </div>
+
+  <!-- CASO 1 -->
+  <div class="case" id="case1">
+    <div class="case-header">Caso 1: La Cadera del Bailarín <span class="case-topic">Tipos de articulaciones</span></div>
+    <div class="case-description">
+      <p><strong>Situación:</strong> Laura, una bailarina de ballet clásico de 28 años, desarrolla artrosis precoz de cadera. Su médico le explica que la cadera es una <strong>enartrosis</strong> (articulación esférica) y que esto tiene ventajas e inconvenientes.</p>
+      <p><strong>Pregunta:</strong> ¿Qué característica fisiológica de la enartrosis explica tanto su gran movilidad como su vulnerabilidad a la artrosis en bailarines?</p>
+    </div>
+    
+    <div class="options">
+      <div class="option" data-value="A">
+        <strong>A)</strong> Que tiene muy poco líquido sinovial y se seca rápido
+      </div>
+      <div class="option" data-value="B">
+        <strong>B)</strong> Que permite movimiento en los 3 planos del espacio (multiaxial), pero la cabeza femórica redondeada concentra la carga en una superficie amplia que, con movimientos extremos repetidos, puede dañar el cartílago
+      </div>
+      <div class="option" data-value="C">
+        <strong>C)</strong> Que es una articulación fibrosa sin cartílago
+      </div>
+    </div>
+    
+    <button class="btn-check" onclick="checkAnswer(1, 'B')">Verificar Respuesta</button>
+    
+    <div class="explanation-box" id="explanation1">
+      <h4>✅ Respuesta Correcta: B</h4>
+      <div class="explanation-content">
+        <p><strong>Explicación fisiológica:</strong></p>
+        <p>Las <strong>enartrosis</strong> (como cadera y hombro) son articulaciones esféricas donde una cabeza redonda encaja en una cavidad (cotiloide o glenoides). Esta estructura tiene consecuencias fisiológicas importantes:</p>
+        <p><strong>Ventajas:</strong></p>
+        <ul style="margin-left: 20px; margin-top: 10px;">
+          <li><strong>Multiaxialidad:</strong> Permiten movimiento en los 3 planos (flexo-extensión, abducción-adducción, rotación interna-externa). Es el tipo de articulación con mayor rango de movimiento.</li>
+          <li><strong>Estabilidad relativa:</strong> La congruencia entre superficies distribuye bien la carga.</li>
+        </ul>
+        <p><strong>Desventajas en bailarines:</strong></p>
+        <ul style="margin-left: 20px; margin-top: 10px;">
+          <li><strong>Movimientos extremos:</strong> Los bailarines llevan la cadera a rangos extremos (turnout, extensiones altas). Esto somete al cartílago a cargas en zonas no habituales.</li>
+          <li><strong>Impacto repetitivo:</strong> En saltos y aterrizajes, la cabeza femórica recibe cargas de 3-5 veces el peso corporal, concentradas en el cartílago articular.</li>
+          <li><strong>Desgaste precoz:</strong> La combinación de movilidad extrema + carga repetitiva acelera el desgaste del cartílago → artrosis precoz.</li>
+        </ul>
+        <div class="key-concept">
+          <strong>💡 Concepto clave:</strong> Las enartrosis son "todoterreno" (mucha movilidad), pero esa versatilidad tiene un precio: mayor desgaste con uso extremo. Los bailarines deben equilibrar movilidad con fuerza para proteger el cartílago.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CASO 2 -->
+  <div class="case" id="case2">
+    <div class="case-header">Caso 2: El Hombro Inestable del Porteador <span class="case-topic">Tipos de articulaciones</span></div>
+    <div class="case-description">
+      <p><strong>Situación:</strong> Miguel, un porteador de ballet (el que levanta a la bailarina), sufre su tercera luxación de hombro en 2 años. Su fisioterapeuta le dice que el hombro es la articulación <strong>más inestable del cuerpo</strong>.</p>
+      <p><strong>Pregunta:</strong> ¿Qué característica estructural del hombro (enartrosis) explica su alta inestabilidad comparado con la cadera (también enartrosis)?</p>
+    </div>
+    
+    <div class="options">
+      <div class="option" data-value="A">
+        <strong>A)</strong> Que el hombro tiene menos músculos alrededor
+      </div>
+      <div class="option" data-value="B">
+        <strong>B)</strong> Que la cavidad glenoidea es muy poco profunda comparada con la cabeza del húmero (como una pelota de golf sobre un tee), lo que da mucha movilidad pero poca estabilidad ósea, dependiendo más de músculos y ligamentos
+      </div>
+      <div class="option" data-value="C">
+        <strong>C)</strong> Que el hombro no tiene cápsula articular
+      </div>
+    </div>
+    
+    <button class="btn-check" onclick="checkAnswer(2, 'B')">Verificar Respuesta</button>
+    
+    <div class="explanation-box" id="explanation2">
+      <h4>✅ Respuesta Correcta: B</h4>
+      <div class="explanation-content">
+        <p><strong>Explicación fisiológica:</strong></p>
+        <p>Aunque hombro y cadera son enartrosis, sus proporciones son muy diferentes, lo que determina su comportamiento funcional:</p>
+        <p><strong>Comparación estructural:</strong></p>
+        <ul style="margin-left: 20px; margin-top: 10px;">
+          <li><strong>Cadera:</strong> El cotiloide (cavidad) cubre ~75% de la cabeza femoral. Gran congruencia ósea → mucha estabilidad pasiva.</li>
+          <li><strong>Hombro:</strong> La cavidad glenoidea cubre solo ~25-30% de la cabeza del húmero. Poca congruencia ósea → poca estabilidad pasiva.</li>
+        </ul>
+        <p><strong>Consecuencias fisiológicas:</strong></p>
+        <ul style="margin-left: 20px; margin-top: 10px;">
+          <li><strong>Dependencia muscular:</strong> El hombro depende del <strong>manguito rotador</strong> (4 músculos) para mantener la cabeza humeral centrada en la glenoides durante el movimiento. Si estos músculos se fatigan o debilitan, el hombro se luxa.</li>
+          <li><strong>Cápsula laxa:</strong> La cápsula del hombro es muy laxa (permite gran movilidad) pero ofrece poca estabilidad.</li>
+          <li><strong>Labrum glenoideo:</strong> Es un anillo de fibrocartílago que profundiza la cavidad, pero puede lesionarse y empeorar la inestabilidad.</li>
+          <li><strong>Para el porteador:</strong> Levantar peso con el brazo en abducción y rotación externa (posición de "lanzamiento") es la posición más vulnerable para luxación.</li>
+        </ul>
+        <div class="key-concept">
+          <strong>💡 Concepto clave:</strong> El hombro sacrifica estabilidad por movilidad. Por eso es la articulación que más se luxa del cuerpo. Los porteadores deben fortalecer especialmente el manguito rotador y la escápula.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CASO 3 -->
+  <div class="case" id="case3">
+    <div class="case-header">Caso 3: La Rodilla Hinchada del Corredor <span class="case-topic">Partes de una articulación</span></div>
+    <div class="case-description">
+      <p><strong>Situación:</strong> Juan, un corredor de maratón, nota que su rodilla se hincha después de correr 20 km. La resonancia muestra un exceso de líquido en la articulación. El médico le diagnostica <strong>derrame articular</strong>.</p>
+      <p><strong>Pregunta:</strong> ¿Qué estructura articular produce el líquido sinovial y por qué se acumula en exceso en este caso?</p>
+    </div>
+    
+    <div class="options">
+      <div class="option" data-value="A">
+        <strong>A)</strong> El cartílago articular produce líquido cuando se daña
+      </div>
+      <div class="option" data-value="B">
+        <strong>B)</strong> La membrana sinovial (capa interna de la cápsula) produce el líquido sinovial. En respuesta a la irritación por sobrecarga, produce más líquido (inflamación) como mecanismo de protección, pero el exceso causa hinchazón y limitación del movimiento
+      </div>
+      <div class="option" data-value="C">
+        <strong>C)</strong> Los ligamentos producen líquido para lubricar
+      </div>
+    </div>
+    
+    <button class="btn-check" onclick="checkAnswer(3, 'B')">Verificar Respuesta</button>
+    
+    <div class="explanation-box" id="explanation3">
+      <h4>✅ Respuesta Correcta: B</h4>
+      <div class="explanation-content">
+        <p><strong>Explicación fisiológica:</strong></p>
+        <p>El <strong>líquido sinovial</strong> es esencial para la salud articular y es producido por una estructura específica:</p>
+        <p><strong>La membrana sinovial:</strong></p>
+        <ul style="margin-left: 20px; margin-top: 10px;">
+          <li>Es la capa interna de la cápsula articular.</li>
+          <li>Está formada por <strong>sinoviocitos</strong> (células especializadas) de dos tipos:
+            <ul style="margin-left: 15px; margin-top: 5px;">
+              <li><strong>Tipo A:</strong> Macrófagos (limpian desechos).</li>
+              <li><strong>Tipo B:</strong> Fibroblastos (producen ácido hialurónico y lubricina).</li>
+            </ul>
+          </li>
+          <li>Produce 1-4 ml de líquido sinovial en condiciones normales (en una rodilla).</li>
+        </ul>
+        <p><strong>Funciones del líquido sinovial:</strong></p>
+        <ul style="margin-left: 20px; margin-top: 10px;">
+          <li><strong>Lubricación:</strong> Reduce la fricción entre cartílagos (coeficiente de fricción 5 veces menor que el hielo sobre hielo).</li>
+          <li><strong>Nutrición:</strong> El cartílago no tiene vasos sanguíneos, se nutre por difusión del líquido sinovial.</li>
+          <li><strong>Amortiguación:</strong> Absorbe impactos.</li>
+        </ul>
+        <p><strong>¿Por qué el derrame?</strong></p>
+        <ul style="margin-left: 20px; margin-top: 10px;">
+          <li>Ante irritación (sobrecarga, microtraumatismos), la membrana sinovial se inflama (sinovitis).</li>
+          <li>Los sinoviocitos producen más líquido como respuesta protectora.</li>
+          <li>El exceso de líquido causa hinchazón, dolor y limitación del movimiento (por distensión de la cápsula).</li>
+        </ul>
+        <div class="key-concept">
+          <strong>💡 Concepto clave:</strong> El líquido sinovial es como el "aceite del motor" de la articulación. Sin él, el cartílago se desnutre y se desgasta. Pero el exceso (derrame) indica irritación y debe tratarse la causa.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CASO 4 -->
+  <div class="case" id="case4">
+    <div class="case-header">Caso 4: La Lesión del Ligamento Cruzado <span class="case-topic">Partes de una articulación</span></div>
+    <div class="case-description">
+      <p><strong>Situación:</strong> Marta, una futbolista, sufre una rotura del ligamento cruzado anterior (LCA) de la rodilla al hacer un cambio de dirección. El cirujano le explica que los ligamentos son estructuras <strong>avascularizadas en su mayor parte</strong>.</p>
+      <p><strong>Pregunta:</strong> ¿Por qué los ligamentos (como el LCA) tienen tan mala capacidad de curación comparados con otros tejidos?</p>
+    </div>
+    
+    <div class="options">
+      <div class="option" data-value="A">
+        <strong>A)</strong> Porque están hechos de un material especial que no se puede reparar
+      </div>
+      <div class="option" data-value="B">
+        <strong>B)</strong> Porque la mayor parte del ligamento tiene muy poca vascularización (especialmente el LCA, bañado por líquido sinovial que inhibe la coagulación), lo que limita la llegada de nutrientes, oxígeno y células reparadoras. Además, el líquido sinovial contiene enzimas que degradan el coágulo inicial necesario para la curación
+      </div>
+      <div class="option" data-value="C">
+        <strong>C)</strong> Porque los ligamentos no tienen células vivas
+      </div>
+    </div>
+    
+    <button class="btn-check" onclick="checkAnswer(4, 'B')">Verificar Respuesta</button>
+    
+    <div class="explanation-box" id="explanation4">
+      <h4>✅ Respuesta Correcta: B</h4>
+      <div class="explanation-content">
+        <p><strong>Explicación fisiológica:</strong></p>
+        <p>Los ligamentos intraarticulares (dentro de la articulación) como el LCA tienen características que limitan drásticamente su capacidad de curación:</p>
+        <p><strong>Factores que limitan la curación:</strong></p>
+        <ul style="margin-left: 20px; margin-top: 10px;">
+          <li><strong>Escasa vascularización:</strong>
+            <ul style="margin-left: 15px; margin-top: 5px;">
+              <li>Solo la zona de inserción ósea está bien vascularizada.</li>
+              <li>La parte central del LCA tiene vasos sanguíneos muy limitados.</li>
+              <li>Sin sangre, no llegan células reparadoras ni nutrientes.</li>
+            </ul>
+          </li>
+          <li><strong>Baño en líquido sinovial:</strong>
+            <ul style="margin-left: 15px; margin-top: 5px;">
+              <li>El LCA está dentro de la articulación, bañado por líquido sinovial.</li>
+              <li>El líquido sinovial contiene <strong>enzimas fibrinolíticas</strong> que degradan el fibrinógeno y impiden la formación de un coágulo estable.</li>
+              <li>Sin coágulo estable, no se forma el "andamio" inicial para la reparación.</li>
+            </ul>
+          </li>
+          <li><strong>Carga mecánica constante:</strong>
+            <ul style="margin-left: 15px; margin-top: 5px;">
+              <li>La rodilla se mueve constantemente (incluso al caminar).</li>
+              <li>El movimiento continuo impide la inmovilización necesaria para la curación.</li>
+              <li>Las fuerzas de cizallamiento rompen las frágiles uniones iniciales.</li>
+            </ul>
+          </li>
+          <li><strong>Retracción del ligamento:</strong>
+            <ul style="margin-left: 15px; margin-top: 5px;">
+              <li>Cuando el LCA se rompe, los extremos se retraen (se encogen).</li>
+              <li>Los extremos quedan separados y no pueden "tocarse" para unirse.</li>
+            </ul>
+          </li>
+        </ul>
+        <div class="key-concept">
+          <strong>💡 Concepto clave:</strong> Solo el 5-10% de las roturas completas del LCA curan espontáneamente. Por eso, en atletas jóvenes y activos, se recomienda la reconstrucción quirúrgica con un tendón (autoinjerto o aloinjerto).
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CASO 5 -->
+  <div class="case" id="case5">
+    <div class="case-header">Caso 5: El Cartílago del Astronauta <span class="case-topic">Cartílago y movimiento</span></div>
+    <div class="case-description">
+      <p><strong>Situación:</strong> Un astronauta pasa 6 meses en la Estación Espacial Internacional. Al volver a la Tierra, las resonancias magnéticas muestran que el cartílago de sus rodillas se ha <strong>adelgazado un 8%</strong> y ha perdido propiedades mecánicas.</p>
+      <p><strong>Pregunta:</strong> ¿Qué mecanismo fisiológico explica el deterioro del cartílago en ausencia de carga?</p>
+    </div>
+    
+    <div class="options">
+      <div class="option" data-value="A">
+        <strong>A)</strong> Porque en el espacio hace mucho frío y el cartílago se congela
+      </div>
+      <div class="option" data-value="B">
+        <strong>B)</strong> Porque el cartílago necesita carga mecánica cíclica para que el líquido sinovial circule y nutra los condrocitos. Sin carga, el cartílago se "desnutre", los condrocitos reducen la síntesis de matriz (colágeno y proteoglicanos), y el cartílago se degrada
+      </div>
+      <div class="option" data-value="C">
+        <strong>C)</strong> Porque la gravedad del espacio es diferente y daña el cartílago
+      </div>
+    </div>
+    
+    <button class="btn-check" onclick="checkAnswer(5, 'B')">Verificar Respuesta</button>
+    
+    <div class="explanation-box" id="explanation5">
+      <h4>✅ Respuesta Correcta: B</h4>
+      <div class="explanation-content">
+        <p><strong>Explicación fisiológica:</strong></p>
+        <p>El cartílago articular es un tejido único que depende completamente del <strong>movimiento y la carga</strong> para su nutrición y mantenimiento:</p>
+        <p><strong>Mecanismo de nutrición del cartílago:</strong></p>
+        <ul style="margin-left: 20px; margin-top: 10px;">
+          <li><strong>Sin vasos sanguíneos:</strong> El cartílago maduro es avascular. No recibe sangre directamente.</li>
+          <li><strong>Nutrición por difusión:</strong> Los nutrientes (oxígeno, glucosa, aminoácidos) y los desechos (CO2, lactato) deben difundir a través del líquido sinovial.</li>
+          <li><strong>La "bomba" del movimiento:</strong>
+            <ul style="margin-left: 15px; margin-top: 5px;">
+              <li><strong>Compresión (carga):</strong> Al cargar la articulación (ej: al caminar), el cartílago se comprime y "exprime" el líquido sinovial hacia fuera, eliminando desechos.</li>
+              <li><strong>Descompresión (descarga):</strong> Al quitar la carga, el cartílago se expande y "absorbe" líquido sinovial fresco con nutrientes.</li>
+              <li>Este ciclo compresión-descompresión es esencial para la nutrición del cartílago.</li>
+            </ul>
+          </li>
+        </ul>
+        <p><strong>¿Qué pasa en el espacio?</strong></p>
+        <ul style="margin-left: 20px; margin-top: 10px;">
+          <li><strong>Microgravedad:</strong> No hay carga significativa en las articulaciones (los astronautas "flotan").</li>
+          <li><strong>Sin "bomba" de nutrición:</strong> El líquido sinovial no circula adecuadamente.</li>
+          <li><strong>Consecuencias:</strong>
+            <ul style="margin-left: 15px; margin-top: 5px;">
+              <li>Los condrocitos (células del cartílago) reciben menos nutrientes.</li>
+              <li>Reducen la síntesis de colágeno tipo II y proteoglicanos (componentes de la matriz).</li>
+              <li>El cartílago pierde grosor y propiedades mecánicas.</li>
+              <li>Aumenta la actividad de enzimas degradativas (metaloproteinasas).</li>
+            </ul>
+          </li>
+        </ul>
+        <div class="key-concept">
+          <strong>💡 Concepto clave:</strong> El cartílago necesita carga para vivir. La inmovilización prolongada (reposo en cama, escayola, espacio) es tan dañina para el cartílago como el exceso de carga. ¡El equilibrio es clave!
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CASO 6 -->
+  <div class="case" id="case6">
+    <div class="case-header">Caso 6: La Artrosis del Escritor Sedentario <span class="case-topic">Cartílago y movimiento</span></div>
+    <div class="case-description">
+      <p><strong>Situación:</strong> Carlos, un programador de 45 años que pasa 10 horas diarias sentado, desarrolla artrosis de rodilla. Su médico le dice que el sedentarismo es un factor de riesgo tan importante como el sobrepeso.</p>
+      <p><strong>Pregunta:</strong> ¿Por qué el sedentarismo (ausencia de movimiento) daña el cartílago articular?</p>
+    </div>
+    
+    <div class="options">
+      <div class="option" data-value="A">
+        <strong>A)</strong> Porque estar sentado debilita los huesos
+      </div>
+      <div class="option" data-value="B">
+        <strong>B)</strong> Porque sin movimiento cíclico, el cartílago no recibe nutrición adecuada (no funciona la "bomba" de compresión-descompresión), los condrocitos se vuelven metabólicamente inactivos, y la matriz de colágeno y proteoglicanos se degrada progresivamente
+      </div>
+      <div class="option" data-value="C">
+        <strong>C)</strong> Porque estar sentado estira demasiado el cartílago
+      </div>
+    </div>
+    
+    <button class="btn-check" onclick="checkAnswer(6, 'B')">Verificar Respuesta</button>
+    
+    <div class="explanation-box" id="explanation6">
+      <h4>✅ Respuesta Correcta: B</h4>
+      <div class="explanation-content">
+        <p><strong>Explicación fisiológica:</strong></p>
+        <p>El sedentarismo es uno de los mayores enemigos del cartílago articular, aunque parezca paradójico (uno pensaría que "no usar" protege):</p>
+        <p><strong>Consecuencias fisiológicas del sedentarismo:</strong></p>
+        <ul style="margin-left: 20px; margin-top: 10px;">
+          <li><strong>Falta de nutrición:</strong>
+            <ul style="margin-left: 15px; margin-top: 5px;">
+              <li>Sin ciclos de compresión-descompresión, el líquido sinovial no circula.</li>
+              <li>Los condrocitos reciben menos glucosa, oxígeno y aminoácidos.</li>
+              <li>Los desechos metabólicos se acumulan (lactato, radicales libres).</li>
+            </ul>
+          </li>
+          <li><strong>Inactividad de los condrocitos:</strong>
+            <ul style="margin-left: 15px; margin-top: 5px;">
+              <li>Los condrocitos son mecanosensibles: necesitan estímulos mecánicos para mantenerse activos.</li>
+              <li>Sin carga, reducen la síntesis de colágeno tipo II y agrecano (proteoglicano principal).</li>
+              <li>Aumenta la expresión de genes catabólicos (MMPs, ADAMTS) que degradan la matriz.</li>
+            </ul>
+          </li>
+          <li><strong>Pérdida de propiedades mecánicas:</strong>
+            <ul style="margin-left: 15px; margin-top: 5px;">
+              <li>El cartílago pierde capacidad de absorber impactos.</li>
+              <li>Se vuelve más fino y menos elástico.</li>
+              <li>Aumenta la fricción entre superficies articulares.</li>
+            </ul>
+          </li>
+          <li><strong>Debilidad muscular:</strong>
+            <ul style="margin-left: 15px; margin-top: 5px;">
+              <li>Los músculos que estabilizan la articulación se debilitan.</li>
+              <li>La articulación recibe más carga directa (menos amortiguación muscular).</li>
+              <li>Aumenta el riesgo de lesiones y desgaste.</li>
+            </ul>
+          </li>
+        </ul>
+        <p><strong>Estudios científicos:</strong></p>
+        <ul style="margin-left: 20px; margin-top: 10px;">
+          <li>Personas sedentarias tienen 2-3 veces más riesgo de artrosis de rodilla que personas activas.</li>
+          <li>El ejercicio moderado y regular (caminar, nadar, ciclismo) protege el cartílago.</li>
+          <li>El ejercicio intenso sin preparación puede dañarlo. ¡La dosis importa!</li>
+        </ul>
+        <div class="key-concept">
+          <strong>💡 Concepto clave:</strong> "Use it or lose it" (úsalo o piérdelo) se aplica perfectamente al cartílago. El movimiento moderado y regular es el mejor "medicamento" para proteger las articulaciones.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CASO 7 -->
+  <div class="case" id="case7">
+    <div class="case-header">Caso 7: El Esguince de Tobillo en Inversión <span class="case-topic">Planos del movimiento</span></div>
+    <div class="case-description">
+      <p><strong>Situación:</strong> Ana, una jugadora de baloncesto, aterriza mal tras un rebote y sufre un esguince de tobillo. El pie se fue hacia "dentro" (planta del pie mirando hacia el otro pie). El médico diagnostica un esguince de los ligamentos laterales.</p>
+      <p><strong>Pregunta:</strong> ¿En qué plano del espacio ocurrió el movimiento lesivo y qué tipo de movimiento articular es?</p>
+    </div>
+    
+    <div class="options">
+      <div class="option" data-value="A">
+        <strong>A)</strong> Plano sagital - movimiento de flexo-extensión
+      </div>
+      <div class="option" data-value="B">
+        <strong>B)</strong> Plano frontal - movimiento de inversión (combinación de supinación, aducción y flexión plantar). Los ligamentos laterales no están diseñados para resistir este movimiento en exceso
+      </div>
+      <div class="option" data-value="C">
+        <strong>C)</strong> Plano transversal - movimiento de rotación
+      </div>
+    </div>
+    
+    <button class="btn-check" onclick="checkAnswer(7, 'B')">Verificar Respuesta</button>
+    
+    <div class="explanation-box" id="explanation7">
+      <h4>✅ Respuesta Correcta: B</h4>
+      <div class="explanation-content">
+        <p><strong>Explicación fisiológica:</strong></p>
+        <p>Los <strong>planos del movimiento</strong> son referencias anatómicas que describen la dirección en que se mueve una articulación:</p>
+        <p><strong>Los 3 planos:</strong></p>
+        <ul style="margin-left: 20px; margin-top: 10px;">
+          <li><strong>Plano sagital:</strong> Divide el cuerpo en izquierda y derecha. Movimientos: flexión-extensión (ej: caminar, flexionar el codo).</li>
+          <li><strong>Plano frontal:</strong> Divide el cuerpo en delante y detrás. Movimientos: abducción-adducción, inversión-eversión (ej: abrir/cerrar piernas, mover el pie hacia dentro/fuera).</li>
+          <li><strong>Plano transversal:</strong> Divide el cuerpo en arriba y abajo. Movimientos: rotaciones (ej: girar la cabeza, rotación del hombro).</li>
+        </ul>
+        <p><strong>El esguince de tobillo en inversión:</strong></p>
+        <ul style="margin-left: 20px; margin-top: 10px;">
+          <li><strong>Plano frontal:</strong> El movimiento de inversión (planta del pie hacia dentro) ocurre principalmente en este plano.</li>
+          <li><strong>Movimiento complejo:</strong> La inversión es en realidad una combinación de:
+            <ul style="margin-left: 15px; margin-top: 5px;">
+              <li>Supinación (eversión del pie).</li>
+              <li>Aducción (pie hacia la línea media).</li>
+              <li>Flexión plantar (punta del pie hacia abajo).</li>
+            </ul>
+          </li>
+          <li><strong>Ligamentos afectados:</strong> Los ligamentos laterales (tibio-tarsal anterior, medio y posterior) están diseñados para resistir la eversión (pie hacia fuera), no la inversión excesiva.</li>
+          <li><strong>Mecanismo lesivo:</strong> Al aterrizar mal, el pie se va en inversión más allá del rango seguro → los ligamentos laterales se estiran demasiado → se rompen (esguince).</li>
+        </ul>
+        <div class="key-concept">
+          <strong>💡 Concepto clave:</strong> El 85% de los esguinces de tobillo son en inversión (ligamentos laterales). Solo el 15% son en eversión (ligamento medial/deltoideo). Conocer los planos ayuda a entender el mecanismo y prevenir lesiones.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CASO 8 -->
+  <div class="case" id="case8">
+    <div class="case-header">Caso 8: La Rotación de Rodilla del Esquiador <span class="case-topic">Planos del movimiento</span></div>
+    <div class="case-description">
+      <p><strong>Situación:</strong> Pedro, un esquiador, cae con el esquí puesto y la rodilla queda "torcida". La resonancia muestra rotura del LCA y del menisco interno. El médico le explica que la rodilla es una articulación que permite movimiento principalmente en un plano, pero que la rotación es peligrosa.</p>
+      <p><strong>Pregunta:</strong> ¿Por qué la rodilla (articulación principalmente del plano sagital) es tan vulnerable a las lesiones rotacionales (plano transversal)?</p>
+    </div>
+    
+    <div class="options">
+      <div class="option" data-value="A">
+        <strong>A)</strong> Porque la rodilla no tiene ligamentos
+      </div>
+      <div class="option" data-value="B">
+        <strong>B)</strong> Porque la rodilla es una articulación modificada (ginglimo con componente rotacional) donde los meniscos y ligamentos cruzados estabilizan la rotación. Cuando la tibia rota sobre el fémur con la rodilla flexionada y cargada, los ligamentos (especialmente el LCA) y meniscos reciben fuerzas de cizallamiento para las que no están bien diseñados
+      </div>
+      <div class="option" data-value="C">
+        <strong>C)</strong> Porque los esquíes son demasiado largos
+      </div>
+    </div>
+    
+    <button class="btn-check" onclick="checkAnswer(8, 'B')">Verificar Respuesta</button>
+    
+    <div class="explanation-box" id="explanation8">
+      <h4>✅ Respuesta Correcta: B</h4>
+      <div class="explanation-content">
+        <p><strong>Explicación fisiológica:</strong></p>
+        <p>La rodilla es una articulación compleja con características únicas que la hacen vulnerable a lesiones rotacionales:</p>
+        <p><strong>Características biomecánicas de la rodilla:</strong></p>
+        <ul style="margin-left: 20px; margin-top: 10px;">
+          <li><strong>Articulación modificada:</strong>
+            <ul style="margin-left: 15px; margin-top: 5px;">
+              <li>Es principalmente una <strong>ginglimo</strong> (bisagra) que permite flexo-extensión en el plano sagital.</li>
+              <li>Pero tiene un componente rotacional menor (especialmente en flexión).</li>
+              <li>Cuando la rodilla está completamente extendida, hay un "bloqueo" rotacional (screw-home mechanism) que da estabilidad.</li>
+            </ul>
+          </li>
+          <li><strong>Estructuras estabilizadoras:</strong>
+            <ul style="margin-left: 15px; margin-top: 5px;">
+              <li><strong>Ligamentos cruzados (LCA y LCP):</strong> Controlan el desplazamiento anterior/posterior de la tibia y limitan la rotación.</li>
+              <li><strong>Meniscos:</strong> Mejoran la congruencia entre fémur y tibia, absorben impactos y ayudan a estabilizar.</li>
+              <li><strong>Ligamentos colaterales:</strong> Estabilizan en el plano frontal (valgo/varo).</li>
+            </ul>
+          </li>
+          <li><strong>Mecanismo lesivo en esquí:</strong>
+            <ul style="margin-left: 15px; margin-top: 5px;">
+              <li>El esquí fija el pie (no puede rotar libremente).</li>
+              <li>Al caer, el cuerpo rota pero el pie queda fijo → la tibia rota sobre el fémur.</li>
+              <li>Si la rodilla está flexionada y cargada (peso corporal), esta rotación genera fuerzas de cizallamiento enormes.</li>
+              <li>El LCA (que limita la rotación interna de la tibia) se rompe.</li>
+              <li>El menisco interno (más fijado que el externo) también se lesiona.</li>
+            </ul>
+          </li>
+        </ul>
+        <p><strong>¿Por qué es tan dañina la rotación?</strong></p>
+        <ul style="margin-left: 20px; margin-top: 10px;">
+          <li>Los ligamentos están diseñados para resistir tracción (estiramiento), no cizallamiento (fuerzas perpendiculares).</li>
+          <li>La rotación combinada con carga multiplica las fuerzas.</li>
+          <li>Los meniscos, al estar fijados en sus extremos, pueden "atraparse" y romperse.</li>
+        </ul>
+        <div class="key-concept">
+          <strong>💡 Concepto clave:</strong> La rodilla es vulnerable a la rotación porque está diseñada principalmente para flexo-extensión. Por eso, las lesiones rotacionales (esquí, fútbol, baloncesto) son tan graves y afectan a múltiples estructuras (LCA + menisco).
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CASO 9 -->
+  <div class="case" id="case9">
+    <div class="case-header">Caso 9: El Tobillo que se Torce Siempre <span class="case-topic">Propiocepción</span></div>
+    <div class="case-description">
+      <p><strong>Situación:</strong> Lucía sufrió un esguince de tobillo grave hace 6 meses. Aunque el ligamento curó, nota que su tobillo se "torce" con facilidad en terrenos irregulares. Su fisioterapeuta le dice que tiene <strong>déficit propioceptivo</strong>.</p>
+      <p><strong>Pregunta:</strong> ¿Qué es la propiocepción y por qué se pierde tras un esguince?</p>
+    </div>
+    
+    <div class="options">
+      <div class="option" data-value="A">
+        <strong>A)</strong> La propiocepción es la fuerza muscular, y se pierde porque el músculo se atrofia
+      </div>
+      <div class="option" data-value="B">
+        <strong>B)</strong> La propiocepción es la capacidad de sentir la posición y movimiento de las articulaciones. Se pierde porque el esguince daña los mecanorreceptores (husos musculares, órganos tendinosos de Golgi, receptores articulares) que envían información al cerebro sobre la posición del tobillo. Sin esta información, el cerebro no puede corregir rápidamente las posiciones peligrosas
+      </div>
+      <div class="option" data-value="C">
+        <strong>C)</strong> La propiocepción es la flexibilidad, y se pierde porque el ligamento cicatrizado es más rígido
+      </div>
+    </div>
+    
+    <button class="btn-check" onclick="checkAnswer(9, 'B')">Verificar Respuesta</button>
+    
+    <div class="explanation-box" id="explanation9">
+      <h4>✅ Respuesta Correcta: B</h4>
+      <div class="explanation-content">
+        <p><strong>Explicación fisiológica:</strong></p>
+        <p>La <strong>propiocepción</strong> es el "sexto sentido" del cuerpo: la capacidad de percibir la posición, movimiento y fuerza de las articulaciones y músculos sin necesidad de mirar.</p>
+        <p><strong>Sistema propioceptivo:</strong></p>
+        <ul style="margin-left: 20px; margin-top: 10px;">
+          <li><strong>Mecanorreceptores:</strong> Son sensores especializados que detectan deformaciones mecánicas:
+            <ul style="margin-left: 15px; margin-top: 5px;">
+              <li><strong>Husos musculares:</strong> Detectan la longitud del músculo y la velocidad de cambio.</li>
+              <li><strong>Órganos tendinosos de Golgi:</strong> Detectan la tensión en el tendón.</li>
+              <li><strong>Receptores articulares (Ruffini, Pacini, etc.):</strong> Están en la cápsula y ligamentos. Detectan la posición articular, presión y aceleración.</li>
+            </ul>
+          </li>
+          <li><strong>Vías nerviosas:</strong>
+            <ul style="margin-left: 15px; margin-top: 5px;">
+              <li>Los mecanorreceptores envían señales por nervios aferentes a la médula espinal y al cerebro.</li>
+              <li>El cerebro integra esta información con la visual y vestibular.</li>
+              <li>Envía respuestas motoras para ajustar la posición y proteger la articulación.</li>
+            </ul>
+          </li>
+        </ul>
+        <p><strong>¿Por qué se pierde tras un esguince?</strong></p>
+        <ul style="margin-left: 20px; margin-top: 10px;">
+          <li><strong>Daño a los receptores:</strong> Al romperse o estirarse los ligamentos, también se dañan los mecanorreceptores que contienen.</li>
+          <li><strong>Alteración de la señal:</strong> Menos receptores = menos información al cerebro = el cerebro "ve" peor la posición del tobillo.</li>
+          <li><strong>Respuesta muscular lenta:</strong> Sin información precisa, los músculos que estabilizan el tobillo (peroneos) no se activan a tiempo para corregir una posición peligrosa.</li>
+          <li><strong>Círculo vicioso:</strong> Más esguinces → más daño a receptores → más déficit propioceptivo → más esguinces.</li>
+        </ul>
+        <p><strong>Estudios científicos:</strong></p>
+        <ul style="margin-left: 20px; margin-top: 10px;">
+          <li>Tras un esguince, la propiocepción puede tardar 3-6 meses en recuperarse completamente.</li>
+          <li>El entrenamiento propioceptivo (equilibrio en superficies inestables) reduce el riesgo de recidiva en un 50%.</li>
+        </ul>
+        <div class="key-concept">
+          <strong>💡 Concepto clave:</strong> La propiocepción es tan importante como la fuerza y la flexibilidad para prevenir lesiones. Tras un esguince, el entrenamiento del equilibrio es esencial para "reeducar" al sistema nervioso.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CASO 10 -->
+  <div class="case" id="case10">
+    <div class="case-header">Caso 10: El Entrenamiento Propioceptivo del Bailarín <span class="case-topic">Propiocepción</span></div>
+    <div class="case-description">
+      <p><strong>Situación:</strong> Un profesor de danza incluye en sus clases ejercicios de equilibrio sobre una pierna, con ojos cerrados, y sobre superficies inestables (bosu, cojines). Los alumnos se quejan de que es "muy difícil" al principio, pero notan que mejoran su estabilidad.</p>
+      <p><strong>Pregunta:</strong> ¿Qué mecanismo fisiológico explica la mejora de la estabilidad con el entrenamiento propioceptivo?</p>
+    </div>
+    
+    <div class="options">
+      <div class="option" data-value="A">
+        <strong>A)</strong> Porque los músculos se hacen más fuertes y aguantan más
+      </div>
+      <div class="option" data-value="B">
+        <strong>B)</strong> Porque el entrenamiento propioceptivo mejora la sensibilidad de los mecanorreceptores, acelera la conducción nerviosa, y optimiza los patrones de activación muscular (co-contracción, respuestas anticipatorias). El cerebro aprende a procesar mejor la información y a responder más rápido para proteger las articulaciones
+      </div>
+      <div class="option" data-value="C">
+        <strong>C)</strong> Porque los ligamentos se vuelven más elásticos
+      </div>
+    </div>
+    
+    <button class="btn-check" onclick="checkAnswer(10, 'B')">Verificar Respuesta</button>
+    
+    <div class="explanation-box" id="explanation10">
+      <h4>✅ Respuesta Correcta: B</h4>
+      <div class="explanation-content">
+        <p><strong>Explicación fisiológica:</strong></p>
+        <p>El entrenamiento propioceptivo no fortalece los músculos ni estira los ligamentos. Su efecto es <strong>neurológico</strong>: mejora la capacidad del sistema nervioso para controlar las articulaciones.</p>
+        <p><strong>Mecanismos fisiológicos de adaptación:</strong></p>
+        <ul style="margin-left: 20px; margin-top: 10px;">
+          <li><strong>Mejora de la sensibilidad de los receptores:</strong>
+            <ul style="margin-left: 15px; margin-top: 5px;">
+              <li>Los mecanorreceptores se vuelven más sensibles a estímulos pequeños.</li>
+              <li>Detectan cambios de posición más sutiles y los envían más rápido al cerebro.</li>
+            </ul>
+          </li>
+          <li><strong>Aceleración de la conducción nerviosa:</strong>
+            <ul style="margin-left: 15px; margin-top: 5px;">
+              <li>Las vías nerviosas se "mielinizan" mejor (la mielina es como el "aislante" del cable que acelera la señal).</li>
+              <li>La información llega más rápido desde los receptores al cerebro y desde el cerebro a los músculos.</li>
+            </ul>
+          </li>
+          <li><strong>Optimización de los patrones musculares:</strong>
+            <ul style="margin-left: 15px; margin-top: 5px;">
+              <li><strong>Co-contracción:</strong> Los músculos agonistas y antagonistas se activan simultáneamente para dar estabilidad (ej: cuádriceps e isquiotibiales en la rodilla).</li>
+              <li><strong>Respuestas anticipatorias:</strong> El cerebro aprende a activar los músculos estabilizadores ANTES de que ocurra el movimiento (feedforward). Ej: antes de levantar una pierna, se activan los músculos del tobillo y la cadera.</li>
+              <li><strong>Respuestas reflejas:</strong> Los reflejos de estiramiento se vuelven más rápidos y eficientes.</li>
+            </ul>
+          </li>
+          <li><strong>Integración sensorial:</strong>
+            <ul style="margin-left: 15px; margin-top: 5px;">
+              <li>El cerebro aprende a integrar mejor la información propioceptiva, visual y vestibular.</li>
+              <li>Si falla una fuente (ej: cerrar los ojos), las otras compensan mejor.</li>
+            </ul>
+          </li>
+        </ul>
+        <p><strong>¿Por qué es difícil al principio?</strong></p>
+        <ul style="margin-left: 20px; margin-top: 10px;">
+          <li>El cerebro está "aprendiendo" nuevas conexiones neuronales.</li>
+          <li>Los patrones musculares no están automatizados.</li>
+          <li>Con la práctica (4-8 semanas), se vuelve automático (como montar en bici).</li>
+        </ul>
+        <p><strong>Aplicación en danza:</strong></p>
+        <ul style="margin-left: 20px; margin-top: 10px;">
+          <li>Mejor equilibrio en relevés y arabesques.</li>
+          <li>Menor riesgo de esguinces al aterrizar saltos.</li>
+          <li>Mayor control en giros y piruetas.</li>
+          <li>Mejor adaptación a superficies irregulares (escenarios al aire libre).</li>
+        </ul>
+        <div class="key-concept">
+          <strong>💡 Concepto clave:</strong> El entrenamiento propioceptivo "reprograma" el sistema nervioso. No cambia la estructura (músculos, ligamentos), sino la función (control neuromuscular). Por eso es esencial para bailarines y deportistas.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="progress-bar">
+    <div class="progress-text">Progreso: <span id="progress">0</span>/10 casos completados</div>
+    <div class="progress-fill" id="progressBar" style="width: 0%"></div>
+  </div>
+</div>
+
+<script>
+let completedCases = 0;
+const totalCases = 10;
+
+function checkAnswer(caseNum, correctAnswer) {
+  const caseElement = document.getElementById(`case${caseNum}`);
+  const options = caseElement.querySelectorAll('.option');
+  const btn = caseElement.querySelector('.btn-check');
+  const explanation = document.getElementById(`explanation${caseNum}`);
+  
+  btn.disabled = true;
+  
+  let selectedValue = null;
+  options.forEach(option => {
+    if (option.classList.contains('selected')) {
+      selectedValue = option.getAttribute('data-value');
+    }
+    option.style.pointerEvents = 'none';
+    option.style.opacity = '0.7';
+  });
+  
+  if (!selectedValue) {
+    alert('Por favor, selecciona una respuesta primero');
+    btn.disabled = false;
+    options.forEach(option => {
+      option.style.pointerEvents = 'auto';
+      option.style.opacity = '1';
+    });
+    return;
+  }
+  
+  options.forEach(option => {
+    if (option.getAttribute('data-value') === correctAnswer) {
+      option.classList.add('correct');
+      option.style.opacity = '1';
+    } else if (option.getAttribute('data-value') === selectedValue && selectedValue !== correctAnswer) {
+      option.classList.add('incorrect');
+      option.style.opacity = '1';
+    }
+  });
+  
+  if (selectedValue === correctAnswer) {
+    explanation.classList.add('correct', 'show');
+    completedCases++;
+  } else {
+    explanation.classList.add('incorrect', 'show');
+  }
+  
+  updateProgress();
+}
+
+document.querySelectorAll('.option').forEach(option => {
+  option.addEventListener('click', function() {
+    const parent = this.parentElement;
+    parent.querySelectorAll('.option').forEach(opt => {
+      opt.classList.remove('selected');
+    });
+    this.classList.add('selected');
+  });
+});
+
+function updateProgress() {
+  const progress = (completedCases / totalCases) * 100;
+  document.getElementById('progressBar').style.width = progress + '%';
+  document.getElementById('progress').textContent = completedCases;
+  
+  if (completedCases === totalCases) {
+    setTimeout(() => {
+      alert('🎉 ¡Felicidades! Has completado todos los casos prácticos sobre fisiología articular. Ahora comprendes cómo funcionan estas estructuras complejas y dinámicas.');
+    }, 500);
+  }
+}
+</script>
+</body>
+</html>

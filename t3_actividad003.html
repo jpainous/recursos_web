@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Clasificador de Fibras Musculares</title>
+<style>
+  body { font-family: 'Segoe UI', sans-serif; background: #0f172a; color: #e2e8f0; margin: 0; padding: 20px; }
+  h1 { text-align: center; color: #34d399; }
+  .container { max-width: 1100px; margin: auto; }
+  .deportistas { display: flex; justify-content: space-around; flex-wrap: wrap; gap: 15px; margin-bottom: 30px; }
+  .card { background: #1e293b; padding: 15px; border-radius: 10px; width: 160px; cursor: grab; text-align: center; border: 2px solid #334155; transition: transform 0.2s; }
+  .card:hover { transform: translateY(-3px); border-color: #34d399; }
+  .card img { font-size: 40px; }
+  .card.dragging { opacity: 0.4; }
+  .fibras { display: flex; justify-content: space-around; gap: 20px; flex-wrap: wrap; }
+  .drop { flex: 1; min-width: 250px; background: #1e293b; padding: 20px; border-radius: 12px; border: 3px dashed #475569; min-height: 200px; }
+  .drop.over { border-color: #34d399; background: #14532d33; }
+  .drop h3 { margin-top: 0; }
+  .tipo1 { border-color: #3b82f6; } .tipo1 h3 { color: #60a5fa; }
+  .tipo2a { border-color: #a855f7; } .tipo2a h3 { color: #c084fc; }
+  .tipo2x { border-color: #ef4444; } .tipo2x h3 { color: #f87171; }
+  .resultado { margin-top: 25px; padding: 15px; background: #1e293b; border-radius: 8px; text-align: center; font-size: 18px; min-height: 50px; }
+  button { background: #34d399; color: #0f172a; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 15px; }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>🏃 Clasifica a cada deportista según su fibra muscular dominante</h1>
+  <p style="text-align:center; color:#94a3b8;">Arrastra cada tarjeta a la fibra correcta y pulsa "Comprobar".</p>
+
+  <div class="deportistas" id="deck"></div>
+
+  <div class="fibras">
+    <div class="drop tipo1" data-fibra="I">
+      <h3>🔵 Tipo I (Lentas)</h3>
+      <p><small>Oxidativas · Alta resistencia · Baja fatiga</small></p>
+      <div class="zone"></div>
+    </div>
+    <div class="drop tipo2a" data-fibra="IIa">
+      <h3>🟣 Tipo IIa (Rápidas mixtas)</h3>
+      <p><small>Oxido-glucolíticas · Resistencia intermedia</small></p>
+      <div class="zone"></div>
+    </div>
+    <div class="drop tipo2x" data-fibra="IIx">
+      <h3>🔴 Tipo IIx (Muy rápidas)</h3>
+      <p><small>Glucolíticas · Fuerza máxima · Baja resistencia</small></p>
+      <div class="zone"></div>
+    </div>
+  </div>
+
+  <div style="text-align:center; margin-top:20px;">
+    <button onclick="comprobar()">✔ Comprobar</button>
+    <button onclick="location.reload()">🔄 Reiniciar</button>
+  </div>
+  <div class="resultado" id="res"></div>
+</div>
+
+<script>
+const deportistas = [
+  {nombre:"Maratonista", emoji:"🏃‍♂️", fibra:"I"},
+  {nombre:"Ciclista de fondo", emoji:"🚴", fibra:"I"},
+  {nombre:"Jugador de fútbol", emoji:"⚽", fibra:"IIa"},
+  {nombre:"Nadador 400m", emoji:"🏊", fibra:"IIa"},
+  {nombre:"Esprintador 100m", emoji:"🏃‍♀️", fibra:"IIx"},
+  {nombre:"Halterófilo", emoji:"🏋️", fibra:"IIx"}
+];
+
+const deck = document.getElementById('deck');
+deportistas.forEach((d,i) => {
+  const c = document.createElement('div');
+  c.className = 'card';
+  c.draggable = true;
+  c.dataset.fibra = d.fibra;
+  c.dataset.id = i;
+  c.innerHTML = `<div style="font-size:40px;">${d.emoji}</div><b>${d.nombre}</b>`;
+  c.addEventListener('dragstart', e => {
+    c.classList.add('dragging');
+    e.dataTransfer.setData('id', i);
+  });
+  c.addEventListener('dragend', () => c.classList.remove('dragging'));
+  deck.appendChild(c);
+});
+
+document.querySelectorAll('.drop').forEach(drop => {
+  drop.addEventListener('dragover', e => { e.preventDefault(); drop.classList.add('over'); });
+  drop.addEventListener('dragleave', () => drop.classList.remove('over'));
+  drop.addEventListener('drop', e => {
+    e.preventDefault();
+    drop.classList.remove('over');
+    const id = e.dataTransfer.getData('id');
+    const card = document.querySelector(`.card[data-id="${id}"]`);
+    drop.querySelector('.zone').appendChild(card);
+  });
+});
+
+function comprobar() {
+  let aciertos = 0, total = deportistas.length;
+  document.querySelectorAll('.drop').forEach(drop => {
+    const correcta = drop.dataset.fibra;
+    drop.querySelectorAll('.card').forEach(c => {
+      if (c.dataset.fibra === correcta) {
+        c.style.background = "#14532d"; c.style.borderColor = "#34d399";
+        aciertos++;
+      } else {
+        c.style.background = "#7f1d1d"; c.style.borderColor = "#ef4444";
+      }
+    });
+  });
+  const noClasificados = document.querySelectorAll('#deck .card').length;
+  document.getElementById('res').innerHTML = 
+    `Resultado: <b>${aciertos}/${total}</b> correctas. ${noClasificados>0 ? `<br><span style="color:#fbbf24;">⚠️ Te faltan ${noClasificados} deportistas por clasificar.</span>` : (aciertos===total ? "🎉 ¡Perfecto! Dominas los tipos de fibras." : "Revisa las tarjetas en rojo.")}`;
+}
+</script>
+</body>
+</html>

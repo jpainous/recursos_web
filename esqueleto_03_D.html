@@ -1,0 +1,993 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tejido Óseo y Recubrimientos (4) - Células del Hueso</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, sans-serif; }
+  body {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    padding: 20px;
+  }
+  .container {
+    max-width: 1100px;
+    margin: 0 auto;
+    background: #fff;
+    border-radius: 20px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    overflow: hidden;
+  }
+  header {
+    background: linear-gradient(90deg, #1e3c72, #2a5298);
+    color: white;
+    padding: 35px;
+    text-align: center;
+  }
+  header h1 { font-size: 2.1em; margin-bottom: 10px; }
+  header p { opacity: 0.95; font-size: 1.1em; }
+  header .subtitle { font-size: 0.95em; opacity: 0.85; margin-top: 8px; font-style: italic; }
+  
+  .nav-tabs {
+    display: flex;
+    background: #f8f9fa;
+    flex-wrap: wrap;
+    border-bottom: 3px solid #dee2e6;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .nav-tabs button {
+    flex: 1;
+    min-width: 140px;
+    padding: 14px 10px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 0.9em;
+    font-weight: 600;
+    color: #666;
+    transition: all 0.3s;
+    border-bottom: 4px solid transparent;
+  }
+  .nav-tabs button:hover { background: #e9ecef; color: #2a5298; }
+  .nav-tabs button.active {
+    color: #2a5298;
+    border-bottom-color: #2a5298;
+    background: white;
+  }
+  
+  .slide { display: none; padding: 30px; min-height: 600px; }
+  .slide.active { display: block; animation: fadeIn 0.5s; }
+  @keyframes fadeIn { from {opacity:0; transform:translateY(20px);} to {opacity:1; transform:translateY(0);} }
+  
+  .slide h2 {
+    color: #1e3c72;
+    margin-bottom: 20px;
+    font-size: 1.7em;
+    border-bottom: 3px solid #2a5298;
+    padding-bottom: 10px;
+  }
+  
+  .reminder-box {
+    background: linear-gradient(135deg, #fff9c4 0%, #fff59d 100%);
+    border-left: 5px solid #fbc02d;
+    padding: 18px;
+    margin: 20px 0;
+    border-radius: 10px;
+  }
+  
+  .reminder-box h4 {
+    color: #f57f17;
+    margin-bottom: 10px;
+    font-size: 1.1em;
+  }
+  
+  .intro-box {
+    background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+    border-left: 5px solid #1976d2;
+    padding: 22px;
+    margin: 20px 0;
+    border-radius: 10px;
+    line-height: 1.7;
+  }
+  
+  .intro-box h3 {
+    color: #1565c0;
+    margin-bottom: 12px;
+    font-size: 1.25em;
+  }
+  
+  .concept-card {
+    background: white;
+    border: 3px solid #2a5298;
+    border-radius: 15px;
+    padding: 25px;
+    margin: 20px 0;
+    box-shadow: 0 5px 20px rgba(42,82,152,0.15);
+  }
+  
+  .concept-card h3 {
+    color: #2a5298;
+    font-size: 1.35em;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .how-it-works {
+    background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
+    padding: 20px;
+    border-radius: 10px;
+    margin: 15px 0;
+    border-left: 5px solid #f57c00;
+  }
+  
+  .how-it-works h4 {
+    color: #e65100;
+    margin-bottom: 12px;
+    font-size: 1.15em;
+  }
+  
+  .how-it-works ul {
+    margin-left: 25px;
+    line-height: 1.8;
+  }
+  
+  .dance-box {
+    background: linear-gradient(135deg, #fff5e6 0%, #ffe8cc 100%);
+    padding: 20px;
+    border-radius: 10px;
+    margin: 15px 0;
+    border: 2px dashed #f39c12;
+  }
+  
+  .dance-box h4 {
+    color: #e67e22;
+    margin-bottom: 12px;
+    font-size: 1.15em;
+  }
+  
+  .dance-box ul {
+    margin-left: 25px;
+    line-height: 1.8;
+  }
+  
+  .practical-activity {
+    background: linear-gradient(135deg, #e8f8f5 0%, #d5f5e3 100%);
+    padding: 22px;
+    border-radius: 15px;
+    margin: 20px 0;
+    border: 2px solid #1abc9c;
+  }
+  
+  .practical-activity h4 {
+    color: #16a085;
+    font-size: 1.2em;
+    margin-bottom: 12px;
+  }
+  
+  .activity-steps {
+    margin-left: 25px;
+    line-height: 1.9;
+  }
+  
+  .activity-steps li {
+    margin-bottom: 8px;
+  }
+  
+  .activity-steps strong {
+    color: #16a085;
+  }
+  
+  .diagram-container {
+    background: white;
+    border: 2px solid #dee2e6;
+    border-radius: 10px;
+    padding: 20px;
+    margin: 20px 0;
+    text-align: center;
+  }
+  
+  .diagram-container svg {
+    max-width: 100%;
+    height: auto;
+  }
+  
+  .diagram-container h4 {
+    color: #2a5298;
+    margin-bottom: 15px;
+    font-size: 1.1em;
+  }
+  
+  .tip-box {
+    background: linear-gradient(135deg, #f3e5f5 0%, #e1bee7 100%);
+    padding: 16px;
+    border-radius: 10px;
+    margin: 15px 0;
+    border-left: 5px solid #9b59b6;
+  }
+  
+  .tip-box h4 {
+    color: #8e44ad;
+    margin-bottom: 8px;
+    font-size: 1.05em;
+  }
+  
+  .cell-card {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 15px;
+    margin: 20px 0;
+  }
+  
+  .cell-item {
+    background: white;
+    border: 2px solid #dee2e6;
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+    transition: all 0.3s;
+  }
+  
+  .cell-item:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+  }
+  
+  .cell-item .emoji-big {
+    font-size: 3em;
+    margin-bottom: 10px;
+  }
+  
+  .cell-item h4 {
+    font-size: 1.2em;
+    margin-bottom: 8px;
+  }
+  
+  .cell-item.osteoblast { border-color: #27ae60; background: #e8f8f5; }
+  .cell-item.osteoblast h4 { color: #27ae60; }
+  
+  .cell-item.osteoclast { border-color: #e74c3c; background: #fdedec; }
+  .cell-item.osteoclast h4 { color: #e74c3c; }
+  
+  .cell-item.osteocyte { border-color: #3498db; background: #ebf5fb; }
+  .cell-item.osteocyte h4 { color: #3498db; }
+  
+  .cell-item.progenitor { border-color: #f39c12; background: #fef9e7; }
+  .cell-item.progenitor h4 { color: #f39c12; }
+  
+  .highlight {
+    background: linear-gradient(120deg, #ffeaa7 0%, #ffeaa7 100%);
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-weight: 600;
+  }
+  
+  .emoji { font-size: 1.2em; margin-right: 6px; }
+  
+  .btn {
+    background: linear-gradient(90deg, #2a5298, #1e3c72);
+    color: white;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 25px;
+    font-size: 1em;
+    font-weight: 600;
+    cursor: pointer;
+    margin: 10px 5px;
+    transition: all 0.3s;
+    box-shadow: 0 4px 12px rgba(42,82,152,0.3);
+  }
+  
+  .btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(42,82,152,0.4);
+  }
+  
+  .quiz-container {
+    background: white;
+    border: 2px solid #e4e8ec;
+    border-radius: 15px;
+    padding: 25px;
+    margin: 20px 0;
+  }
+  
+  .quiz-container h3 {
+    color: #2a5298;
+    margin-bottom: 18px;
+    font-size: 1.25em;
+  }
+  
+  .question-box {
+    background: #f8f9fa;
+    border-left: 5px solid #2a5298;
+    padding: 16px;
+    margin-bottom: 16px;
+    border-radius: 8px;
+  }
+  
+  .question-box p {
+    font-weight: 600;
+    margin-bottom: 12px;
+    font-size: 1em;
+    color: #2c3e50;
+  }
+  
+  .options {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .options label {
+    background: white;
+    border: 2px solid #dee2e6;
+    padding: 12px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    font-size: 0.93em;
+  }
+  
+  .options label:hover {
+    border-color: #2a5298;
+    background: #e3f2fd;
+  }
+  
+  .options input { margin-right: 12px; }
+  
+  .options label.correct {
+    background: #d4edda;
+    border-color: #28a745;
+    color: #155724;
+  }
+  
+  .options label.incorrect {
+    background: #f8d7da;
+    border-color: #dc3545;
+    color: #721c24;
+  }
+  
+  .feedback {
+    margin-top: 18px;
+    padding: 18px;
+    border-radius: 10px;
+    display: none;
+    font-weight: 600;
+    line-height: 1.6;
+  }
+  
+  .feedback.show { display: block; animation: fadeIn 0.3s; }
+  .feedback.success { background: #d4edda; color: #155724; border: 2px solid #28a745; }
+  .feedback.error { background: #f8d7da; color: #721c24; border: 2px solid #dc3545; }
+  
+  @media (max-width: 768px) {
+    header h1 { font-size: 1.6em; }
+    .slide { padding: 20px; }
+    .concept-card { padding: 18px; }
+    .cell-card { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <h1>🦴 Tejido Óseo y Recubrimientos</h1>
+    <p>Parte 4: Las Células del Hueso</p>
+    <div class="subtitle">El equipo de "obreros" que construye, destruye y vigila tu esqueleto</div>
+  </header>
+
+  <div class="nav-tabs">
+    <button class="active" onclick="showSlide(0, this)">👷 Las 4 células</button>
+    <button onclick="showSlide(1, this)">🏗️ Constructores y destructores</button>
+    <button onclick="showSlide(2, this)">👁️ Los sensores</button>
+    <button onclick="showSlide(3, this)">🎯 Quiz</button>
+  </div>
+
+  <!-- SLIDE 1: LAS 4 CÉLULAS -->
+  <div class="slide active">
+    <h2>👷 Las 4 células del hueso</h2>
+    
+    <div class="reminder-box">
+      <h4>💡 Recordatorio</h4>
+      <p>En los archivos anteriores vimos que el hueso es un tejido vivo que se adapta, se repara y se remodela. Pero... <strong>¿quién hace todo ese trabajo?</strong> La respuesta son las células del hueso. Son como un equipo de obreros especializados.</p>
+    </div>
+    
+    <div class="intro-box">
+      <h3> Un equipo de 4 especialistas</h3>
+      <p>El hueso tiene <strong>4 tipos de células</strong>, cada una con una función diferente. Trabajan en equipo para mantener tus huesos fuertes y sanos:</p>
+    </div>
+    
+    <div class="cell-card">
+      <div class="cell-item osteoblast">
+        <div class="emoji-big">🧱</div>
+        <h4>Osteoblastos</h4>
+        <p><strong>Los constructores</strong></p>
+        <p style="font-size: 0.9em; color: #666;">Fabrican hueso nuevo</p>
+      </div>
+      
+      <div class="cell-item osteoclast">
+        <div class="emoji-big">🔨</div>
+        <h4>Osteoclastos</h4>
+        <p><strong>Los destructores</strong></p>
+        <p style="font-size: 0.9em; color: #666;">Retiran hueso viejo o dañado</p>
+      </div>
+      
+      <div class="cell-item osteocyte">
+        <div class="emoji-big">👁️</div>
+        <h4>Osteocitos</h4>
+        <p><strong>Los sensores</strong></p>
+        <p style="font-size: 0.9em; color: #666;">Vigilan y dirigen la obra</p>
+      </div>
+      
+      <div class="cell-item progenitor">
+        <div class="emoji-big">🌱</div>
+        <h4>Células osteoprogenitoras</h4>
+        <p><strong>Las "en prácticas"</strong></p>
+        <p style="font-size: 0.9em; color: #666;">Pueden convertirse en osteoblastos</p>
+      </div>
+    </div>
+    
+    <div class="concept-card">
+      <h3><span class="emoji">🤝</span> ¿Cómo trabajan en equipo?</h3>
+      <div class="how-it-works">
+        <h4> Imagina una obra de construcción</h4>
+        <ul>
+          <li><strong>Los osteocitos (sensores):</strong> Son como los "arquitectos" que vigilan la obra. Detectan dónde hace falta hueso nuevo o dónde hay que quitar el viejo.</li>
+          <li><strong>Los osteoclastos (destructores):</strong> Son el "equipo de demolición". Retiran el hueso dañado o viejo para hacer espacio.</li>
+          <li><strong>Los osteoblastos (constructores):</strong> Son los "albañiles". Construyen hueso nuevo en el espacio que dejaron los osteoclastos.</li>
+          <li><strong>Las células osteoprogenitoras:</strong> Son como los "aprendices". Cuando hacen falta más albañiles, se convierten en osteoblastos.</li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="diagram-container">
+      <h4>🔄 El ciclo de trabajo del equipo</h4>
+      <svg viewBox="0 0 700 280">
+        <!-- Osteocito (sensor) -->
+        <g transform="translate(300, 20)">
+          <circle cx="50" cy="50" r="40" fill="#3498db" opacity="0.8"/>
+          <text x="50" y="45" text-anchor="middle" font-size="11" fill="white" font-weight="bold">OSTEO-</text>
+          <text x="50" y="60" text-anchor="middle" font-size="11" fill="white" font-weight="bold">CITO</text>
+          <text x="50" y="110" text-anchor="middle" font-size="10" fill="#3498db" font-weight="bold">1. Detecta</text>
+        </g>
+        
+        <!-- Flecha -->
+        <line x1="350" y1="70" x2="400" y2="100" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arrow)"/>
+        
+        <!-- Osteoclasto (destructor) -->
+        <g transform="translate(420, 100)">
+          <circle cx="50" cy="50" r="40" fill="#e74c3c" opacity="0.8"/>
+          <text x="50" y="45" text-anchor="middle" font-size="11" fill="white" font-weight="bold">OSTEO-</text>
+          <text x="50" y="60" text-anchor="middle" font-size="11" fill="white" font-weight="bold">CLASTO</text>
+          <text x="50" y="110" text-anchor="middle" font-size="10" fill="#e74c3c" font-weight="bold">2. Destruye</text>
+        </g>
+        
+        <!-- Flecha -->
+        <line x1="470" y1="150" x2="420" y2="180" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arrow)"/>
+        
+        <!-- Osteoblasto (constructor) -->
+        <g transform="translate(300, 180)">
+          <circle cx="50" cy="50" r="40" fill="#27ae60" opacity="0.8"/>
+          <text x="50" y="45" text-anchor="middle" font-size="11" fill="white" font-weight="bold">OSTEO-</text>
+          <text x="50" y="60" text-anchor="middle" font-size="11" fill="white" font-weight="bold">BLASTO</text>
+          <text x="50" y="110" text-anchor="middle" font-size="10" fill="#27ae60" font-weight="bold">3. Construye</text>
+        </g>
+        
+        <!-- Flecha vuelta -->
+        <path d="M 300 180 Q 200 180 200 100 Q 200 70 300 70" stroke="#7f8c8d" stroke-width="2" fill="none" stroke-dasharray="5,3" marker-end="url(#arrow)"/>
+        <text x="150" y="130" font-size="9" fill="#7f8c8d">El ciclo continúa</text>
+        
+        <!-- Célula osteoprogenitora -->
+        <g transform="translate(50, 180)">
+          <circle cx="50" cy="50" r="35" fill="#f39c12" opacity="0.8"/>
+          <text x="50" y="45" text-anchor="middle" font-size="9" fill="white" font-weight="bold">OSTEO-</text>
+          <text x="50" y="58" text-anchor="middle" font-size="9" fill="white" font-weight="bold">PROGENITORA</text>
+          <text x="50" y="105" text-anchor="middle" font-size="9" fill="#f39c12" font-weight="bold">Reserva</text>
+        </g>
+        
+        <!-- Flecha a osteoblasto -->
+        <line x1="100" y1="200" x2="300" y2="220" stroke="#f39c12" stroke-width="2" marker-end="url(#arrowOrange)"/>
+        <text x="180" y="235" font-size="9" fill="#f39c12">Se convierte en osteoblasto</text>
+        
+        <defs>
+          <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+            <polygon points="0 0, 10 3, 0 6" fill="#7f8c8d"/>
+          </marker>
+          <marker id="arrowOrange" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+            <polygon points="0 0, 10 3, 0 6" fill="#f39c12"/>
+          </marker>
+        </defs>
+      </svg>
+    </div>
+    
+    <div class="dance-box">
+      <h4><span class="emoji">💃</span> ¿Por qué es importante para un bailarín?</h4>
+      <ul>
+        <li><strong>Cuando bailas:</strong> Los osteocitos detectan las fuerzas del movimiento y "piden" más hueso. Los osteoblastos construyen hueso nuevo y tus huesos se hacen más fuertes.</li>
+        <li><strong>Cuando descansas:</strong> Los osteoblastos siguen trabajando (construyen hueso). Por eso el descanso es tan importante: es cuando se "consolida" el hueso nuevo.</li>
+        <li><strong>Cuando te lesionas:</strong> Las células osteoprogenitoras se activan y se convierten en osteoblastos para reparar la fractura.</li>
+        <li><strong>Si no comes bien:</strong> Los osteoclastos pueden "ganar" a los osteoblastos → pierdes más hueso del que construyes → huesos débiles.</li>
+      </ul>
+    </div>
+    
+    <div class="practical-activity">
+      <h4><span class="emoji">🎭</span> Actividad: "Juego de roles"</h4>
+      <p><strong>Objetivo:</strong> Entender el trabajo en equipo de las células</p>
+      <ol class="activity-steps">
+        <li><strong>En grupo de 4:</strong> Cada uno representa una célula:
+          <ul>
+            <li>Persona 1: Osteocito (sensor) → observa y da órdenes</li>
+            <li>Persona 2: Osteoclasto (destructor) → "retira" lo viejo</li>
+            <li>Persona 3: Osteoblasto (constructor) → "construye" lo nuevo</li>
+            <li>Persona 4: Célula osteoprogenitora → espera para ayudar</li>
+          </ul>
+        </li>
+        <li><strong>Escenario:</strong> Imaginad que hay una pequeña fractura en el hueso.
+          <ul>
+            <li>El osteocito la detecta y avisa</li>
+            <li>El osteoclasto "limpia" la zona dañada</li>
+            <li>El osteoblasto construye hueso nuevo</li>
+            <li>Si hace falta más ayuda, la célula osteoprogenitora se convierte en osteoblasto</li>
+          </ul>
+        </li>
+        <li><strong>Reflexión:</strong> ¿Qué pasaría si falta una de las células? (Por ejemplo, si no hay osteoblastos, la fractura no se repara).</li>
+      </ol>
+    </div>
+    
+    <div class="tip-box">
+      <h4>✨ Dato curioso</h4>
+      <p>En un adulto sano, el equilibrio entre osteoblastos y osteoclastos es perfecto: se construye tanto hueso como se destruye. Pero con la edad, o si no comes bien, los osteoclastos pueden "ganar" → pierdes hueso. Por eso es importante cuidar los huesos desde joven.</p>
+    </div>
+  </div>
+
+  <!-- SLIDE 2: OSTEOBLASTOS Y OSTEOCLASTOS -->
+  <div class="slide">
+    <h2>🏗️ Constructores y destructores en acción</h2>
+    
+    <div class="reminder-box">
+      <h4>💡 Recordatorio</h4>
+      <p>Acabamos de ver las 4 células del hueso. Ahora vamos a profundizar en las dos más importantes: los <strong>osteoblastos</strong> (constructores) y los <strong>osteoclastos</strong> (destructores). Son como el "yin y el yang" del hueso.</p>
+    </div>
+    
+    <div class="intro-box">
+      <h3>⚖️ El equilibrio perfecto</h3>
+      <p>Para que tus huesos estén sanos, necesita haber un <span class="highlight">equilibrio</span> entre construcción y destrucción:</p>
+      <ul style="margin-left: 25px; margin-top: 10px; line-height: 1.8;">
+        <li><strong>Si construyen más de lo que destruyen:</strong> Los huesos se hacen más densos y fuertes (esto pasa cuando entrenas bien).</li>
+        <li><strong>Si destruyen más de lo que construyen:</strong> Los huesos se vuelven débiles y frágiles (osteoporosis).</li>
+        <li><strong>Si hay equilibrio:</strong> Los huesos se mantienen sanos (esto es lo ideal).</li>
+      </ul>
+    </div>
+    
+    <div class="concept-card">
+      <h3><span class="emoji"></span> Los osteoblastos: los albañiles</h3>
+      <div class="how-it-works">
+        <h4>🔨 ¿Cómo construyen hueso?</h4>
+        <ul>
+          <li><strong>Paso 1:</strong> Fabrican <strong>colágeno</strong> (una proteína resistente, como los "ladrillos" del hueso).</li>
+          <li><strong>Paso 2:</strong> Añaden <strong>minerales</strong> (calcio y fósforo) al colágeno (como el "cemento" que endurece los ladrillos).</li>
+          <li><strong>Paso 3:</strong> El hueso nuevo se endurece y se integra con el hueso viejo.</li>
+          <li><strong>Dato curioso:</strong> Algunos osteoblastos quedan "atrapados" en el hueso que han construido y se convierten en <strong>osteocitos</strong> (sensores). ¡Los constructores se convierten en vigilantes!</li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="concept-card">
+      <h3><span class="emoji">🔨</span> Los osteoclastos: el equipo de demolición</h3>
+      <div class="how-it-works" style="background: linear-gradient(135deg, #ffebee 0%, #ffcdd2 100%); border-left-color: #e53935;">
+        <h4>💥 ¿Cómo destruyen hueso?</h4>
+        <ul>
+          <li><strong>Paso 1:</strong> Se "pegan" a la superficie del hueso viejo o dañado.</li>
+          <li><strong>Paso 2:</strong> Crean un <strong>ambiente ácido</strong> (como vinagre) que disuelve los minerales del hueso.</li>
+          <li><strong>Paso 3:</strong> Liberan <strong>enzimas</strong> (como "tijeras químicas") que cortan el colágeno.</li>
+          <li><strong>Paso 4:</strong> El hueso viejo se "derrite" y los minerales (como el calcio) vuelven a la sangre.</li>
+          <li><strong>Dato curioso:</strong> Los osteoclastos son células GIGANTES (pueden tener hasta 20 núcleos). Son como "tanques" de la demolición.</li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="diagram-container">
+      <h4>⚖️ El equilibrio constructor/destructor</h4>
+      <svg viewBox="0 0 700 280">
+        <!-- Balanza -->
+        <line x1="350" y1="50" x2="350" y2="200" stroke="#7f8c8d" stroke-width="4"/>
+        <line x1="200" y1="80" x2="500" y2="80" stroke="#7f8c8d" stroke-width="4"/>
+        
+        <!-- Plato izquierdo: Osteoblastos -->
+        <g transform="translate(150, 80)">
+          <path d="M 0 0 L 100 0 L 80 40 L 20 40 Z" fill="#27ae60" opacity="0.8"/>
+          <text x="50" y="25" text-anchor="middle" font-size="11" fill="white" font-weight="bold">🧱 Osteoblastos</text>
+          <text x="50" y="60" text-anchor="middle" font-size="10" fill="#27ae60" font-weight="bold">CONSTRUYEN</text>
+        </g>
+        
+        <!-- Plato derecho: Osteoclastos -->
+        <g transform="translate(450, 80)">
+          <path d="M 0 0 L 100 0 L 80 40 L 20 40 Z" fill="#e74c3c" opacity="0.8"/>
+          <text x="50" y="25" text-anchor="middle" font-size="11" fill="white" font-weight="bold">🔨 Osteoclastos</text>
+          <text x="50" y="60" text-anchor="middle" font-size="10" fill="#e74c3c" font-weight="bold">DESTRUYEN</text>
+        </g>
+        
+        <!-- Situaciones -->
+        <g transform="translate(50, 180)">
+          <rect x="0" y="0" width="200" height="80" fill="#e8f5e9" stroke="#27ae60" stroke-width="2" rx="10"/>
+          <text x="100" y="25" text-anchor="middle" font-size="11" font-weight="bold" fill="#2e7d32">Más construcción</text>
+          <text x="100" y="45" text-anchor="middle" font-size="10" fill="#7f8c8d">Huesos más fuertes</text>
+          <text x="100" y="65" text-anchor="middle" font-size="9" fill="#27ae60" font-weight="bold">✅ Bailarín entrenado</text>
+        </g>
+        
+        <g transform="translate(250, 180)">
+          <rect x="0" y="0" width="200" height="80" fill="#fff3e0" stroke="#f57c00" stroke-width="2" rx="10"/>
+          <text x="100" y="25" text-anchor="middle" font-size="11" font-weight="bold" fill="#e65100">Equilibrio</text>
+          <text x="100" y="45" text-anchor="middle" font-size="10" fill="#7f8c8d">Huesos sanos</text>
+          <text x="100" y="65" text-anchor="middle" font-size="9" fill="#f57c00" font-weight="bold">⚖️ Adulto sano</text>
+        </g>
+        
+        <g transform="translate(450, 180)">
+          <rect x="0" y="0" width="200" height="80" fill="#ffebee" stroke="#e53935" stroke-width="2" rx="10"/>
+          <text x="100" y="25" text-anchor="middle" font-size="11" font-weight="bold" fill="#c62828">Más destrucción</text>
+          <text x="100" y="45" text-anchor="middle" font-size="10" fill="#7f8c8d">Huesos débiles</text>
+          <text x="100" y="65" text-anchor="middle" font-size="9" fill="#e53935" font-weight="bold">❌ Osteoporosis</text>
+        </g>
+      </svg>
+    </div>
+    
+    <div class="dance-box">
+      <h4><span class="emoji">💃</span> Aplicación en la danza</h4>
+      <ul>
+        <li><strong>Entrenamiento correcto:</strong> Cuando bailas con carga adecuada (saltos, relevés), los osteoblastos trabajan más que los osteoclastos → tus huesos se fortalecen.</li>
+        <li><strong>Entrenamiento excesivo:</strong> Si entrenas demasiado sin descansar, los osteoclastos pueden "ganar" porque no hay tiempo para que los osteoblastos construyan → riesgo de fracturas por estrés.</li>
+        <li><strong>Dieta adecuada:</strong> Los osteoblastos necesitan calcio, vitamina D y proteínas para construir hueso. Si no comes bien, no pueden trabajar bien.</li>
+        <li><strong>Descanso:</strong> Los osteoblastos trabajan especialmente bien durante el sueño (cuando se libera la hormona del crecimiento). ¡Dormir bien es entrenar los huesos!</li>
+      </ul>
+    </div>
+    
+    <div class="practical-activity">
+      <h4><span class="emoji">🎭</span> Actividad: "Simula el equilibrio"</h4>
+      <p><strong>Objetivo:</strong> Entender el equilibrio entre construcción y destrucción</p>
+      <ol class="activity-steps">
+        <li><strong>Material:</strong> Plastilina de dos colores (verde para "construir", roja para "destruir").</li>
+        <li><strong>Escenario 1 (equilibrio):</strong> Haz una bolita verde y una roja del mismo tamaño. Representan que construyes y destruyes la misma cantidad. Tus huesos se mantienen igual.</li>
+        <li><strong>Escenario 2 (más construcción):</strong> Haz una bolita verde grande y una roja pequeña. Representan que construyes más de lo que destruyes. Tus huesos se fortalecen (como cuando entrenas bien).</li>
+        <li><strong>Escenario 3 (más destrucción):</strong> Haz una bolita verde pequeña y una roja grande. Representan que destruyes más de lo que construyes. Tus huesos se debilitan (como en la osteoporosis o si no comes bien).</li>
+        <li><strong>Reflexión:</strong> ¿Qué escenario representa a un bailarín que entrena bien, come bien y descansa? ¿Y a uno que entrena demasiado y come mal?</li>
+      </ol>
+    </div>
+    
+    <div class="tip-box">
+      <h4>✨ Dato curioso</h4>
+      <p>Los osteoclastos, al destruir hueso, <strong>liberan calcio a la sangre</strong>. Esto es importante porque si no comes suficiente calcio, el cuerpo "tira" de los huesos para mantener el calcio de la sangre (necesario para que los músculos funcionen). Por eso, si no comes calcio, tus huesos se debilitan aunque entrenes bien.</p>
+    </div>
+  </div>
+
+  <!-- SLIDE 3: OSTEOCITOS -->
+  <div class="slide">
+    <h2>️ Los osteocitos: los sensores del hueso</h2>
+    
+    <div class="reminder-box">
+      <h4>💡 Recordatorio</h4>
+      <p>Hemos visto a los osteoblastos (constructores) y osteoclastos (destructores). Pero hay una célula que es igual de importante: el <strong>osteocito</strong>. Es el "director de obra" que decide cuándo y dónde hay que construir o destruir.</p>
+    </div>
+    
+    <div class="intro-box">
+      <h3>👁️ ¿Qué son los osteocitos?</h3>
+      <p>Los <span class="highlight">osteocitos</span> son osteoblastos que quedaron "atrapados" en el hueso que ellos mismos construyeron. En lugar de morir, se adaptaron y se convirtieron en <strong>sensores</strong> que vigilan el hueso desde dentro.</p>
+      <p style="margin-top: 12px;">Son las células más numerosas del hueso adulto y están conectadas entre sí formando una <strong>red de comunicación</strong>.</p>
+    </div>
+    
+    <div class="concept-card">
+      <h3><span class="emoji">📡</span> ¿Cómo funcionan los osteocitos?</h3>
+      <div class="how-it-works">
+        <h4>🎯 Los 3 trabajos del osteocito</h4>
+        <ul>
+          <li><strong>1. Detectan fuerzas mecánicas:</strong> Cuando bailas y tus huesos reciben impacto, los osteocitos "sienten" la presión. Son como pequeños "acelerómetros" (como los del móvil que detectan cuando lo mueves).</li>
+          <li><strong>2. Envían señales químicas:</strong> Cuando detectan fuerza, liberan sustancias químicas que "avisan" a los osteoblastos: "¡Ey, aquí hace falta más hueso!"</li>
+          <li><strong>3. Regulan el equilibrio:</strong> Si detectan que hay demasiado hueso viejo o dañado, avisan a los osteoclastos para que lo retiren.</li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="diagram-container">
+      <h4>📡 El osteocito: sensor y director</h4>
+      <svg viewBox="0 0 700 300">
+        <!-- Osteocito central -->
+        <ellipse cx="350" cy="150" rx="40" ry="30" fill="#3498db" opacity="0.8"/>
+        <text x="350" y="145" text-anchor="middle" font-size="11" fill="white" font-weight="bold">OSTEO-</text>
+        <text x="350" y="160" text-anchor="middle" font-size="11" fill="white" font-weight="bold">CITO</text>
+        
+        <!-- Canalículos (brazos) -->
+        <line x1="310" y1="150" x2="200" y2="100" stroke="#3498db" stroke-width="3"/>
+        <line x1="390" y1="150" x2="500" y2="100" stroke="#3498db" stroke-width="3"/>
+        <line x1="350" y1="120" x2="350" y2="50" stroke="#3498db" stroke-width="3"/>
+        <line x1="350" y1="180" x2="350" y2="250" stroke="#3498db" stroke-width="3"/>
+        <line x1="320" y1="170" x2="220" y2="220" stroke="#3498db" stroke-width="3"/>
+        <line x1="380" y1="170" x2="480" y2="220" stroke="#3498db" stroke-width="3"/>
+        
+        <!-- Otros osteocitos conectados -->
+        <ellipse cx="200" cy="100" rx="25" ry="18" fill="#3498db" opacity="0.6"/>
+        <text x="200" y="105" text-anchor="middle" font-size="8" fill="white">Osteocito</text>
+        
+        <ellipse cx="500" cy="100" rx="25" ry="18" fill="#3498db" opacity="0.6"/>
+        <text x="500" y="105" text-anchor="middle" font-size="8" fill="white">Osteocito</text>
+        
+        <ellipse cx="350" cy="50" rx="25" ry="18" fill="#3498db" opacity="0.6"/>
+        <text x="350" y="55" text-anchor="middle" font-size="8" fill="white">Osteocito</text>
+        
+        <ellipse cx="350" cy="250" rx="25" ry="18" fill="#3498db" opacity="0.6"/>
+        <text x="350" y="255" text-anchor="middle" font-size="8" fill="white">Osteocito</text>
+        
+        <ellipse cx="220" cy="220" rx="25" ry="18" fill="#3498db" opacity="0.6"/>
+        <text x="220" y="225" text-anchor="middle" font-size="8" fill="white">Osteocito</text>
+        
+        <ellipse cx="480" cy="220" rx="25" ry="18" fill="#3498db" opacity="0.6"/>
+        <text x="480" y="225" text-anchor="middle" font-size="8" fill="white">Osteocito</text>
+        
+        <!-- Flecha de fuerza -->
+        <path d="M 100 150 L 180 150" stroke="#e74c3c" stroke-width="3" marker-end="url(#arrowRed)"/>
+        <text x="140" y="140" text-anchor="middle" font-size="10" fill="#e74c3c" font-weight="bold">FUERZA</text>
+        
+        <!-- Señales químicas -->
+        <circle cx="280" cy="120" r="5" fill="#f39c12"/>
+        <circle cx="420" cy="120" r="5" fill="#f39c12"/>
+        <circle cx="380" cy="180" r="5" fill="#f39c12"/>
+        <text x="450" y="150" font-size="9" fill="#f39c12" font-weight="bold">Señales</text>
+        <text x="450" y="165" font-size="9" fill="#f39c12" font-weight="bold">químicas</text>
+        
+        <text x="350" y="295" text-anchor="middle" font-size="11" fill="#2a5298" font-weight="bold">Red de osteocitos comunicados entre sí</text>
+        
+        <defs>
+          <marker id="arrowRed" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+            <polygon points="0 0, 10 3, 0 6" fill="#e74c3c"/>
+          </marker>
+        </defs>
+      </svg>
+    </div>
+    
+    <div class="concept-card">
+      <h3><span class="emoji">🎯</span> ¿Por qué son tan importantes?</h3>
+      <div class="how-it-works">
+        <h4>🧠 Los osteocitos son el "cerebro" del hueso</h4>
+        <ul>
+          <li><strong>Sin osteocitos:</strong> Los osteoblastos y osteoclastos no sabrían cuándo ni dónde trabajar. Sería como una obra sin arquitecto.</li>
+          <li><strong>Con osteocitos:</strong> El hueso se adapta exactamente a las fuerzas que recibe. Si bailas mucho, se fortalece donde más lo necesitas.</li>
+          <li><strong>Dato curioso:</strong> Los osteocitos pueden vivir décadas dentro del hueso. ¡Son las células más longevas del cuerpo!</li>
+        </ul>
+      </div>
+      
+      <div class="intro-box" style="margin-top: 15px; background: linear-gradient(135deg, #ffebee 0%, #ffcdd2 100%); border-left-color: #e53935;">
+        <h4>⚠️ ¿Qué pasa si los osteocitos mueren?</h4>
+        <p>Si los osteocitos mueren (por ejemplo, por falta de sangre o por exceso de carga sin descanso):</p>
+        <ul style="margin-left: 25px; margin-top: 10px; line-height: 1.8;">
+          <li>El hueso pierde su "sistema de vigilancia"</li>
+          <li>Los osteoclastos pueden destruir hueso sin control</li>
+          <li>Aparecen zonas débiles que pueden fracturarse</li>
+        </ul>
+        <p style="margin-top: 12px;">Por eso el <strong>descanso</strong> es clave: da tiempo a los osteocitos a recuperarse y seguir vigilando.</p>
+      </div>
+    </div>
+    
+    <div class="dance-box">
+      <h4><span class="emoji">💃</span> Los osteocitos en la danza</h4>
+      <ul>
+        <li><strong>Cuando haces un relevé:</strong> Los osteocitos de los huesos del pie detectan la presión y envían señales para fortalecer esa zona.</li>
+        <li><strong>Cuando saltas:</strong> Los osteocitos de las piernas detectan el impacto y "piden" más hueso para la próxima vez.</li>
+        <li><strong>Cuando descansas:</strong> Los osteocitos siguen trabajando, "leyendo" las señales y preparando la siguiente fase de construcción.</li>
+        <li><strong>Si entrenas demasiado:</strong> Los osteocitos se "agotan" y pueden morir. Pierdes el sistema de vigilancia y aumentas el riesgo de lesión.</li>
+      </ul>
+    </div>
+    
+    <div class="practical-activity">
+      <h4><span class="emoji">🎭</span> Actividad: "Simula un osteocito"</h4>
+      <p><strong>Objetivo:</strong> Entender cómo los osteocitos detectan fuerzas</p>
+      <ol class="activity-steps">
+        <li><strong>Material:</strong> Una esponja de cocina y un vaso con agua.</li>
+        <li><strong>Simula el hueso:</strong> La esponja representa el hueso con osteocitos dentro.</li>
+        <li><strong>Simula la fuerza:</strong> Aprieta la esponja bajo el agua. Verás que el agua se mueve dentro de la esponja.</li>
+        <li><strong>Relación con el osteocito:</strong> Los osteocitos viven en pequeños huecos del hueso rodeados de líquido. Cuando el hueso recibe una fuerza, el líquido se mueve y los osteocitos lo detectan (como tú detectas el agua moverse en la esponja).</li>
+        <li><strong>Reflexión:</strong> Si aprietas la esponja muy fuerte o muchas veces, ¿qué le pasa? (Se deforma o se rompe). Así les pasa a los osteocitos si entrenas demasiado sin descanso.</li>
+      </ol>
+    </div>
+    
+    <div class="tip-box">
+      <h4>✨ Dato curioso</h4>
+      <p>Los osteocitos tienen "brazos" largos (llamados <strong>dendritas</strong>) que los conectan con otros osteocitos. Forman una red similar a las <strong>neuronas del cerebro</strong>. ¡Por eso algunos científicos llaman al hueso "el segundo cerebro" del cuerpo! Puede "sentir" y "responder" a las fuerzas sin que tú te des cuenta.</p>
+    </div>
+  </div>
+
+  <!-- SLIDE 4: QUIZ -->
+  <div class="slide">
+    <h2>🎯 Quiz: Comprueba lo aprendido</h2>
+    
+    <div class="quiz-container">
+      <h3>Preguntas sobre las células del hueso</h3>
+      <div id="quizContainer"></div>
+      <button class="btn" onclick="checkQuiz()">Comprobar respuestas</button>
+      <button class="btn" style="background: #6c757d;" onclick="resetQuiz()">Reiniciar</button>
+      <div class="feedback" id="fbQuiz"></div>
+    </div>
+    
+    <div class="practical-activity">
+      <h4><span class="emoji">🎭</span> Actividad final: "El equipo completo"</h4>
+      <p><strong>Objetivo:</strong> Integrar lo aprendido sobre las células del hueso</p>
+      <ol class="activity-steps">
+        <li><strong>Crea un cómic</strong> (4 viñetas) que cuente la historia de una fractura reparada:
+          <ul>
+            <li>Viñeta 1: El osteocito detecta la fractura</li>
+            <li>Viñeta 2: El osteoclasto limpia la zona</li>
+            <li>Viñeta 3: El osteoblasto construye hueso nuevo</li>
+            <li>Viñeta 4: La célula osteoprogenitora ayuda si hace falta</li>
+          </ul>
+        </li>
+        <li><strong>Explica</strong> con tus palabras: ¿Por qué es importante el descanso para que las células del hueso trabajen bien?</li>
+        <li><strong>Reflexiona:</strong> Si fueras un osteocito, ¿qué le "dirías" a un bailarín que entrena demasiado sin descansar?</li>
+        <li><strong>Prepara</strong> para el siguiente archivo: hablaremos de la remodelación ósea (cómo todo este equipo trabaja en ciclos a lo largo de la vida).</li>
+      </ol>
+    </div>
+    
+    <div class="tip-box" style="margin-top: 20px;">
+      <h4>🎓 Resumen clave</h4>
+      <ul style="margin-left: 25px; line-height: 1.8;">
+        <li><strong>Osteoblastos:</strong> Construyen hueso nuevo (necesitan calcio, vitamina D y descanso)</li>
+        <li><strong>Osteoclastos:</strong> Destruyen hueso viejo (liberan calcio a la sangre)</li>
+        <li><strong>Osteocitos:</strong> Sensores que detectan fuerzas y dirigen el trabajo</li>
+        <li><strong>Células osteoprogenitoras:</strong> Reserva que se convierte en osteoblastos cuando hace falta</li>
+        <li><strong>Equilibrio:</strong> La clave es que construcción = destrucción (o un poco más de construcción si entrenas bien)</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<script>
+function showSlide(i, btn) {
+  document.querySelectorAll('.slide').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-tabs button').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.slide')[i].classList.add('active');
+  btn.classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+const quizData = [
+  {
+    q: "¿Cuál es la función de los osteoblastos?",
+    opts: [
+      "Destruir hueso viejo",
+      "Construir hueso nuevo",
+      "Detectar fuerzas mecánicas",
+      "Convertirse en osteocitos"
+    ],
+    correct: 1
+  },
+  {
+    q: "¿Cómo destruyen el hueso los osteoclastos?",
+    opts: [
+      "Lo rompen con fuerza mecánica",
+      "Crean un ambiente ácido que disuelve el hueso",
+      "Lo comen como si fuera comida",
+      "Lo congelan hasta que se rompe"
+    ],
+    correct: 1
+  },
+  {
+    q: "¿Qué son los osteocitos?",
+    opts: [
+      "Células que construyen hueso",
+      "Células que destruyen hueso",
+      "Osteoblastos que quedaron atrapados y se convirtieron en sensores",
+      "Células madre que pueden convertirse en cualquier cosa"
+    ],
+    correct: 2
+  },
+  {
+    q: "¿Qué hacen las células osteoprogenitoras?",
+    opts: [
+      "Destruyen hueso dañado",
+      "Detectan fuerzas mecánicas",
+      "Pueden convertirse en osteoblastos cuando hace falta",
+      "Producen calcio para la sangre"
+    ],
+    correct: 2
+  },
+  {
+    q: "¿Por qué los osteocitos son importantes para un bailarín?",
+    opts: [
+      "Porque construyen hueso directamente",
+      "Porque detectan las fuerzas del baile y dirigen la construcción de hueso nuevo",
+      "Porque destruyen el hueso dañado",
+      "Porque no son importantes"
+    ],
+    correct: 1
+  },
+  {
+    q: "¿Qué pasa si hay más osteoclastos que osteoblastos?",
+    opts: [
+      "Los huesos se hacen más fuertes",
+      "Los huesos se mantienen igual",
+      "Los huesos se debilitan (pérdida de densidad ósea)",
+      "Los huesos crecen más"
+    ],
+    correct: 2
+  },
+  {
+    q: "¿Por qué el descanso es importante para las células del hueso?",
+    opts: [
+      "Porque las células duermen",
+      "Porque los osteoblastos trabajan mejor durante el descanso y el sueño",
+      "Porque los osteoclastos descansan",
+      "No es importante"
+    ],
+    correct: 1
+  },
+  {
+    q: "¿Cómo se comunican los osteocitos entre sí?",
+    opts: [
+      "Por el sistema nervioso",
+      "Por la sangre",
+      "Por pequeños 'túneles' (canalículos) que los conectan",
+      "No se comunican"
+    ],
+    correct: 2
+  }
+];
+
+function renderQuiz() {
+  const cont = document.getElementById('quizContainer');
+  cont.innerHTML = '';
+  quizData.forEach((item, qi) => {
+    let html = `<div class="question-box"><p>${qi+1}. ${item.q}</p><div class="options">`;
+    item.opts.forEach((opt, oi) => {
+      html += `<label><input type="radio" name="q${qi}" value="${oi}"> ${opt}</label>`;
+    });
+    html += `</div></div>`;
+    cont.innerHTML += html;
+  });
+}
+renderQuiz();
+
+function checkQuiz() {
+  let score = 0;
+  quizData.forEach((item, qi) => {
+    const sel = document.querySelector(`input[name="q${qi}"]:checked`);
+    const labels = document.querySelectorAll(`input[name="q${qi}"]`);
+    labels.forEach(l => l.parentElement.classList.remove('correct','incorrect'));
+    if (sel) {
+      const val = parseInt(sel.value);
+      if (val === item.correct) {
+        sel.parentElement.classList.add('correct');
+        score++;
+      } else {
+        sel.parentElement.classList.add('incorrect');
+        labels[item.correct].parentElement.classList.add('correct');
+      }
+    } else {
+      labels[item.correct].parentElement.classList.add('correct');
+    }
+  });
+  const fb = document.getElementById('fbQuiz');
+  fb.classList.add('show');
+  if (score === quizData.length) {
+    fb.className = 'feedback show success';
+    fb.innerHTML = `🏆 ¡Excelente! ${score}/${quizData.length}. Entiendes muy bien las células del hueso y cómo trabajan en equipo.`;
+  } else if (score >= 6) {
+    fb.className = 'feedback show';
+    fb.style.background = '#fff3cd';
+    fb.style.color = '#856404';
+    fb.style.border = '2px solid #ffc107';
+    fb.innerHTML = ` Bien: ${score}/${quizData.length}. Repasa los conceptos fallados.`;
+  } else {
+    fb.className = 'feedback show error';
+    fb.innerHTML = `📚 ${score}/${quizData.length}. Vuelve a leer los apartados y reinténtalo.`;
+  }
+}
+
+function resetQuiz() {
+  document.querySelectorAll('#quizContainer input').forEach(i => { i.checked = false; i.parentElement.classList.remove('correct','incorrect'); });
+  document.getElementById('fbQuiz').classList.remove('show');
+}
+</script>
+</body>
+</html>

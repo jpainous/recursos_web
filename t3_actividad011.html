@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Rols Musculars</title>
+<style>
+  body { font-family: 'Segoe UI', sans-serif; background: #0f172a; color: #e2e8f0; margin: 0; padding: 20px; }
+  h1 { text-align: center; color: #06b6d4; }
+  .container { max-width: 1000px; margin: auto; }
+  .movimiento { background: #1e293b; padding: 20px; border-radius: 12px; margin-bottom: 20px; }
+  .movimiento h3 { color: #06b6d4; margin-top: 0; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px; margin-top: 15px; }
+  .musculo { background: #334155; padding: 12px; border-radius: 8px; text-align: center; }
+  .musculo b { color: #fbbf24; display: block; margin-bottom: 8px; }
+  select { width: 100%; padding: 8px; background: #0f172a; border: 1px solid #475569; border-radius: 6px; color: #e2e8f0; }
+  .correcto { background: #14532d; border: 2px solid #34d399; }
+  .incorrecto { background: #7f1d1d; border: 2px solid #ef4444; }
+  button { background: #06b6d4; color: #0f172a; border: none; padding: 12px 24px; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 15px; }
+  .resultado { margin-top: 20px; padding: 15px; background: #1e293b; border-radius: 8px; text-align: center; min-height: 50px; }
+  .leyenda { display: flex; gap: 15px; flex-wrap: wrap; margin-bottom: 20px; padding: 15px; background: #1e293b; border-radius: 8px; }
+  .rol-tag { padding: 6px 12px; border-radius: 12px; font-size: 13px; font-weight: bold; }
+  .agonista { background: #16a34a; color: white; }
+  .antagonista { background: #dc2626; color: white; }
+  .sinergista { background: #2563eb; color: white; }
+  .estabilizador { background: #9333ea; color: white; }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>🤸 Rols Musculars en el Moviment</h1>
+  
+  <div class="leyenda">
+    <span class="rol-tag agonista">Agonista: ejecutor principal</span>
+    <span class="rol-tag antagonista">Antagonista: freno/acción opuesta</span>
+    <span class="rol-tag sinergista">Sinergista: auxiliar</span>
+    <span class="rol-tag estabilizador">Estabilizador: fija la articulación</span>
+  </div>
+  
+  <div id="movimientos"></div>
+  
+  <div style="text-align:center; margin-top:20px;">
+    <button onclick="comprobar()">✔ Comprobar</button>
+    <button onclick="location.reload()">🔄 Reiniciar</button>
+  </div>
+  <div class="resultado" id="res"></div>
+</div>
+
+<script>
+const ejercicios = [
+  {
+    nombre: 'Flexión de codo (levantar una copa)',
+    musculos: [
+      {nombre: 'Bíceps braquial', rol: 'agonista'},
+      {nombre: 'Tríceps braquial', rol: 'antagonista'},
+      {nombre: 'Braquial', rol: 'sinergista'},
+      {nombre: 'Deltoides', rol: 'estabilizador'}
+    ]
+  },
+  {
+    nombre: 'Extensión de rodilla (patada frontal)',
+    musculos: [
+      {nombre: 'Cuádriceps', rol: 'agonista'},
+      {nombre: 'Isquiotibiales', rol: 'antagonista'},
+      {nombre: 'Sartorio', rol: 'sinergista'},
+      {nombre: 'Glúteo medio', rol: 'estabilizador'}
+    ]
+  },
+  {
+    nombre: 'Abducción de hombro (levantar brazo lateral)',
+    musculos: [
+      {nombre: 'Deltoides medio', rol: 'agonista'},
+      {nombre: 'Pectoral mayor', rol: 'antagonista'},
+      {nombre: 'Supraespinoso', rol: 'sinergista'},
+      {nombre: 'Trapecio', rol: 'estabilizador'}
+    ]
+  },
+  {
+    nombre: 'Flexión plantar (relevé en danza)',
+    musculos: [
+      {nombre: 'Gemelos', rol: 'agonista'},
+      {nombre: 'Tibial anterior', rol: 'antagonista'},
+      {nombre: 'Sóleo', rol: 'sinergista'},
+      {nombre: 'Peroneos', rol: 'estabilizador'}
+    ]
+  }
+];
+
+const cont = document.getElementById('movimientos');
+ejercicios.forEach((ej, i) => {
+  const div = document.createElement('div');
+  div.className = 'movimiento';
+  div.innerHTML = `
+    <h3>${i+1}. ${ej.nombre}</h3>
+    <div class="grid">
+      ${ej.musculos.map((m,j) => `
+        <div class="musculo" data-ej="${i}" data-mus="${j}" data-correcto="${m.rol}">
+          <b>${m.nombre}</b>
+          <select>
+            <option value="">-- Rol --</option>
+            <option value="agonista">Agonista</option>
+            <option value="antagonista">Antagonista</option>
+            <option value="sinergista">Sinergista</option>
+            <option value="estabilizador">Estabilizador</option>
+          </select>
+        </div>
+      `).join('')}
+    </div>
+  `;
+  cont.appendChild(div);
+});
+
+function comprobar() {
+  let aciertos = 0, total = 0;
+  document.querySelectorAll('.musculo').forEach(m => {
+    total++;
+    const sel = m.querySelector('select').value;
+    const correcto = m.dataset.correcto;
+    m.classList.remove('correcto','incorrecto');
+    if (sel === correcto) {
+      m.classList.add('correcto');
+      aciertos++;
+    } else if (sel) {
+      m.classList.add('incorrecto');
+    }
+  });
+  document.getElementById('res').innerHTML = 
+    aciertos === total ? `🎉 <b>¡Perfecto!</b> Has identificado correctamente todos los roles musculares (${aciertos}/${total}).` :
+    `Has acertado <b>${aciertos}/${total}</b>. Revisa los marcados en rojo. Recuerda: el <b>agonista</b> es el motor principal, el <b>antagonista</b> frena, el <b>sinergista</b> ayuda y el <b>estabilizador</b> fija.`;
+}
+</script>
+</body>
+</html>
