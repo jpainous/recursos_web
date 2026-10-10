@@ -294,9 +294,7 @@ var saveTimer=null;
 function detectBase(){
   try{
     var href=String(window.location.href||'');
-    // Ignorem paràmetres/hash
     href=href.split('#')[0].split('?')[0];
-    // Llevem el nom del fitxer
     var i=href.lastIndexOf('/');
     if(i>=0)href=href.slice(0,i);
     if(!href)return '';
@@ -520,6 +518,8 @@ function hiHaDuplicades(arr){
   }
   return false;
 }
+
+/* ---- updateLinks: xips dins el planificador ---- */
 function updateLinks(row,txt){
   if(!row)return;
   var box=row.querySelector('.lks');
@@ -528,18 +528,27 @@ function updateLinks(row,txt){
   var text=String(txt||'');
   var items=[];
 
-  // 1) URL absolutes
-  var abs=text.match(/https?:\/\/[^\s]+/g)||[];
-  abs.forEach(function(u){
-    var clean=u.replace(/[.,;:!?"']+$/,'');
+  /* ---- 1) URL absolutes ---- */
+  /* Capturem els rangs exactes de cada URL per no tornar-los a detectar com a ruta */
+  var absoluteRanges=[];
+  var absRe=/https?:\/\/[^\s]+/g, am;
+  while((am=absRe.exec(text))!==null){
+    var raw=am[0];
+    var clean=raw.replace(/[.,;:!?"']+$/,'');
+    absoluteRanges.push({start:am.index, end:am.index+raw.length});
     items.push({href:clean, label:linkLabelSmart_(clean), title:clean});
-  });
+  }
 
-  // 2) Rutes /carpeta/fitxer.html (no precedides de http://)
+  /* ---- 2) Rutes /carpeta/fitxer.html ---- */
+  /* Només acceptem coincidències que NO caiguin dins d'una URL absoluta. */
   var re=/\/[\w\-.\/]+\.html?\b/g, m;
   while((m=re.exec(text))!==null){
-    var abans=text.slice(Math.max(0,m.index-8),m.index);
-    if(/https?:\/$/.test(abans)||/https?:\/\/\S*$/.test(abans))continue;
+    var dins=false;
+    for(var r=0;r<absoluteRanges.length;r++){
+      if(m.index>=absoluteRanges[r].start && m.index<absoluteRanges[r].end){dins=true;break;}
+    }
+    if(dins)continue;
+
     var ruta=m[0];
     var base=getBase();
     var href=base?base+'/'+ruta.replace(/^\/+/,''):ruta;
@@ -574,6 +583,7 @@ function updateLinks(row,txt){
     return '<a href="'+esc(it.href)+'" target="_blank" rel="noopener" title="'+esc(it.title)+'">&#128279; '+esc(v)+'</a>';
   }).join('');
 }
+
 function refreshAllLinks(root){
  if(!root)return;
  var rows=root.querySelectorAll('.row'),i;
@@ -990,18 +1000,20 @@ function buildSessionPage(x){
  }
 }
 
-/* Converteix els enllaços del text en <a>, conservant la resta de text.
-   Detecta:
-     1) URL absolutes: https://...
-     2) Rutes absolutes: /carpeta/fitxer.html  -> BASE + ruta
+/* ---- linkify: converteix enllaços del text en <a> ---- */
+/* Detecta:
+     1) URL absolutes https://...
+     2) Rutes absolutes /carpeta/fitxer.html  -> BASE + ruta
      3) 🔗 seguit d'una URL o ruta (la icona s'elimina del text visible)
-   La base es passa com a paràmetre perquè pugui canviar entre crides. */
+   Per evitar dobles prefixos, les URL absolutes es guarden en placeholders
+   i es restauren al final, quan la resta de regex ja s'han executat. */
 function linkify(txt,base){
  try{
   var s=esc(txt);
   if(base==null)base=getBase();
 
-  // 1) URL absolutes -> botó amb nom curt
+  /* ---- 1) URL absolutes ---- */
+  var absolutes=[];
   s=s.replace(/(https?:\/\/[^\s<]+)/g,function(u){
     var clean=String(u).replace(/[.,;:!?"']+$/,'');
     var trail=u.slice(clean.length);
@@ -1011,18 +1023,24 @@ function linkify(txt,base){
       etq=parts.length?parts[parts.length-1]:new URL(clean).hostname;
     }catch(e){etq=clean;}
     etq=etq.split('?')[0].split('#')[0];
-    return '<a href="'+clean+'" target="_blank" rel="noopener" class="btn-link" title="'+clean+'">&#9654; '+esc(etq)+'</a>'+trail;
+    var html='<a href="'+clean+'" target="_blank" rel="noopener" class="btn-link" title="'+clean+'">&#9654; '+esc(etq)+'</a>'+trail;
+    var ph='\u0000ABS'+(absolutes.length)+'\u0000';
+    absolutes.push(html);
+    return ph;
   });
 
-  // 2) Rutes absolutes /carpeta/fitxer.html -> base + ruta
+  /* ---- 2) Rutes absolutes /carpeta/fitxer.html ---- */
   s=s.replace(/(^|[\s(])\/([\w\-.\/]+\.html?)\b/g,function(m,pre,ruta){
     var href=base?base+'/'+ruta.replace(/^\/+/,''):ruta;
     var etq=nomCurt_(ruta);
     return pre+'<a href="'+href+'" target="_blank" rel="noopener" class="btn-link" title="'+href+'">&#9654; '+esc(etq)+'</a>';
   });
 
-  // 3) Treure la icona 🔗 que quedés davant d'un enllaç
+  /* ---- 3) Treure la icona 🔗 que quedés davant d'un enllaç ---- */
   s=s.replace(/🔗\s*(<a )/g,'$1');
+
+  /* ---- 4) Restaurar les URL absolutes ---- */
+  s=s.replace(/\u0000ABS(\d+)\u0000/g,function(_,i){return absolutes[+i]||'';});
 
   return s;
  }catch(e){
