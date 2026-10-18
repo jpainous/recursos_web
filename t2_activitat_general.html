@@ -387,8 +387,8 @@
   <button class="ghost" onclick="loadSession()">📂 Recuperar sessió</button>
   <button class="ghost" onclick="resetSession()">🗑️ Esborrar sessió</button>
   <button class="review" onclick="toggleReview()" id="reviewBtn">🔁 Repàs d'errors</button>
-  <button class="ghost" onclick="imprimir()">🖨 Imprimir</button>
-  <button class="ghost" onclick="exportar()">📤 Exportar progrés</button>
+  <button class="ghost" onclick="iniciarImpressio()">🖨 Imprimir</button>
+  <button class="ghost" onclick="iniciarExportacio()">📤 Exportar progrés</button>
   <span class="status" id="status">Sessió no guardada</span>
 </div>
 
@@ -880,7 +880,7 @@ let currentLang = "ca";
 let results = {};
 let reviewMode = false;
 
-const STORAGE_KEY = "musculoesqueletico_sessions_v6";
+const STORAGE_KEY = "musculoesqueletico_sessions_v7";
 
 /* ============================================================
    RENDERITZACIÓ
@@ -1328,24 +1328,40 @@ function updateStatus(){
 }
 
 /* ============================================================
-   IMPRIMIR  (CORREGIT: nom demanat abans, finestra oberta neta)
+   IMPRESSIÓ: dues fases
    ============================================================ */
+function iniciarImpressio(){
+  const t = T[currentLang];
+
+  // Si ja tenim el nom, imprimim directament
+  if(estat.nomAlumne){
+    imprimir();
+    return;
+  }
+
+  // Si no, el demanem ARA (dins del clic)
+  const nom = prompt(t.demanarNom);
+  if(!nom) return;
+
+  estat.nomAlumne = nom.trim();
+
+  // Guardem el nom al localStorage
+  try{
+    const raw = localStorage.getItem(STORAGE_KEY);
+    const state = raw ? JSON.parse(raw) : {};
+    state.nomAlumne = estat.nomAlumne;
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  }catch(e){}
+
+  // Ara sí, imprimim (seguim dins del mateix clic)
+  imprimir();
+}
+
 function imprimir(){
   const lang = currentLang;
   const t = T[lang];
 
-  // 1) Si encara no tenim el nom, el demanem ARA (abans d'obrir res)
-  if(!estat.nomAlumne){
-    const nom = prompt(t.demanarNom);
-    if(!nom) return;               // l'usuari ha cancel·lat
-    estat.nomAlumne = nom.trim();
-    try{ localStorage.setItem(STORAGE_KEY, JSON.stringify({
-      ...JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}"),
-      nomAlumne: estat.nomAlumne
-    })); }catch(e){}
-  }
-
-  // 2) Comptem els resultats
+  // Comptem els resultats
   let encerts=0, fetes=0;
   const perBloc = {A:{encerts:0,total:0}, B:{encerts:0,total:0}, C:{encerts:0,total:0}};
 
@@ -1361,7 +1377,7 @@ function imprimir(){
   const total = EX.length;
   const pct = total ? Math.round((encerts/total)*100) : 0;
 
-  // 3) Construïm la taula de detall
+  // Taula de detall
   const filesDetall = EX.map((p,i) => {
     const d = p[lang];
     const resp = results[i];
@@ -1369,7 +1385,6 @@ function imprimir(){
     const est = (resp===undefined) ? t.imprimirPendent : (ok ? t.imprimirSi : t.imprimirNo);
     const color = (resp===undefined) ? "#999" : (ok ? "#2e7d32" : "#c62828");
 
-    // Resposta de l'alumne
     let respostaAlumne = "—";
     if(p.type === "mc"){
       const sel = document.querySelector(`input[name="q${i}"]:checked`);
@@ -1387,19 +1402,12 @@ function imprimir(){
       respostaAlumne = ta ? ta.value.slice(0, 300) : "—";
     }
 
-    // Resposta correcta
     let respostaCorrecta = "—";
-    if(p.type === "mc"){
-      respostaCorrecta = d.o[d.a];
-    } else if(p.type === "fill" || p.type === "short"){
-      respostaCorrecta = d.a;
-    } else if(p.type === "match"){
-      respostaCorrecta = d.pairs.map(pp=>`${pp[0]} → ${pp[1]}`).join("; ");
-    } else if(p.type === "order"){
-      respostaCorrecta = d.items.map((it,j)=>`${d.a[j]}. ${it}`).join(" | ");
-    } else if(p.type === "essay"){
-      respostaCorrecta = d.model;
-    }
+    if(p.type === "mc"){ respostaCorrecta = d.o[d.a]; }
+    else if(p.type === "fill" || p.type === "short"){ respostaCorrecta = d.a; }
+    else if(p.type === "match"){ respostaCorrecta = d.pairs.map(pp=>`${pp[0]} → ${pp[1]}`).join("; "); }
+    else if(p.type === "order"){ respostaCorrecta = d.items.map((it,j)=>`${d.a[j]}. ${it}`).join(" | "); }
+    else if(p.type === "essay"){ respostaCorrecta = d.model; }
 
     return `<tr>
       <td>${i+1}</td>
@@ -1412,7 +1420,6 @@ function imprimir(){
     </tr>`;
   }).join("");
 
-  // 4) Generem l'HTML del full
   const html = `<!DOCTYPE html><html lang="${lang}"><head><meta charset="UTF-8">
     <title>${t.imprimirTitol}</title>
     <style>
@@ -1453,7 +1460,7 @@ function imprimir(){
     </tr></thead><tbody>${filesDetall}</tbody></table>
     </body></html>`;
 
-  // 5) Obrim la finestra i hi escrivim TOT DE COP (sense placeholder ni segon write)
+  // Obrim la finestra i hi escrivim TOT DE COP
   const win = window.open("", "_blank");
   if(!win){
     alert(t.popupBlocked);
@@ -1464,24 +1471,34 @@ function imprimir(){
   win.document.close();
   win.focus();
 
-  // 6) Imprimim (petit retard perquè acabi de renderitzar)
   setTimeout(()=>{
-    try{ win.print(); }catch(e){ /* alguns navegadors requereixen acció manual */ }
+    try{ win.print(); }catch(e){}
     mostrarMissatgeLliurament();
   }, 400);
 }
 
 /* ============================================================
-   EXPORTAR
+   EXPORTACIÓ: dues fases
    ============================================================ */
-function exportar(){
+function iniciarExportacio(){
   const t = T[currentLang];
-  if(!estat.nomAlumne){
-    const nom = prompt(t.demanarNom);
-    if(!nom) return;
-    estat.nomAlumne = nom.trim();
+  if(estat.nomAlumne){
+    exportar();
+    return;
   }
+  const nom = prompt(t.demanarNom);
+  if(!nom) return;
+  estat.nomAlumne = nom.trim();
+  try{
+    const raw = localStorage.getItem(STORAGE_KEY);
+    const state = raw ? JSON.parse(raw) : {};
+    state.nomAlumne = estat.nomAlumne;
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  }catch(e){}
+  exportar();
+}
 
+function exportar(){
   let encerts=0, fetes=0;
   const detall = EX.map((p,i) => {
     const resp = results[i];
