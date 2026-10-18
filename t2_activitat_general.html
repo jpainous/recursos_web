@@ -444,8 +444,6 @@ const T = {
     imprimirFetes:"Respostes fetes",
     imprimirEncerts:"Encerts",
     imprimirPct:"Percentatge",
-    imprimirPerBloc:"Resultats per bloc",
-    imprimirBloc:"Bloc",
     imprimirDetall:"Detall de preguntes",
     imprimirNum:"Núm.",
     imprimirPregunta:"Pregunta",
@@ -516,8 +514,6 @@ const T = {
     imprimirFetes:"Respuestas hechas",
     imprimirEncerts:"Aciertos",
     imprimirPct:"Porcentaje",
-    imprimirPerBloc:"Resultados por bloque",
-    imprimirBloc:"Bloque",
     imprimirDetall:"Detalle de preguntas",
     imprimirNum:"N.º",
     imprimirPregunta:"Pregunta",
@@ -588,8 +584,6 @@ const T = {
     imprimirFetes:"Questions answered",
     imprimirEncerts:"Correct",
     imprimirPct:"Percentage",
-    imprimirPerBloc:"Results by block",
-    imprimirBloc:"Block",
     imprimirDetall:"Question detail",
     imprimirNum:"No.",
     imprimirPregunta:"Question",
@@ -880,7 +874,7 @@ let currentLang = "ca";
 let results = {};
 let reviewMode = false;
 
-const STORAGE_KEY = "musculoesqueletico_sessions_v8";
+const STORAGE_KEY = "musculoesqueletico_sessions_v9";
 
 /* ============================================================
    RENDERITZACIÓ
@@ -1331,33 +1325,32 @@ function updateStatus(){
    IMPRIMIR
    ------------------------------------------------------------
    NO demana mai el nom. Sempre obre la finestra.
-   Si no hi ha nom guardat, surt "(sense nom)" al full.
+   No fa servir p.bloc (no existeix al T2).
    ============================================================ */
 function imprimir(){
   const lang = currentLang;
   const t = T[lang];
 
-  let encerts=0, fetes=0;
-  const perBloc = {A:{encerts:0,total:0}, B:{encerts:0,total:0}, C:{encerts:0,total:0}};
-
-  EX.forEach((p,i) => {
-    perBloc[p.bloc].total++;
+  // Comptem els resultats globals
+  let encerts = 0, fetes = 0;
+  EX.forEach((p, i) => {
     const resp = results[i];
     const ok = resp === true;
     if(resp !== undefined){
       fetes++;
-      if(ok){ encerts++; perBloc[p.bloc].encerts++; }
+      if(ok) encerts++;
     }
   });
   const total = EX.length;
   const pct = total ? Math.round((encerts/total)*100) : 0;
 
-  const filesDetall = EX.map((p,i) => {
+  // Taula de detall
+  const filesDetall = EX.map((p, i) => {
     const d = p[lang];
     const resp = results[i];
     const ok = resp === true;
-    const est = (resp===undefined) ? t.imprimirPendent : (ok ? t.imprimirSi : t.imprimirNo);
-    const color = (resp===undefined) ? "#999" : (ok ? "#2e7d32" : "#c62828");
+    const est = (resp === undefined) ? t.imprimirPendent : (ok ? t.imprimirSi : t.imprimirNo);
+    const color = (resp === undefined) ? "#999" : (ok ? "#2e7d32" : "#c62828");
 
     let respostaAlumne = "—";
     if(p.type === "mc"){
@@ -1367,27 +1360,26 @@ function imprimir(){
         respostaAlumne = d.o[idxTriat] || "—";
       }
     } else if(p.type === "fill" || p.type === "short"){
-      const inp = document.getElementById("in"+i);
+      const inp = document.getElementById("in" + i);
       respostaAlumne = inp ? inp.value : "—";
     } else if(p.type === "match" || p.type === "order"){
       respostaAlumne = (resp === true) ? "Correcte" : (resp === false ? "Incorrecte" : "—");
     } else if(p.type === "essay"){
-      const ta = document.getElementById("in"+i);
+      const ta = document.getElementById("in" + i);
       respostaAlumne = ta ? ta.value.slice(0, 300) : "—";
     }
 
     let respostaCorrecta = "—";
     if(p.type === "mc"){ respostaCorrecta = d.o[d.a]; }
     else if(p.type === "fill" || p.type === "short"){ respostaCorrecta = d.a; }
-    else if(p.type === "match"){ respostaCorrecta = d.pairs.map(pp=>`${pp[0]} → ${pp[1]}`).join("; "); }
-    else if(p.type === "order"){ respostaCorrecta = d.items.map((it,j)=>`${d.a[j]}. ${it}`).join(" | "); }
+    else if(p.type === "match"){ respostaCorrecta = d.pairs.map(pp => `${pp[0]} → ${pp[1]}`).join("; "); }
+    else if(p.type === "order"){ respostaCorrecta = d.items.map((it, j) => `${d.a[j]}. ${it}`).join(" | "); }
     else if(p.type === "essay"){ respostaCorrecta = d.model; }
 
     return `<tr>
       <td>${i+1}</td>
-      <td>${p.bloc}</td>
       <td>${p.pi ? "🌿" : "—"}</td>
-      <td>${d.q.replace(/<[^>]+>/g,"").slice(0,120)}</td>
+      <td>${d.q.replace(/<[^>]+>/g, "").slice(0, 120)}</td>
       <td>${respostaAlumne}</td>
       <td>${respostaCorrecta}</td>
       <td style="color:${color};font-weight:700">${est}</td>
@@ -1422,15 +1414,9 @@ function imprimir(){
       <div><strong>${t.imprimirEncerts}:</strong> ${encerts}</div>
       <div><strong>${t.imprimirPct}:</strong> ${pct} %</div>
     </div>
-    <h2>${t.imprimirPerBloc}</h2>
-    <table><thead><tr><th>${t.imprimirBloc}</th><th>${t.imprimirEncerts}</th></tr></thead><tbody>
-      <tr><td>A</td><td>${perBloc.A.encerts} / ${perBloc.A.total}</td></tr>
-      <tr><td>B</td><td>${perBloc.B.encerts} / ${perBloc.B.total}</td></tr>
-      <tr><td>C</td><td>${perBloc.C.encerts} / ${perBloc.C.total}</td></tr>
-    </tbody></table>
     <h2>${t.imprimirDetall}</h2>
     <table><thead><tr>
-      <th>${t.imprimirNum}</th><th>${t.imprimirBloc}</th><th>🌿</th>
+      <th>${t.imprimirNum}</th><th>🌿</th>
       <th>${t.imprimirPregunta}</th><th>${t.imprimirResposta}</th>
       <th>${t.imprimirCorrecta}</th><th>${t.imprimirEncert}</th>
     </tr></thead><tbody>${filesDetall}</tbody></table>
@@ -1446,7 +1432,7 @@ function imprimir(){
   win.document.close();
   win.focus();
 
-  setTimeout(()=>{
+  setTimeout(() => {
     try{ win.print(); }catch(e){}
     mostrarMissatgeLliurament();
   }, 400);
@@ -1456,31 +1442,33 @@ function imprimir(){
    EXPORTAR
    ============================================================ */
 function exportar(){
-  let encerts=0, fetes=0;
-  const detall = EX.map((p,i) => {
+  let encerts = 0, fetes = 0;
+  const detall = EX.map((p, i) => {
     const resp = results[i];
     const ok = resp === true;
     if(resp !== undefined){ fetes++; if(ok) encerts++; }
-    return { num:i+1, bloc:p.bloc, pi:p.pi, tipus:p.type, encert: resp===undefined ? null : ok };
+    return { num: i+1, pi: p.pi, tipus: p.type, encert: resp === undefined ? null : ok };
   });
   const data = {
-    activitat:"Sistema Musculoesquelètic I",
-    alumne:estat.nomAlumne || "(sense nom)",
-    data_exportacio:new Date().toISOString(),
-    idioma_actual:currentLang,
-    total_preguntes:EX.length,
-    respostes_fetes:fetes,
-    encerts:encerts,
+    activitat: "Sistema Musculoesquelètic I",
+    alumne: estat.nomAlumne || "(sense nom)",
+    data_exportacio: new Date().toISOString(),
+    idioma_actual: currentLang,
+    total_preguntes: EX.length,
+    respostes_fetes: fetes,
+    encerts: encerts,
     detall
   };
-  const blob = new Blob([JSON.stringify(data,null,2)],{type:"application/json"});
+  const blob = new Blob([JSON.stringify(data, null, 2)], {type:"application/json"});
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
   a.href = url;
   const avui = new Date().toISOString().slice(0,10);
-  const nomFitxer = (estat.nomAlumne || "sense_nom").replace(/\s+/g,"_");
+  const nomFitxer = (estat.nomAlumne || "sense_nom").replace(/\s+/g, "_");
   a.download = `${nomFitxer}_${avui}_t2.json`;
-  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
   URL.revokeObjectURL(url);
   mostrarMissatgeLliurament();
 }
@@ -1493,7 +1481,7 @@ function init(){
   render();
   renderHowto();
   if(raw){
-    setTimeout(()=>{
+    setTimeout(() => {
       showBanner(T[currentLang].restorePrompt, true);
     }, 400);
   }
